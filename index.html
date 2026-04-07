@@ -94,7 +94,6 @@ body {
 @keyframes splashTitleIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 .splash-subtitle { font-family: var(--font-data); font-size: 28px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; animation: splashTitleIn 1s 0.5s cubic-bezier(0.19,1,0.22,1) both; }
 
-/* ===== SPLASH COUNTDOWN — poprawka mobile ===== */
 .splash-countdown { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 40px; animation: splashTitleIn 1s 0.6s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-timer-unit { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: 3px solid var(--f1-red); min-width: 100px; padding: 18px 16px 14px; border-radius: 4px; text-align: center; }
 .splash-timer-val { font-family: var(--font-display); font-size: 52px; font-weight: 900; display: block; line-height: 1; color: var(--f1-white); letter-spacing: 2px; }
@@ -319,6 +318,222 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .album-viewer-title-editable { cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
 .album-viewer-title-editable:hover { color: var(--f1-red); border-bottom-color: rgba(225,6,0,0.3); }
 
+/* ===================== ZAKŁADKA ZESPOŁY ===================== */
+.teams-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+/* Kafelki zespołów — bazowy styl */
+.team-page-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    transition: transform 0.35s cubic-bezier(0.19,1,0.22,1), box-shadow 0.35s ease;
+    animation: slideInLeft 0.5s both;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+}
+.team-page-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.38);
+}
+
+/* Kolory tła — te same gradienty co w tabeli konstruktorów */
+.team-page-card.tc-ferrari  { background: linear-gradient(135deg, #e10600 0%, #c00500 60%, #900300 100%); }
+.team-page-card.tc-mercedes { background: linear-gradient(135deg, #00d2be 0%, #00b5a4 60%, #008877 100%); }
+.team-page-card.tc-redbull  { background: linear-gradient(135deg, #131b45 0%, #1c2860 60%, #0a1030 100%); }
+.team-page-card.tc-mclaren  { background: linear-gradient(135deg, #ff8700 0%, #e07500 60%, #b55800 100%); }
+.team-page-card.tc-aston    { background: linear-gradient(135deg, #006f62 0%, #008573 60%, #004d44 100%); }
+.team-page-card.tc-alpine   { background: linear-gradient(135deg, #6088d6 0%, #4a72c4 60%, #2d55a8 100%); }
+.team-page-card.tc-williams { background: linear-gradient(135deg, #182cc4 0%, #1f38d4 60%, #0e1e9c 100%); }
+.team-page-card.tc-sauber   { background: linear-gradient(135deg, #1a7a1a 0%, #229922 60%, #0f5a0f 100%); }
+.team-page-card.tc-haas     { background: linear-gradient(135deg, #4a4a4a 0%, #666666 60%, #2e2e2e 100%); }
+.team-page-card.tc-rb       { background: linear-gradient(135deg, #004cff 0%, #1060ff 60%, #0030cc 100%); }
+
+/* Ozdobny pasek po lewej */
+.team-page-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 8px;
+    background: rgba(255,255,255,0.35);
+    z-index: 1;
+}
+
+/* Siatka geometryczna w tle */
+.team-page-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 41px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Nagłówek karty z logo i nazwą */
+.tpc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 36px 20px 44px;
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.tpc-name {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 52px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    flex: 1;
+}
+.tpc-logo-wrap {
+    width: 160px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+.tpc-logo {
+    max-width: 150px;
+    max-height: 90px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+.tpc-logo-placeholder {
+    width: 80px;
+    height: 60px;
+    border: 3px dashed rgba(255,255,255,0.25);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+/* Sekcja treści */
+.tpc-body {
+    flex: 1;
+    padding: 24px 44px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Pola edytowalne w karcie */
+.tpc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.tpc-field-label {
+    font-family: var(--font-data);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.45);
+}
+.tpc-field-value {
+    font-family: var(--font-data);
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    min-height: 38px;
+}
+.tpc-field-value.tpc-big {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.5;
+    min-height: 60px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Edytowalność */
+.tpc-editable {
+    cursor: pointer;
+    border-bottom: 2px dashed rgba(255,255,255,0.2);
+    transition: border-color 0.2s, background 0.2s;
+    padding: 2px 6px 2px 2px;
+    border-radius: 3px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+.tpc-editable:hover {
+    border-color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.08);
+}
+.tpc-editable:hover::after {
+    content: ' ✎';
+    font-size: 0.6em;
+    opacity: 0.6;
+}
+
+/* Prompt "kliknij aby edytować" dla admina */
+.tpc-edit-hint {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: rgba(0,0,0,0.45);
+    color: rgba(255,255,255,0.6);
+    font-family: var(--font-data);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.team-page-card:hover .tpc-edit-hint { opacity: 1; }
+
+/* Pasek dolny z nr pozycji */
+.tpc-footer {
+    padding: 14px 44px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+    background: rgba(0,0,0,0.15);
+}
+.tpc-num {
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.08);
+    line-height: 1;
+    user-select: none;
+    position: absolute;
+    right: 36px;
+    bottom: 10px;
+}
+
 /* ===================== PANEL ADMINA ===================== */
 #admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: 9998; pointer-events: none; transition: background 0.5s ease; }
 #admin-overlay.open { background: rgba(0,0,0,0.6); pointer-events: all; backdrop-filter: blur(3px); }
@@ -361,6 +576,46 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .splash-preview { background: #111; color: #fff; padding: 24px; border-radius: 8px; margin-top: 16px; min-height: 80px; font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
 .splash-preview img { max-width: 100%; border-radius: 4px; }
 
+/* Admin panel — sekcja zespołów */
+.adm-teams-list { display: flex; flex-direction: column; gap: 14px; }
+.adm-team-row {
+    background: #f9f9fb;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.adm-team-row-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+.adm-team-swatch {
+    width: 16px;
+    height: 36px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.adm-team-label {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #222;
+}
+.adm-team-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.adm-team-fields-full {
+    grid-column: 1 / -1;
+}
+
 /* ===================== DRAG-REORDER LISTY W ADMINIE ===================== */
 .reorder-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
 .reorder-item { display: flex; align-items: center; gap: 12px; background: #f9f9fb; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 16px; cursor: grab; transition: box-shadow 0.2s, opacity 0.2s; user-select: none; }
@@ -370,7 +625,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .reorder-handle { font-size: 22px; color: #bbb; flex-shrink: 0; line-height: 1; }
 .reorder-label { font-family: var(--font-data); font-size: 18px; letter-spacing: 1px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .reorder-actions { display: flex; gap: 8px; flex-shrink: 0; }
-/* ======================================================================= */
 
 /* bonus info box */
 .bonus-info-box { background: #f0f9f0; border: 1.5px solid #4caf50; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; font-size: 13px; color: #2a6e2a; line-height: 1.7; }
@@ -474,13 +728,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .splash-title { font-size: 48px; letter-spacing: 1px; }
     .splash-logo-box { width: 180px; height: 140px; }
     .soon-box { font-size: 70px; }
-    /* === Splash countdown mobile fix === */
     .splash-countdown { flex-wrap: wrap; gap: 8px; margin-top: 24px; justify-content: center; }
     .splash-timer-unit { min-width: 62px; padding: 12px 10px 10px; }
     .splash-timer-val { font-size: 30px; }
     .splash-timer-sep { font-size: 22px; padding-bottom: 12px; }
     .splash-timer-label { font-size: 9px; letter-spacing: 1px; margin-top: 5px; }
-    /* ===================================== */
     .adm-logos-grid { grid-template-columns: 1fr; }
     .splash-img-entry { flex-direction: column; gap: 8px; }
     .splash-img-entry .sie-field-sm { width: 100%; }
@@ -490,6 +742,18 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .splash-social-btn img, .splash-social-btn svg { width: 34px; height: 34px; }
     .header-social-btn { width: 54px; height: 54px; }
     .header-social-btn img, .header-social-btn svg { width: 32px; height: 32px; }
+    /* Zespoły mobile */
+    .teams-grid { grid-template-columns: 1fr; gap: 24px; }
+    .tpc-name { font-size: 34px; }
+    .tpc-logo-wrap { width: 100px; height: 65px; }
+    .tpc-logo { max-width: 90px; max-height: 55px; }
+    .tpc-header { padding: 20px 20px 14px 28px; }
+    .tpc-body { padding: 16px 28px 20px; gap: 12px; }
+    .tpc-footer { padding: 10px 28px; }
+    .tpc-num { font-size: 50px; }
+    .tpc-field-value { font-size: 20px; }
+    .tpc-field-value.tpc-big { font-size: 17px; }
+    .adm-team-fields { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
     .f1-title { font-size: 26px; }
@@ -501,13 +765,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .timer-label { font-size: 8px; letter-spacing: 0; margin-top: 4px; }
     .f1-card-title { font-size: 15px; }
     .splash-title { font-size: 34px; }
-    /* === Splash countdown bardzo małe ekrany === */
     .splash-countdown { gap: 5px; margin-top: 18px; }
     .splash-timer-unit { min-width: 52px; padding: 9px 7px 8px; }
     .splash-timer-val { font-size: 24px; letter-spacing: 0; }
     .splash-timer-sep { font-size: 16px; padding-bottom: 8px; }
     .splash-timer-label { font-size: 8px; letter-spacing: 0; margin-top: 4px; }
-    /* ============================================ */
     .f1-table td { font-size: 15px; padding: 10px 6px; }
     .f1-table th { font-size: 10px; padding: 10px 6px; }
     .driver-name { font-size: 16px; }
@@ -568,6 +830,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="nav-item" onclick="ui.switchPage('last-race', this)">Ostatni Wyścig</div>
     <div class="nav-item" onclick="ui.switchPage('archive', this)">Archiwum</div>
     <div class="nav-item" onclick="ui.switchPage('gallery', this)">Galeria</div>
+    <div class="nav-item" onclick="ui.switchPage('teams', this)">Zespoły</div>
 </nav>
 
 <section class="f1-hero">
@@ -636,6 +899,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div id="album-content-grid" class="media-entries-grid"></div>
         </div>
     </div>
+
+    <!-- ===================== ZAKŁADKA ZESPOŁY ===================== -->
+    <div id="view-teams" class="page-view">
+        <div class="teams-grid" id="teams-grid-container"></div>
+    </div>
 </main>
 
 <div id="admin-overlay" onclick="ui.toggleAdmin(false)"></div>
@@ -653,6 +921,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <a href="#sec-archive" onclick="ui.openAdminSection('sec-archive')">📁 Archiwum</a>
         <a href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
+        <a href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
         <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a>
     </div>
     <div class="admin-body">
@@ -766,23 +1035,19 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 </label>
                 <textarea id="adm-race-raw" class="f1-textarea" rows="10" placeholder="Wklej tutaj..."></textarea>
             </div>
-
-            <!-- ===== BONUS PKT ===== -->
             <div class="bonus-info-box">
                 <b>System bonusowych punktów:</b><br>
-                ✅ Gracze którzy dojechali do mety: <b>+3 PKT</b> (np. P1 = 25 + 3 = <b>28 PKT</b>)<br>
-                ❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b> (tylko punkty z gry)<br>
+                ✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>
+                ❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>
                 🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>
-                📋 Nicki z listy poniżej: <b>0 bonus</b> (np. gracz z karą)
+                📋 Nicki z listy poniżej: <b>0 bonus</b>
             </div>
             <div class="form-group no-bonus-box">
                 <label class="form-label">Nicki BEZ +3 PKT za dojechanie (opcjonalne)
-                    <span class="form-hint">Jeden nick per linia — np. gracz który dostał karę, kolizję, albo cokolwiek innego. Boty AI i DNF/DSQ/DNS są wykluczane automatycznie.</span>
+                    <span class="form-hint">Jeden nick per linia.</span>
                 </label>
-                <textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2&#10;NickGracza3"></textarea>
+                <textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea>
             </div>
-            <!-- ==================== -->
-
             <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;">
                 <p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p>
                 <label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label>
@@ -830,6 +1095,22 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <div class="admin-section-body">
             <div class="adm-logos-grid" id="adm-logos-grid"></div>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.saveTeamLogos()">💾 ZAPISZ LOGA</button></div>
+        </div>
+    </div>
+
+    <!-- ===================== SEKCJA ADMINA — ZESPOŁY ===================== -->
+    <div class="admin-section" id="sec-teamspanel">
+        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)">
+            <span class="admin-section-icon">🚀</span><span class="admin-section-title">Zawartość Kart Zespołów</span><span class="admin-section-arrow">▼</span>
+        </div>
+        <div class="admin-section-body">
+            <p style="color:#888;font-size:13px;margin-top:0;line-height:1.6;">
+                Wypełnij pola dla każdego zespołu. Możesz też edytować bezpośrednio na kartach klikając w tekst (gdy jesteś zalogowany).
+            </p>
+            <div class="adm-teams-list" id="adm-teams-cards-list"></div>
+            <div class="btn-row">
+                <button class="btn-action" onclick="dbCore.saveTeamsInfo()">💾 ZAPISZ WSZYSTKIE ZESPOŁY</button>
+            </div>
         </div>
     </div>
 
@@ -938,22 +1219,133 @@ let cachedHeroConfig = { mode: 'countdown', date: '', title: '' };
 let teamLogos = {};
 let socialConfig = {};
 let socialIconUploads = {};
+let teamsInfoData = {};
 
 const TEAM_DEFS = [
-    { key: 'ferrari',  label: 'Ferrari',       color: '#ef1a2d' },
-    { key: 'mercedes', label: 'Mercedes',       color: '#00d2be' },
-    { key: 'redbull',  label: 'Red Bull',       color: '#131b45' },
-    { key: 'mclaren',  label: 'McLaren',        color: '#ff8700' },
-    { key: 'aston',    label: 'Aston Martin',   color: '#006f62' },
-    { key: 'alpine',   label: 'Alpine',         color: '#6088d6' },
-    { key: 'williams', label: 'Williams',        color: '#182cc4' },
-    { key: 'sauber',   label: 'Kick Sauber',    color: '#52e252' },
-    { key: 'haas',     label: 'Haas',           color: '#bdb3b3' },
-    { key: 'rb',       label: 'Racing Bulls',   color: '#004cff' },
+    { key: 'ferrari',  label: 'Ferrari',           color: '#ef1a2d', fullName: 'Scuderia Ferrari HP' },
+    { key: 'mclaren',  label: 'McLaren',            color: '#ff8700', fullName: 'McLaren Formula 1 Team' },
+    { key: 'redbull',  label: 'Red Bull',           color: '#131b45', fullName: 'Oracle Red Bull Racing' },
+    { key: 'mercedes', label: 'Mercedes',           color: '#00d2be', fullName: 'Mercedes-AMG Petronas F1 Team' },
+    { key: 'aston',    label: 'Aston Martin',       color: '#006f62', fullName: 'Aston Martin Aramco F1 Team' },
+    { key: 'alpine',   label: 'Alpine',             color: '#6088d6', fullName: 'BWT Alpine F1 Team' },
+    { key: 'haas',     label: 'Haas',               color: '#888888', fullName: 'MoneyGram Haas F1 Team' },
+    { key: 'williams', label: 'Williams',           color: '#182cc4', fullName: 'Williams Racing' },
+    { key: 'rb',       label: 'Racing Bulls',       color: '#004cff', fullName: 'Visa Cash App RB F1 Team' },
+    { key: 'sauber',   label: 'Kick Sauber',        color: '#52e252', fullName: 'Stake F1 Team Kick Sauber' },
 ];
+
+// Domyślna zawartość kart — można edytować w adminie
+const TEAM_DEFAULTS = {
+    ferrari:  { driver1: 'Charles Leclerc', driver2: 'Lewis Hamilton',    desc: 'Maranello, Włochy. Najbardziej utytułowany zespół w historii F1.' },
+    mclaren:  { driver1: 'Lando Norris',    driver2: 'Oscar Piastri',     desc: 'Woking, Wielka Brytania. Wielokrotny mistrz konstruktorów.' },
+    redbull:  { driver1: 'Max Verstappen',  driver2: 'Liam Lawson',       desc: 'Milton Keynes, Wielka Brytania. Dominacja od 2022 roku.' },
+    mercedes: { driver1: 'George Russell',  driver2: 'Kimi Antonelli',    desc: 'Brackley, Wielka Brytania. Ósemka z rzędu 2014–2021.' },
+    aston:    { driver1: 'Fernando Alonso', driver2: 'Lance Stroll',      desc: 'Silverstone, Wielka Brytania. Powrót legendy do F1.' },
+    alpine:   { driver1: 'Pierre Gasly',    driver2: 'Jack Doohan',       desc: 'Enstone, Wielka Brytania. Producent Renault / Alpine.' },
+    haas:     { driver1: 'Esteban Ocon',    driver2: 'Oliver Bearman',    desc: 'Kannapolis, USA. Jedyny amerykański zespół w F1.' },
+    williams: { driver1: 'Alex Albon',      driver2: 'Carlos Sainz',      desc: 'Grove, Wielka Brytania. Siedmiokrotny mistrz konstruktorów.' },
+    rb:       { driver1: 'Yuki Tsunoda',    driver2: 'Isack Hadjar',      desc: 'Faenza, Włochy. Druga stajnia Red Bull Racing.' },
+    sauber:   { driver1: 'Nico Hülkenberg', driver2: 'Gabriel Bortoleto', desc: 'Hinwil, Szwajcaria. Od 2026 roku jako Audi F1 Team.' },
+};
 
 const DEFAULT_DISCORD_SVG = `<svg viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/></svg>`;
 const DEFAULT_YOUTUBE_SVG = `<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+
+// ===================== RENDER ZAKŁADKI ZESPOŁY =====================
+function renderTeamsPage() {
+    const container = document.getElementById('teams-grid-container');
+    if (!container) return;
+    container.innerHTML = TEAM_DEFS.map((t, idx) => {
+        const info = teamsInfoData[t.key] || TEAM_DEFAULTS[t.key] || {};
+        const logoUrl = teamLogos[t.key] || '';
+        const logoHtml = logoUrl
+            ? `<img class="tpc-logo" src="${logoUrl}" alt="${t.label}" onerror="this.style.display='none'">`
+            : `<div class="tpc-logo-placeholder">LOGO</div>`;
+
+        const d1 = info.driver1 || TEAM_DEFAULTS[t.key]?.driver1 || '—';
+        const d2 = info.driver2 || TEAM_DEFAULTS[t.key]?.driver2 || '—';
+        const desc = info.desc || TEAM_DEFAULTS[t.key]?.desc || 'Kliknij aby dodać opis...';
+        const custom1 = info.custom1 || '';
+        const custom2 = info.custom2 || '';
+
+        const editableAttr = isLoggedIn ? 'class="tpc-editable"' : '';
+        const editHint = isLoggedIn ? `<div class="tpc-edit-hint">✎ EDYTUJ</div>` : '';
+
+        const makeField = (fieldKey, value, label, isBig = false) => {
+            const cls = isBig ? 'tpc-field-value tpc-big' : 'tpc-field-value';
+            const inner = isLoggedIn
+                ? `<span class="tpc-editable" onclick="ui.editTeamField(this,'${t.key}','${fieldKey}')" title="Kliknij aby edytować">${value}</span>`
+                : `<span>${value}</span>`;
+            return `<div class="tpc-field">
+                <div class="tpc-field-label">${label}</div>
+                <div class="${cls}">${inner}</div>
+            </div>`;
+        };
+
+        return `<div class="team-page-card tc-${t.key}" style="animation-delay:${idx * 0.06}s">
+            ${editHint}
+            <div class="tpc-header">
+                <div>
+                    <div class="tpc-name">${t.label}</div>
+                    <div style="font-family:var(--font-body);font-size:14px;color:rgba(255,255,255,0.5);margin-top:4px;letter-spacing:1px;">${t.fullName}</div>
+                </div>
+                <div class="tpc-logo-wrap">${logoHtml}</div>
+            </div>
+            <div class="tpc-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    ${makeField('driver1', d1, '🏎 Kierowca 1')}
+                    ${makeField('driver2', d2, '🏎 Kierowca 2')}
+                </div>
+                ${makeField('desc', desc, '📋 Opis', true)}
+                ${custom1 || custom2 ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    ${custom1 ? makeField('custom1', custom1, '➕ Pole 1') : ''}
+                    ${custom2 ? makeField('custom2', custom2, '➕ Pole 2') : ''}
+                </div>` : (isLoggedIn ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    ${makeField('custom1', '—', '➕ Pole własne 1')}
+                    ${makeField('custom2', '—', '➕ Pole własne 2')}
+                </div>` : '')}
+            </div>
+            <div class="tpc-num">${String(idx + 1).padStart(2, '0')}</div>
+        </div>`;
+    }).join('');
+}
+
+// ===================== PANEL ADMINA — lista zespołów =====================
+function buildTeamsAdminList() {
+    const list = document.getElementById('adm-teams-cards-list');
+    if (!list) return;
+    list.innerHTML = TEAM_DEFS.map(t => {
+        const info = teamsInfoData[t.key] || TEAM_DEFAULTS[t.key] || {};
+        return `<div class="adm-team-row">
+            <div class="adm-team-row-header">
+                <div class="adm-team-swatch" style="background:${t.color};"></div>
+                <span class="adm-team-label">${t.label}</span>
+            </div>
+            <div class="adm-team-fields">
+                <div class="form-group" style="margin:0;">
+                    <label class="form-label" style="font-size:10px;">Kierowca 1</label>
+                    <input type="text" class="f1-input" id="ti-${t.key}-driver1" value="${(info.driver1 || TEAM_DEFAULTS[t.key]?.driver1 || '').replace(/"/g,'&quot;')}" style="padding:10px 12px;font-size:14px;">
+                </div>
+                <div class="form-group" style="margin:0;">
+                    <label class="form-label" style="font-size:10px;">Kierowca 2</label>
+                    <input type="text" class="f1-input" id="ti-${t.key}-driver2" value="${(info.driver2 || TEAM_DEFAULTS[t.key]?.driver2 || '').replace(/"/g,'&quot;')}" style="padding:10px 12px;font-size:14px;">
+                </div>
+                <div class="form-group adm-team-fields-full" style="margin:0;">
+                    <label class="form-label" style="font-size:10px;">Opis</label>
+                    <input type="text" class="f1-input" id="ti-${t.key}-desc" value="${(info.desc || TEAM_DEFAULTS[t.key]?.desc || '').replace(/"/g,'&quot;')}" style="padding:10px 12px;font-size:14px;">
+                </div>
+                <div class="form-group" style="margin:0;">
+                    <label class="form-label" style="font-size:10px;">Pole własne 1</label>
+                    <input type="text" class="f1-input" id="ti-${t.key}-custom1" value="${(info.custom1 || '').replace(/"/g,'&quot;')}" style="padding:10px 12px;font-size:14px;" placeholder="np. Mistrzostwa: 16">
+                </div>
+                <div class="form-group" style="margin:0;">
+                    <label class="form-label" style="font-size:10px;">Pole własne 2</label>
+                    <input type="text" class="f1-input" id="ti-${t.key}-custom2" value="${(info.custom2 || '').replace(/"/g,'&quot;')}" style="padding:10px 12px;font-size:14px;" placeholder="np. Silnik: Ferrari">
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
 
 function renderSocialIcons() {
     const splashContainer = document.getElementById('splash-social-icons');
@@ -1058,41 +1450,16 @@ function initSplashDragDrop() {
     });
 }
 
-// ===== DRAG-REORDER dla list w adminie (archiwum / galeria) =====
 let reorderDragSrc = null;
 function initReorderList(listEl, onDrop) {
     listEl.querySelectorAll('.reorder-item').forEach(item => {
         item.draggable = true;
-        item.addEventListener('dragstart', e => {
-            reorderDragSrc = item;
-            item.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-        });
-        item.addEventListener('dragend', () => {
-            item.classList.remove('dragging');
-            listEl.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over'));
-            if (onDrop) onDrop();
-        });
-        item.addEventListener('dragover', e => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            listEl.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over'));
-            if (item !== reorderDragSrc) item.classList.add('drag-over');
-            return false;
-        });
-        item.addEventListener('drop', e => {
-            e.stopPropagation();
-            if (reorderDragSrc && reorderDragSrc !== item) {
-                const all = [...listEl.querySelectorAll('.reorder-item')];
-                const si = all.indexOf(reorderDragSrc), di = all.indexOf(item);
-                if (si < di) listEl.insertBefore(reorderDragSrc, item.nextSibling);
-                else listEl.insertBefore(reorderDragSrc, item);
-            }
-            return false;
-        });
+        item.addEventListener('dragstart', e => { reorderDragSrc = item; item.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+        item.addEventListener('dragend', () => { item.classList.remove('dragging'); listEl.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over')); if (onDrop) onDrop(); });
+        item.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; listEl.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over')); if (item !== reorderDragSrc) item.classList.add('drag-over'); return false; });
+        item.addEventListener('drop', e => { e.stopPropagation(); if (reorderDragSrc && reorderDragSrc !== item) { const all = [...listEl.querySelectorAll('.reorder-item')]; const si = all.indexOf(reorderDragSrc), di = all.indexOf(item); if (si < di) listEl.insertBefore(reorderDragSrc, item.nextSibling); else listEl.insertBefore(reorderDragSrc, item); } return false; });
     });
 }
-// ================================================================
 
 window.ui = {
     switchPage(pageId, navEl) {
@@ -1101,12 +1468,13 @@ window.ui = {
         document.getElementById('view-' + pageId).classList.add('active');
         navEl.classList.add('active');
         if (pageId === 'gallery') this.closeAlbum();
+        if (pageId === 'teams') renderTeamsPage();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     toggleAdmin(show) {
         document.getElementById('admin-sidebar').classList.toggle('open', show);
         document.getElementById('admin-overlay').classList.toggle('open', show);
-        if (show) buildLogosGrid();
+        if (show) { buildLogosGrid(); buildTeamsAdminList(); }
     },
     toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 'flex' : 'none'; },
     toggleAdminSection(header) {
@@ -1260,28 +1628,57 @@ window.ui = {
         if (btn) btn.classList.toggle('open', isOpen);
     },
 
+    // ===================== EDYCJA POLA KARTY ZESPOŁU =====================
+    editTeamField(el, teamKey, fieldKey) {
+        if (!isLoggedIn) return;
+        const current = el.textContent.trim();
+        const isDesc = fieldKey === 'desc';
+        const input = document.createElement(isDesc ? 'textarea' : 'input');
+        if (!isDesc) input.type = 'text';
+        input.value = current;
+        const baseStyle = 'font-family:var(--font-data);font-weight:600;color:#fff;background:rgba(255,255,255,0.15);border:none;border-bottom:2px solid rgba(255,255,255,0.7);outline:none;width:100%;border-radius:3px;padding:4px 6px;';
+        input.style.cssText = isDesc
+            ? baseStyle + 'font-size:18px;resize:none;min-height:60px;'
+            : baseStyle + 'font-size:24px;';
+        el.replaceWith(input);
+        input.focus();
+        if (!isDesc) input.select();
+        const save = async () => {
+            const newVal = input.value.trim() || current;
+            const span = document.createElement('span');
+            span.className = 'tpc-editable';
+            span.textContent = newVal;
+            span.onclick = () => ui.editTeamField(span, teamKey, fieldKey);
+            input.replaceWith(span);
+            // Zapisz do Firebase
+            const update_obj = {};
+            update_obj[fieldKey] = newVal;
+            if (!teamsInfoData[teamKey]) teamsInfoData[teamKey] = {};
+            teamsInfoData[teamKey][fieldKey] = newVal;
+            await update(ref(db, 'teamsInfo/' + teamKey), update_obj);
+        };
+        input.addEventListener('blur', save);
+        input.addEventListener('keydown', e => {
+            if (!isDesc && e.key === 'Enter') input.blur();
+            if (e.key === 'Escape') { input.value = current; input.blur(); }
+        });
+    },
+
     editArcCell(el, raceId, rowIdx, field) {
         if (!isLoggedIn) return;
         const current = el.textContent.trim();
         const input = document.createElement('input');
-        input.type = 'text';
-        input.value = current;
+        input.type = 'text'; input.value = current;
         input.style.cssText = 'width:110px;font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--f1-red);background:transparent;border:none;border-bottom:2px solid var(--f1-red);text-align:center;outline:none;';
-        el.replaceWith(input);
-        input.focus(); input.select();
+        el.replaceWith(input); input.focus(); input.select();
         const save = async () => {
             const newVal = input.value.trim();
-            const span = document.createElement('span');
-            span.className = 'arc-cell-editable';
-            span.textContent = newVal;
+            const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = newVal;
             span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field);
             input.replaceWith(span);
             const s = await new Promise(res => onValue(ref(db, 'archive/' + raceId), res, { onlyOnce: true }));
             const data = s.val();
-            if (data && data.results && data.results[rowIdx] !== undefined) {
-                data.results[rowIdx][field] = newVal;
-                await update(ref(db, 'archive/' + raceId), { results: data.results });
-            }
+            if (data && data.results && data.results[rowIdx] !== undefined) { data.results[rowIdx][field] = newVal; await update(ref(db, 'archive/' + raceId), { results: data.results }); }
         };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
@@ -1291,24 +1688,17 @@ window.ui = {
         if (!isLoggedIn) return;
         const current = el.textContent.trim();
         const input = document.createElement('input');
-        input.type = 'text';
-        input.value = current;
+        input.type = 'text'; input.value = current;
         input.style.cssText = 'width:110px;font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--f1-red);background:transparent;border:none;border-bottom:2px solid var(--f1-red);text-align:center;outline:none;';
-        el.replaceWith(input);
-        input.focus(); input.select();
+        el.replaceWith(input); input.focus(); input.select();
         const save = async () => {
             const newVal = input.value.trim();
-            const span = document.createElement('span');
-            span.className = 'arc-cell-editable';
-            span.textContent = newVal;
+            const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = newVal;
             span.onclick = () => ui.editLastRaceCell(span, rowIdx, field);
             input.replaceWith(span);
             const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
             const data = s.val();
-            if (data && data.results && data.results[rowIdx] !== undefined) {
-                data.results[rowIdx][field] = newVal;
-                await update(ref(db, 'lastRace'), { results: data.results });
-            }
+            if (data && data.results && data.results[rowIdx] !== undefined) { data.results[rowIdx][field] = newVal; await update(ref(db, 'lastRace'), { results: data.results }); }
         };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
@@ -1323,9 +1713,7 @@ window.ui = {
         if (isLoggedIn) {
             titleEl.innerHTML = `<span class="album-viewer-title-editable" title="Kliknij aby edytować nazwę">${album.name}</span>`;
             titleEl.querySelector('span').onclick = () => ui.editAlbumName(id, album.name, titleEl.querySelector('span'));
-        } else {
-            titleEl.textContent = album.name;
-        }
+        } else { titleEl.textContent = album.name; }
         const grid = document.getElementById('album-content-grid');
         const entries = album.entries ? Object.entries(album.entries) : [];
         if (entries.length === 0) { grid.innerHTML = '<p style="font-family:var(--font-data);font-size:30px;color:#999;letter-spacing:1px;">Brak wpisów w tym albumie.</p>'; return; }
@@ -1348,11 +1736,11 @@ window.ui = {
                 } else if (src.includes('drive.google.com')) {
                     let fileId = ''; const m1 = src.match(/\/d\/([^/\?&]+)/); const m2 = src.match(/[?&]id=([^&]+)/);
                     if (m1) fileId = m1[1]; else if (m2) fileId = m2[1];
-                    mediaHtml = fileId ? `<iframe src="https://drive.google.com/file/d/${fileId}/preview" allowfullscreen></iframe>` : `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;"><source src="${src}"><p style="color:#fff;padding:20px;">Nie można załadować.</p></video>`;
+                    mediaHtml = fileId ? `<iframe src="https://drive.google.com/file/d/${fileId}/preview" allowfullscreen></iframe>` : `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;"><source src="${src}"></video>`;
                 } else if (/\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/.test(cleanSrc)) {
                     mediaHtml = `<img src="${src}" alt="${entry.title || ''}" style="width:100%;height:100%;object-fit:cover;">`;
                 } else {
-                    mediaHtml = `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;"><source src="${src}"><source src="${src}" type="video/mp4"><source src="${src}" type="video/webm"></video>`;
+                    mediaHtml = `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;"><source src="${src}"><source src="${src}" type="video/mp4"></video>`;
                 }
             } else {
                 mediaHtml = `<img src="${src}" alt="${entry.title || ''}" style="width:100%;height:100%;object-fit:cover;">`;
@@ -1383,8 +1771,7 @@ window.ui = {
         el.replaceWith(input); input.focus(); input.select();
         const save = async () => {
             const nv = input.value.trim() || current;
-            const span = document.createElement('span');
-            span.className = 'arc-cell-editable'; span.textContent = nv;
+            const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = nv;
             span.onclick = () => ui.editEntryTitle(span, albumId, entryId);
             input.replaceWith(span);
             await update(ref(db, `gallery/${albumId}/entries/${entryId}`), { title: nv });
@@ -1407,8 +1794,7 @@ window.ui = {
         el.replaceWith(input); input.focus(); input.select();
         const save = async () => {
             const newVal = input.value.trim();
-            const span = document.createElement('span');
-            span.className = 'editable-cell'; span.textContent = newVal;
+            const span = document.createElement('span'); span.className = 'editable-cell'; span.textContent = newVal;
             span.onclick = () => ui.editCell(span, dbPath, type, idx, field);
             input.replaceWith(span);
             const s = await new Promise(res => onValue(ref(db, dbPath), res, { onlyOnce: true }));
@@ -1466,6 +1852,8 @@ onAuthStateChanged(auth, user => {
     document.getElementById('btn-open-login').classList.toggle('hidden', !!user);
     document.getElementById('btn-open-admin').classList.toggle('hidden', !user);
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
+    // Odśwież karty zespołów jeśli widoczne
+    if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
 });
 
 window.dbCore = {
@@ -1522,25 +1910,11 @@ window.dbCore = {
         alert("Odliczanie zapisane!");
     },
 
-    // =====================================================
-    // PUBLIKUJ WYŚCIG — pełna logika punktów
-    // P1 = 25 (z gry) + 3 (bonus) = 28 PKT
-    // DNF/DSQ/DNS/RET/NC = tylko punkty z gry (0 bonus)
-    // Boty F1 AI = 0 bonus automatycznie
-    // Nicki z pola "bez bonusu" = 0 bonus
-    // =====================================================
     async publishRace() {
         const title = document.getElementById('adm-race-title').value;
         const raw = document.getElementById('adm-race-raw').value;
-
-        // Wczytaj nicki bez bonusu (ręcznie wpisane)
         const noBonusRaw = document.getElementById('adm-no-bonus-nicks').value;
-        const noBonusNicks = new Set(
-            noBonusRaw.split('\n')
-                .map(s => s.trim().toLowerCase())
-                .filter(Boolean)
-        );
-
+        const noBonusNicks = new Set(noBonusRaw.split('\n').map(s => s.trim().toLowerCase()).filter(Boolean));
         const lines = raw.split('\n').filter(l => l.trim());
         const isTabFormat = lines.length > 0 && lines[0].includes('\t') && !lines[0].includes('|');
         let results;
@@ -1560,77 +1934,39 @@ window.dbCore = {
         const raceObj = { name: title, results, timestamp: Date.now() };
         if (document.getElementById('pub-last').checked) await set(ref(db, 'lastRace'), raceObj);
         if (document.getElementById('pub-archive').checked) await push(ref(db, 'archive'), raceObj);
-
         const standSnap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
         const currentStandings = standSnap.val() || { drivers: [], teams: [] };
         const driverMap = {}; const teamMap = {};
         (currentStandings.drivers || []).forEach(d => { driverMap[d.nick.toLowerCase()] = { ...d }; });
         (currentStandings.teams || []).forEach(t => { teamMap[t.team.toLowerCase()] = { ...t }; });
-
-        // Zlicz ile graczy dostało bonus i ile nie
         let bonusCount = 0, noBonusCount = 0;
         const noBonusReasons = [];
-
         results.forEach(r => {
             const basePts = parseInt(r.pts) || 0;
             const nickKey = (r.nick || '').toLowerCase();
             const teamKey = (r.team || '').toLowerCase();
             const isWin = parseInt(r.pos) === 1;
-
-            // Sprawdź czy to bot F1 AI
             const isBot = isRealF1Driver(r.nick);
-
-            // Sprawdź DNF/DSQ/DNS/RET/NC
             const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
-            const isDnfDsq = dnfTags.some(s =>
-                (r.time || '').toString().toUpperCase().includes(s) ||
-                (r.pos  || '').toString().toUpperCase().includes(s)
-            );
-
-            // Sprawdź czy nick jest na liście bez bonusu
+            const isDnfDsq = dnfTags.some(s => (r.time || '').toString().toUpperCase().includes(s) || (r.pos || '').toString().toUpperCase().includes(s));
             const isManualExcluded = noBonusNicks.has(nickKey);
-
             let bonusPts = 0;
             if (isBot || isDnfDsq || isManualExcluded) {
                 bonusPts = 0;
-                if (!isBot) {
-                    noBonusCount++;
-                    if (isDnfDsq) noBonusReasons.push(`${r.nick}: DNF/DSQ/DNS`);
-                    if (isManualExcluded) noBonusReasons.push(`${r.nick}: ręcznie wykluczony`);
-                }
-            } else {
-                bonusPts = 3;
-                bonusCount++;
-            }
-
+                if (!isBot) { noBonusCount++; if (isDnfDsq) noBonusReasons.push(`${r.nick}: DNF/DSQ/DNS`); if (isManualExcluded) noBonusReasons.push(`${r.nick}: ręcznie wykluczony`); }
+            } else { bonusPts = 3; bonusCount++; }
             const pts = basePts + bonusPts;
-
-            if (driverMap[nickKey]) {
-                driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts;
-                if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1;
-            } else {
-                driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0 };
-            }
-            if (teamKey) {
-                if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; }
-                else { teamMap[teamKey] = { team: r.team, pts }; }
-            }
+            if (driverMap[nickKey]) { driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts; if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1; }
+            else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0 }; }
+            if (teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
         });
-
         const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         await set(ref(db, 'standings'), { drivers, teams });
-
-        // Podsumowanie
-        let msg = `✅ Wyniki opublikowane!\n\n`;
-        msg += `+3 PKT za dojechanie otrzymało: ${bonusCount} graczy\n`;
-        if (noBonusReasons.length > 0) {
-            msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
-        }
-        msg += `\n\n(Boty AI nie wliczane do bonusu)`;
+        let msg = `✅ Wyniki opublikowane!\n\n+3 PKT otrzymało: ${bonusCount} graczy\n`;
+        if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
+        msg += `\n\n(Boty AI nie wliczane)`;
         alert(msg);
-
-        // Wyczyść pole po publikacji
         document.getElementById('adm-no-bonus-nicks').value = '';
     },
 
@@ -1658,8 +1994,30 @@ window.dbCore = {
         const current = snap.val() || {};
         await set(ref(db, 'config'), { ...current, teamLogos: logos });
         teamLogos = logos;
+        // Odśwież karty
+        if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
         alert("Loga zapisane!");
     },
+
+    // ===================== ZAPIS ZAWARTOŚCI KART ZESPOŁÓW =====================
+    async saveTeamsInfo() {
+        const updates = {};
+        TEAM_DEFS.forEach(t => {
+            const get = (field) => document.getElementById(`ti-${t.key}-${field}`)?.value?.trim() || '';
+            updates[t.key] = {
+                driver1: get('driver1') || TEAM_DEFAULTS[t.key]?.driver1 || '',
+                driver2: get('driver2') || TEAM_DEFAULTS[t.key]?.driver2 || '',
+                desc:    get('desc')    || TEAM_DEFAULTS[t.key]?.desc    || '',
+                custom1: get('custom1'),
+                custom2: get('custom2'),
+            };
+        });
+        await set(ref(db, 'teamsInfo'), updates);
+        teamsInfoData = updates;
+        if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
+        alert("Dane zespołów zapisane!");
+    },
+
     async createAlbum() {
         const name = document.getElementById('adm-gal-name').value.trim();
         const cover = document.getElementById('adm-gal-cover').value.trim();
@@ -1696,8 +2054,6 @@ window.dbCore = {
     async deleteNode(path) {
         if (confirm("Czy na pewno chcesz to usunąć?")) { await remove(ref(db, path)); alert("Usunięto pomyślnie."); }
     },
-
-    // ===== ZAPIS KOLEJNOŚCI ARCHIWUM =====
     async saveArchiveOrder() {
         const list = document.getElementById('adm-archive-manager');
         const items = [...list.querySelectorAll('.reorder-item')];
@@ -1707,8 +2063,6 @@ window.dbCore = {
         alert("Kolejność wyścigów zapisana!");
         document.getElementById('btn-save-archive-order').style.display = 'none';
     },
-
-    // ===== ZAPIS KOLEJNOŚCI GALERII =====
     async saveGalleryOrder() {
         const list = document.getElementById('adm-gallery-manager');
         const items = [...list.querySelectorAll('.reorder-item')];
@@ -1727,14 +2081,12 @@ const extractYtId = (url) => {
     m = url.match(/embed\/([^?&]+)/); if (m) return m[1];
     return url;
 };
-
 const normalizeTeamName = (name) => {
     if (!name) return name;
     const n = name.toLowerCase().trim();
     if (n.includes('racing bull') || n.includes('visa cash') || n.includes('vcarb') || n === 'rb' || n.startsWith('rb ') || n.match(/^racing bulls?$/)) return 'Racing Bulls';
     return name;
 };
-
 const getTeamClass = (teamName) => {
     const name = (teamName || "").toLowerCase().trim();
     if (name.includes("ferrari") || name.includes("scuderia")) return "team-ferrari";
@@ -1783,45 +2135,28 @@ const renderRaceTable = (results, raceId = null, isLastRace = false) => {
     const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
     const clean = (val) => (val || '').toString().replace(/^(Start:|Pit:)\s*/i, '').trim();
     const fastestIdx = findFastestLap(results);
-
     const cellHtml = (val, rowIdx, field, extraClass = '') => {
         const display = val || '-';
         if (!isLoggedIn) return `<span class="${extraClass}">${display}</span>`;
-        if (raceId) {
-            return `<span class="arc-cell-editable ${extraClass}" onclick="ui.editArcCell(this,'${raceId}',${rowIdx},'${field}')">${display}</span>`;
-        } else if (isLastRace) {
-            return `<span class="arc-cell-editable ${extraClass}" onclick="ui.editLastRaceCell(this,${rowIdx},'${field}')">${display}</span>`;
-        }
+        if (raceId) return `<span class="arc-cell-editable ${extraClass}" onclick="ui.editArcCell(this,'${raceId}',${rowIdx},'${field}')">${display}</span>`;
+        else if (isLastRace) return `<span class="arc-cell-editable ${extraClass}" onclick="ui.editLastRaceCell(this,${rowIdx},'${field}')">${display}</span>`;
         return `<span class="${extraClass}">${display}</span>`;
     };
-
-    return `
-        <table class="f1-table">
-            <thead><tr>
-                <th class="col-pos">P</th>
-                <th class="col-driver">Kierowca</th>
-                <th>Zespół</th>
-                <th style="text-align:center;width:70px;">Grid</th>
-                <th style="text-align:center;width:60px;">Pit</th>
-                <th>Najlepsze</th>
-                <th>Czas</th>
-                <th class="col-pts">PKT</th>
-            </tr></thead>
-            <tbody>
-                ${results.map((r, i) => `
-                    <tr class="${getTeamClass(r.team)}">
-                        <td class="col-pos ${posClass(i)}">${cellHtml(r.pos, i, 'pos')}</td>
-                        <td class="col-driver">${cellHtml(r.nick, i, 'nick')}</td>
-                        <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellHtml(r.team, i, 'team')}</td>
-                        <td style="text-align:center;">${cellHtml(clean(r.start), i, 'start')}</td>
-                        <td style="text-align:center;">${cellHtml(clean(r.pit), i, 'pit')}</td>
-                        <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellHtml(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
-                        <td>${cellHtml(r.time, i, 'time')}</td>
-                        <td class="col-pts">${cellHtml(r.pts, i, 'pts')}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>`;
+    return `<table class="f1-table"><thead><tr>
+        <th class="col-pos">P</th><th class="col-driver">Kierowca</th><th>Zespół</th>
+        <th style="text-align:center;width:70px;">Grid</th><th style="text-align:center;width:60px;">Pit</th>
+        <th>Najlepsze</th><th>Czas</th><th class="col-pts">PKT</th>
+    </tr></thead><tbody>${results.map((r, i) => `
+        <tr class="${getTeamClass(r.team)}">
+            <td class="col-pos ${posClass(i)}">${cellHtml(r.pos, i, 'pos')}</td>
+            <td class="col-driver">${cellHtml(r.nick, i, 'nick')}</td>
+            <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellHtml(r.team, i, 'team')}</td>
+            <td style="text-align:center;">${cellHtml(clean(r.start), i, 'start')}</td>
+            <td style="text-align:center;">${cellHtml(clean(r.pit), i, 'pit')}</td>
+            <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellHtml(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
+            <td>${cellHtml(r.time, i, 'time')}</td>
+            <td class="col-pts">${cellHtml(r.pts, i, 'pts')}</td>
+        </tr>`).join('')}</tbody></table>`;
 };
 
 function renderConstructorRow(r, i, isLoggedIn) {
@@ -1859,7 +2194,6 @@ const REAL_F1_DRIVERS = new Set([
     'ocon','bearman','bortoleto','magnussen','bottas','zhou',
     'perez','pérez','ricciardo','sargeant',
 ]);
-
 const isRealF1Driver = (name) => {
     if (!name) return false;
     const n = name.toLowerCase().trim();
@@ -1870,10 +2204,18 @@ const isRealF1Driver = (name) => {
 
 // ===================== DATA LISTENERS =====================
 
+onValue(ref(db, 'teamsInfo'), snap => {
+    const data = snap.val();
+    if (data) {
+        teamsInfoData = data;
+        if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
+    }
+});
+
 onValue(ref(db, 'config'), snap => {
     const c = snap.val();
     if (!c) return;
-    if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); }
+    if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
         socialConfig = c.socialIcons;
         ['discord', 'youtube'].forEach(p => {
@@ -2023,16 +2365,12 @@ onValue(ref(db, 'archive'), snap => {
     const arcList = document.getElementById('api-archive-list');
     const manager = document.getElementById('adm-archive-manager');
     if (!data) { arcList.innerHTML = "<p>Archiwum jest puste.</p>"; manager.innerHTML = "Brak wyścigów."; return; }
-
-    // Sortuj po polu order (rosnąco), jeśli brak — po timestamp malejąco
     const entries = Object.entries(data).sort((a, b) => {
         const ao = a[1].order, bo = b[1].order;
         if (ao !== undefined && bo !== undefined) return ao - bo;
-        if (ao !== undefined) return -1;
-        if (bo !== undefined) return 1;
+        if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return (b[1].timestamp || 0) - (a[1].timestamp || 0);
     });
-
     arcList.innerHTML = entries.map(([id, race]) => {
         const editPart = isLoggedIn
             ? `id="arc-name-${id}" class="arc-edit-name editable-mode" onclick="ui.editArchiveName('${id}', '${(race.name||'').replace(/'/g,"\\'")}')"`
@@ -2047,8 +2385,6 @@ onValue(ref(db, 'archive'), snap => {
             </div>
         </div>`;
     }).join('');
-
-    // Manager admina z drag handles
     const managerEl = document.getElementById('adm-archive-manager');
     const saveBtn = document.getElementById('btn-save-archive-order');
     managerEl.innerHTML = `<div class="reorder-list" id="archive-reorder-list">` +
@@ -2056,16 +2392,11 @@ onValue(ref(db, 'archive'), snap => {
         <div class="reorder-item" data-id="${id}">
             <span class="reorder-handle">⠿</span>
             <span class="reorder-label">${race.name}</span>
-            <div class="reorder-actions">
-                <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('archive/${id}')">🗑</button>
-            </div>
+            <div class="reorder-actions"><button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('archive/${id}')">🗑</button></div>
         </div>`).join('') + `</div>`;
-
     if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
     const reorderList = document.getElementById('archive-reorder-list');
-    if (reorderList) initReorderList(reorderList, () => {
-        if (saveBtn) saveBtn.style.display = 'inline-flex';
-    });
+    if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
 });
 
 onValue(ref(db, 'gallery'), snap => {
@@ -2075,16 +2406,12 @@ onValue(ref(db, 'gallery'), snap => {
     const albumSelect = document.getElementById('adm-entry-album');
     if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.innerHTML = "Brak albumów."; albumSelect.innerHTML = '<option value="">— Wybierz album —</option>'; return; }
     window.galleryData = data;
-
-    // Sortuj po polu order (rosnąco), jeśli brak — po kluczu
     const entries = Object.entries(data).sort((a, b) => {
         const ao = a[1].order, bo = b[1].order;
         if (ao !== undefined && bo !== undefined) return ao - bo;
-        if (ao !== undefined) return -1;
-        if (bo !== undefined) return 1;
+        if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return a[0] < b[0] ? -1 : 1;
     });
-
     albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
     albumsGrid.innerHTML = entries.map(([id, gal]) => {
         const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
@@ -2099,8 +2426,6 @@ onValue(ref(db, 'gallery'), snap => {
             </div>
         </div>`;
     }).join('');
-
-    // Manager admina z drag handles
     const saveBtn = document.getElementById('btn-save-gallery-order');
     manager.innerHTML = `<div class="reorder-list" id="gallery-reorder-list">` +
         entries.map(([id, gal]) => `
@@ -2112,13 +2437,9 @@ onValue(ref(db, 'gallery'), snap => {
                 <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('gallery/${id}')">🗑</button>
             </div>
         </div>`).join('') + `</div>`;
-
     if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
     const reorderList = document.getElementById('gallery-reorder-list');
-    if (reorderList) initReorderList(reorderList, () => {
-        if (saveBtn) saveBtn.style.display = 'inline-flex';
-    });
-
+    if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
     if (window._currentAlbumId && data[window._currentAlbumId]) ui.openAlbum(window._currentAlbumId);
 });
 
@@ -2133,9 +2454,7 @@ ui.editAlbumNameFromGrid = async function(id, currentName, btn) {
 ui.editAlbumCover = async function(id, currentCover) {
     if (!isLoggedIn) return;
     const newCover = prompt('Nowy URL okładki:', currentCover);
-    if (newCover !== null && newCover.trim() !== currentCover) {
-        await update(ref(db, 'gallery/' + id), { cover: newCover.trim() });
-    }
+    if (newCover !== null && newCover.trim() !== currentCover) await update(ref(db, 'gallery/' + id), { cover: newCover.trim() });
 };
 
 document.querySelectorAll('input[name="hero-mode"]').forEach(r => {
