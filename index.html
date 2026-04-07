@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -103,7 +104,7 @@ body {
 .splash-cta { margin-top: 40px; font-family: var(--font-data); font-size: 22px; letter-spacing: 8px; color: rgba(255,255,255,0.25); text-transform: uppercase; animation: splashPulse 2s 1.2s ease infinite both; }
 @keyframes splashPulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.7; } }
 
-#splash-images-container { width: 90%; max-width: 1100px; margin-top: 30px; display: flex; flex-direction: column; gap: 20px; animation: splashTitleIn 1s 0.7s cubic-bezier(0.19,1,0.22,1) both; }
+#splash-images-container { width: 90%; max-width: 1100px; margin-top: 30px; display: flex; flex-direction: column; gap: 20px; animation: splashTitleIn 1s 0.5s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-img-row { display: flex; width: 100%; }
 .splash-img-row img { border-radius: 6px; border: 2px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 100%; height: auto; display: block; }
 .splash-image-area { max-width: 900px; width: 80%; margin-top: 20px; text-align: center; color: var(--f1-white); animation: splashTitleIn 1s 0.7s cubic-bezier(0.19,1,0.22,1) both; }
@@ -206,7 +207,7 @@ body {
 .team-logo-img { width: 38px; height: 28px; object-fit: contain; vertical-align: middle; margin-right: 10px; flex-shrink: 0; }
 
 .constructor-row { position: relative; }
-.cteam-ferrari  { background: linear-gradient(90deg, var(--f1-red) 0%, #c00500 100%); }
+.cteam-ferrari  { background: linear-gradient(90deg, var(--f1-red) 0%, #911d1d 100%); }
 .cteam-ferrari td { color: #fff !important; }
 .cteam-mercedes { background: linear-gradient(90deg, #00d2be 0%, #00b5a4 100%); }
 .cteam-mercedes td { color: #111 !important; }
@@ -325,6 +326,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     gap: 40px;
 }
 
+
 /* Kafelki zespołów — bazowy styl */
 .team-page-card {
     position: relative;
@@ -343,16 +345,16 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 
 /* Kolory tła — te same gradienty co w tabeli konstruktorów */
-.team-page-card.tc-ferrari  { background: linear-gradient(135deg, #e10600 0%, #c00500 60%, #900300 100%); }
-.team-page-card.tc-mercedes { background: linear-gradient(135deg, #00d2be 0%, #00b5a4 60%, #008877 100%); }
-.team-page-card.tc-redbull  { background: linear-gradient(135deg, #131b45 0%, #1c2860 60%, #0a1030 100%); }
-.team-page-card.tc-mclaren  { background: linear-gradient(135deg, #ff8700 0%, #e07500 60%, #b55800 100%); }
-.team-page-card.tc-aston    { background: linear-gradient(135deg, #006f62 0%, #008573 60%, #004d44 100%); }
-.team-page-card.tc-alpine   { background: linear-gradient(135deg, #6088d6 0%, #4a72c4 60%, #2d55a8 100%); }
-.team-page-card.tc-williams { background: linear-gradient(135deg, #182cc4 0%, #1f38d4 60%, #0e1e9c 100%); }
-.team-page-card.tc-sauber   { background: linear-gradient(135deg, #1a7a1a 0%, #229922 60%, #0f5a0f 100%); }
-.team-page-card.tc-haas     { background: linear-gradient(135deg, #4a4a4a 0%, #666666 60%, #2e2e2e 100%); }
-.team-page-card.tc-rb       { background: linear-gradient(135deg, #004cff 0%, #1060ff 60%, #0030cc 100%); }
+.team-page-card.tc-ferrari  { background: linear-gradient(135deg, #e10600 0%, #911d1d 60%, #900300 80%); }
+.team-page-card.tc-mercedes { background: linear-gradient(135deg, #00d2be 0%, #00b5a4 60%, #008877 80%); }
+.team-page-card.tc-redbull  { background: linear-gradient(135deg, #131b45 0%, #1c2860 60%, #0a1030 85%); }
+.team-page-card.tc-mclaren  { background: linear-gradient(135deg, #ff8700 0%, #e07500 60%, #b55800 80%); }
+.team-page-card.tc-aston    { background: linear-gradient(135deg, #006f62 0%, #008573 60%, #004d44 88%); }
+.team-page-card.tc-alpine   { background: linear-gradient(135deg, #6088d6 0%, #4a72c4 60%, #2d55a8 80%); }
+.team-page-card.tc-williams { background: linear-gradient(135deg, #182cc4 0%, #1f38d4 60%, #0e1e9c 80%); }
+.team-page-card.tc-sauber   { background: linear-gradient(135deg, #1a7a1a 0%, #229922 60%, #0f5a0f 87%); }
+.team-page-card.tc-haas     { background: linear-gradient(135deg, #4a4a4a 0%, #666666 60%, #2e2e2e 95%); }
+.team-page-card.tc-rb       { background: linear-gradient(135deg, #004cff 0%, #1060ff 60%, #0030cc 80%); }
 
 /* Ozdobny pasek po lewej */
 .team-page-card::before {
@@ -411,7 +413,25 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    /* Usunięty invert, poprawiony cień */
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+}
+
+.tpc-number {
+    position: absolute !important;
+    right: 100px !important;
+    bottom: -30px !important; /* Przesunie go mocno na dół */
+    font-family: var(--font-display) !important;
+    font-weight: 1600 !important;
+    font-size: 300px
+	!important; /* Znacznie zwiększony rozmiar */
+    color: rgba(999999999, 99999999, 999999, 99999999) !important; /* Ciemniejszy, "brudny" kolor tła */
+    line-height: 0.7 !important;
+    z-index: 0 !important; /* Schowany za wszystkim */
+    pointer-events: none !important;
+    user-select: none !important;
+    opacity: 0.5 !important; /* Wymusza pełną widoczność warstwy */
+}
 }
 .tpc-logo-placeholder {
     width: 80px;
@@ -454,7 +474,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .tpc-field-value {
     font-family: var(--font-data);
-    font-size: 28px;
+    font-size: 50px;
     font-weight: 600;
     color: #fff;
     letter-spacing: 1px;
@@ -462,7 +482,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     min-height: 38px;
 }
 .tpc-field-value.tpc-big {
-    font-size: 22px;
+    font-size: 50px;
     font-weight: 400;
     line-height: 1.5;
     min-height: 60px;
@@ -526,7 +546,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     font-family: var(--font-display);
     font-size: 80px;
     font-weight: 900;
-    color: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.5);
     line-height: 1;
     user-select: none;
     position: absolute;
@@ -1236,16 +1256,16 @@ const TEAM_DEFS = [
 
 // Domyślna zawartość kart — można edytować w adminie
 const TEAM_DEFAULTS = {
-    ferrari:  { driver1: 'Charles Leclerc', driver2: 'Lewis Hamilton',    desc: 'Maranello, Włochy. Najbardziej utytułowany zespół w historii F1.' },
-    mclaren:  { driver1: 'Lando Norris',    driver2: 'Oscar Piastri',     desc: 'Woking, Wielka Brytania. Wielokrotny mistrz konstruktorów.' },
-    redbull:  { driver1: 'Max Verstappen',  driver2: 'Liam Lawson',       desc: 'Milton Keynes, Wielka Brytania. Dominacja od 2022 roku.' },
-    mercedes: { driver1: 'George Russell',  driver2: 'Kimi Antonelli',    desc: 'Brackley, Wielka Brytania. Ósemka z rzędu 2014–2021.' },
-    aston:    { driver1: 'Fernando Alonso', driver2: 'Lance Stroll',      desc: 'Silverstone, Wielka Brytania. Powrót legendy do F1.' },
-    alpine:   { driver1: 'Pierre Gasly',    driver2: 'Jack Doohan',       desc: 'Enstone, Wielka Brytania. Producent Renault / Alpine.' },
-    haas:     { driver1: 'Esteban Ocon',    driver2: 'Oliver Bearman',    desc: 'Kannapolis, USA. Jedyny amerykański zespół w F1.' },
-    williams: { driver1: 'Alex Albon',      driver2: 'Carlos Sainz',      desc: 'Grove, Wielka Brytania. Siedmiokrotny mistrz konstruktorów.' },
-    rb:       { driver1: 'Yuki Tsunoda',    driver2: 'Isack Hadjar',      desc: 'Faenza, Włochy. Druga stajnia Red Bull Racing.' },
-    sauber:   { driver1: 'Nico Hülkenberg', driver2: 'Gabriel Bortoleto', desc: 'Hinwil, Szwajcaria. Od 2026 roku jako Audi F1 Team.' },
+    ferrari:  { driver1: '', driver2: '',    desc: '' },
+    mclaren:  { driver1: '',    driver2: '',     desc: '' },
+    redbull:  { driver1: '',  driver2: '',       desc: '' },
+    mercedes: { driver1: '',  driver2: '',    desc: '' },
+    aston:    { driver1: '', driver2: '',      desc: '' },
+    alpine:   { driver1: '',    driver2: '',       desc: '' },
+    haas:     { driver1: '',    driver2: '',    desc: '' },
+    williams: { driver1: '',      driver2: '',      desc: '' },
+    rb:       { driver1: '',    driver2: '',      desc: '' },
+    sauber:   { driver1: ' ', driver2: '', desc: '' },
 };
 
 const DEFAULT_DISCORD_SVG = `<svg viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/></svg>`;
@@ -1296,7 +1316,6 @@ function renderTeamsPage() {
                     ${makeField('driver1', d1, '🏎 Kierowca 1')}
                     ${makeField('driver2', d2, '🏎 Kierowca 2')}
                 </div>
-                ${makeField('desc', desc, '📋 Opis', true)}
                 ${custom1 || custom2 ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                     ${custom1 ? makeField('custom1', custom1, '➕ Pole 1') : ''}
                     ${custom2 ? makeField('custom2', custom2, '➕ Pole 2') : ''}
