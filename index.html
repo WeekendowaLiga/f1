@@ -153,7 +153,8 @@ body {
 .editable-title:hover { color: var(--f1-red); border-bottom-color: rgba(225,6,0,0.3); }
 
 /* ===================== TABELA ===================== */
-.f1-table { width: 100%; border-collapse: collapse; table-layout: auto; }
+.f1-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.f1-table th, .f1-table td { overflow: hidden; text-overflow: ellipsis; }
 .f1-table th { background: #111; color: #fff; padding: 28px; text-align: left; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; box-sizing: border-box; width: 100%; }
 .f1-table td { padding: 30px 25px; font-family: var(--font-data); font-size: 36px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; letter-spacing: var(--ls-data); }
 .f1-table tr:last-child td { border-bottom: none; }
@@ -569,9 +570,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 	.tpc-body { padding: 10px 18px 14px; gap: 8px; }
 	.tpc-footer { padding: 7px 18px; }
 	.tpc-num { font-size: 36px; }
-	.tpc-field-value { font-size: 16px; }
+	.tpc-field-value { font-size: 14px; min-height: unset; }
 	.tpc-field-value.tpc-big { font-size: 14px; }
-	.team-page-card { min-height: 240px; }
+	.team-page-card { min-height: unset; }
     .adm-team-fields { grid-template-columns: 1fr; }
     /* Profil mobile */
     .dp-nick { font-size: 46px; }
@@ -2102,9 +2103,9 @@ const renderRaceTable = (results, raceId = null, isLastRace = false) => {
         return `<span class="${extraClass}">${val||'-'}</span>`;
     };
     return `<table class="f1-table"><thead><tr>
-        <th class="col-pos">P</th><th class="col-driver">Kierowca</th><th>Zespół</th>
-        <th style="text-align:center;width:70px;">Grid</th><th style="text-align:center;width:60px;">Pit</th>
-        <th>Najlepsze</th><th>Czas</th><th class="col-pts">PKT</th>
+        <th class="col-pos" style="width:50px;">P</th><th class="col-driver" style="width:22%;">Kierowca</th><th style="width:18%;">Zespół</th>
+	<th style="text-align:center;width:50px;">Grid</th><th style="text-align:center;width:44px;">Pit</th>
+	<th style="width:14%;">Najlepsze</th><th style="width:auto;">Czas</th><th class="col-pts" style="width:70px;">PKT</th>
     </tr></thead><tbody>${results.map((r, i) => `
         <tr class="${getTeamClass(r.team)}">
             <td class="col-pos ${posClass(i)}">${cellEdit(r.pos, i, 'pos')}</td>
