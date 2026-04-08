@@ -104,8 +104,8 @@ body {
 .header-social-icons { display: flex; gap: 12px; align-items: center; }
 .header-social-btn { width: 84px; height: 84px; border-radius: 16px; display: flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer; border: 2px solid rgba(21,21,30,0.15); background: rgba(21,21,30,0.04); transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.2s; overflow: hidden; flex-shrink: 0; }
 .header-social-btn:hover { background: rgba(21,21,30,0.10); border-color: var(--f1-red); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(225,6,0,0.18); }
-.header-social-btn img { width: 52px; height: 52px; object-fit: contain; }
-.header-social-btn svg { width: 52px; height: 52px; }
+.header-social-btn img { width: 64px; height: 64px; object-fit: contain; }
+.header-social-btn svg { width: 64px; height: 64px; }
 
 /* ===================== NAV ===================== */
 .f1-nav { background: var(--f1-black); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); background-image: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px), linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%); }
@@ -153,7 +153,7 @@ body {
 .editable-title:hover { color: var(--f1-red); border-bottom-color: rgba(225,6,0,0.3); }
 
 /* ===================== TABELA ===================== */
-.f1-table { width: 100%; border-collapse: collapse; table-layout: auto; }
+.f1-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .f1-table th { background: #111; color: #fff; padding: 28px; text-align: left; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; box-sizing: border-box; width: 100%; }
 .f1-table td { padding: 30px 25px; font-family: var(--font-data); font-size: 36px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; letter-spacing: var(--ls-data); }
 .f1-table tr:last-child td { border-bottom: none; }
@@ -201,9 +201,6 @@ body {
 .team-rb       { border-left: 15px solid #004cff; } .txt-rb       { color: #004cff; }
 .driver-cell { display: flex; align-items: center; gap: 18px; }
 .driver-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(0,0,0,0.12); flex-shrink: 0; background: #eee; }
-.f1-table { table-layout: fixed; }
-.f1-table .col-pos { width: 70px; }
-.f1-table .col-pts { width: 110px; }
 /* KLIKALNE NICKI */
 .driver-name-clickable {
     font-weight: 700; font-size: 40px; letter-spacing: 1px;
@@ -278,7 +275,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .team-page-card { position: relative; border-radius: 6px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.25); transition: transform 0.35s cubic-bezier(0.19,1,0.22,1), box-shadow 0.35s ease; animation: slideInLeft 0.5s both; min-height: 380px; display: flex; flex-direction: column; }
 .team-page-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 40px 90px rgba(0,0,0,0.38); }
 .team-page-card.tc-ferrari  { background: linear-gradient(135deg, #e10600 0%, #911d1d 60%, #900300 80%); }
-.team-page-card.tc-mercedes { background: linear-gradient(135deg, #00d2be 0%, #00b5a4 60%, #008877 80%); }
+.team-page-card.tc-mercedes { background: linear-gradient(135deg, #009e8e 0%, #008577 60%, #005f55 80%); }
 .team-page-card.tc-redbull  { background: linear-gradient(135deg, #131b45 0%, #1c2860 60%, #0a1030 85%); }
 .team-page-card.tc-mclaren  { background: linear-gradient(135deg, #ff8700 0%, #e07500 60%, #b55800 80%); }
 .team-page-card.tc-aston    { background: linear-gradient(135deg, #006f62 0%, #008573 60%, #004d44 88%); }
@@ -497,7 +494,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 
 /* ===================== MOBILNE ===================== */
 @media (max-width: 1024px) {
-    :root { --ls-nav: 1px; --ls-data: 0.5px; --ls-label: 2px; --ls-heading: 0px; }
+    .tpc-field-label { font-size: 10px; letter-spacing: 1px; white-space: nowrap; }
+	.tpc-body > div { grid-template-columns: 1fr 1fr !important; }
+	:root { --ls-nav: 1px; --ls-data: 0.5px; --ls-label: 2px; --ls-heading: 0px; }
     .f1-header { padding: 0 4%; height: auto; min-height: 100px; align-items: center; }
     .f1-logo { width: 100px; height: 76px; }
     .f1-title { font-size: 34px; margin-left: 16px; }
@@ -515,15 +514,16 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .f1-hero { padding: 40px 20px; }
     .f1-hero h1 { font-size: 40px; margin-bottom: 30px; letter-spacing: 1px; }
     .f1-timer-grid { gap: 6px; flex-wrap: wrap; justify-content: center; }
-    .timer-unit { min-width: 72px; padding: 14px 10px 12px; }
-    .timer-val { font-size: 38px; }
-    .timer-sep { font-size: 28px; padding-bottom: 18px; }
-    .timer-label { font-size: 10px; letter-spacing: 0.5px; }
+    .timer-unit { min-width: 82px; padding: 18px 12px 15px; }
+	.timer-val { font-size: 48px; }
+	.timer-sep { font-size: 34px; padding-bottom: 22px; }
+	.timer-label { font-size: 11px; letter-spacing: 0.5px; }}
     .main-content { padding: 0 10px 80px; }
     #view-standings > div { grid-template-columns: 1fr !important; }
     .f1-card-title { font-size: 20px; padding: 16px 16px; letter-spacing: 0; }
     .f1-card { overflow-x: hidden; }
-#view-standings .f1-table { min-width: unset; width: 100%; }
+	#view-standings .f1-card { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+	#view-standings .f1-table { min-width: unset; width: 100%; }
     #view-last-race .f1-table, #view-archive .f1-table { min-width: 620px; }
     .archive-body > div { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .f1-table th { padding: 12px 10px; font-size: 11px; letter-spacing: 1px; }
@@ -557,21 +557,22 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .splash-img-entry { flex-direction: column; gap: 8px; }
     .splash-img-entry .sie-field-sm { width: 100%; }
     .admin-toc { padding: 12px 20px; }
-    #splash-social-icons { top: auto; right: auto; gap: 10px; position: relative; display: flex; justify-content: flex-end; width: 100%; padding: 12px 14px 0; box-sizing: border-box; margin-bottom: -10px; }
-    .splash-social-btn { width: 40px; height: 40px; border-radius: 8px; }
+    #splash-social-icons { top: auto; right: auto; gap: 8px; position: relative; display: flex; flex-direction: column; align-items: flex-end; width: 100%; padding: 12px 14px 0; box-sizing: border-box; margin-bottom: -10px; }
+    .splash-social-btn { width: 32px; height: 32px; border-radius: 6px; }
 .splash-social-btn img, .splash-social-btn svg { width: 22px; height: 22px; }
     .header-social-btn { width: 54px; height: 54px; }
     .header-social-btn img, .header-social-btn svg { width: 32px; height: 32px; }
-    .teams-grid { grid-template-columns: 1fr; gap: 24px; }
-    .tpc-name { font-size: 34px; }
-    .tpc-logo-wrap { width: 100px; height: 65px; }
-    .tpc-logo { max-width: 90px; max-height: 55px; }
-    .tpc-header { padding: 20px 20px 14px 28px; }
-    .tpc-body { padding: 16px 28px 20px; gap: 12px; }
-    .tpc-footer { padding: 10px 28px; }
-    .tpc-num { font-size: 50px; }
-    .tpc-field-value { font-size: 20px; }
-    .tpc-field-value.tpc-big { font-size: 17px; }
+    .teams-grid { grid-template-columns: 1fr; gap: 14px; }
+    .tpc-name { font-size: 26px; }
+	.tpc-logo-wrap { width: 70px; height: 46px; }
+	.tpc-logo { max-width: 64px; max-height: 40px; }
+	.tpc-header { padding: 14px 14px 10px 18px; }
+	.tpc-body { padding: 10px 18px 14px; gap: 8px; }
+	.tpc-footer { padding: 7px 18px; }
+	.tpc-num { font-size: 36px; }
+	.tpc-field-value { font-size: 16px; }
+	.tpc-field-value.tpc-big { font-size: 14px; }
+	.team-page-card { min-height: 240px; }
     .adm-team-fields { grid-template-columns: 1fr; }
     /* Profil mobile */
     .dp-nick { font-size: 46px; }
@@ -586,7 +587,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .dp-race-table td { font-size: 18px; padding: 14px 10px; }
     .dp-race-table th { font-size: 10px; padding: 12px 8px; }
     .dp-pts-cell { font-size: 22px !important; }
-    #driver-profile-overlay { padding: 0; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+    #driver-profile-overlay { padding: 0; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
     #driver-profile-modal { border-radius: 0; min-height: 100vh; min-height: 100svh; }
     .dp-close-btn { top: 14px; right: 14px; width: 46px; height: 46px; }
     .dp-stats-row { flex-wrap: wrap; }
@@ -1563,7 +1564,9 @@ window.ui = {
    // Pokaż modal
         const overlay = document.getElementById('driver-profile-overlay');
         overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+			document.body.style.position = 'fixed';
+			document.body.style.width = '100%';
         // Scroll na górę overlaya ORAZ okna — działa niezależnie od pozycji strony
         overlay.scrollTop = 0;
         window.scrollTo(0, 0);
@@ -1572,7 +1575,9 @@ window.ui = {
     closeDriverProfile(event, force) {
         if (force || (event && event.target === document.getElementById('driver-profile-overlay'))) {
             document.getElementById('driver-profile-overlay').classList.remove('open');
-            document.body.style.overflow = '';
+			document.body.style.overflow = '';
+			document.body.style.position = '';
+			document.body.style.width = '';
         }
     },
 
