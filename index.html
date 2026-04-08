@@ -155,12 +155,6 @@ body {
 /* ===================== TABELA ===================== */
 .f1-table { width: 100%; border-collapse: collapse; table-layout: auto; }
 .f1-table th { background: #111; color: #fff; padding: 28px; text-align: left; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
-#constructors-table thead { display: block; width: 100%; }
-#constructors-table thead tr { display: flex; width: 100%; }
-#constructors-table thead th { flex: 1; background: #111; }
-#constructors-table tbody tr { display: table; width: 100%; table-layout: fixed; }
-#constructors-table th { margin: 0 -3px; }	
-#constructors-table thead tr th { padding-right: 0; }
 .f1-table td { padding: 30px 25px; font-family: var(--font-data); font-size: 36px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; letter-spacing: var(--ls-data); }
 .f1-table tr:last-child td { border-bottom: none; }
 .f1-table tr:hover td { background: rgba(0,0,0,0.02); }
@@ -738,7 +732,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             </div>
             <div class="f1-card">
                 <div class="f1-card-title">Klasyfikacja Konstruktorów</div>
-                <table class="f1-table" id="constructors-table" style="border-collapse:separate; border-spacing:0 3px; width:100%;">
+                <table class="f1-table" id="constructors-table" style="border-collapse:separate; border-spacing:0 3px;">
                     <thead><tr>
                         <th class="col-pos">P</th>
                         <th>Zespół</th>
