@@ -494,48 +494,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #btn-open-login:hover { background: var(--f1-black); color: var(--f1-white); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
 /* ===================== MOBILNE ===================== */
-	@media (max-width: 1024px) {
-	@media (max-width: 1024px) {
-    /* --- NOWY KOD NAPRAWCZY DLA TABEL --- */
-    #view-standings .f1-card {
-        overflow-x: hidden; /* Wyłączamy scroll na boki */
-    }
-
-    #view-standings .f1-table {
-        table-layout: fixed; /* Wymuszamy dopasowanie do szerokości */
-        width: 100%;
-    }
-
-    /* Dopasowanie kolumny z kierowcą/zespołem, aby ustąpiła miejsca punktom */
-    #view-standings .f1-table th:nth-child(2),
-    #view-standings .f1-table td:nth-child(2) {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 150px; /* Zmniejszenie maksymalnej szerokości nazwy */
-    }
-
-    /* Zmniejszenie marginesów punktów i pos */
-    .col-pts {
-        padding-right: 5px !important;
-        width: 50px !important;
-    }
-    
-    .col-pos {
-        width: 30px !important;
-    }
-
-    /* Drastyczne zmniejszenie logotypów konstruktorów na telefonach */
-    .constructor-logo-main {
-        width: 50px !important; 
-        height: auto !important;
-    }
-
-    .constructor-name-cell {
-        gap: 5px !important;
-    }
-    /* --- KONIEC NOWEGO KODU --- */
-	.cteam-pts-cell { font-size: 14px !important; padding: 4px 10px !important; min-width: 40px; }
+@media (max-width: 1024px) {
+	.cteam-pts-cell { font-size: 20px !important; padding: 4px 10px !important; min-width: 40px; }
     .tpc-field-label { font-size: 10px; letter-spacing: 1px; white-space: nowrap; }
 	.tpc-body > div { grid-template-columns: 1fr 1fr !important; }
 	:root { --ls-nav: 1px; --ls-data: 0.5px; --ls-label: 2px; --ls-heading: 0px; }
