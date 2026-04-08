@@ -2133,10 +2133,10 @@ function renderConstructorRow(r, i) {
         : `<div style="width:6px;height:50px;background:rgba(255,255,255,0.4);border-radius:3px;flex-shrink:0;"></div>`;
     return `<tr class="constructor-row ${cClass}">
         <td class="col-pos" style="font-weight:900;"><span class="${posClass}">${i+1}</span></td>
-        <td style="font-weight:700;font-size:38px;letter-spacing:1.5px;">
+        <td style="font-weight:700;font-size:18px;letter-spacing:1px;white-space:normal;">
             <div class="constructor-name-cell">${leftDecor}<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span></div>
         </td>
-        <td class="col-pts" style="padding-right:30px;">
+        <td class="col-pts" style="padding-right:10px;">
             <span class="cteam-pts-cell">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','teams',${i},'pts')">${r.pts}</span>` : r.pts}</span>
         </td>
     </tr>`;
