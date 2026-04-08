@@ -269,70 +269,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .album-viewer-title { font-family: var(--font-display); font-size: 50px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; flex: 1; }
 .album-viewer-title-editable { cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
 .album-viewer-title-editable:hover { color: var(--f1-red); border-bottom-color: rgba(225,6,0,0.3); }
-/* POPRAWKA DLA TELEFONÓW - Wklej to na samym dole sekcji style */
-@media (max-width: 768px) {
-    /* Zmniejszenie głównego odstępu strony */
-    .main-content {
-        padding: 0 10px 100px !important;
-    }
 
-    /* Zmniejszenie ogromnych czcionek w tabeli (oryginalnie 36px-40px) */
-    .f1-table td {
-        padding: 12px 8px !important;
-        font-size: 16px !important;
-    }
-
-    .f1-table th {
-        padding: 10px 5px !important;
-        font-size: 10px !important;
-        letter-spacing: 1px !important;
-    }
-
-    /* Naprawa szerokości kolumny kierowcy (oryginalnie 450px - to ona wypycha punkty) */
-    .col-driver {
-        width: auto !important;
-        min-width: 100px !important;
-    }
-
-    /* Zmniejszenie kolumny punktów, aby zawsze była widoczna */
-    .col-pts {
-        width: 50px !important;
-        padding-right: 10px !important;
-        font-size: 18px !important;
-    }
-
-    /* Zmniejszenie awatarów kierowców i logotypów */
-    .driver-avatar {
-        width: 30px !important;
-        height: 30px !important;
-    }
-
-    .driver-name-clickable {
-        font-size: 16px !important;
-    }
-
-    /* Specjalna poprawka dla tabeli konstruktorów */
-    .constructor-name-cell {
-        gap: 10px !important;
-    }
-
-    .constructor-logo-main {
-        width: 80px !important;
-        height: auto !important;
-    }
-
-    .cteam-pts-cell {
-        min-width: 40px !important;
-        padding: 4px 10px !important;
-        font-size: 18px !important;
-    }
-
-    /* Dodanie poziomego przewijania, jeśli tabela nadal by się nie mieściła */
-    .f1-card {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-    }
-}
 
 /* ===================== ZAKŁADKA ZESPOŁY ===================== */
 .teams-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
@@ -557,7 +494,47 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #btn-open-login:hover { background: var(--f1-black); color: var(--f1-white); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
 /* ===================== MOBILNE ===================== */
-@media (max-width: 1024px) {
+	@media (max-width: 1024px) {
+	@media (max-width: 1024px) {
+    /* --- NOWY KOD NAPRAWCZY DLA TABEL --- */
+    #view-standings .f1-card {
+        overflow-x: hidden; /* Wyłączamy scroll na boki */
+    }
+
+    #view-standings .f1-table {
+        table-layout: fixed; /* Wymuszamy dopasowanie do szerokości */
+        width: 100%;
+    }
+
+    /* Dopasowanie kolumny z kierowcą/zespołem, aby ustąpiła miejsca punktom */
+    #view-standings .f1-table th:nth-child(2),
+    #view-standings .f1-table td:nth-child(2) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px; /* Zmniejszenie maksymalnej szerokości nazwy */
+    }
+
+    /* Zmniejszenie marginesów punktów i pos */
+    .col-pts {
+        padding-right: 5px !important;
+        width: 50px !important;
+    }
+    
+    .col-pos {
+        width: 30px !important;
+    }
+
+    /* Drastyczne zmniejszenie logotypów konstruktorów na telefonach */
+    .constructor-logo-main {
+        width: 50px !important; 
+        height: auto !important;
+    }
+
+    .constructor-name-cell {
+        gap: 5px !important;
+    }
+    /* --- KONIEC NOWEGO KODU --- */
 	.cteam-pts-cell { font-size: 14px !important; padding: 4px 10px !important; min-width: 40px; }
     .tpc-field-label { font-size: 10px; letter-spacing: 1px; white-space: nowrap; }
 	.tpc-body > div { grid-template-columns: 1fr 1fr !important; }
