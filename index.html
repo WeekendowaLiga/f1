@@ -495,12 +495,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 /* ===================== MOBILNE ===================== */
 @media (max-width: 1024px) {
     :root { --ls-nav: 1px; --ls-data: 0.5px; --ls-label: 2px; --ls-heading: 0px; }
-    .f1-header { height: auto; padding: 16px 4%; flex-wrap: wrap; gap: 12px; }
-    .f1-logo { width: 120px; height: 90px; }
-    .f1-title { font-size: 36px; margin-left: 20px; letter-spacing: 0px; }
-    .header-right { width: 100%; display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
-    .header-social-icons { gap: 10px; flex-shrink: 0; }
+    .f1-header { padding: 0 4%; height: auto; min-height: 100px; align-items: center; }
+    .f1-logo { width: 100px; height: 76px; }
+    .f1-title { font-size: 34px; margin-left: 16px; }
+    .header-right { align-items: center; gap: 10px; }
+    .header-social-icons { gap: 8px; flex-shrink: 0; }
     .header-social-btn { width: 48px; height: 48px; }
+    .header-social-btn img, .header-social-btn svg { width: 28px; height: 28px; }
     .header-social-btn img, .header-social-btn svg { width: 26px; height: 26px; }
     .f1-auth-zone { width: auto; display: flex; align-items: right; gap: 8px; flex-shrink: 0; }
     #btn-open-login { font-size: 22px; padding: 10px 14px; border-width: 2px; }
@@ -573,9 +574,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .dp-header { padding: 40px 24px 30px; flex-direction: column; align-items: flex-start; gap: 20px; }
     .dp-team-logo-wrap { display: none; }
     .dp-number-bg { font-size: 140px; right: 10px; }
-    .dp-stat { padding: 20px 10px; }
-    .dp-stat-val { font-size: 38px; }
-    .dp-stat-label { font-size: 9px; letter-spacing: 2px; margin-top: 6px; }
+    .dp-stat { padding: 22px 10px; }
+    .dp-stat-val { font-size: 44px; }
+    .dp-stat-label { font-size: 11px; letter-spacing: 2px; margin-top: 8px; }
     .dp-races-section { padding: 24px 16px 40px; }
     .dp-races-title { font-size: 22px; }
     .dp-race-table td { font-size: 18px; padding: 14px 10px; }
@@ -585,16 +586,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     #driver-profile-modal { border-radius: 0; min-height: 100vh; }
     .dp-close-btn { top: 14px; right: 14px; width: 46px; height: 46px; }
     .dp-stats-row { flex-wrap: wrap; }
-    .dp-stat { flex: 0 0 33.33%; border-bottom: 1px solid rgba(255,255,255,0.07); }
-    /* Tabela wyścigów w profilu — brak poziomego scrolla, kompaktowy układ */
-    #driver-profile-modal .dp-races-section { padding: 16px 10px 30px; }
-    #driver-profile-modal .dp-race-table { table-layout: fixed; width: 100%; }
-    #driver-profile-modal .dp-race-table th,
-    #driver-profile-modal .dp-race-table td { padding: 10px 5px; font-size: 13px; letter-spacing: 0; white-space: normal; word-break: break-word; }
-    #driver-profile-modal .dp-race-table th { font-size: 9px; padding: 8px 4px; }
-    #driver-profile-modal .dp-race-table .dp-pts-cell { font-size: 15px !important; padding-right: 6px !important; }
-    #driver-profile-modal .dp-race-table .dp-pos-cell { font-size: 18px; }
-    #driver-profile-modal .dp-race-table div[style*="overflow-x"] { overflow-x: visible !important; }
+    .dp-stat { flex: 0 0 50%; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    /* Tabela wyścigów w profilu — poziomy scroll */
+    #driver-profile-modal .dp-races-section { padding: 16px 0 30px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    #driver-profile-modal .dp-race-table { table-layout: auto; min-width: 580px; width: 100%; }
+    #driver-profile-modal .dp-race-table th { font-size: 11px; padding: 14px 14px; white-space: nowrap; letter-spacing: 1px; }
+    #driver-profile-modal .dp-race-table td { font-size: 17px; padding: 16px 14px; white-space: nowrap; letter-spacing: 0; word-break: normal; }
+    #driver-profile-modal .dp-race-table .dp-pts-cell { font-size: 20px !important; padding-right: 14px !important; }
+    #driver-profile-modal .dp-race-table .dp-pos-cell { font-size: 22px; }
     /* Statystyki — 4 kolumny na małym mobile zamiast 3 */
     @media (max-width: 380px) {
         .dp-stat { flex: 0 0 50%; }
