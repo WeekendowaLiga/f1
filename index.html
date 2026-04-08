@@ -154,7 +154,7 @@ body {
 
 /* ===================== TABELA ===================== */
 .f1-table { width: 100%; border-collapse: collapse; table-layout: auto; }
-.f1-table th { background: #111; color: #fff; padding: 28px; text-align: left; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
+.f1-table th { background: #111; color: #fff; padding: 28px; text-align: left; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; box-sizing: border-box; width: 100%; }
 .f1-table td { padding: 30px 25px; font-family: var(--font-data); font-size: 36px; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; letter-spacing: var(--ls-data); }
 .f1-table tr:last-child td { border-bottom: none; }
 .f1-table tr:hover td { background: rgba(0,0,0,0.02); }
@@ -201,6 +201,9 @@ body {
 .team-rb       { border-left: 15px solid #004cff; } .txt-rb       { color: #004cff; }
 .driver-cell { display: flex; align-items: center; gap: 18px; }
 .driver-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(0,0,0,0.12); flex-shrink: 0; background: #eee; }
+.f1-table { table-layout: fixed; }
+.f1-table .col-pos { width: 70px; }
+.f1-table .col-pts { width: 110px; }
 /* KLIKALNE NICKI */
 .driver-name-clickable {
     font-weight: 700; font-size: 40px; letter-spacing: 1px;
@@ -507,19 +510,20 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     #btn-open-login { font-size: 22px; padding: 10px 14px; border-width: 2px; }
     #btn-open-admin { font-size: 12px; padding: 10px 14px; letter-spacing: 1px; }
     .f1-nav { overflow-x: unset; justify-content: stretch; display: grid; grid-template-columns: 1fr 1fr; }
+	.f1-nav .nav-item:last-child { grid-column: span 2; }
     .nav-item { padding: 18px 10px; font-size: 22px; white-space: nowrap; text-align: center; border-bottom: 4px solid transparent; letter-spacing: 0.5px; }
     .f1-hero { padding: 40px 20px; }
     .f1-hero h1 { font-size: 40px; margin-bottom: 30px; letter-spacing: 1px; }
     .f1-timer-grid { gap: 6px; flex-wrap: wrap; justify-content: center; }
-    .timer-unit { min-width: 56px; padding: 10px 7px 9px; }
-    .timer-val { font-size: 28px; }
-    .timer-sep { font-size: 22px; padding-bottom: 14px; }
-    .timer-label { font-size: 9px; letter-spacing: 0.5px; }
+    .timer-unit { min-width: 72px; padding: 14px 10px 12px; }
+    .timer-val { font-size: 38px; }
+    .timer-sep { font-size: 28px; padding-bottom: 18px; }
+    .timer-label { font-size: 10px; letter-spacing: 0.5px; }
     .main-content { padding: 0 10px 80px; }
     #view-standings > div { grid-template-columns: 1fr !important; }
     .f1-card-title { font-size: 20px; padding: 16px 16px; letter-spacing: 0; }
-    .f1-card { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    #view-standings .f1-table { min-width: 400px; }
+    .f1-card { overflow-x: hidden; }
+#view-standings .f1-table { min-width: unset; width: 100%; }
     #view-last-race .f1-table, #view-archive .f1-table { min-width: 620px; }
     .archive-body > div { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .f1-table th { padding: 12px 10px; font-size: 11px; letter-spacing: 1px; }
@@ -530,7 +534,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .constructor-logo-main { width: 70px; height: 52px; }
     .constructor-name-cell { gap: 12px; }
     .driver-avatar { width: 36px; height: 36px; }
-    .driver-name-clickable { font-size: 21px; letter-spacing: 0px; }
+    .bot-row .driver-name-clickable { font-size: 16px !important; }
     .team-logo-img { width: 28px; height: 20px; }
     .gallery-grid { grid-template-columns: 1fr; gap: 20px; }
     .album-card { height: 220px; }
@@ -553,9 +557,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .splash-img-entry { flex-direction: column; gap: 8px; }
     .splash-img-entry .sie-field-sm { width: 100%; }
     .admin-toc { padding: 12px 20px; }
-    #splash-social-icons { top: 14px; right: 14px; gap: 10px; position: absolute; }
-    .splash-social-btn { width: 56px; height: 56px; border-radius: 12px; }
-    .splash-social-btn img, .splash-social-btn svg { width: 34px; height: 34px; }
+    #splash-social-icons { top: auto; right: auto; gap: 10px; position: relative; display: flex; justify-content: flex-end; width: 100%; padding: 12px 14px 0; box-sizing: border-box; margin-bottom: -10px; }
+    .splash-social-btn { width: 40px; height: 40px; border-radius: 8px; }
+.splash-social-btn img, .splash-social-btn svg { width: 22px; height: 22px; }
     .header-social-btn { width: 54px; height: 54px; }
     .header-social-btn img, .header-social-btn svg { width: 32px; height: 32px; }
     .teams-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -582,11 +586,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .dp-race-table td { font-size: 18px; padding: 14px 10px; }
     .dp-race-table th { font-size: 10px; padding: 12px 8px; }
     .dp-pts-cell { font-size: 22px !important; }
-    #driver-profile-overlay { padding: 0; }
-    #driver-profile-modal { border-radius: 0; min-height: 100vh; }
+    #driver-profile-overlay { padding: 0; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+    #driver-profile-modal { border-radius: 0; min-height: 100vh; min-height: 100svh; }
     .dp-close-btn { top: 14px; right: 14px; width: 46px; height: 46px; }
     .dp-stats-row { flex-wrap: wrap; }
-    .dp-stat { flex: 0 0 50%; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .dp-stat { flex: 0 0 25%; border-bottom: 1px solid rgba(255,255,255,0.07); }
     /* Tabela wyścigów w profilu — poziomy scroll */
     #driver-profile-modal .dp-races-section { padding: 16px 0 30px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     #driver-profile-modal .dp-race-table { table-layout: auto; min-width: 580px; width: 100%; }
@@ -596,7 +600,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     #driver-profile-modal .dp-race-table .dp-pos-cell { font-size: 22px; }
     /* Statystyki — 4 kolumny na małym mobile zamiast 3 */
     @media (max-width: 380px) {
-        .dp-stat { flex: 0 0 50%; }
+    .dp-stat { flex: 0 0 25%; }
     }
 	/* Wymuszenie tych samych fontów co na desktopie */
     body, input, textarea, select, button {
@@ -612,6 +616,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .f1-table td { font-size: 16px; }
 }
 @media (max-width: 480px) {
+#view-standings .f1-table th:nth-child(3),
+#view-standings .f1-table td:nth-child(3) { display: none; }
     .f1-title { font-size: 26px; }
     .f1-logo { width: 80px; height: 62px; }
     .f1-hero h1 { font-size: 28px; }
@@ -2264,7 +2270,7 @@ onValue(ref(db, 'standings'), snap => {
             const avatarHtml = r.photo ? `<img class="driver-avatar" src="${r.photo}" alt="${r.nick}" onerror="this.style.display='none'">` : '';
             html += `<tr class="${getTeamClass(r.team)} bot-row">
                 <td class="col-pos">${humanDrivers.length + i + 1}</td>
-                <td class="col-driver"><div class="driver-cell">${avatarHtml}<span style="font-weight:700;font-size:40px;">${r.nick}</span></div></td>
+                <td class="col-driver"><div class="driver-cell">${avatarHtml}<span class="driver-name-clickable" onclick="ui.openDriverProfile('${(r.nick||'').replace(/'/g,"\\'")}') " title="Profil bota" style="font-weight:700;">${r.nick}</span></div></td>
                 <td class="${getTeamClass(r.team).replace('team-','txt-')}">${r.team}</td>
                 <td style="text-align:center">${r.wins||0}</td>
                 <td class="col-pts">${r.pts}</td>
