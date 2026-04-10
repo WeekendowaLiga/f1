@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -883,6 +884,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
             <div class="form-group no-bonus-box"><label class="form-label">Nicki BEZ +3 PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
             <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
+			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.publishRace()">📤 PUBLIKUJ WYNIKI</button></div>
         </div>
     </div>
@@ -1796,7 +1798,7 @@ function rerenderLastRace() {
     } else {
         titleEl.textContent = 'WYNIKI: ' + data.name;
     }
-    container.innerHTML = renderRaceTable(data.results, null, true);
+container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
 }
 
 function rerenderArchive() {
@@ -1819,7 +1821,7 @@ function rerenderArchive() {
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
             <div class="archive-body" id="arc-body-${id}">
-                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${renderRaceTable(race.results, id, false)}</div>
+                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${renderRaceTable(race.results, id, false, race.isTraining)}</div>
             </div>
         </div>`;
     }).join('');
@@ -1906,43 +1908,49 @@ window.dbCore = {
                 return { pos: index + 1, nick: p[0], team: normalizeTeamName(p[1]), start: p[2], pit: p[3], best: p[4], time: p[5], pts: p[6] };
             });
         }
-        const raceObj = { name: title, results, timestamp: Date.now() };
+        const isTraining = document.getElementById('pub-training').checked;
+		const raceObj = { name: title, results, timestamp: Date.now(), ...(isTraining && { isTraining: true }) };
         if (document.getElementById('pub-last').checked) await set(ref(db, 'lastRace'), raceObj);
         if (document.getElementById('pub-archive').checked) await push(ref(db, 'archive'), raceObj);
-        const standSnap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
-        const currentStandings = standSnap.val() || { drivers: [], teams: [] };
-        const driverMap = {}; const teamMap = {};
-        (currentStandings.drivers || []).forEach(d => { driverMap[d.nick.toLowerCase()] = { ...d }; });
-        (currentStandings.teams || []).forEach(t => { teamMap[t.team.toLowerCase()] = { ...t }; });
-        let bonusCount = 0, noBonusCount = 0;
-        const noBonusReasons = [];
-        results.forEach(r => {
-            const basePts = parseInt(r.pts) || 0;
-            const nickKey = (r.nick || '').toLowerCase();
-            const teamKey = (r.team || '').toLowerCase();
-            const isWin = parseInt(r.pos) === 1;
-            const isBot = isRealF1Driver(r.nick);
-            const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
-            const isDnfDsq = dnfTags.some(s => (r.time || '').toString().toUpperCase().includes(s) || (r.pos || '').toString().toUpperCase().includes(s));
-            const isManualExcluded = noBonusNicks.has(nickKey);
-            let bonusPts = 0;
-            if (isBot || isDnfDsq || isManualExcluded) {
-                bonusPts = 0;
-                if (!isBot) { noBonusCount++; if (isDnfDsq) noBonusReasons.push(`${r.nick}: DNF/DSQ/DNS`); if (isManualExcluded) noBonusReasons.push(`${r.nick}: ręcznie wykluczony`); }
-            } else { bonusPts = 3; bonusCount++; }
-            const pts = basePts + bonusPts;
-            if (driverMap[nickKey]) { driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts; if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1; }
-            else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0 }; }
-            if (teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
-        });
-        const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
-        const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
-        await set(ref(db, 'standings'), { drivers, teams });
-        let msg = `✅ Wyniki opublikowane!\n\n+3 PKT otrzymało: ${bonusCount} graczy\n`;
-        if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
-        msg += `\n\n(Boty AI nie wliczane)`;
-        alert(msg);
+        if (!isTraining) {
+            const standSnap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
+            const currentStandings = standSnap.val() || { drivers: [], teams: [] };
+            const driverMap = {}; const teamMap = {};
+            (currentStandings.drivers || []).forEach(d => { driverMap[d.nick.toLowerCase()] = { ...d }; });
+            (currentStandings.teams || []).forEach(t => { teamMap[t.team.toLowerCase()] = { ...t }; });
+            let bonusCount = 0, noBonusCount = 0;
+            const noBonusReasons = [];
+            results.forEach(r => {
+                const basePts = parseInt(r.pts) || 0;
+                const nickKey = (r.nick || '').toLowerCase();
+                const teamKey = (r.team || '').toLowerCase();
+                const isWin = parseInt(r.pos) === 1;
+                const isBot = isRealF1Driver(r.nick);
+                const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
+                const isDnfDsq = dnfTags.some(s => (r.time || '').toString().toUpperCase().includes(s) || (r.pos || '').toString().toUpperCase().includes(s));
+                const isManualExcluded = noBonusNicks.has(nickKey);
+                let bonusPts = 0;
+                if (isBot || isDnfDsq || isManualExcluded) {
+                    bonusPts = 0;
+                    if (!isBot) { noBonusCount++; if (isDnfDsq) noBonusReasons.push(`${r.nick}: DNF/DSQ/DNS`); if (isManualExcluded) noBonusReasons.push(`${r.nick}: ręcznie wykluczony`); }
+                } else { bonusPts = 3; bonusCount++; }
+                const pts = basePts + bonusPts;
+                if (driverMap[nickKey]) { driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts; if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1; }
+                else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0 }; }
+                if (teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
+            });
+            const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
+            const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
+            await set(ref(db, 'standings'), { drivers, teams });
+            let msg = `✅ Wyniki opublikowane!\n\n+3 PKT otrzymało: ${bonusCount} graczy\n`;
+            if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
+            msg += `\n\n(Boty AI nie wliczane)`;
+            alert(msg);
+        } else {
+            alert("✅ Wyniki treningu opublikowane! (klasyfikacja niezmieniona)");
+        }
         document.getElementById('adm-no-bonus-nicks').value = '';
+        document.getElementById('pub-training').checked = false;
     },
     async saveStandings() {
         const dRaw = document.getElementById('adm-drivers-raw').value.split('\n').filter(l => l.trim());
@@ -2096,7 +2104,7 @@ const nickSpan = (nick, rowIdx, raceId, isLastRace) => {
     return profileBtn;
 };
 
-const renderRaceTable = (results, raceId = null, isLastRace = false) => {
+const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining = false) => {
     const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
     const clean = (val) => (val || '').toString().replace(/^(Start:|Pit:)\s*/i, '').trim();
     const fastestIdx = findFastestLap(results);
@@ -2109,7 +2117,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false) => {
     return `<table class="f1-table"><thead><tr>
         <th class="col-pos" style="width:50px;">P</th><th class="col-driver" style="width:22%;">Kierowca</th><th style="width:18%;">Zespół</th>
 	<th style="text-align:center;width:50px;">Grid</th><th style="text-align:center;width:44px;">Pit</th>
-	<th style="width:14%;">Najlepsze</th><th style="width:auto;">Czas</th><th class="col-pts" style="width:70px;">PKT</th>
+	<th style="width:auto;">Czas</th>${!isTraining ? '<th class="col-pts" style="width:70px;">PKT</th>' : ''}
     </tr></thead><tbody>${results.map((r, i) => `
         <tr class="${getTeamClass(r.team)}">
             <td class="col-pos ${posClass(i)}">${cellEdit(r.pos, i, 'pos')}</td>
@@ -2119,7 +2127,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false) => {
             <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
             <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
             <td>${cellEdit(r.time, i, 'time')}</td>
-            <td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>
+${!isTraining ? `<td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>` : ''}
         </tr>`).join('')}</tbody></table>`;
 };
 
@@ -2302,7 +2310,7 @@ onValue(ref(db, 'lastRace'), snap => {
     if (!data) { container.innerHTML = "<p style='padding:40px;'>Brak danych o ostatnim wyścigu.</p>"; titleEl.textContent = 'WYNIKI: OSTATNI WYŚCIG'; return; }
     if (isLoggedIn) { titleEl.innerHTML = `WYNIKI: <span class="editable-title" onclick="ui.editLastRaceName()" title="Kliknij aby edytować">${data.name}</span>`; }
     else { titleEl.textContent = 'WYNIKI: ' + data.name; }
-    container.innerHTML = renderRaceTable(data.results, null, true);
+  container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
 });
 
 onValue(ref(db, 'archive'), snap => {
@@ -2329,7 +2337,7 @@ onValue(ref(db, 'archive'), snap => {
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
             <div class="archive-body" id="arc-body-${id}">
-                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${renderRaceTable(race.results, id, false)}</div>
+                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${renderRaceTable(race.results, id, false, race.isTraining)}</div>
             </div>
         </div>`;
     }).join('');
