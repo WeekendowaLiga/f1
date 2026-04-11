@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -41,6 +40,7 @@ body {
 
 /* ===================== SPLASH ===================== */
 #splash-screen {
+    opacity: 0;  
     position: fixed; inset: 0; background: var(--f1-black); z-index: 99999;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     padding-top: 60px; padding-bottom: 60px; cursor: pointer;
@@ -61,35 +61,35 @@ body {
 .splash-social-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
 .splash-social-btn img { width: 44px; height: 44px; object-fit: contain; }
 .splash-social-btn svg { width: 44px; height: 44px; }
-.splash-logo-wrap { position: relative; margin-bottom: 40px; animation: splashLogoIn 1s cubic-bezier(0.19,1,0.22,1) forwards; }
+.splash-logo-wrap { position: relative; margin-bottom: 40px; animation: splashLogoIn 0.55s cubic-bezier(0.19,1,0.22,1) forwards; }
 @keyframes splashLogoIn { from { opacity: 0; transform: scale(0.7) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 .splash-logo-box { background: #000; width: 320px; height: 240px; transform: skewX(-15deg); border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 0 80px rgba(225,6,0,0.35), 0 40px 80px rgba(0,0,0,0.6); position: relative; }
 .splash-logo-box::after { content: ''; position: absolute; inset: 0; border: 2px solid rgba(225,6,0,0.3); border-radius: 10px; pointer-events: none; }
 .splash-logo-box img { width: auto; height: auto; max-width: 85%; max-height: 85%; object-fit: contain; transform: skewX(15deg); }
-.splash-title { font-family: var(--font-display); font-weight: 900; font-size: 90px; color: var(--f1-white); text-transform: uppercase; text-align: center; letter-spacing: 4px; line-height: 0.9; animation: splashTitleIn 1s 0.2s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-title { font-family: var(--font-display); font-weight: 900; font-size: 90px; color: var(--f1-white); text-transform: uppercase; text-align: center; letter-spacing: 4px; line-height: 0.9; animation: splashTitleIn 0.55s 0s cubic-bezier(0.19,1,0.22,1) both; }
 @keyframes splashTitleIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-.splash-subtitle { font-family: var(--font-data); font-size: 28px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; animation: splashTitleIn 1s 0.5s cubic-bezier(0.19,1,0.22,1) both; }
-.splash-countdown { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 40px; animation: splashTitleIn 1s 0.6s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-subtitle { font-family: var(--font-data); font-size: 28px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-countdown { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 40px; animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-timer-unit { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: 3px solid var(--f1-red); min-width: 100px; padding: 18px 16px 14px; border-radius: 4px; text-align: center; }
 .splash-timer-val { font-family: var(--font-display); font-size: 52px; font-weight: 900; display: block; line-height: 1; color: var(--f1-white); letter-spacing: 2px; }
 .splash-timer-label { font-family: var(--font-data); font-size: 11px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 8px; font-weight: 800; display: block; letter-spacing: 4px; }
 .splash-timer-sep { display: flex; align-items: center; padding-bottom: 20px; font-family: var(--font-display); font-size: 40px; font-weight: 900; color: var(--f1-red); opacity: 0.6; }
-.splash-soon { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: var(--f1-red); letter-spacing: 8px; margin-top: 40px; animation: splashTitleIn 1s 0.6s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-soon { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: var(--f1-red); letter-spacing: 8px; margin-top: 40px; animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-cta { margin-top: 40px; font-family: var(--font-data); font-size: 22px; letter-spacing: 8px; color: rgba(255,255,255,0.25); text-transform: uppercase; animation: splashPulse 2s 1.2s ease infinite both; }
 @keyframes splashPulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.7; } }
-#splash-images-container { width: 90%; max-width: 1100px; margin-top: 30px; display: flex; flex-direction: column; gap: 20px; animation: splashTitleIn 1s 0.5s cubic-bezier(0.19,1,0.22,1) both; }
+#splash-images-container { width: 90%; max-width: 1100px; margin-top: 30px; display: flex; flex-direction: column; gap: 20px; animation: splashTitleIn 0.5s 0s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-img-row { display: flex; width: 100%; }
 .splash-img-row img { border-radius: 6px; border: 2px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 100%; height: auto; display: block; }
-.splash-image-area { max-width: 900px; width: 80%; margin-top: 20px; text-align: center; color: var(--f1-white); animation: splashTitleIn 1s 0.7s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-image-area { max-width: 900px; width: 80%; margin-top: 20px; text-align: center; color: var(--f1-white); animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-image-area img { max-width: 100%; height: auto; border-radius: 6px; border: 2px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-.splash-content-area { max-width: 1200px; width: 80%; margin-top: 10px; text-align: center; color: var(--f1-white); animation: splashTitleIn 1s 0.75s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-content-area { max-width: 1200px; width: 80%; margin-top: 10px; text-align: center; color: var(--f1-white); animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-content-area img { max-width: 100%; height: auto; border-radius: 6px; }
 
 /* ===================== NEWS BAR ===================== */
 #news-bar-container { background: var(--f1-red); color: var(--f1-white); height: 60px; display: none; align-items: center; overflow: hidden; border-bottom: 4px solid var(--f1-black); box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; z-index: 100; }
 .news-label { background: var(--f1-black); padding: 0 45px; height: 100%; display: flex; align-items: center; font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: 4px; transform: skewX(-15deg); margin-left: -15px; position: relative; z-index: 10; }
-.news-track { white-space: nowrap; display: inline-block; animation: f1-marquee 40s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 50px; }
-.news-track-clone { white-space: nowrap; display: inline-block; animation: f1-marquee 40s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 80px; }
+.news-track { white-space: nowrap; display: inline-block; animation: f1-marquee 40.55s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 50px; }
+.news-track-clone { white-space: nowrap; display: inline-block; animation: f1-marquee 40.55s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 80px; }
 .news-marquee-box { overflow: hidden; display: flex; flex: 1; white-space: nowrap; }
 @keyframes f1-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 #news-bar-container::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 100px; background: linear-gradient(to right, transparent, var(--f1-red)); pointer-events: none; z-index: 5; }
@@ -140,12 +140,12 @@ body {
 .f1-table tbody tr:nth-child(2)  { animation-delay: 0.08s; }
 .f1-table tbody tr:nth-child(3)  { animation-delay: 0.12s; }
 .f1-table tbody tr:nth-child(4)  { animation-delay: 0.16s; }
-.f1-table tbody tr:nth-child(5)  { animation-delay: 0.20s; }
+.f1-table tbody tr:nth-child(5)  { animation-delay: 0.20.55s; }
 .f1-table tbody tr:nth-child(6)  { animation-delay: 0.24s; }
 .f1-table tbody tr:nth-child(7)  { animation-delay: 0.28s; }
 .f1-table tbody tr:nth-child(8)  { animation-delay: 0.32s; }
 .f1-table tbody tr:nth-child(9)  { animation-delay: 0.36s; }
-.f1-table tbody tr:nth-child(n+10) { animation-delay: 0.40s; }
+.f1-table tbody tr:nth-child(n+10) { animation-delay: 0.40.55s; }
 .f1-card { background: var(--f1-white); border: 1px solid var(--f1-light-grey); border-top: 20px solid var(--f1-black); box-shadow: 0 30px 60px rgba(0,0,0,0.07); margin-bottom: 80px; overflow: hidden; transition: box-shadow 0.4s ease, transform 0.3s ease; }
 .f1-card:hover { box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 0 0 1px rgba(225,6,0,0.12); transform: translateY(-3px); }
 .f1-card-title { padding: 40px 50px; background: #f8f8f9; border-bottom: 2px solid #eee; font-family: var(--font-display); font-size: 40px; text-transform: uppercase; color: var(--f1-black); display: flex; align-items: center; letter-spacing: var(--ls-heading); }
@@ -592,7 +592,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .dp-race-table th { font-size: 10px; padding: 12px 8px; }
     .dp-pts-cell { font-size: 22px !important; }
     #driver-profile-overlay { padding: 0; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-    #driver-profile-modal { border-radius: 0; min-height: 100vh; min-height: 100svh; }
+    #driver-profile-modal { border-radius: 0; min-height: 100vh; min-height: 100.55svh; }
     .dp-close-btn { top: 14px; right: 14px; width: 46px; height: 46px; }
     .dp-stats-row { flex-wrap: wrap; }
     .dp-stat { flex: 0 0 25%; border-bottom: 1px solid rgba(255,255,255,0.07); }
@@ -650,7 +650,26 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 </style>
 </head>
-<body>
+<body style="background:#15151e">
+<div id="pre-loader" style="
+    position:fixed;inset:0;background:#15151e;z-index:999999;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+    transition:opacity 0.6s ease;
+">
+    <div style="background:#000;width:160px;height:120px;transform:skewX(-15deg);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 60px rgba(225,6,0,0.4);">
+        <img src="Logo.png" style="width:85%;height:85%;object-fit:contain;transform:skewX(15deg);">
+    </div>
+    <div style="font-family:'Saira Condensed',sans-serif;font-size:52px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:3px;text-align:center;line-height:0.95;">Weekendowa<br>Liga F1</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:rgba(255,255,255,0.3);letter-spacing:8px;text-transform:uppercase;">Sezon 1 · 2026</div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+        <div class="pl-dot" style="width:8px;height:8px;border-radius:50%;background:#e10600;animation:plPulse 1.2s 0s ease infinite;"></div>
+        <div class="pl-dot" style="width:8px;height:8px;border-radius:50%;background:#e10600;animation:plPulse 1.2s 0.2s ease infinite;"></div>
+        <div class="pl-dot" style="width:8px;height:8px;border-radius:50%;background:#e10600;animation:plPulse 1.2s 0.4s ease infinite;"></div>
+    </div>
+    <style>
+        @keyframes plPulse{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+    </style>
+</div>
 
 <div id="splash-screen" onclick="hideSplash()">
     <div id="splash-social-icons"></div>
@@ -659,8 +678,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
     <div class="splash-title">Weekendowa<br>Liga F1</div>
     <div class="splash-subtitle">Sezon 1 - 2026</div>
-    <div id="splash-gp-name" style="font-family:var(--font-data);font-size:22px;color:rgba(255,255,255,0.45);letter-spacing:6px;text-transform:uppercase;margin-top:18px;margin-bottom:-10px;animation:splashTitleIn 1s 0.55s cubic-bezier(0.19,1,0.22,1) both;"></div>
-    <div id="splash-countdown-section"></div>
+    <div id="splash-gp-name" style="font-family:var(--font-data);font-size:22px;color:rgba(255,255,255,0.45);letter-spacing:6px;text-transform:uppercase;margin-top:18px;margin-bottom:-10px;animation:splashTitleIn 0.5s 0.55s cubic-bezier(0.19,1,0.22,1) both;"></div>
+    <div id="splash-countdown-section" style="animation:splashTitleIn 0.55s cubic-bezier(0.19,1,0.22,1) both;min-height:120px;"></div>
     <div id="splash-images-container"></div>
     <div id="splash-image-area" class="splash-image-area" style="display:none;"></div>
     <div id="splash-custom-content" class="splash-content-area"></div>
@@ -755,7 +774,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
     </div>
     <div id="view-archive" class="page-view">
+        <div style="display:flex;gap:0;margin-bottom:30px;border-bottom:4px solid var(--f1-black);">
+            <button id="arc-tab-races" onclick="ui.switchArchiveTab('races')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;">🏁 WYŚCIGI</button>
+            <button id="arc-tab-quali" onclick="ui.switchArchiveTab('quali')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;display:none;">⏱ TRENINGI</button>
+        </div>
         <div id="api-archive-list"></div>
+        <div id="api-quali-list" style="display:none;"></div>
     </div>
     <div id="view-gallery" class="page-view">
         <div id="gallery-albums" class="gallery-grid"></div>
@@ -797,7 +821,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-podiums">0</span><span class="dp-stat-label">Podium</span></div>
             <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-best">—</span><span class="dp-stat-label">Najlepsza Poz.</span></div>
             <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-avg">—</span><span class="dp-stat-label">Śr. Poz.</span></div>
-            <<div class="dp-stat"><span class="dp-stat-val dp-purple" id="dp-stat-fl">0</span><span class="dp-stat-label">Najszybsze okrążenia</span></div>
+            <div class="dp-stat"><span class="dp-stat-val dp-purple" id="dp-stat-fl">0</span><span class="dp-stat-label">Najszybsze okrążenia</span></div>
             <div class="dp-stat"><span class="dp-stat-val dp-highlight" id="dp-stat-pp">0</span><span class="dp-stat-label">Pole Position</span></div>
         </div>
         <div class="dp-races-section">
@@ -885,6 +909,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="form-group no-bonus-box"><label class="form-label">Nicki BEZ +3 PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
             <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
 			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
+			<label class="check-group"><input type="checkbox" id="pub-qualifying"> TRENINGI (nick | zespół | najlepszy czas)</label>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.publishRace()">📤 PUBLIKUJ WYNIKI</button></div>
         </div>
     </div>
@@ -928,7 +953,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div style="background:#f4f4f7;border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:22px;">
                 <h4 style="margin:0 0 16px;font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:#333;">2. DODAJ WPIS DO ALBUMU</h4>
                 <div class="form-group"><label class="form-label">Wybierz album:</label><select id="adm-entry-album" class="f1-input" style="cursor:pointer;"><option value="">— Wybierz album —</option></select></div>
-                <div class="form-group"><label class="form-label">Tytuł wpisu:</label><input type="text" id="adm-entry-title" class="f1-input" placeholder="np. Kwalifikacje — highlight"></div>
+                <div class="form-group"><label class="form-label">Tytuł wpisu:</label><input type="text" id="adm-entry-title" class="f1-input" placeholder="np. TRENINGI — highlight"></div>
                 <div class="form-group"><label class="form-label">Typ mediów:</label><div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;"><label class="check-group"><input type="radio" name="media-type" value="youtube" checked onchange="ui.switchMediaType(this.value)"> YouTube URL</label><label class="check-group"><input type="radio" name="media-type" value="url" onchange="ui.switchMediaType(this.value)"> Bezpośredni URL</label><label class="check-group"><input type="radio" name="media-type" value="upload" onchange="ui.switchMediaType(this.value)"> Prześlij plik</label></div></div>
                 <div id="media-input-youtube" class="form-group"><label class="form-label">Link YouTube:</label><input type="text" id="adm-entry-youtube" class="f1-input" placeholder="https://youtu.be/..."></div>
                 <div id="media-input-url" class="form-group hidden"><label class="form-label">Bezpośredni URL:</label><input type="text" id="adm-entry-url" class="f1-input" placeholder="https://...mp4 lub ...jpg"></div>
@@ -954,10 +979,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 
 </div><!-- /#main-app -->
 
+
 <script>
 function hideSplash() {
     var splash = document.getElementById('splash-screen');
     if (!splash) return;
+	document.body.style.background = '';
     splash.classList.add('hiding');
     splash.style.opacity = '0';
     splash.style.transform = 'scale(1.05)';
@@ -965,7 +992,7 @@ function hideSplash() {
         splash.style.display = 'none';
         var app = document.getElementById('main-app');
         if (app) app.style.display = 'block';
-    }, 700);
+    }, 500);
 }
 function showSplash() {
     var app = document.getElementById('main-app');
@@ -980,9 +1007,9 @@ function showSplash() {
 setTimeout(function() {
     var splash = document.getElementById('splash-screen');
     if (splash && splash.style.display !== 'none') {
-        console.warn('Firebase timeout — strona działa w trybie offline');
+        hideSplash();
     }
-}, 8000);
+}, 30000);
 </script>
 
 <script type="module">
@@ -1442,7 +1469,16 @@ window.ui = {
         const isOpen = body.classList.toggle('open');
         if (btn) btn.classList.toggle('open', isOpen);
     },
-
+	switchArchiveTab(tab) {
+        const isRaces = tab === 'races';
+        document.getElementById('api-archive-list').style.display = isRaces ? 'block' : 'none';
+        document.getElementById('api-quali-list').style.display = isRaces ? 'none' : 'block';
+        const activeStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;';
+        const inactiveStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;';
+        document.getElementById('arc-tab-races').style.cssText = isRaces ? activeStyle : inactiveStyle;
+       document.getElementById('arc-tab-quali').style.cssText = isRaces ? inactiveStyle : activeStyle;
+       if (!isLoggedIn) document.getElementById('arc-tab-quali').style.display = 'none';
+    },
     // ===================== PROFIL KIEROWCY =====================
     openDriverProfile(nick) {
         if (!nick || nick === '—' || nick.trim() === '') return;
@@ -1803,7 +1839,6 @@ container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining)
 
 function rerenderArchive() {
     const data = archiveDataCache;
-    const arcList = document.getElementById('api-archive-list');
     if (!data || Object.keys(data).length === 0) return;
     const entries = Object.entries(data).sort((a, b) => {
         const ao = a[1].order, bo = b[1].order;
@@ -1811,25 +1846,32 @@ function rerenderArchive() {
         if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return (b[1].timestamp || 0) - (a[1].timestamp || 0);
     });
-    arcList.innerHTML = entries.map(([id, race]) => {
+    const makeItem = (id, race, isQuali) => {
         const editPart = isLoggedIn
             ? `id="arc-name-${id}" class="arc-edit-name editable-mode" onclick="ui.editArchiveName('${id}', '${(race.name||'').replace(/'/g,"\\'")}')"`
             : `id="arc-name-${id}" class="arc-edit-name"`;
+        const tableHtml = isQuali ? renderQualifyingTable(race.results, id) : renderRaceTable(race.results, id, false, race.isTraining);
         return `<div class="archive-item">
             <button class="archive-header" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
-                <span ${editPart}>${race.name}</span>
+                <span ${editPart}>${race.name}</span>${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
             <div class="archive-body" id="arc-body-${id}">
-                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${renderRaceTable(race.results, id, false, race.isTraining)}</div>
+                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${tableHtml}</div>
             </div>
         </div>`;
-    }).join('');
+    };
+    const arcList = document.getElementById('api-archive-list');
+    const qualiList = document.getElementById('api-quali-list');
+    if (arcList) arcList.innerHTML = entries.filter(([,r]) => !r.isQualifying).map(([id,r]) => makeItem(id,r,false)).join('') || '';
+    if (qualiList) qualiList.innerHTML = entries.filter(([,r]) => r.isQualifying).map(([id,r]) => makeItem(id,r,true)).join('') || '';
 }
 onAuthStateChanged(auth, user => {
     isLoggedIn = !!user;
     document.getElementById('btn-open-login').classList.toggle('hidden', !!user);
     document.getElementById('btn-open-admin').classList.toggle('hidden', !user);
+    const qualiTab = document.getElementById('arc-tab-quali');
+    if (qualiTab) qualiTab.style.display = user ? '' : 'none';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
     if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
     rerenderLastRace();   // ← DODANE
@@ -1907,6 +1949,18 @@ window.dbCore = {
                 const p = line.split('|').map(s => s.trim());
                 return { pos: index + 1, nick: p[0], team: normalizeTeamName(p[1]), start: p[2], pit: p[3], best: p[4], time: p[5], pts: p[6] };
             });
+        }
+		const isQualifying = document.getElementById('pub-qualifying').checked;
+        if (isQualifying) {
+            const qualResults = lines.map(line => {
+                const p = line.split('|').map(s => s.trim());
+                return { nick: p[0], team: normalizeTeamName(p[1] || ''), best: p[2] || '' };
+            });
+            const qualObj = { name: title, results: qualResults, timestamp: Date.now(), isQualifying: true };
+            await push(ref(db, 'archive'), qualObj);
+            alert('✅ TRENINGI opublikowane!');
+            document.getElementById('pub-qualifying').checked = false;
+            return;
         }
         const isTraining = document.getElementById('pub-training').checked;
 		const raceObj = { name: title, results, timestamp: Date.now(), ...(isTraining && { isTraining: true }) };
@@ -2093,18 +2147,8 @@ const getTeamKey = (teamName) => { const tc = getTeamClass(teamName); return tc 
 const findFastestLap = (results) => findFastestLapIdx(results);
 
 // ===================== RENDEROWANIE TABELI WYŚCIGU =====================
-// nick — klikalny span otwierający profil
-const nickSpan = (nick, rowIdx, raceId, isLastRace) => {
-    const safeNick = (nick || '').replace(/'/g, "\\'");
-    const profileBtn = `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${nick || '—'}</span>`;
-    if (!isLoggedIn) return profileBtn;
-    // Admin może edytować nick + kliknąć profil osobnym przyciskiem
-    if (raceId) return `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${rowIdx},'nick')">${nick || '—'}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>`;
-    if (isLastRace) return `<span class="arc-cell-editable" onclick="ui.editLastRaceCell(this,${rowIdx},'nick')">${nick || '—'}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>`;
-    return profileBtn;
-};
-
 const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining = false) => {
+    if (!results || results.length === 0) return '<p style="padding:40px;">Brak wyników.</p>';
     const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
     const clean = (val) => (val || '').toString().replace(/^(Start:|Pit:)\s*/i, '').trim();
     const fastestIdx = findFastestLap(results);
@@ -2115,20 +2159,79 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
         return `<span class="${extraClass}">${val||'-'}</span>`;
     };
     return `<table class="f1-table"><thead><tr>
-        <th class="col-pos" style="width:50px;">P</th><th class="col-driver" style="width:22%;">Kierowca</th><th style="width:18%;">Zespół</th>
-	<th style="text-align:center;width:50px;">Grid</th><th style="text-align:center;width:44px;">Pit</th>
-	<th style="width:auto;">Czas</th>${!isTraining ? '<th class="col-pts" style="width:70px;">PKT</th>' : ''}
+        <th class="col-pos" style="width:50px;">P</th>
+        <th class="col-driver" style="width:22%;">Kierowca</th>
+        <th style="width:18%;">Zespół</th>
+        ${isTraining
+            ? `<th style="width:auto;">Najl. okrążenie</th>`
+            : `<th style="text-align:center;width:50px;">Grid</th>
+               <th style="text-align:center;width:44px;">Pit</th>
+               <th style="width:150px;">Najl. okr.</th>
+               <th style="width:auto;">Czas</th>
+               <th class="col-pts" style="width:70px;">PKT</th>`
+        }
     </tr></thead><tbody>${results.map((r, i) => `
         <tr class="${getTeamClass(r.team)}">
             <td class="col-pos ${posClass(i)}">${cellEdit(r.pos, i, 'pos')}</td>
             <td class="col-driver">${nickSpan(r.nick, i, raceId, isLastRace)}</td>
             <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellEdit(r.team, i, 'team')}</td>
-            <td style="text-align:center;">${cellEdit(clean(r.start), i, 'start')}</td>
-            <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
-            <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
-            <td>${cellEdit(r.time, i, 'time')}</td>
-${!isTraining ? `<td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>` : ''}
+            ${isTraining
+                ? `<td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>`
+                : `<td style="text-align:center;">${cellEdit(clean(r.start), i, 'start')}</td>
+                   <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
+                   <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
+                   <td>${cellEdit(r.time, i, 'time')}</td>
+                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>`
+            }
         </tr>`).join('')}</tbody></table>`;
+};
+// nick — klikalny span otwierający profil
+const nickSpan = (nick, rowIdx, raceId, isLastRace) => {
+    const safeNick = (nick || '').replace(/'/g, "\\'");
+    const profileBtn = `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${nick || '—'}</span>`;
+    if (!isLoggedIn) return profileBtn;
+    // Admin może edytować nick + kliknąć profil osobnym przyciskiem
+    if (raceId) return `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${rowIdx},'nick')">${nick || '—'}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>`;
+    if (isLastRace) return `<span class="arc-cell-editable" onclick="ui.editLastRaceCell(this,${rowIdx},'nick')">${nick || '—'}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>`;
+    return profileBtn;
+};
+const renderQualifyingTable = (results, raceId = null) => {
+    if (!results || results.length === 0) return '<p style="padding:20px;">Brak wyników.</p>';
+    const toSec = (t) => {
+        if (!t || t === '-' || t === '—') return Infinity;
+        const clean = t.toString().trim();
+        const m = clean.match(/^(\d+):(\d+)[\.,](\d+)$/);
+        if (m) return parseInt(m[1]) * 60 + parseInt(m[2]) + parseInt(m[3]) / 1000;
+        const s = parseFloat(clean.replace(',', '.'));
+        return isNaN(s) ? Infinity : s;
+    };
+    const sorted = [...results].sort((a, b) => toSec(a.best) - toSec(b.best));
+    const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
+    return `<table class="f1-table"><thead><tr>
+        <th class="col-pos">P</th>
+        <th class="col-driver">Kierowca</th>
+        <th>Zespół</th>
+        <th style="width:180px;">Najlepszy czas</th>
+        <th style="width:160px;text-align:right;padding-right:40px;">STRATA</th>
+    </tr></thead><tbody>${sorted.map((r, i) => {
+        const bestSec = toSec(r.best);
+        const leaderSec = toSec(sorted[0].best);
+        const gap = (i === 0 || bestSec === Infinity) ? '0:00,000' : '+' + (bestSec - leaderSec).toFixed(3).replace('.', ',') + 's';
+        const safeNick = (r.nick || '').replace(/'/g, "\\'");
+        const nickHtml = isLoggedIn && raceId
+            ? `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${results.indexOf(r)},'nick')">${r.nick||'—'}</span>`
+            : `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')">${r.nick||'—'}</span>`;
+        const bestHtml = isLoggedIn && raceId
+            ? `<span class="arc-cell-editable fastest-lap" onclick="ui.editArcCell(this,'${raceId}',${results.indexOf(r)},'best')">${r.best||'—'}</span>`
+            : `<span class="fastest-lap">${r.best||'—'}</span>`;
+        return `<tr class="${getTeamClass(r.team)}">
+            <td class="col-pos ${posClass(i)}">${i+1}</td>
+            <td class="col-driver">${nickHtml}</td>
+            <td class="${getTeamClass(r.team).replace('team-','txt-')}">${isLoggedIn && raceId ? `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${results.indexOf(r)},'team')">${r.team||'—'}</span>` : r.team||'—'}</td>
+            <td>${bestHtml}</td>
+            <td style="text-align:right;padding-right:40px;font-family:var(--font-display);font-size:28px;color:${i===0?'var(--f1-red)':'#888'};font-weight:${i===0?'900':'400'};">${gap}</td>
+        </tr>`;
+    }).join('')}</tbody></table>`;
 };
 
 function renderConstructorRow(r, i) {
@@ -2142,7 +2245,7 @@ function renderConstructorRow(r, i) {
     return `<tr class="constructor-row ${cClass}">
         <td class="col-pos" style="font-weight:900;"><span class="${posClass}">${i+1}</span></td>
         <td style="font-weight:700;font-size:18px;letter-spacing:1px;white-space:normal;">
-            <div class="constructor-name-cell">${leftDecor}<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span></div>
+            <div class="constructor-name-cell">${leftDecor}${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span>`}`}`}`}`}`}`}`}`}`}</div>
         </td>
         <td class="col-pts" style="padding-right:10px;">
             <span class="cteam-pts-cell">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','teams',${i},'pts')">${r.pts}</span>` : r.pts}</span>
@@ -2216,9 +2319,9 @@ onValue(ref(db, 'config'), snap => {
     document.getElementById('api-news-clone').innerHTML = formattedNews;
     const track = document.getElementById('api-news-content'); const clone = document.getElementById('api-news-clone');
     track.style.animation = 'none'; clone.style.animation = 'none'; void track.offsetWidth;
-    track.style.animation = 'f1-marquee 40s linear infinite';
-    clone.style.animation = 'f1-marquee 40s linear infinite'; clone.style.animationDelay = '-20s';
-    document.getElementById('display-hero-title').innerText = c.heroTitle || "NEXT GP EVENT";
+    track.style.animation = 'f1-marquee 40.55s linear infinite';
+    clone.style.animation = 'f1-marquee 40.55s linear infinite'; clone.style.animationDelay = '-20.55s';
+    document.getElementById('display-hero-title').innerText = c.heroTitle || "NEXT GP ";
     const splashGpName = document.getElementById('splash-gp-name');
     if (splashGpName && c.heroTitle) { splashGpName.textContent = c.heroTitle; splashGpName.style.display = ''; }
     else if (splashGpName) { splashGpName.style.display = 'none'; }
@@ -2243,12 +2346,20 @@ onValue(ref(db, 'config'), snap => {
             document.getElementById('timer-s').innerText = s.toString().padStart(2,'0');
         }, 1000);
     }
+	localStorage.setItem('f1_heroConfig', JSON.stringify(cachedHeroConfig));
     renderSplashCountdown(cachedHeroConfig);
     if (c.heroTitle) document.getElementById('adm-hero-title').value = c.heroTitle;
     if (c.heroDate)  document.getElementById('adm-hero-date').value = c.heroDate;
-    if (c.heroMode === 'soon') { document.getElementById('hero-mode-soon').checked = true; document.getElementById('hero-date-group').style.display = 'none'; }
     if (c.showNews !== undefined) document.getElementById('adm-show-news').checked = c.showNews;
     if (c.newsContent) document.getElementById('adm-news-content').value = c.newsContent;
+    const preLoader = document.getElementById('pre-loader');
+    const splash = document.getElementById('splash-screen');
+    if (preLoader && preLoader.style.display !== 'none') {
+        preLoader.style.opacity = '0';
+        splash.style.transition = 'opacity 0.6s ease';
+        splash.style.opacity = '1';
+        setTimeout(() => { preLoader.style.display = 'none'; }, 600);
+    }
 });
 
 onValue(ref(db, 'standings'), snap => {
@@ -2273,10 +2384,10 @@ onValue(ref(db, 'standings'), snap => {
             <td class="col-driver">
                 <div class="driver-cell">
                     ${avatarHtml}
-                    <span class="driver-name-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${r.nick}</span>
+                    ${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `<span class="driver-name-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${r.nick}</span>`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}
                 </div>
             </td>
-            <td class="${getTeamClass(r.team).replace('team-','txt-')}">${r.team}</td>
+            <td class="${getTeamClass(r.team).replace('team-','txt-')}">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','drivers',${i},'team')">${r.team}</span>` : r.team}</td>
             <td style="text-align:center">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','drivers',${i},'wins')">${r.wins||0}</span>` : `${r.wins||0}`}</td>
             <td class="col-pts">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','drivers',${i},'pts')">${r.pts}</span>` : `${r.pts}`}</td>
         </tr>`;
@@ -2327,20 +2438,35 @@ onValue(ref(db, 'archive'), snap => {
         if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return (b[1].timestamp || 0) - (a[1].timestamp || 0);
     });
-    arcList.innerHTML = entries.map(([id, race]) => {
+    const raceEntries = entries.filter(([, r]) => !r.isQualifying);
+    const qualiEntries = entries.filter(([, r]) => r.isQualifying);
+
+    const makeArchiveItem = (id, race, isQuali) => {
         const editPart = isLoggedIn
             ? `id="arc-name-${id}" class="arc-edit-name editable-mode" onclick="ui.editArchiveName('${id}', '${(race.name||'').replace(/'/g,"\\'")}')"`
             : `id="arc-name-${id}" class="arc-edit-name"`;
+        const tableHtml = isQuali
+            ? renderQualifyingTable(race.results, id)
+            : renderRaceTable(race.results, id, false, race.isTraining);
         return `<div class="archive-item">
             <button class="archive-header" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
-                <span ${editPart}>${race.name}</span>
+                <span ${editPart}>${race.name}</span>${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
             <div class="archive-body" id="arc-body-${id}">
-                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${renderRaceTable(race.results, id, false, race.isTraining)}</div>
+                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${tableHtml}</div>
             </div>
         </div>`;
-    }).join('');
+    };
+
+    arcList.innerHTML = raceEntries.map(([id, race]) => makeArchiveItem(id, race, false)).join('')
+        || "<p style='padding:20px;color:#999;font-family:var(--font-data);font-size:24px;'>Brak wyścigów.</p>";
+
+    const qualiList = document.getElementById('api-quali-list');
+    if (qualiList) {
+        qualiList.innerHTML = qualiEntries.map(([id, race]) => makeArchiveItem(id, race, true)).join('')
+            || "<p style='padding:20px;color:#999;font-family:var(--font-data);font-size:24px;'>Brak .</p>";
+    }
 
     const managerEl = document.getElementById('adm-archive-manager');
     const saveBtn = document.getElementById('btn-save-archive-order');
