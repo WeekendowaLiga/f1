@@ -331,6 +331,17 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
+
+#dp-races-content {
+    max-height: 520px;
+    overflow-y: auto;
+}
+@media (max-width: 1024px) {
+    #dp-races-content {
+        max-height: 360px;
+        overflow-y: auto;
+    }
+}
 #driver-profile-overlay.open { display: flex; }
 #driver-profile-modal {
     background: var(--f1-black);
@@ -930,6 +941,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <p style="color:#888;font-size:13px;margin-top:0;line-height:1.6;">Boty: np. <b>BOT:Max Verstappen</b></p>
             <div class="form-group"><label class="form-label">Wszyscy kierowcy (Nick | Team | Foto-URL | Wygrane | Pkt)</label><textarea id="adm-drivers-raw" class="f1-textarea" rows="12"></textarea></div>
             <div class="form-group"><label class="form-label">Zespoły (Team | Pkt):</label><textarea id="adm-teams-raw" class="f1-textarea" rows="6"></textarea></div>
+			<div id="standings-reorder-box" style="margin-bottom:20px;display:none;">
+    <label class="form-label">Kolejność kierowców (przeciągnij)</label>
+    <div class="reorder-list" id="standings-reorder-list"></div>
+    <button class="btn-action" id="btn-save-standings-order" onclick="dbCore.saveStandingsOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ</button>
+</div>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.saveStandings()">💾 ZAPISZ KLASYFIKACJE</button></div>
         </div>
     </div>
@@ -1732,6 +1748,17 @@ window.ui = {
                     let fileId = ''; const m1 = src.match(/\/d\/([^/\?&]+)/); const m2 = src.match(/[?&]id=([^&]+)/);
                     if (m1) fileId = m1[1]; else if (m2) fileId = m2[1];
                     mediaHtml = fileId ? `<iframe src="https://drive.google.com/file/d/${fileId}/preview" allowfullscreen></iframe>` : `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;"><source src="${src}"></video>`;
+					} else if (src.includes('medal.tv')) {
+    let medalId = '';
+    const mGames = src.match(/medal\.tv\/games\/[^\/]+\/clips\/([^\/\?&#]+)/);
+    const mClips = src.match(/medal\.tv\/clips?\/([^\/\?&#]+)/);
+    if (mGames) medalId = mGames[1];
+    else if (mClips) medalId = mClips[1];
+    if (medalId) {
+        mediaHtml = `<iframe src="https://medal.tv/clip/${medalId}/auto?loop=0&autostart=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+    } else {
+        mediaHtml = `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#111;"><a href="${src}" target="_blank" rel="noopener" style="color:var(--f1-red);font-family:var(--font-display);font-size:28px;letter-spacing:2px;text-decoration:none;">▶ OTWÓRZ NA MEDAL.TV</a></div>`;
+    }
                 } else if (/\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/.test(cleanSrc)) {
                     mediaHtml = `<img src="${src}" alt="${entry.title || ''}" style="width:100%;height:100%;object-fit:cover;">`;
                 } else {
@@ -1905,6 +1932,11 @@ window.dbCore = {
             else if (urlInput) { url = urlInput.value?.trim() || ''; }
             if (url) images.push({ url, align, width, scale });
         });
+    await set(ref(db, 'standings'), { ...data, drivers });
+    alert('Kolejność zapisana!');
+    document.getElementById('btn-save-standings-order').style.display = 'none';
+},
+        });
         await set(ref(db, 'config'), { ...current, splashContent: document.getElementById('adm-splash-content').value, splashImages: images, splashImage: images.length === 1 ? images[0].url : (current.splashImage || '') });
         alert("Strona startowa zapisana!");
         document.getElementById('splash-custom-content').innerHTML = document.getElementById('adm-splash-content').value;
@@ -1999,20 +2031,21 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
             let bonusCount = 0, noBonusCount = 0;
             const noBonusReasons = [];
             resultsWithBonus.forEach(r => {
-                const basePts = parseInt(r.pts) || 0;
+                const pts = parseInt(r.pts) || 0;
                 const nickKey = (r.nick || '').toLowerCase();
                 const teamKey = (r.team || '').toLowerCase();
                 const isWin = parseInt(r.pos) === 1;
                 const isBot = isRealF1Driver(r.nick);
-                const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
-                const isDnfDsq = dnfTags.some(s => (r.time || '').toString().toUpperCase().includes(s) || (r.pos || '').toString().toUpperCase().includes(s));
-                const isManualExcluded = noBonusNicks.has(nickKey);
-                let bonusPts = 0;
-                if (isBot || isDnfDsq || isManualExcluded) {
-                    bonusPts = 0;
-                    if (!isBot) { noBonusCount++; if (isDnfDsq) noBonusReasons.push(`${r.nick}: DNF/DSQ/DNS`); if (isManualExcluded) noBonusReasons.push(`${r.nick}: ręcznie wykluczony`); }
-                } else { bonusPts = 3; bonusCount++; }
-                const pts = basePts + bonusPts;
+                if (!isBot) {
+                    if (r.hasBonus) { bonusCount++; }
+                    else {
+                        noBonusCount++;
+                        const dnfTags = ['DNF','DSQ','DNS','RET','NC'];
+                        const isDnfDsq = dnfTags.some(s => (r.time||'').toString().toUpperCase().includes(s)||(r.pos||'').toString().toUpperCase().includes(s));
+                        if (isDnfDsq) noBonusReasons.push(`${r.nick}: DNF/DSQ/DNS`);
+                        else noBonusReasons.push(`${r.nick}: ręcznie wykluczony`);
+                    }
+                }
                 if (driverMap[nickKey]) { driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts; if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1; }
                 else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0 }; }
                 if (teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
@@ -2112,6 +2145,23 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         await update(ref(db), updates);
         alert("Kolejność wyścigów zapisana!");
         document.getElementById('btn-save-archive-order').style.display = 'none';
+    },
+	async saveStandingsOrder() {
+        const snap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
+        const data = snap.val();
+        if (!data) return;
+        const list = document.getElementById('standings-reorder-list');
+        if (!list) return;
+        const items = [...list.querySelectorAll('.reorder-item')];
+        const drivers = [...(data.drivers || [])];
+        items.forEach((item, i) => {
+            const nick = item.dataset.nick;
+            const d = drivers.find(d => d.nick === nick);
+            if (d) d.order = i;
+        });
+        await set(ref(db, 'standings'), { ...data, drivers });
+        alert('Kolejność zapisana!');
+        document.getElementById('btn-save-standings-order').style.display = 'none';
     },
     async saveGalleryOrder() {
         const list = document.getElementById('adm-gallery-manager');
@@ -2278,7 +2328,11 @@ function renderConstructorRow(r, i) {
         ? `<img src="${logoUrl}" class="constructor-logo-main" alt="${r.team}" onerror="this.style.display='none'">`
         : `<div style="width:6px;height:50px;background:rgba(255,255,255,0.4);border-radius:3px;flex-shrink:0;"></div>`;
     return `<tr class="constructor-row ${cClass}">
-        <td class="col-pos" style="font-weight:900;"><span class="${posClass}">${i+1}</span></td>
+        <td class="col-pos" style="font-weight:900;">
+    ${isLoggedIn
+        ? `<span class="arc-cell-editable ${posClass}" onclick="ui.editCell(this,'standings','teams',${i},'pos')">${r.pos||i+1}</span>`
+        : `<span class="${posClass}">${r.pos||i+1}</span>`}
+</td>
         <td style="font-weight:700;font-size:18px;letter-spacing:1px;white-space:normal;">
             <div class="constructor-name-cell">${leftDecor}${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span>`}`}`}`}`}`}`}`}`}`}</div>
         </td>
@@ -2400,8 +2454,13 @@ onValue(ref(db, 'config'), snap => {
 onValue(ref(db, 'standings'), snap => {
     const data = snap.val(); if (!data) return;
     const allDrivers = data.drivers || [];
-    const humanDrivers = allDrivers.filter(d => !d.isBot && !isRealF1Driver(d.nick));
-    const botDrivers   = allDrivers.filter(d =>  d.isBot ||  isRealF1Driver(d.nick));
+    const humanDrivers = allDrivers
+    .filter(d => !d.isBot && !isRealF1Driver(d.nick))
+    .sort((a, b) => {
+        if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
+        return (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0);
+    });
+const botDrivers = allDrivers.filter(d => d.isBot || isRealF1Driver(d.nick));
     const allForAdmin = allDrivers.map(d => {
         const autoBot = !d.isBot && isRealF1Driver(d.nick);
         return `${(d.isBot || autoBot) ? 'BOT:' : ''}${d.nick} | ${d.team} | ${d.photo || ''} | ${d.wins || 0} | ${d.pts}`;
@@ -2416,7 +2475,11 @@ onValue(ref(db, 'standings'), snap => {
         const safeNick = (r.nick || '').replace(/'/g, "\\'");
 		r = { ...r, team: normalizeTeamName(r.team) };
         html += `<tr class="${getTeamClass(r.team)}">
-            <td class="col-pos ${posClass}">${i+1}</td>
+            <td class="col-pos ${posClass}">
+    ${isLoggedIn
+        ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'pos')">${r.pos||i+1}</span>`
+        : `${r.pos||i+1}`}
+</td>
             <td class="col-driver">
                 <div class="driver-cell">
                     ${avatarHtml}
@@ -2447,7 +2510,24 @@ onValue(ref(db, 'standings'), snap => {
     const teams = data.teams || [];
     document.getElementById('adm-teams-raw').value = teams.map(t => `${t.team} | ${t.pts}`).join('\n');
     tBody.innerHTML = teams.map((r, i) => renderConstructorRow(r, i)).join('');
+
+    // Reorder kierowców w panelu admina
+    const reorderBox = document.getElementById('standings-reorder-box');
+    const reorderListEl = document.getElementById('standings-reorder-list');
+    const saveBtn2 = document.getElementById('btn-save-standings-order');
+    if (reorderBox && reorderListEl && isLoggedIn) {
+        reorderBox.style.display = 'block';
+        reorderListEl.innerHTML = humanDrivers.map(d => `
+            <div class="reorder-item" data-nick="${(d.nick||'').replace(/"/g,'&quot;')}">
+                <span class="reorder-handle">⠿</span>
+                <span class="reorder-label">${d.nick} <span style="color:#999;font-size:13px;">(${d.pts} pkt)</span></span>
+            </div>`).join('');
+        initReorderList(reorderListEl, () => { if (saveBtn2) saveBtn2.style.display = 'inline-flex'; });
+    } else if (reorderBox) {
+        reorderBox.style.display = 'none';
+    }
 });
+
 
 onValue(ref(db, 'lastRace'), snap => {
     const data = snap.val();
