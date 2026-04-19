@@ -1930,12 +1930,7 @@ window.dbCore = {
             let url = '';
             if (fileData && fileData.value && fileData.value.startsWith('data:')) { url = fileData.value; }
             else if (urlInput) { url = urlInput.value?.trim() || ''; }
-            if (url) images.push({ url, align, width, scale });
-        });
-    await set(ref(db, 'standings'), { ...data, drivers });
-    alert('Kolejność zapisana!');
-    document.getElementById('btn-save-standings-order').style.display = 'none';
-},
+           if (url) images.push({ url, align, width, scale });
         });
         await set(ref(db, 'config'), { ...current, splashContent: document.getElementById('adm-splash-content').value, splashImages: images, splashImage: images.length === 1 ? images[0].url : (current.splashImage || '') });
         alert("Strona startowa zapisana!");
