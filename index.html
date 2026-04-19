@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -908,8 +909,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <div class="admin-section-body">
             <div class="form-group"><label class="form-label">Pełna nazwa wyścigu:</label><input type="text" id="adm-race-title" class="f1-input" placeholder="np. GP Silverstone - Runda 5"></div>
             <div class="form-group"><label class="form-label">Dane wyścigu<span class="form-hint">① Wklej tabelę z gry F1 25 (format z tabulatorami wykrywany auto)<br>② Ręczny: Nick | Zespół | Start | Pit | Najlepsze | Czas | Pkt</span></label><textarea id="adm-race-raw" class="f1-textarea" rows="10" placeholder="Wklej tutaj..."></textarea></div>
-            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
-            <div class="form-group no-bonus-box"><label class="form-label">Nicki BEZ +3 PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
+            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>  PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
+            <div class="form-group no-bonus-box"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
             <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
 			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
 			<label class="check-group"><input type="checkbox" id="pub-qualifying"> TRENINGI (nick | zespół | najlepszy czas)</label>
@@ -2019,7 +2020,7 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
             const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
             const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
             await set(ref(db, 'standings'), { drivers, teams });
-            let msg = `✅ Wyniki opublikowane!\n\n+3 PKT otrzymało: ${bonusCount} graczy\n`;
+            let msg = `✅ Wyniki opublikowane!\n\n  PKT otrzymało: ${bonusCount} graczy\n`;
             if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
             msg += `\n\n(Boty AI nie wliczane)`;
             alert(msg);
@@ -2214,7 +2215,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
                    <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
                    <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
                    <td>${cellEdit(r.time, i, 'time')}</td>
-                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="+3 PKT za dojechanie">+3</span>` : ''}</td>`
+                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="  PKT za dojechanie"></span>` : ''}</td>`
             }
         </tr>`).join('')}</tbody></table>`;
 };
