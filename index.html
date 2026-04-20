@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -27,8 +28,7 @@
     --ls-label: 6px;
 }
 html { background: var(--f1-black); margin: 0; padding: 0; }
-html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--font-body); letter-spacing: var(--ls-data); overflow-x: hidden; min-height: 100vh; scrollbar-width: none !important; }
-body {
+html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--font-body); letter-spacing: var(--ls-data); overflow-x: clip; min-height: 100vh; scrollbar-width: none !important; }body {
     background-color: #e8e8ea;
     background-image:
         radial-gradient(circle at 25% 25%, rgba(225,6,0,0.03) 0%, transparent 50%),
@@ -37,7 +37,7 @@ body {
 }
 *::-webkit-scrollbar { display: none !important; }
 @media (min-width: 1025px) {
-    #main-app { transform: scale(0.65); transform-origin: top center; width: 153.84%; left: -26.92%; position: relative; }
+    #main-app { zoom: 0.57; width: 100%; left: 0%; position: relative; }
 }
 
 /* ===================== SPLASH ===================== */
@@ -233,6 +233,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .arc-cell-editable { cursor: pointer; border-radius: 3px; padding: 2px 6px; transition: background 0.2s, color 0.2s; display: inline-block; }
 .arc-cell-editable:hover { background: rgba(225,6,0,0.08); color: var(--f1-red); }
 .arc-cell-editable:hover::after { content: ' ✎'; font-size: 0.6em; opacity: 0.5; }
+.race-row-dragging { opacity: 0.35; background: rgba(225,6,0,0.08) !important; }
+.race-row-dragover { border-top: 3px solid var(--f1-red) !important; }
 
 /* ===================== ARCHIWUM ===================== */
 .archive-body { display: block !important; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.6s cubic-bezier(0.19,1,0.22,1), opacity 0.3s ease; }
@@ -695,7 +697,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="splash-subtitle">Sezon 1 - 2026</div>
     <div id="splash-gp-name" style="font-family:var(--font-data);font-size:22px;color:rgba(255,255,255,0.45);letter-spacing:6px;text-transform:uppercase;margin-top:18px;margin-bottom:-10px;animation:splashTitleIn 0.5s 0.55s cubic-bezier(0.19,1,0.22,1) both;"></div>
     <div id="splash-countdown-section" style="animation:splashTitleIn 0.55s cubic-bezier(0.19,1,0.22,1) both;min-height:120px;"></div>
-    <div id="splash-images-container"></div>
+    <div id="splash-images-container" style="margin-top:25px;"></div>
     <div id="splash-image-area" class="splash-image-area" style="display:none;"></div>
     <div id="splash-custom-content" class="splash-content-area"></div>
     <div class="splash-cta">KLIKNIJ ABY WEJŚĆ</div>
@@ -999,6 +1001,40 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 
 </div><!-- /#main-app -->
 
+<!-- PROFIL POZA main-app -->
+<div id="driver-profile-overlay" onclick="ui.closeDriverProfile(event)">
+    <div id="driver-profile-modal">
+        <div class="dp-top-bar" id="dp-top-bar"></div>
+        <button class="dp-close-btn" onclick="ui.closeDriverProfile(null,true)">✕</button>
+        <div class="dp-header">
+            <div class="dp-header-grid-bg"></div>
+            <div class="dp-left-accent" id="dp-left-accent"></div>
+            <div class="dp-header-content">
+                <div class="dp-nick" id="dp-nick-display">—</div>
+                <div class="dp-team-badge" id="dp-team-badge">
+                    <div class="dp-team-dot" id="dp-team-dot"></div>
+                    <span class="dp-team-name" id="dp-team-display">—</span>
+                </div>
+            </div>
+            <div class="dp-team-logo-wrap" id="dp-logo-wrap"></div>
+            <div class="dp-number-bg" id="dp-number-bg"></div>
+        </div>
+        <div class="dp-stats-row">
+            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-races">0</span><span class="dp-stat-label">Wyścigi</span></div>
+            <div class="dp-stat"><span class="dp-stat-val dp-highlight" id="dp-stat-pts">0</span><span class="dp-stat-label">Łączne PKT</span></div>
+            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-wins">0</span><span class="dp-stat-label">Wygrane</span></div>
+            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-podiums">0</span><span class="dp-stat-label">Podium</span></div>
+            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-best">—</span><span class="dp-stat-label">Najlepsza Poz.</span></div>
+            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-avg">—</span><span class="dp-stat-label">Śr. Poz.</span></div>
+            <div class="dp-stat"><span class="dp-stat-val dp-purple" id="dp-stat-fl">0</span><span class="dp-stat-label">Najszybsze okrążenia</span></div>
+            <div class="dp-stat"><span class="dp-stat-val dp-highlight" id="dp-stat-pp">0</span><span class="dp-stat-label">Pole Position</span></div>
+        </div>
+        <div class="dp-races-section">
+            <div class="dp-races-title">Historia Wyścigów</div>
+            <div id="dp-races-content"><div style="text-align:center;padding:60px;font-family:var(--font-display);font-size:26px;color:var(--f1-red);letter-spacing:4px;text-transform:uppercase;animation:splashPulse 1.5s ease infinite;">Ładowanie...</div></div>
+        </div>
+    </div>
+</div>
 
 <script>
 function hideSplash() {
@@ -1629,23 +1665,17 @@ window.ui = {
             </table></div>`;
         }
 
-   // Pokaż modal
+  // Pokaż modal
         const overlay = document.getElementById('driver-profile-overlay');
         overlay.classList.add('open');
-			document.body.style.overflow = 'hidden';
-			document.body.style.position = 'fixed';
-			document.body.style.width = '100%';
-        // Scroll na górę overlaya ORAZ okna — działa niezależnie od pozycji strony
+        document.body.style.overflow = 'hidden';
         overlay.scrollTop = 0;
-        window.scrollTo(0, 0);
     },
 
     closeDriverProfile(event, force) {
         if (force || (event && event.target === document.getElementById('driver-profile-overlay'))) {
             document.getElementById('driver-profile-overlay').classList.remove('open');
-			document.body.style.overflow = '';
-			document.body.style.position = '';
-			document.body.style.width = '';
+            document.body.style.overflow = '';
         }
     },
 
@@ -1682,17 +1712,24 @@ window.ui = {
         input.type = 'text'; input.value = current;
         input.style.cssText = 'width:110px;font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--f1-red);background:transparent;border:none;border-bottom:2px solid var(--f1-red);text-align:center;outline:none;';
         el.replaceWith(input); input.focus(); input.select();
+        let saved = false;
         const save = async () => {
+            if (saved) return; saved = true;
             const newVal = input.value.trim();
             const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = newVal;
             span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field);
-            input.replaceWith(span);
-            const s = await new Promise(res => onValue(ref(db, 'archive/' + raceId), res, { onlyOnce: true }));
-            const data = s.val();
-            if (data && data.results && data.results[rowIdx] !== undefined) { data.results[rowIdx][field] = newVal; await update(ref(db, 'archive/' + raceId), { results: data.results }); }
+            if (input.parentNode) input.replaceWith(span);
+            try {
+                const s = await new Promise(res => onValue(ref(db, 'archive/' + raceId), res, { onlyOnce: true }));
+                const data = s.val();
+                if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
+                    data.results[rowIdx][field] = newVal;
+                    await set(ref(db, 'archive/' + raceId + '/results'), data.results);
+                }
+            } catch(e) { console.error('Błąd zapisu arc:', e); }
         };
         input.addEventListener('blur', save);
-        input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } if (e.key === 'Escape') { saved = true; input.value = current; input.blur(); } });
     },
 
     editLastRaceCell(el, rowIdx, field) {
@@ -1702,17 +1739,24 @@ window.ui = {
         input.type = 'text'; input.value = current;
         input.style.cssText = 'width:110px;font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--f1-red);background:transparent;border:none;border-bottom:2px solid var(--f1-red);text-align:center;outline:none;';
         el.replaceWith(input); input.focus(); input.select();
+        let saved = false;
         const save = async () => {
+            if (saved) return; saved = true;
             const newVal = input.value.trim();
             const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = newVal;
             span.onclick = () => ui.editLastRaceCell(span, rowIdx, field);
-            input.replaceWith(span);
-            const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
-            const data = s.val();
-            if (data && data.results && data.results[rowIdx] !== undefined) { data.results[rowIdx][field] = newVal; await update(ref(db, 'lastRace'), { results: data.results }); }
+            if (input.parentNode) input.replaceWith(span);
+            try {
+                const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
+                const data = s.val();
+                if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
+                    data.results[rowIdx][field] = newVal;
+                    await set(ref(db, 'lastRace/results'), data.results);
+                }
+            } catch(e) { console.error('Błąd zapisu lastRace:', e); }
         };
         input.addEventListener('blur', save);
-        input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } if (e.key === 'Escape') { saved = true; input.value = current; input.blur(); } });
     },
 
     openAlbum(id) {
@@ -1872,6 +1916,7 @@ function rerenderLastRace() {
         titleEl.textContent = 'WYNIKI: ' + data.name;
     }
 container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
+if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
 }
 
 function rerenderArchive() {
@@ -2237,7 +2282,9 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
         if (isLastRace) return `<span class="arc-cell-editable ${extraClass}" onclick="ui.editLastRaceCell(this,${rowIdx},'${field}')">${val||'-'}</span>`;
         return `<span class="${extraClass}">${val||'-'}</span>`;
     };
-    return `<table class="f1-table"><thead><tr>
+    const tableId = raceId ? `race-tbl-${raceId}` : (isLastRace ? 'race-tbl-last' : 'race-tbl-tmp');
+    const dragAttrs = isLoggedIn ? `draggable="true" style="cursor:grab;"` : '';
+    return `<table class="f1-table" id="${tableId}"><thead><tr>
         <th class="col-pos" style="width:50px;">P</th>
         <th class="col-driver" style="width:22%;">Kierowca</th>
         <th style="width:18%;">Zespół</th>
@@ -2250,7 +2297,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
                <th class="col-pts" style="width:70px;">PKT</th>`
         }
     </tr></thead><tbody>${results.map((r, i) => `
-        <tr class="${getTeamClass(r.team)}">
+        <tr ${dragAttrs} class="${getTeamClass(r.team)}" data-row-idx="${i}" data-table-id="${tableId}">
             <td class="col-pos ${posClass(i)}">${cellEdit(r.pos, i, 'pos')}</td>
             <td class="col-driver">${nickSpan(r.nick, i, raceId, isLastRace)}</td>
             <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellEdit(r.team, i, 'team')}</td>
@@ -2533,6 +2580,7 @@ onValue(ref(db, 'lastRace'), snap => {
     if (isLoggedIn) { titleEl.innerHTML = `WYNIKI: <span class="editable-title" onclick="ui.editLastRaceName()" title="Kliknij aby edytować">${data.name}</span>`; }
     else { titleEl.textContent = 'WYNIKI: ' + data.name; }
   container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
+  if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
 });
 
 onValue(ref(db, 'archive'), snap => {
@@ -2572,6 +2620,7 @@ onValue(ref(db, 'archive'), snap => {
 
     arcList.innerHTML = raceEntries.map(([id, race]) => makeArchiveItem(id, race, false)).join('')
         || "<p style='padding:20px;color:#999;font-family:var(--font-data);font-size:24px;'>Brak wyścigów.</p>";
+    if (isLoggedIn) setTimeout(() => { raceEntries.forEach(([id]) => initRaceRowDragDrop(`race-tbl-${id}`, id, false)); }, 50);
 
     const qualiList = document.getElementById('api-quali-list');
     if (qualiList) {
@@ -2607,19 +2656,30 @@ onValue(ref(db, 'gallery'), snap => {
         return a[0] < b[0] ? -1 : 1;
     });
     albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
-    albumsGrid.innerHTML = entries.map(([id, gal]) => {
-        const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
-        return `<div class="album-card">
-            <div class="album-click-zone" onclick="ui.openAlbum('${id}')"></div>
-            ${gal.cover ? `<img class="album-card-img" src="${gal.cover}" alt="${gal.name}">` : ''}
-            <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 60%);pointer-events:none;"></div>
-            <button class="album-edit-btn ${isLoggedIn ? 'visible' : ''}" onclick="event.stopPropagation();ui.editAlbumNameFromGrid('${id}','${gal.name.replace(/'/g,"\\'")}',this)">✎ NAZWA</button>
-            <div class="album-info" style="pointer-events:none;">
-                <div class="album-name">${gal.name}</div>
-                <div style="font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,0.6);margin-top:6px;letter-spacing:1px;">${entryCount} ${entryCount===1?'wpis':'wpisów'}</div>
-            </div>
-        </div>`;
-    }).join('');
+    // Pinned album pierwszy
+const sortedForGrid = [...entries].sort((a, b) => {
+    const ap = a[1].pinned ? 1 : 0, bp = b[1].pinned ? 1 : 0;
+    return bp - ap;
+});
+albumsGrid.innerHTML = sortedForGrid.map(([id, gal]) => {
+    const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
+    const isPinned = !!gal.pinned;
+    const pinnedBadge = isPinned ? `<div style="position:absolute;top:14px;left:14px;z-index:20;background:var(--f1-red);color:#fff;border-radius:8px;padding:6px 14px;font-family:var(--font-display);font-size:18px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(225,6,0,0.4);">📌 PRZYPIĘTY</div>` : '';
+    const pinnedBorder = isPinned ? 'outline:3px solid var(--f1-red);outline-offset:-3px;' : '';
+    const pinBtn = isLoggedIn ? `<button class="album-edit-btn visible" style="top:16px;right:90px;" onclick="event.stopPropagation();ui.togglePinAlbum('${id}',${isPinned})">${isPinned ? '📌 ODEPNIJ' : '📌 PRZYPNIJ'}</button>` : '';
+    return `<div class="album-card" style="${pinnedBorder}">
+        <div class="album-click-zone" onclick="ui.openAlbum('${id}')"></div>
+        ${gal.cover ? `<img class="album-card-img" src="${gal.cover}" alt="${gal.name}">` : ''}
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 60%);pointer-events:none;"></div>
+        ${pinnedBadge}
+        ${pinBtn}
+        <button class="album-edit-btn ${isLoggedIn ? 'visible' : ''}" onclick="event.stopPropagation();ui.editAlbumNameFromGrid('${id}','${gal.name.replace(/'/g,"\\'")}',this)">✎ NAZWA</button>
+        <div class="album-info" style="pointer-events:none;">
+            <div class="album-name">${gal.name}</div>
+            <div style="font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,0.6);margin-top:6px;letter-spacing:1px;">${entryCount} ${entryCount===1?'wpis':'wpisów'}</div>
+        </div>
+    </div>`;
+}).join('');
     const saveBtn = document.getElementById('btn-save-gallery-order');
     manager.innerHTML = `<div class="reorder-list" id="gallery-reorder-list">` +
         entries.map(([id, gal]) => `
@@ -2636,6 +2696,10 @@ onValue(ref(db, 'gallery'), snap => {
     if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
     if (window._currentAlbumId && data[window._currentAlbumId]) ui.openAlbum(window._currentAlbumId);
 });
+
+ui.togglePinAlbum = async function(id, isPinned) {
+    await update(ref(db, 'gallery/' + id), { pinned: !isPinned });
+};
 
 ui.editAlbumNameFromGrid = async function(id, currentName, btn) {
     if (!isLoggedIn) return;
@@ -2659,6 +2723,66 @@ document.querySelectorAll('input[name="hero-mode"]').forEach(r => {
 
 buildLogosGrid();
 renderSocialIcons();
+
+// ===================== DRAG & DROP WIERSZY TABELI WYŚCIGU =====================
+function initRaceRowDragDrop(tableId, raceId, isLastRace) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    let dragSrcRow = null;
+
+    tbody.querySelectorAll('tr[draggable]').forEach(row => {
+        row.addEventListener('dragstart', e => {
+            dragSrcRow = row;
+            row.classList.add('race-row-dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        row.addEventListener('dragend', async () => {
+            row.classList.remove('race-row-dragging');
+            tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
+            // Zbierz nową kolejność i zapisz
+            const rows = [...tbody.querySelectorAll('tr[data-row-idx]')];
+            try {
+                if (raceId) {
+                    const s = await new Promise(res => onValue(ref(db, 'archive/' + raceId), res, { onlyOnce: true }));
+                    const data = s.val();
+                    if (data && Array.isArray(data.results)) {
+                        const oldResults = data.results;
+                        const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
+                        // zaktualizuj data-row-idx
+                        rows.forEach((r, i) => r.dataset.rowIdx = i);
+                        await set(ref(db, 'archive/' + raceId + '/results'), newResults);
+                    }
+                } else if (isLastRace) {
+                    const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
+                    const data = s.val();
+                    if (data && Array.isArray(data.results)) {
+                        const oldResults = data.results;
+                        const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
+                        rows.forEach((r, i) => r.dataset.rowIdx = i);
+                        await set(ref(db, 'lastRace/results'), newResults);
+                    }
+                }
+            } catch(e) { console.error('Błąd zapisu kolejności:', e); }
+        });
+        row.addEventListener('dragover', e => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
+            if (row !== dragSrcRow) row.classList.add('race-row-dragover');
+        });
+        row.addEventListener('drop', e => {
+            e.stopPropagation();
+            if (dragSrcRow && dragSrcRow !== row) {
+                const allRows = [...tbody.querySelectorAll('tr')];
+                const si = allRows.indexOf(dragSrcRow), di = allRows.indexOf(row);
+                if (si < di) tbody.insertBefore(dragSrcRow, row.nextSibling);
+                else tbody.insertBefore(dragSrcRow, row);
+            }
+        });
+    });
+}
 
 } catch(err) {
     console.error('Firebase/App error:', err);
