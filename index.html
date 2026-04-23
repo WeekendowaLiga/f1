@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -58,7 +59,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 }
 #splash-screen > * { position: relative; z-index: 1; }
 #splash-screen.hiding { opacity: 0; transform: scale(1.05); pointer-events: none; }
-#splash-social-icons { position: absolute !important; top: 24px; right: 28px; z-index: 100001; display: flex; gap: 14px; align-items: center; }
+#splash-social-icons { position: absolute !important; top: 24px; right: 28px; z-index: 100001; display: flex; gap: 10px; align-items: center; }
 .splash-social-btn { width: 72px; height: 72px; border-radius: 16px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: background 0.25s, border-color 0.25s, transform 0.2s; overflow: hidden; }
 .splash-social-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
 .splash-social-btn img { width: 44px; height: 44px; object-fit: contain; }
@@ -71,7 +72,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .splash-title { font-family: var(--font-display); font-weight: 900; font-size: 90px; color: var(--f1-white); text-transform: uppercase; text-align: center; letter-spacing: 4px; line-height: 0.9; animation: splashTitleIn 0.55s 0s cubic-bezier(0.19,1,0.22,1) both; }
 @keyframes splashTitleIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 .splash-subtitle { font-family: var(--font-data); font-size: 28px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
-.splash-countdown { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 40px; animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
+.splash-countdown { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 25px; animation: splashTitleIn 0.55s 0.55s cubic-bezier(0.19,1,0.22,1) both; }
 .splash-timer-unit { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-bottom: 3px solid var(--f1-red); min-width: 100px; padding: 18px 16px 14px; border-radius: 4px; text-align: center; }
 .splash-timer-val { font-family: var(--font-display); font-size: 52px; font-weight: 900; display: block; line-height: 1; color: var(--f1-white); letter-spacing: 2px; }
 .splash-timer-label { font-family: var(--font-data); font-size: 11px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 8px; font-weight: 800; display: block; letter-spacing: 4px; }
@@ -91,9 +92,9 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 #news-bar-container { background: var(--f1-red); color: var(--f1-white); height: 60px; display: none; align-items: center; overflow: hidden; border-bottom: 4px solid var(--f1-black); box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; z-index: 100; }
 .news-label { background: var(--f1-black); padding: 0 45px; height: 100%; display: flex; align-items: center; font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: 4px; transform: skewX(-15deg); margin-left: -15px; position: relative; z-index: 10; }
 .news-track { white-space: nowrap; display: inline-block; animation: f1-marquee 40.55s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 50px; }
-.news-track-clone { white-space: nowrap; display: inline-block; animation: f1-marquee 40.55s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 80px; }
+.news-track-clone { white-space: nowrap; display: inline-block; animation: f1-marquee 40.55s linear infinite; font-family: var(--font-data); font-size: 36px; text-transform: uppercase; letter-spacing: 2px; padding-left: 50px; }
 .news-marquee-box { overflow: hidden; display: flex; flex: 1; white-space: nowrap; }
-@keyframes f1-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+@keyframes f1-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } } 
 #news-bar-container::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 100px; background: linear-gradient(to right, transparent, var(--f1-red)); pointer-events: none; z-index: 5; }
 
 /* ===================== HEADER ===================== */
@@ -708,9 +709,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 <div id="news-bar-container">
     <div class="news-label">BREAKING NEWS</div>
     <div class="news-marquee-box">
-        <div class="news-track" id="api-news-content"></div>
-        <div class="news-track-clone" id="api-news-clone"></div>
-    </div>
+    <div class="news-track" id="api-news-content"></div>
+    <div class="news-track-clone" id="api-news-clone"></div>
+</div>
 </div>
 
 <header class="f1-header">
@@ -2446,8 +2447,7 @@ onValue(ref(db, 'config'), snap => {
     newsBar.style.display = c.showNews ? 'flex' : 'none';
     const rawNews = c.newsContent || "";
     const formattedNews = rawNews.split(/\s{2,}/).filter(s => s.trim()).join('  <span style="color:rgba(255,255,255,0.4);margin:0 20px;">•</span>  ');
-    document.getElementById('api-news-content').innerHTML = formattedNews;
-    document.getElementById('api-news-clone').innerHTML = formattedNews;
+    document.getElementById('api-news-content').innerHTML = formattedNews + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + formattedNews;
     const track = document.getElementById('api-news-content'); const clone = document.getElementById('api-news-clone');
     track.style.animation = 'none'; clone.style.animation = 'none'; void track.offsetWidth;
     track.style.animation = 'f1-marquee 40.55s linear infinite';
