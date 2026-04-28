@@ -866,14 +866,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <a href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
         <a href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
-        <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a>
+        <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a> 
     </div>
     <div class="admin-body">
     <div class="admin-section" id="sec-splash">
-        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🖼</span><span class="admin-section-title">Strona Startowa (Splash)</span><span class="admin-section-arrow">▼</span></div>
+        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🖼</span><span class="admin-section-title">Strona Startowa (Splash)</span><span class="admin-section-arrow">▼</span></div> 
         <div class="admin-section-body open">
             <div class="form-group"><label class="form-label">Zdjęcia na splash (do 10)<span class="form-hint">Przeciągnij wiersze aby zmienić kolejność.</span></label><div id="adm-splash-images-list"></div><button class="btn-action btn-secondary btn-sm" onclick="ui.addSplashImageRow()" id="btn-add-splash-img">＋ DODAJ ZDJĘCIE</button></div>
-            <div class="form-group"><label class="form-label">Treść HTML pod zdjęciami (opcjonalna)</label><textarea id="adm-splash-content" class="f1-textarea" rows="4" placeholder='np. <h2 style="color:#e10600">Sezon 2026 Już Trwa!</h2>'></textarea></div>
+            <div class="form-group"><label class="form-label">Treść HTML pod zdjęciami (opcjonalna)</label><textarea id="adm-splash-content" class="f1-textarea" rows="4" placeholder='np. <h2 style="color:#e10600">Sezon 2026 Już Trwa!</h2>'></textarea></div>					
             <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplashContent()">💾 ZAPISZ SPLASH</button></div>
             <div class="splash-preview" id="splash-preview-box"><em style="opacity:0.4;">Podgląd treści HTML pojawi się tutaj...</em></div>
         </div>
@@ -884,24 +884,32 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="social-icons-admin" id="adm-social-list">
                 <div class="social-icon-row" id="social-row-discord">
                     <div class="social-icon-preview-box" id="social-prev-discord"><svg viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/></svg></div>
-                    <span class="social-platform-label">Discord</span>
-                    <div class="social-icon-fields">
+                    <span class="social-platform-label">Discord</span> 
+                    <div class="social-icon-fields"> 
                         <input type="text" class="f1-input" id="social-url-discord" placeholder="https://discord.gg/..." style="padding:10px 14px;">
                         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input type="text" class="f1-input" id="social-icon-discord" placeholder="URL grafiki ikony (opcjonalne)" style="padding:10px 14px;flex:1;min-width:160px;"><label class="social-icon-upload-label">📁 PLIK<input type="file" accept="image/*" style="display:none" onchange="ui.handleSocialIconUpload('discord', this)"></label></div>
-                    </div>
-                </div>
+                    </div>  
+                </div> 
                 <div class="social-icon-row" id="social-row-youtube">
                     <div class="social-icon-preview-box" id="social-prev-youtube"><svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
                     <span class="social-platform-label">YouTube</span>
                     <div class="social-icon-fields">
                         <input type="text" class="f1-input" id="social-url-youtube" placeholder="https://youtube.com/@..." style="padding:10px 14px;">
                         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input type="text" class="f1-input" id="social-icon-youtube" placeholder="URL grafiki ikony (opcjonalne)" style="padding:10px 14px;flex:1;min-width:160px;"><label class="social-icon-upload-label">📁 PLIK<input type="file" accept="image/*" style="display:none" onchange="ui.handleSocialIconUpload('youtube', this)"></label></div>
+                    </div> 
+                </div> 
+				<div class="social-icon-row" id="social-row-tiktok">
+                    <div class="social-icon-preview-box" id="social-prev-tiktok"><svg viewBox="0 0 24 24" fill="#5865F2"><path d="M12.525.02c1.31-.032 2.617-.023 3.91-.03v7.951a8.076 8.076 0 0 0 5.232-2.387c.37-.39.732-.8 1.062-1.226l.03 5.822a12.001 12.001 0 0 1-6.325 1.747 12.02 12.02 0 0 1-5.903-1.55l.004 12.23c-.02 5.85-4.732 10.537-10.548 10.537C-.014 33.145-3.322 28.2 1.341 23.47c1.676-1.7 3.945-2.653 6.322-2.653.606 0 1.21.059 1.8.175v5.96a6.04 6.04 0 0 0-1.8-.268c-3.305 0-5.986 2.657-5.986 5.935 0 3.277 2.68 5.935 5.986 5.935 3.306 0 5.987-2.658 5.987-5.935l-.004-32.585c2.417.027 4.834.01 7.252.046a11.714 11.714 0 0 0-4.373-3.072z"/></svg></div>
+                    <span class="social-platform-label">tiktok</span>
+                    <div class="social-icon-fields">
+                        <input type="text" class="f1-input" id="social-url-tiktok" placeholder="https://www.tiktok.com/@weekendowaligaf1" style="padding:10px 14px;">
+                        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><input type="text" class="f1-input" id="social-icon-discord" placeholder="URL grafiki ikony (opcjonalne)" style="padding:10px 14px;flex:1;min-width:160px;"><label class="social-icon-upload-label">📁 PLIK<input type="file" accept="image/*" style="display:none" onchange="ui.handleSocialIconUpload('discord', this)"></label></div>
                     </div>
                 </div>
-            </div>
+            </div> 
             <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSocialConfig()">💾 ZAPISZ IKONKI</button></div>
         </div>
-    </div>
+    </div>  
     <div class="admin-section" id="sec-news">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">📢</span><span class="admin-section-title">Breaking News</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
@@ -909,7 +917,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="form-group"><label class="form-label">Treść newsa (HTML):</label><textarea id="adm-news-content" class="f1-textarea" placeholder="np. <b>GP Monako</b> już wkrótce!"></textarea></div>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.saveNewsConfig()">💾 ZAPISZ NEWS</button></div>
         </div>
-    </div>
+    </div> 
     <div class="admin-section" id="sec-countdown">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">⏱</span><span class="admin-section-title">Odliczanie do GP</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
