@@ -1240,8 +1240,8 @@ function renderTeamsPage() {
                     ${makeDriverField('driver2', d2, '🏎 Kierowca 2')}
                 </div>
                 ${(custom1 || custom2 || isLoggedIn) ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-                    ${makeField('custom1', custom1, '➕ Pole 1')}
-                    ${makeField('custom2', custom2, '➕ Pole 2')}
+                    ${makeField('custom1', custom1, 'Inżynier wyścigowy')}
+                    ${makeField('custom2', custom2, '')}
                 </div>` : ''}
             </div>
             <div class="tpc-num">${String(idx + 1).padStart(2, '0')}</div>
