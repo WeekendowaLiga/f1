@@ -38,8 +38,26 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2315151e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 *::-webkit-scrollbar { display: none !important; }
+#main-app {
+    width: 100%;
+    position: relative;
+    transform-origin: top left;
+}
+
 @media (min-width: 1025px) {
-    #main-app { zoom: 0.57; width: 100%; left: 0%; position: relative; }
+    #main-app { zoom: 0.57; }
+}
+
+@media (max-width: 1024px) {
+    #main-app { zoom: 0.85; }
+}
+
+@media (max-width: 480px) {
+    #main-app { zoom: 0.75; }
+}
+
+@media (max-width: 360px) {
+    #main-app { zoom: 0.65; }
 }
 
 /* ===================== SPLASH ===================== */
@@ -2894,7 +2912,7 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
                     const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
                     const data = s.val();
                     if (data && Array.isArray(data.results)) {
-                        const oldResults = data.results;ss
+                        const oldResults = data.results;
                         const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
                         await set(ref(db, 'lastRace/results'), newResults);
