@@ -609,13 +609,33 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     inset: 0;
     background: var(--f1-black);
     z-index: 500;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    gap: 30px;
+    align-items: stretch;
+    justify-content: flex-start;
 }
 #split2-soon-overlay.visible {
     display: flex;
+}
+.split2-soon-header {
+    background: var(--f1-white);
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 10px solid var(--f1-black);
+    flex-shrink: 0;
+    background-image: linear-gradient(135deg, rgba(225,6,0,0.03) 0%, transparent 50%),
+        repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(21,21,30,0.018) 80px, rgba(21,21,30,0.018) 81px),
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(21,21,30,0.012) 40px, rgba(21,21,30,0.012) 41px);
+}
+.split2-soon-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
 }
 .split2-soon-title {
     font-family: var(--font-display);
@@ -930,8 +950,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 
 <nav class="f1-nav">
     <div class="split-toggle-wrap">
-        <button class="split-btn active" id="nav-split1-btn" onclick="ui.switchSplit(1)">Split 1</button>
-        <button class="split-btn" id="nav-split2-btn" onclick="ui.switchSplit(2)">Split 2</button>
+        <button class="split-btn active" id="nav-split1-btn" onclick="ui.switchSplit(1)">SPLIT 1</button>
+        <button class="split-btn" id="nav-split2-btn" onclick="ui.switchSplit(2)">SPLIT 2</button>
     </div>
     <div class="nav-item active" onclick="ui.switchPage('standings', this)">Klasyfikacje</div>
     <div class="nav-item" onclick="ui.switchPage('last-race', this)">Ostatni Wyścig</div>
@@ -943,9 +963,20 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 
 <!-- SPLIT 2 SOON OVERLAY -->
 <div id="split2-soon-overlay">
-    <div class="split2-soon-title">WEEKENDOWA LIGA F1</div>
-    <div class="split2-soon-big">SPLIT 2</div>
-    <div class="split2-soon-sub">Wkrótce — przygotowania w toku</div>
+    <div class="split2-soon-header">
+        <div class="f1-brand">
+            <div class="f1-logo" onclick="showSplash()" title="Powrót do strony głównej">
+                <img src="Logo.png" alt="Logo">
+            </div>
+            <div class="f1-title">Weekendowa<br>Liga F1</div>
+        </div>
+        <div class="header-social-icons" id="soon-social-icons"></div>
+    </div>
+    <div class="split2-soon-content">
+        <div class="split2-soon-title">WEEKENDOWA LIGA F1</div>
+        <div class="split2-soon-big">SPLIT 2</div>
+        <div class="split2-soon-sub">Wkrótce — przygotowania w toku</div>
+    </div>
 </div>
 
 <section class="f1-hero">
@@ -1543,6 +1574,7 @@ function buildTeamsAdminList() {
 function renderSocialIcons() {
     const splashContainer = document.getElementById('splash-social-icons');
     const headerContainer = document.getElementById('header-social-icons');
+    const soonContainer   = document.getElementById('soon-social-icons');
     if (!splashContainer || !headerContainer) return;
     const platforms = [{ key: 'discord', defaultSvg: DEFAULT_DISCORD_SVG }, { key: 'youtube', defaultSvg: DEFAULT_YOUTUBE_SVG }, { key: 'tiktok', defaultSvg: DEFAULT_TIKTOK_SVG }];
 
@@ -1563,6 +1595,7 @@ function renderSocialIcons() {
     });
     splashContainer.innerHTML = splashHtml;
     headerContainer.innerHTML = headerHtml;
+    if (soonContainer) soonContainer.innerHTML = headerHtml;
 }
 
 function buildLogosGrid() {
@@ -2895,27 +2928,23 @@ function buildAdmArchiveManager() {
     if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
 }
 
-onValue(ref(db, 'teamsInfo'), snap => {
-    const data = snap.val();
-    if (data) { teamsInfoData = data; if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
-});
-
 // ===================== FIREBASE SPLIT 1 & 2 LISTENERS =====================
-[1, 2].forEach(splitNum => {
-    const sp = splitNum === 1 ? 'split1' : 'split2';
+// Flagi: które dane zostały już zasubskrybowane
+const splitSubscribed = { 1: { standings: false, lastRace: false, archive: false, teamsInfo: false }, 2: { standings: false, lastRace: false, archive: false, teamsInfo: false } };
 
-    // standings
+function subscribeStandings(splitNum) {
+    if (splitSubscribed[splitNum].standings) return;
+    splitSubscribed[splitNum].standings = true;
+    const sp = splitNum === 1 ? 'split1' : 'split2';
     onValue(ref(db, sp + '/standings'), snap => {
         const d = snap.val();
         if (d) {
             splitDataCache[splitNum].standings = d;
-            // Uzupełnij formularze admina jeśli odpowiedni split aktywny
             if (adminSplit === splitNum) {
                 const driversRaw = document.getElementById('adm-drivers-raw');
                 const teamsRaw = document.getElementById('adm-teams-raw');
                 if (driversRaw && d.drivers) driversRaw.value = d.drivers.map(dr => `${dr.isBot ? 'BOT:' : ''}${dr.nick} | ${dr.team} | ${dr.photo || ''} | ${dr.wins || 0} | ${dr.pts || 0}`).join('\n');
                 if (teamsRaw && d.teams) teamsRaw.value = d.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
-                // Reorder box
                 const reorderBox = document.getElementById('standings-reorder-box');
                 if (reorderBox && d.drivers && d.drivers.length > 0) {
                     reorderBox.style.display = 'block';
@@ -2933,8 +2962,12 @@ onValue(ref(db, 'teamsInfo'), snap => {
             if (currentSplit === splitNum) renderStandings();
         }
     });
+}
 
-    // lastRace
+function subscribeLastRace(splitNum) {
+    if (splitSubscribed[splitNum].lastRace) return;
+    splitSubscribed[splitNum].lastRace = true;
+    const sp = splitNum === 1 ? 'split1' : 'split2';
     onValue(ref(db, sp + '/lastRace'), snap => {
         const d = snap.val();
         splitDataCache[splitNum].lastRace = d || null;
@@ -2943,8 +2976,12 @@ onValue(ref(db, 'teamsInfo'), snap => {
             rerenderLastRace();
         }
     });
+}
 
-    // archive
+function subscribeArchive(splitNum) {
+    if (splitSubscribed[splitNum].archive) return;
+    splitSubscribed[splitNum].archive = true;
+    const sp = splitNum === 1 ? 'split1' : 'split2';
     onValue(ref(db, sp + '/archive'), snap => {
         const d = snap.val();
         splitDataCache[splitNum].archive = d || {};
@@ -2954,8 +2991,12 @@ onValue(ref(db, 'teamsInfo'), snap => {
         }
         if (adminSplit === splitNum) buildAdmArchiveManager();
     });
+}
 
-    // teamsInfo per split
+function subscribeTeamsInfo(splitNum) {
+    if (splitSubscribed[splitNum].teamsInfo) return;
+    splitSubscribed[splitNum].teamsInfo = true;
+    const sp = splitNum === 1 ? 'split1' : 'split2';
     onValue(ref(db, sp + '/teamsInfo'), snap => {
         const d = snap.val();
         if (d) {
@@ -2967,7 +3008,13 @@ onValue(ref(db, 'teamsInfo'), snap => {
             if (adminSplit === splitNum) buildTeamsAdminList();
         }
     });
-});
+}
+
+// Split 1 ładuj od razu (strona startuje na split 1)
+subscribeStandings(1);
+subscribeLastRace(1);
+subscribeTeamsInfo(1);
+// Archiwum split 1 — leniwie przy pierwszym wejściu w zakładkę
 
 // Listener dla split2 soon mode z config
 onValue(ref(db, 'config/split2SoonMode'), snap => {
