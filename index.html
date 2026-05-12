@@ -1,8 +1,3 @@
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -572,6 +567,126 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #regulamin-textarea:focus { border-color: var(--f1-red); outline: none; }
 .reg-editor-hint { font-size: 12px; color: #888; line-height: 1.6; padding: 0 4px; }
 .reg-editor-footer { padding: 16px 24px; border-top: 1px solid #eee; display: flex; gap: 12px; justify-content: flex-end; flex-shrink: 0; }
+/* ===================== SPLIT TOGGLE ===================== */
+.split-toggle-wrap {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 4px;
+    gap: 2px;
+    margin-right: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+}
+.split-btn {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.25s, color 0.25s;
+    white-space: nowrap;
+}
+.split-btn.active {
+    background: var(--f1-red);
+    color: #fff;
+}
+.split-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+/* ===================== SPLIT 2 SOON OVERLAY ===================== */
+#split2-soon-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--f1-black);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+}
+#split2-soon-overlay.visible {
+    display: flex;
+}
+.split2-soon-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 10px;
+    text-transform: uppercase;
+}
+.split2-soon-big {
+    font-family: var(--font-display);
+    font-size: 160px;
+    font-weight: 900;
+    color: var(--f1-red);
+    letter-spacing: 12px;
+    line-height: 1;
+    animation: soonPulse 2s ease infinite;
+    text-shadow: 0 0 80px rgba(225,6,0,0.5);
+}
+.split2-soon-sub {
+    font-family: var(--font-data);
+    font-size: 22px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-align: center;
+}
+/* ===================== ADMIN SPLIT SELECTOR ===================== */
+.admin-split-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #111;
+    padding: 16px 50px;
+    border-bottom: 3px solid var(--f1-red);
+    flex-shrink: 0;
+}
+.admin-split-label {
+    font-family: var(--font-data);
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-right: 6px;
+}
+.admin-split-btn {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.45);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.admin-split-btn.active {
+    background: var(--f1-red);
+    color: #fff;
+    border-color: var(--f1-red);
+}
+.admin-split-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+}
+/* Sekcje które są per-split — schowane gdy nie dotyczy */
+.split-only-section { transition: opacity 0.2s; }
+
 /* ===================== MOBILNE ===================== */
 @media (max-width: 1024px) {
 	.cteam-pts-cell { font-size: 20px !important; padding: 4px 10px !important; min-width: 60px; }
@@ -591,6 +706,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .f1-nav { overflow-x: unset; justify-content: stretch; display: grid; grid-template-columns: 1fr 1fr; }
     .f1-nav .nav-item:nth-child(5) { grid-column: span 1; }
     .f1-nav .nav-item:nth-child(6) { grid-column: span 1; }
+    .split-toggle-wrap { grid-column: 1 / -1; justify-content: center; margin: 6px 10px 2px; border-radius: 8px; }
+    .split-btn { font-size: 18px; padding: 10px 24px; flex: 1; text-align: center; }
     .nav-item { padding: 18px 10px; font-size: 22px; white-space: nowrap; text-align: center; border-bottom: 4px solid transparent; letter-spacing: 0.5px; }
     .f1-hero { padding: 40px 20px; }
     .f1-hero h1 { font-size: 40px; margin-bottom: 30px; letter-spacing: 1px; }
@@ -812,6 +929,10 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 </header>
 
 <nav class="f1-nav">
+    <div class="split-toggle-wrap">
+        <button class="split-btn active" id="nav-split1-btn" onclick="ui.switchSplit(1)">S1</button>
+        <button class="split-btn" id="nav-split2-btn" onclick="ui.switchSplit(2)">S2</button>
+    </div>
     <div class="nav-item active" onclick="ui.switchPage('standings', this)">Klasyfikacje</div>
     <div class="nav-item" onclick="ui.switchPage('last-race', this)">Ostatni Wyścig</div>
     <div class="nav-item" onclick="ui.switchPage('archive', this)">Archiwum</div>
@@ -819,6 +940,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="nav-item" onclick="ui.switchPage('teams', this)">Zespoły</div>
     <div class="nav-item" onclick="ui.switchPage('regulamin', this)">Regulamin</div>
 </nav>
+
+<!-- SPLIT 2 SOON OVERLAY -->
+<div id="split2-soon-overlay">
+    <div class="split2-soon-title">WEEKENDOWA LIGA F1</div>
+    <div class="split2-soon-big">SPLIT 2</div>
+    <div class="split2-soon-sub">Wkrótce — przygotowania w toku</div>
+</div>
 
 <section class="f1-hero">
     <h1 id="display-hero-title">NEXT GP EVENT</h1>
@@ -946,19 +1074,35 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <h2>⚙ CENTRALNY PANEL</h2>
         <button class="btn-action" onclick="ui.toggleAdmin(false)">✕ ZAMKNIJ</button>
     </div>
+    <!-- SPLIT SELECTOR W ADMINIE -->
+    <div class="admin-split-bar">
+        <span class="admin-split-label">Split:</span>
+        <button class="admin-split-btn active" id="adm-split1-btn" onclick="ui.adminSwitchSplit(1)">SPLIT 1</button>
+        <button class="admin-split-btn" id="adm-split2-btn" onclick="ui.adminSwitchSplit(2)">SPLIT 2</button>
+    </div>
     <div class="admin-toc">
         <a href="#sec-splash" onclick="ui.openAdminSection('sec-splash')">🖼 Splash</a>
         <a href="#sec-social" onclick="ui.openAdminSection('sec-social')">🔗 Social</a>
         <a href="#sec-news" onclick="ui.openAdminSection('sec-news')">📢 News</a>
         <a href="#sec-countdown" onclick="ui.openAdminSection('sec-countdown')">⏱ Odliczanie</a>
-        <a href="#sec-race" onclick="ui.openAdminSection('sec-race')">🏁 Wyścig</a>
-        <a href="#sec-archive" onclick="ui.openAdminSection('sec-archive')">📁 Archiwum</a>
-        <a href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
+        <a class="split-only-toc" href="#sec-split2soon" onclick="ui.openAdminSection('sec-split2soon')" style="display:none;">🔒 Split 2 Status</a>
+        <a class="split-only-toc" href="#sec-race" onclick="ui.openAdminSection('sec-race')">🏁 Wyścig</a>
+        <a class="split-only-toc" href="#sec-archive" onclick="ui.openAdminSection('sec-archive')">📁 Archiwum</a>
+        <a class="split-only-toc" href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
-        <a href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
+        <a class="split-only-toc" href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
         <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a> 
     </div>
     <div class="admin-body">
+    <!-- SEKCJA SPLIT 2 STATUS (tylko widoczna gdy split 2 aktywny w adminie) -->
+    <div class="admin-section split-only-section" id="sec-split2soon" style="display:none;">
+        <div class="admin-section-header open" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
+        <div class="admin-section-body open">
+            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Kontroluj czy Split 2 jest widoczny dla niezalogowanych użytkowników czy pokazuje tylko ekran "SOON".</p>
+            <label class="check-group"><input type="checkbox" id="adm-split2-soon-toggle"> SPLIT 2 W TRYBIE SOON (niezalogowani widzą tylko napis SOON)</label>
+            <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplit2SoonMode()">💾 ZAPISZ STATUS SPLIT 2</button></div>
+        </div>
+    </div>
     <div class="admin-section" id="sec-splash">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🖼</span><span class="admin-section-title">Strona Startowa (Splash)</span><span class="admin-section-arrow">▼</span></div> 
         <div class="admin-section-body open">
@@ -1204,14 +1348,27 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 let isLoggedIn = false;
+let currentSplit = 1;        // aktywny split w widoku (1 lub 2)
+let adminSplit = 1;          // aktywny split w panelu admina (1 lub 2)
+let split2SoonMode = true;   // czy split 2 pokazuje SOON dla niezalogowanych
+// cache danych per split
+let splitDataCache = {
+    1: { standings: null, lastRace: null, archive: {}, teamsInfo: {} },
+    2: { standings: null, lastRace: null, archive: {}, teamsInfo: {} }
+};
 let splashTimerInterval = null;
 let cachedHeroConfig = { mode: 'countdown', date: '', title: '' };
 let teamLogos = {};
 let socialConfig = {};
 let socialIconUploads = {};
 let teamsInfoData = {};
+const getTeamsInfoData = () => splitDataCache[currentSplit].teamsInfo || teamsInfoData;
 
 // ===================== CACHE DANYCH DO PROFILI =====================
+// Gettery zawsze zwracają dane aktualnego splitu
+const getArchiveDataCache = () => splitDataCache[currentSplit].archive;
+const getLastRaceDataCache = () => splitDataCache[currentSplit].lastRace;
+// Aliasy dla kompatybilności wstecznej (będą zastąpione przez gettery poniżej)
 let archiveDataCache = {};   // { firebaseId: { name, results, timestamp, order } }
 let lastRaceDataCache = null; // { name, results, timestamp }
 
@@ -1673,6 +1830,66 @@ window.ui = {
        document.getElementById('arc-tab-quali').style.cssText = isRaces ? inactiveStyle : activeStyle;
        if (!isLoggedIn) document.getElementById('arc-tab-quali').style.display = 'none';
     },
+    // ===================== SPLIT SWITCHER =====================
+    switchSplit(n) {
+        if (currentSplit === n) return;
+        currentSplit = n;
+        // Przyciski nav
+        document.getElementById('nav-split1-btn').classList.toggle('active', n === 1);
+        document.getElementById('nav-split2-btn').classList.toggle('active', n === 2);
+        // Synchronizuj split admina
+        adminSplit = n;
+        document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
+        document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
+        this._applySplitView();
+    },
+    adminSwitchSplit(n) {
+        adminSplit = n;
+        document.getElementById('adm-split1-btn').classList.toggle('active', n === 1);
+        document.getElementById('adm-split2-btn').classList.toggle('active', n === 2);
+        // Sekcje per-split w TOC
+        const split2SoonToc = document.querySelector('a.split-only-toc[href="#sec-split2soon"]');
+        if (split2SoonToc) split2SoonToc.style.display = n === 2 ? '' : 'none';
+        // Sekcja split2soon
+        const split2sec = document.getElementById('sec-split2soon');
+        if (split2sec) split2sec.style.display = n === 2 ? '' : 'none';
+        // Przeładuj formularze dla właściwego splitu
+        const splitPath = n === 1 ? 'split1' : 'split2';
+        // Załaduj standings do formularza
+        const sd = splitDataCache[n].standings;
+        if (sd) {
+            const driversRaw = document.getElementById('adm-drivers-raw');
+            const teamsRaw = document.getElementById('adm-teams-raw');
+            if (driversRaw && sd.drivers) driversRaw.value = sd.drivers.map(d => `${d.isBot ? 'BOT:' : ''}${d.nick} | ${d.team} | ${d.photo || ''} | ${d.wins || 0} | ${d.pts || 0}`).join('\n');
+            if (teamsRaw && sd.teams) teamsRaw.value = sd.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
+        }
+        // Przeładuj archiwum
+        buildAdmArchiveManager();
+        // Przeładuj zespoły
+        buildTeamsAdminList();
+        // Załaduj status split2 jeśli n==2
+        if (n === 2) {
+            const tog = document.getElementById('adm-split2-soon-toggle');
+            if (tog) tog.checked = !!split2SoonMode;
+        }
+    },
+    _applySplitView() {
+        const n = currentSplit;
+        const isSoon = n === 2 && split2SoonMode && !isLoggedIn;
+        const overlay = document.getElementById('split2-soon-overlay');
+        if (overlay) overlay.classList.toggle('visible', isSoon);
+        if (!isSoon) {
+            // Sync cache aliases
+            archiveDataCache = splitDataCache[n].archive;
+            lastRaceDataCache = splitDataCache[n].lastRace;
+            teamsInfoData = splitDataCache[n].teamsInfo || {};
+            // Przerenderuj widoki
+            rerenderLastRace();
+            rerenderArchive();
+            renderStandings();
+            if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
+        }
+    },
     // ===================== PROFIL KIEROWCY =====================
     openDriverProfile(nick) {
         if (!nick || nick === '—' || nick.trim() === '') return;
@@ -1837,7 +2054,7 @@ window.ui = {
             const update_obj = {}; update_obj[fieldKey] = newVal;
             if (!teamsInfoData[teamKey]) teamsInfoData[teamKey] = {};
             teamsInfoData[teamKey][fieldKey] = newVal;
-            await update(ref(db, 'teamsInfo/' + teamKey), update_obj);
+            await update(ref(db, getSplitPathView() + '/teamsInfo/' + teamKey), update_obj);
         };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (!isDesc && e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
@@ -1845,6 +2062,7 @@ window.ui = {
 
     editArcCell(el, raceId, rowIdx, field) {
         if (!isLoggedIn) return;
+        const splitPath = getSplitPathView();
         const current = el.textContent.trim();
         const input = document.createElement('input');
         input.type = 'text'; input.value = current;
@@ -1858,11 +2076,11 @@ window.ui = {
             span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field);
             if (input.parentNode) input.replaceWith(span);
             try {
-                const s = await new Promise(res => onValue(ref(db, 'archive/' + raceId), res, { onlyOnce: true }));
+                const s = await new Promise(res => onValue(ref(db, splitPath + '/archive/' + raceId), res, { onlyOnce: true }));
                 const data = s.val();
                 if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
                     data.results[rowIdx][field] = newVal;
-                    await set(ref(db, 'archive/' + raceId + '/results'), data.results);
+                    await set(ref(db, splitPath + '/archive/' + raceId + '/results'), data.results);
                 }
             } catch(e) { console.error('Błąd zapisu arc:', e); }
         };
@@ -1872,6 +2090,7 @@ window.ui = {
 
     editLastRaceCell(el, rowIdx, field) {
         if (!isLoggedIn) return;
+        const splitPath = getSplitPathView();
         const current = el.textContent.trim();
         const input = document.createElement('input');
         input.type = 'text'; input.value = current;
@@ -1885,11 +2104,11 @@ window.ui = {
             span.onclick = () => ui.editLastRaceCell(span, rowIdx, field);
             if (input.parentNode) input.replaceWith(span);
             try {
-                const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
+                const s = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
                 const data = s.val();
                 if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
                     data.results[rowIdx][field] = newVal;
-                    await set(ref(db, 'lastRace/results'), data.results);
+                    await set(ref(db, splitPath + '/lastRace/results'), data.results);
                 }
             } catch(e) { console.error('Błąd zapisu lastRace:', e); }
         };
@@ -2007,8 +2226,9 @@ window.ui = {
     },
     async editLastRaceName() {
         if (!isLoggedIn) return;
+        const splitPath = getSplitPathView();
         const titleEl = document.getElementById('display-last-race-name');
-        const snap = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
+        const snap = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
         const data = snap.val(); if (!data) return;
         const current = data.name || '';
         const input = document.createElement('input'); input.type = 'text'; input.value = current;
@@ -2017,17 +2237,18 @@ window.ui = {
         if (existingSpan) existingSpan.replaceWith(input);
         else { titleEl.textContent = 'WYNIKI: '; titleEl.appendChild(input); }
         input.focus(); input.select();
-        const save = async () => { const newVal = input.value.trim(); await update(ref(db, 'lastRace'), { name: newVal }); };
+        const save = async () => { const newVal = input.value.trim(); await update(ref(db, splitPath + '/lastRace'), { name: newVal }); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
     },
     async editArchiveName(id, currentName) {
         if (!isLoggedIn) return;
+        const splitPath = getSplitPathView();
         const nameEl = document.getElementById('arc-name-' + id); if (!nameEl) return;
         const input = document.createElement('input'); input.type = 'text'; input.value = currentName;
         input.style.cssText = 'font-family:var(--font-data);font-size:46px;font-weight:700;letter-spacing:1px;color:var(--f1-black);background:transparent;border:none;border-bottom:3px solid var(--f1-red);outline:none;flex:1;text-transform:uppercase;';
         nameEl.replaceWith(input); input.focus(); input.select();
-        const save = async () => { const nv=input.value.trim(); await update(ref(db,'archive/'+id),{name:nv}); };
+        const save = async () => { const nv=input.value.trim(); await update(ref(db, splitPath + '/archive/'+id),{name:nv}); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); if (e.key==='Escape'){input.value=currentName;input.blur();} });
     }
@@ -2044,10 +2265,15 @@ window.authCore = {
     logout() { signOut(auth).then(() => location.reload()); }
 };
 function rerenderLastRace() {
-    const data = lastRaceDataCache;
+    const data = splitDataCache[currentSplit].lastRace;
+    lastRaceDataCache = data;
     const container = document.getElementById('api-last-race-results');
     const titleEl = document.getElementById('display-last-race-name');
-    if (!data) return;
+    if (!data) {
+        if (container) container.innerHTML = '<p style="padding:40px;color:#aaa;">Brak danych dla tego splitu.</p>';
+        if (titleEl) titleEl.textContent = 'WYNIKI: OSTATNI WYŚCIG';
+        return;
+    }
     if (isLoggedIn) {
         titleEl.innerHTML = `WYNIKI: <span class="editable-title" onclick="ui.editLastRaceName()" title="Kliknij aby edytować">${data.name}</span>`;
     } else {
@@ -2058,8 +2284,15 @@ if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true
 }
 
 function rerenderArchive() {
-    const data = archiveDataCache;
-    if (!data || Object.keys(data).length === 0) return;
+    const data = splitDataCache[currentSplit].archive;
+    archiveDataCache = data || {};
+    if (!data || Object.keys(data).length === 0) {
+        const arcList = document.getElementById('api-archive-list');
+        const qualiList = document.getElementById('api-quali-list');
+        if (arcList) arcList.innerHTML = '';
+        if (qualiList) qualiList.innerHTML = '';
+        return;
+    }
     const entries = Object.entries(data).sort((a, b) => {
         const ao = a[1].order, bo = b[1].order;
         if (ao !== undefined && bo !== undefined) return ao - bo;
@@ -2093,9 +2326,12 @@ onAuthStateChanged(auth, user => {
     const qualiTab = document.getElementById('arc-tab-quali');
     if (qualiTab) qualiTab.style.display = user ? '' : 'none';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
+    // Po zalogowaniu odśwież overlay split 2 (admin widzi dane)
+    if (currentSplit === 2) ui._applySplitView();
     if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
-    rerenderLastRace();   // ← DODANE
-    rerenderArchive();    // ← DODANE
+    rerenderLastRace();
+    rerenderArchive();
+    renderStandings();
 });
 window.dbCore = {
     async saveSplashContent() {
@@ -2151,6 +2387,7 @@ window.dbCore = {
         alert("Odliczanie zapisane!");
     },
     async publishRace() {
+        const splitPath = getSplitPath(adminSplit);
         const title = document.getElementById('adm-race-title').value;
         const raw = document.getElementById('adm-race-raw').value;
         const noBonusRaw = document.getElementById('adm-no-bonus-nicks').value;
@@ -2178,8 +2415,8 @@ window.dbCore = {
                 return { nick: p[0], team: normalizeTeamName(p[1] || ''), best: p[2] || '' };
             });
             const qualObj = { name: title, results: qualResults, timestamp: Date.now(), isQualifying: true };
-            await push(ref(db, 'archive'), qualObj);
-            alert('✅ TRENINGI opublikowane!');
+            await push(ref(db, splitPath + '/archive'), qualObj);
+            alert('✅ TRENINGI opublikowane! (Split ' + adminSplit + ')');
             document.getElementById('pub-qualifying').checked = false;
             return;
         }
@@ -2199,10 +2436,10 @@ const resultsWithBonus = results.map(r => {
 });
 
 const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isTraining && { isTraining: true }) };
-        if (document.getElementById('pub-last').checked) await set(ref(db, 'lastRace'), raceObj);
-        if (document.getElementById('pub-archive').checked) await push(ref(db, 'archive'), raceObj);
+        if (document.getElementById('pub-last').checked) await set(ref(db, splitPath + '/lastRace'), raceObj);
+        if (document.getElementById('pub-archive').checked) await push(ref(db, splitPath + '/archive'), raceObj);
         if (!isTraining) {
-            const standSnap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
+            const standSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
             const currentStandings = standSnap.val() || { drivers: [], teams: [] };
             const driverMap = {}; const teamMap = {};
             (currentStandings.drivers || []).forEach(d => { driverMap[d.nick.toLowerCase()] = { ...d }; });
@@ -2231,13 +2468,13 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
             });
             const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
             const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
-            await set(ref(db, 'standings'), { drivers, teams });
-            let msg = `✅ Wyniki opublikowane!\n\n  PKT otrzymało: ${bonusCount} graczy\n`;
+            await set(ref(db, splitPath + '/standings'), { drivers, teams });
+            let msg = `✅ Wyniki opublikowane! (Split ${adminSplit})\n\n  PKT otrzymało: ${bonusCount} graczy\n`;
             if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
             msg += `\n\n(Boty AI nie wliczane)`;
             alert(msg);
         } else {
-            alert("✅ Wyniki treningu opublikowane! (klasyfikacja niezmieniona)");
+            alert(`✅ Wyniki treningu opublikowane! (Split ${adminSplit}, klasyfikacja niezmieniona)`);
         }
         document.getElementById('adm-no-bonus-nicks').value = '';
         document.getElementById('pub-training').checked = false;
@@ -2252,6 +2489,7 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         alert('✅ Regulamin zapisany!');
     },
     async saveStandings() {
+        const splitPath = getSplitPath(adminSplit);
         const dRaw = document.getElementById('adm-drivers-raw').value.split('\n').filter(l => l.trim());
         const tRaw = document.getElementById('adm-teams-raw').value.split('\n').filter(l => l.trim());
         const drivers = dRaw.map(l => {
@@ -2262,8 +2500,8 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
             return { nick: cleanNick, team: normalizeTeamName(p[1] || ''), photo: p[2] || '', wins: p[3] || '0', pts: p[4] || '0', isBot };
         });
         const teams = tRaw.map(l => { const p = l.split('|').map(s => s.trim()); return { team: normalizeTeamName(p[0]), pts: p[1] }; });
-        await set(ref(db, 'standings'), { drivers, teams });
-        alert("Klasyfikacje zaktualizowane!");
+        await set(ref(db, splitPath + '/standings'), { drivers, teams });
+        alert(`Klasyfikacje zaktualizowane! (Split ${adminSplit})`);
     },
     async saveTeamLogos() {
         const logos = {};
@@ -2279,15 +2517,16 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         alert("Loga zapisane!");
     },
     async saveTeamsInfo() {
+        const splitPath = getSplitPath(adminSplit);
         const updates = {};
         TEAM_DEFS.forEach(t => {
             const get = (field) => document.getElementById(`ti-${t.key}-${field}`)?.value?.trim() || '';
             updates[t.key] = { driver1: get('driver1'), driver2: get('driver2'), desc: get('desc'), custom1: get('custom1'), custom2: get('custom2') };
         });
-        await set(ref(db, 'teamsInfo'), updates);
-        teamsInfoData = updates;
-        if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
-        alert("Dane zespołów zapisane!");
+        await set(ref(db, splitPath + '/teamsInfo'), updates);
+        splitDataCache[adminSplit].teamsInfo = updates;
+        if (currentSplit === adminSplit) { teamsInfoData = updates; if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
+        alert(`Dane zespołów zapisane! (Split ${adminSplit})`);
     },
     async createAlbum() {
         const name = document.getElementById('adm-gal-name').value.trim();
@@ -2326,16 +2565,18 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         if (confirm("Czy na pewno chcesz to usunąć?")) { await remove(ref(db, path)); alert("Usunięto pomyślnie."); }
     },
     async saveArchiveOrder() {
+        const splitPath = getSplitPath(adminSplit);
         const list = document.getElementById('adm-archive-manager');
         const items = [...list.querySelectorAll('.reorder-item')];
         const updates = {};
-        items.forEach((item, i) => { updates['archive/' + item.dataset.id + '/order'] = i; });
+        items.forEach((item, i) => { updates[splitPath + '/archive/' + item.dataset.id + '/order'] = i; });
         await update(ref(db), updates);
         alert("Kolejność wyścigów zapisana!");
         document.getElementById('btn-save-archive-order').style.display = 'none';
     },
 	async saveStandingsOrder() {
-        const snap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
+        const splitPath = getSplitPath(adminSplit);
+        const snap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
         const data = snap.val();
         if (!data) return;
         const list = document.getElementById('standings-reorder-list');
@@ -2347,9 +2588,19 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
             const d = drivers.find(d => d.nick === nick);
             if (d) d.order = i;
         });
-        await set(ref(db, 'standings'), { ...data, drivers });
+        await set(ref(db, splitPath + '/standings'), { ...data, drivers });
         alert('Kolejność zapisana!');
         document.getElementById('btn-save-standings-order').style.display = 'none';
+    },
+    async saveSplit2SoonMode() {
+        const tog = document.getElementById('adm-split2-soon-toggle');
+        const val = tog ? tog.checked : true;
+        const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
+        const current = snap.val() || {};
+        await set(ref(db, 'config'), { ...current, split2SoonMode: val });
+        split2SoonMode = val;
+        if (currentSplit === 2) ui._applySplitView();
+        alert(val ? '✅ Split 2: tryb SOON włączony.' : '✅ Split 2: dane widoczne dla wszystkich.');
     },
     async saveGalleryOrder() {
         const list = document.getElementById('adm-gallery-manager');
@@ -2552,9 +2803,168 @@ const isRealF1Driver = (name) => {
 
 // ===================== FIREBASE LISTENERS =====================
 
+// ===================== RENDER STANDINGS =====================
+function renderStandings() {
+    const sd = splitDataCache[currentSplit].standings;
+    if (!sd) return;
+    const driversList = document.getElementById('api-drivers-list');
+    const teamsList = document.getElementById('api-teams-list');
+    if (driversList && sd.drivers) {
+        driversList.innerHTML = sd.drivers.map((d, i) => {
+            const posC = i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
+            const tc = getTeamClass(d.team);
+            const color = getTeamColorByName(d.team);
+            const safeNick = (d.nick||'').replace(/'/g,"\\'");
+            const nickHtml = d.isBot
+                ? `<span>${d.nick}</span>`
+                : `<span class="driver-name-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil">${d.nick}</span>`;
+            const posHtml = isLoggedIn
+                ? `<span class="arc-cell-editable ${posC}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${i},'pos')">${d.pos||i+1}</span>`
+                : `<span class="${posC}">${d.pos||i+1}</span>`;
+            const ptsHtml = isLoggedIn
+                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${i},'pts')">${d.pts||0}</span>`
+                : `${d.pts||0}`;
+            const winsHtml = isLoggedIn
+                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${i},'wins')">${d.wins||0}</span>`
+                : `${d.wins||0}`;
+            return `<tr class="${tc}">
+                <td class="col-pos">${posHtml}</td>
+                <td class="col-driver"><div class="driver-cell">${nickHtml}</div></td>
+                <td class="${tc.replace('team-','txt-')}" style="font-size:28px;">${d.team||''}</td>
+                <td style="text-align:center;">${winsHtml}</td>
+                <td class="col-pts">${ptsHtml}</td>
+            </tr>`;
+        }).join('');
+    }
+    if (teamsList && sd.teams) {
+        teamsList.innerHTML = sd.teams.map((r, i) => renderConstructorRow(r, i)).join('');
+    }
+}
+
+// ===================== HELPER: ścieżka aktywnego splitu =====================
+function getSplitPath(split) {
+    const s = split !== undefined ? split : (document.getElementById('adm-split1-btn')?.classList.contains('active') ? 1 : 2);
+    return s === 1 ? 'split1' : 'split2';
+}
+function getSplitPathView() {
+    return currentSplit === 1 ? 'split1' : 'split2';
+}
+
+// ===================== BUILD ADM ARCHIVE MANAGER =====================
+function buildAdmArchiveManager() {
+    const manager = document.getElementById('adm-archive-manager');
+    if (!manager) return;
+    const data = splitDataCache[adminSplit].archive;
+    if (!data || Object.keys(data).length === 0) {
+        manager.innerHTML = '<p style="color:#999;font-size:13px;">Brak wpisów w archiwum.</p>';
+        const saveBtn = document.getElementById('btn-save-archive-order');
+        if (saveBtn) saveBtn.style.display = 'none';
+        return;
+    }
+    const entries = Object.entries(data).sort((a, b) => {
+        const ao = a[1].order, bo = b[1].order;
+        if (ao !== undefined && bo !== undefined) return ao - bo;
+        if (ao !== undefined) return -1; if (bo !== undefined) return 1;
+        return (b[1].timestamp || 0) - (a[1].timestamp || 0);
+    });
+    const splitPath = adminSplit === 1 ? 'split1' : 'split2';
+    manager.innerHTML = `<div class="reorder-list" id="archive-reorder-list">` +
+        entries.map(([id, race]) => `
+        <div class="reorder-item" data-id="${id}">
+            <span class="reorder-handle">⠿</span>
+            <span class="reorder-label">${race.name || id}${race.isTraining ? ' <span style="font-size:11px;color:#888;">[TRENING]</span>' : ''}</span>
+            <div class="reorder-actions">
+                <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('${splitPath}/archive/${id}')">🗑</button>
+            </div>
+        </div>`).join('') + `</div>`;
+    const saveBtn = document.getElementById('btn-save-archive-order');
+    if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
+    const reorderList = document.getElementById('archive-reorder-list');
+    if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
+}
+
 onValue(ref(db, 'teamsInfo'), snap => {
     const data = snap.val();
     if (data) { teamsInfoData = data; if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
+});
+
+// ===================== FIREBASE SPLIT 1 & 2 LISTENERS =====================
+[1, 2].forEach(splitNum => {
+    const sp = splitNum === 1 ? 'split1' : 'split2';
+
+    // standings
+    onValue(ref(db, sp + '/standings'), snap => {
+        const d = snap.val();
+        if (d) {
+            splitDataCache[splitNum].standings = d;
+            // Uzupełnij formularze admina jeśli odpowiedni split aktywny
+            if (adminSplit === splitNum) {
+                const driversRaw = document.getElementById('adm-drivers-raw');
+                const teamsRaw = document.getElementById('adm-teams-raw');
+                if (driversRaw && d.drivers) driversRaw.value = d.drivers.map(dr => `${dr.isBot ? 'BOT:' : ''}${dr.nick} | ${dr.team} | ${dr.photo || ''} | ${dr.wins || 0} | ${dr.pts || 0}`).join('\n');
+                if (teamsRaw && d.teams) teamsRaw.value = d.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
+                // Reorder box
+                const reorderBox = document.getElementById('standings-reorder-box');
+                if (reorderBox && d.drivers && d.drivers.length > 0) {
+                    reorderBox.style.display = 'block';
+                    const reorderList = document.getElementById('standings-reorder-list');
+                    if (reorderList) {
+                        reorderList.innerHTML = d.drivers.map((dr, i) => `
+                        <div class="reorder-item" data-idx="${i}">
+                            <span class="reorder-handle">⠿</span>
+                            <span class="reorder-label">${dr.nick}</span>
+                        </div>`).join('');
+                        initReorderList(reorderList, () => { document.getElementById('btn-save-standings-order').style.display = 'inline-flex'; });
+                    }
+                }
+            }
+            if (currentSplit === splitNum) renderStandings();
+        }
+    });
+
+    // lastRace
+    onValue(ref(db, sp + '/lastRace'), snap => {
+        const d = snap.val();
+        splitDataCache[splitNum].lastRace = d || null;
+        if (currentSplit === splitNum) {
+            lastRaceDataCache = d || null;
+            rerenderLastRace();
+        }
+    });
+
+    // archive
+    onValue(ref(db, sp + '/archive'), snap => {
+        const d = snap.val();
+        splitDataCache[splitNum].archive = d || {};
+        if (currentSplit === splitNum) {
+            archiveDataCache = d || {};
+            rerenderArchive();
+        }
+        if (adminSplit === splitNum) buildAdmArchiveManager();
+    });
+
+    // teamsInfo per split
+    onValue(ref(db, sp + '/teamsInfo'), snap => {
+        const d = snap.val();
+        if (d) {
+            splitDataCache[splitNum].teamsInfo = d;
+            if (currentSplit === splitNum) {
+                teamsInfoData = d;
+                if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
+            }
+            if (adminSplit === splitNum) buildTeamsAdminList();
+        }
+    });
+});
+
+// Listener dla split2 soon mode z config
+onValue(ref(db, 'config/split2SoonMode'), snap => {
+    const val = snap.val();
+    split2SoonMode = (val === null || val === true || val === undefined); // domyślnie true
+    const tog = document.getElementById('adm-split2-soon-toggle');
+    if (tog) tog.checked = !!split2SoonMode;
+    // Odśwież overlay jeśli jesteśmy w split 2
+    if (currentSplit === 2) ui._applySplitView();
 });
 
 onValue(ref(db, 'config'), snap => {
@@ -2647,154 +3057,8 @@ onValue(ref(db, 'config'), snap => {
     }
 });
 
-onValue(ref(db, 'standings'), snap => {
-    const data = snap.val(); if (!data) return;
-    const allDrivers = data.drivers || [];
-    const humanDrivers = allDrivers
-    .filter(d => !d.isBot && !isRealF1Driver(d.nick))
-    .sort((a, b) => {
-        if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-        return (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0);
-    });
-const botDrivers = allDrivers.filter(d => d.isBot || isRealF1Driver(d.nick));
-    const allForAdmin = allDrivers.map(d => {
-        const autoBot = !d.isBot && isRealF1Driver(d.nick);
-        return `${(d.isBot || autoBot) ? 'BOT:' : ''}${d.nick} | ${d.team} | ${d.photo || ''} | ${d.wins || 0} | ${d.pts}`;
-    }).join('\n');
-    document.getElementById('adm-drivers-raw').value = allForAdmin;
+// Stare listenery standings/lastRace/archive zastąpione przez split1/split2 powyżej
 
-    const dBody = document.getElementById('api-drivers-list');
-    let html = '';
-    humanDrivers.forEach((r, i) => {
-        const posClass = i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
-        const avatarHtml = r.photo ? `<img class="driver-avatar" src="${r.photo}" alt="${r.nick}" onerror="this.style.display='none'">` : '';
-        const safeNick = (r.nick || '').replace(/'/g, "\\'");
-		r = { ...r, team: normalizeTeamName(r.team) };
-        html += `<tr class="${getTeamClass(r.team)}">
-            <td class="col-pos ${posClass}">
-    ${isLoggedIn
-        ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'pos')">${r.pos||i+1}</span>`
-        : `${r.pos||i+1}`}
-</td>
-            <td class="col-driver">
-                <div class="driver-cell">
-                    ${avatarHtml}
-                    ${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `${isLoggedIn ? `<span class="arc-cell-editable" onclick="ui.editCell(this,'standings','drivers',${i},'nick')">${r.nick}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>` : `<span class="driver-name-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${r.nick}</span>`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}`}
-                </div>
-            </td>
-            <td class="${getTeamClass(r.team).replace('team-','txt-')}">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','drivers',${i},'team')">${r.team}</span>` : r.team}</td>
-            <td style="text-align:center">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','drivers',${i},'wins')">${r.wins||0}</span>` : `${r.wins||0}`}</td>
-            <td class="col-pts">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','drivers',${i},'pts')">${r.pts}</span>` : `${r.pts}`}</td>
-        </tr>`;
-    });
-    if (botDrivers.length > 0) {
-        html += `<tr class="separator-row"><td colspan="5"><div></div></td></tr>`;
-        botDrivers.forEach((r, i) => {
-            const avatarHtml = r.photo ? `<img class="driver-avatar" src="${r.photo}" alt="${r.nick}" onerror="this.style.display='none'">` : '';
-            html += `<tr class="${getTeamClass(r.team)} bot-row">
-                <td class="col-pos">${humanDrivers.length + i + 1}</td>
-                <td class="col-driver"><div class="driver-cell">${avatarHtml}<span class="driver-name-clickable" onclick="ui.openDriverProfile('${(r.nick||'').replace(/'/g,"\\'")}') " title="Profil bota" style="font-weight:700;">${r.nick}</span></div></td>
-                <td class="${getTeamClass(r.team).replace('team-','txt-')}">${r.team}</td>
-                <td style="text-align:center">${r.wins||0}</td>
-                <td class="col-pts">${r.pts}</td>
-            </tr>`;
-        });
-    }
-    dBody.innerHTML = html;
-
-    const tBody = document.getElementById('api-teams-list');
-    const teams = data.teams || [];
-    document.getElementById('adm-teams-raw').value = teams.map(t => `${t.team} | ${t.pts}`).join('\n');
-    tBody.innerHTML = teams.map((r, i) => renderConstructorRow(r, i)).join('');
-
-    // Reorder kierowców w panelu admina
-    const reorderBox = document.getElementById('standings-reorder-box');
-    const reorderListEl = document.getElementById('standings-reorder-list');
-    const saveBtn2 = document.getElementById('btn-save-standings-order');
-    if (reorderBox && reorderListEl && isLoggedIn) {
-        reorderBox.style.display = 'block';
-        reorderListEl.innerHTML = humanDrivers.map(d => `
-            <div class="reorder-item" data-nick="${(d.nick||'').replace(/"/g,'&quot;')}">
-                <span class="reorder-handle">⠿</span>
-                <span class="reorder-label">${d.nick} <span style="color:#999;font-size:13px;">(${d.pts} pkt)</span></span>
-            </div>`).join('');
-        initReorderList(reorderListEl, () => { if (saveBtn2) saveBtn2.style.display = 'inline-flex'; });
-    } else if (reorderBox) {
-        reorderBox.style.display = 'none';
-    }
-});
-
-
-onValue(ref(db, 'lastRace'), snap => {
-    const data = snap.val();
-    lastRaceDataCache = data; // CACHE
-    const container = document.getElementById('api-last-race-results');
-    const titleEl = document.getElementById('display-last-race-name');
-    if (!data) { container.innerHTML = "<p style='padding:40px;'>Brak danych o ostatnim wyścigu.</p>"; titleEl.textContent = 'WYNIKI: OSTATNI WYŚCIG'; return; }
-    if (isLoggedIn) { titleEl.innerHTML = `WYNIKI: <span class="editable-title" onclick="ui.editLastRaceName()" title="Kliknij aby edytować">${data.name}</span>`; }
-    else { titleEl.textContent = 'WYNIKI: ' + data.name; }
-  container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
-  if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
-});
-
-onValue(ref(db, 'archive'), snap => {
-    const data = snap.val();
-    // CACHE całego archiwum
-    archiveDataCache = data || {};
-
-    const arcList = document.getElementById('api-archive-list');
-    const manager = document.getElementById('adm-archive-manager');
-    if (!data) { arcList.innerHTML = "<p>Archiwum jest puste.</p>"; manager.innerHTML = "Brak wyścigów."; return; }
-    const entries = Object.entries(data).sort((a, b) => {
-        const ao = a[1].order, bo = b[1].order;
-        if (ao !== undefined && bo !== undefined) return ao - bo;
-        if (ao !== undefined) return -1; if (bo !== undefined) return 1;
-        return (b[1].timestamp || 0) - (a[1].timestamp || 0);
-    });
-    const raceEntries = entries.filter(([, r]) => !r.isQualifying);
-    const qualiEntries = entries.filter(([, r]) => r.isQualifying);
-
-    const makeArchiveItem = (id, race, isQuali) => {
-        const editPart = isLoggedIn
-            ? `id="arc-name-${id}" class="arc-edit-name editable-mode" onclick="ui.editArchiveName('${id}', '${(race.name||'').replace(/'/g,"\\'")}')"`
-            : `id="arc-name-${id}" class="arc-edit-name"`;
-        const tableHtml = isQuali
-            ? renderQualifyingTable(race.results, id)
-            : renderRaceTable(race.results, id, false, race.isTraining);
-        return `<div class="archive-item">
-            <button class="archive-header" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
-                <span ${editPart}>${race.name}</span>${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
-                <span>WYNIKI <span class="arc-arrow">▼</span></span>
-            </button>
-            <div class="archive-body" id="arc-body-${id}">
-                <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${tableHtml}</div>
-            </div>
-        </div>`;
-    };
-
-    arcList.innerHTML = raceEntries.map(([id, race]) => makeArchiveItem(id, race, false)).join('')
-        || "<p style='padding:20px;color:#999;font-family:var(--font-data);font-size:24px;'>Brak wyścigów.</p>";
-    if (isLoggedIn) setTimeout(() => { raceEntries.forEach(([id]) => initRaceRowDragDrop(`race-tbl-${id}`, id, false)); }, 50);
-
-    const qualiList = document.getElementById('api-quali-list');
-    if (qualiList) {
-        qualiList.innerHTML = qualiEntries.map(([id, race]) => makeArchiveItem(id, race, true)).join('')
-            || "<p style='padding:20px;color:#999;font-family:var(--font-data);font-size:24px;'>Brak .</p>";
-    }
-
-    const managerEl = document.getElementById('adm-archive-manager');
-    const saveBtn = document.getElementById('btn-save-archive-order');
-    managerEl.innerHTML = `<div class="reorder-list" id="archive-reorder-list">` +
-        entries.map(([id, race]) => `
-        <div class="reorder-item" data-id="${id}">
-            <span class="reorder-handle">⠿</span>
-            <span class="reorder-label">${race.name}</span>
-            <div class="reorder-actions"><button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('archive/${id}')">🗑</button></div>
-        </div>`).join('') + `</div>`;
-    if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
-    const reorderList = document.getElementById('archive-reorder-list');
-    if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
-});
 
 onValue(ref(db, 'gallery'), snap => {
     const data = snap.val();
@@ -2878,6 +3142,28 @@ document.querySelectorAll('input[name="hero-mode"]').forEach(r => {
 buildLogosGrid();
 renderSocialIcons();
 
+// ===================== MIGRACJA DANYCH DO SPLIT1 =====================
+// Jednorazowa migracja: przenieś stare dane (standings/lastRace/archive/teamsInfo) 
+// do split1/ jeśli split1/ jeszcze nie ma danych
+(async () => {
+    const split1StandSnap = await new Promise(res => onValue(ref(db, 'split1/standings'), res, { onlyOnce: true }));
+    if (!split1StandSnap.val()) {
+        // Skopiuj standings
+        const standSnap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
+        if (standSnap.val()) await set(ref(db, 'split1/standings'), standSnap.val());
+        // Skopiuj lastRace
+        const lrSnap = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
+        if (lrSnap.val()) await set(ref(db, 'split1/lastRace'), lrSnap.val());
+        // Skopiuj archive
+        const arcSnap = await new Promise(res => onValue(ref(db, 'archive'), res, { onlyOnce: true }));
+        if (arcSnap.val()) await set(ref(db, 'split1/archive'), arcSnap.val());
+        // Skopiuj teamsInfo
+        const tiSnap = await new Promise(res => onValue(ref(db, 'teamsInfo'), res, { onlyOnce: true }));
+        if (tiSnap.val()) await set(ref(db, 'split1/teamsInfo'), tiSnap.val());
+        console.log('✅ Migracja danych do split1/ zakończona.');
+    }
+})();
+
 // ===================== DRAG & DROP WIERSZY TABELI WYŚCIGU =====================
 function initRaceRowDragDrop(tableId, raceId, isLastRace) {
     const table = document.getElementById(tableId);
@@ -2897,25 +3183,26 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
             tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
             // Zbierz nową kolejność i zapisz
             const rows = [...tbody.querySelectorAll('tr[data-row-idx]')];
+            const splitPath = getSplitPathView();
             try {
                 if (raceId) {
-                    const s = await new Promise(res => onValue(ref(db, 'archive/' + raceId), res, { onlyOnce: true }));
+                    const s = await new Promise(res => onValue(ref(db, splitPath + '/archive/' + raceId), res, { onlyOnce: true }));
                     const data = s.val();
                     if (data && Array.isArray(data.results)) {
                         const oldResults = data.results;
                         const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         // zaktualizuj data-row-idx
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
-                        await set(ref(db, 'archive/' + raceId + '/results'), newResults);
+                        await set(ref(db, splitPath + '/archive/' + raceId + '/results'), newResults);
                     }
                 } else if (isLastRace) {
-                    const s = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
+                    const s = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
                     const data = s.val();
                     if (data && Array.isArray(data.results)) {
                         const oldResults = data.results;
                         const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
-                        await set(ref(db, 'lastRace/results'), newResults);
+                        await set(ref(db, splitPath + '/lastRace/results'), newResults);
                     }
                 }
             } catch(e) { console.error('Błąd zapisu kolejności:', e); }
