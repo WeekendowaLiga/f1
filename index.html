@@ -930,8 +930,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 
 <nav class="f1-nav">
     <div class="split-toggle-wrap">
-        <button class="split-btn active" id="nav-split1-btn" onclick="ui.switchSplit(1)">Split 1</button>
-        <button class="split-btn" id="nav-split2-btn" onclick="ui.switchSplit(2)">Split 2</button>
+        <button class="split-btn active" id="nav-split1-btn" onclick="ui.switchSplit(1)">S1</button>
+        <button class="split-btn" id="nav-split2-btn" onclick="ui.switchSplit(2)">S2</button>
     </div>
     <div class="nav-item active" onclick="ui.switchPage('standings', this)">Klasyfikacje</div>
     <div class="nav-item" onclick="ui.switchPage('last-race', this)">Ostatni Wyścig</div>
@@ -2810,31 +2810,43 @@ function renderStandings() {
     const driversList = document.getElementById('api-drivers-list');
     const teamsList = document.getElementById('api-teams-list');
     if (driversList && sd.drivers) {
-        driversList.innerHTML = sd.drivers.map((d, i) => {
+        const humanDrivers = sd.drivers.filter(d => !d.isBot);
+        const botDrivers = sd.drivers.filter(d => d.isBot);
+        const hasBots = botDrivers.length > 0;
+        const colSpan = 5;
+        const separatorRow = hasBots
+            ? `<tr class="separator-row"><td colspan="${colSpan}"><div></div></td></tr>`
+            : '';
+        const renderDriverRow = (d, i, isBot) => {
             const posC = i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
             const tc = getTeamClass(d.team);
-            const color = getTeamColorByName(d.team);
             const safeNick = (d.nick||'').replace(/'/g,"\\'");
-            const nickHtml = d.isBot
+            const nickHtml = isBot
                 ? `<span>${d.nick}</span>`
                 : `<span class="driver-name-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil">${d.nick}</span>`;
+            // index in original array for editable cells
+            const origIdx = sd.drivers.indexOf(d);
             const posHtml = isLoggedIn
-                ? `<span class="arc-cell-editable ${posC}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${i},'pos')">${d.pos||i+1}</span>`
+                ? `<span class="arc-cell-editable ${posC}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'pos')">${d.pos||i+1}</span>`
                 : `<span class="${posC}">${d.pos||i+1}</span>`;
             const ptsHtml = isLoggedIn
-                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${i},'pts')">${d.pts||0}</span>`
+                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'pts')">${d.pts||0}</span>`
                 : `${d.pts||0}`;
             const winsHtml = isLoggedIn
-                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${i},'wins')">${d.wins||0}</span>`
+                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'wins')">${d.wins||0}</span>`
                 : `${d.wins||0}`;
-            return `<tr class="${tc}">
+            return `<tr class="${tc}${isBot ? ' bot-row' : ''}">
                 <td class="col-pos">${posHtml}</td>
                 <td class="col-driver"><div class="driver-cell">${nickHtml}</div></td>
                 <td class="${tc.replace('team-','txt-')}" style="font-size:28px;">${d.team||''}</td>
                 <td style="text-align:center;">${winsHtml}</td>
                 <td class="col-pts">${ptsHtml}</td>
             </tr>`;
-        }).join('');
+        };
+        driversList.innerHTML =
+            humanDrivers.map((d, i) => renderDriverRow(d, i, false)).join('') +
+            separatorRow +
+            botDrivers.map((d, i) => renderDriverRow(d, i, true)).join('');
     }
     if (teamsList && sd.teams) {
         teamsList.innerHTML = sd.teams.map((r, i) => renderConstructorRow(r, i)).join('');
