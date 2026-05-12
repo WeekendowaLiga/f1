@@ -2969,7 +2969,7 @@ onValue(ref(db, 'config/split2SoonMode'), snap => {
 
 onValue(ref(db, 'config'), snap => {
     const c = snap.val(); if (!c) return;
-    if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
+    if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
         socialConfig = c.socialIcons;
         ['discord', 'youtube', 'tiktok'].forEach(p => {
