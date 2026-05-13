@@ -884,6 +884,36 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .main-content { padding: 0 6px 80px; }
     #btn-open-login { font-size: 18px; padding: 8px 10px; }
 }
+@media (max-width: 1024px) {
+    .split2-soon-header {
+        height: auto;
+        min-height: 100px;
+        padding: 0 4%;
+        align-items: center;
+    }
+    .split2-soon-header .f1-logo {
+        width: 100px;
+        height: 76px;
+    }
+    .split2-soon-header .f1-title {
+        font-size: 34px;
+        margin-left: 16px;
+    }
+    .split2-soon-header .header-social-icons {
+        gap: 8px;
+        flex-shrink: 0;
+    }
+    .split2-soon-header .header-social-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+    }
+    .split2-soon-header .header-social-btn img,
+    .split2-soon-header .header-social-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
 </style>
 </head>
 <body style="background:#15151e">
@@ -1715,6 +1745,8 @@ window.ui = {
         document.getElementById('view-' + pageId).classList.add('active');
         navEl.classList.add('active');
         if (pageId === 'gallery') this.closeAlbum();
+		if (pageId === 'gallery') { this.closeAlbum(); subscribeGallery(); }
+if (pageId === 'archive') subscribeArchive(currentSplit);
         if (pageId === 'teams') renderTeamsPage();
         if (pageId === 'regulamin') {
             const editBtn = document.getElementById('regulamin-edit-btn');
@@ -3041,6 +3073,7 @@ function subscribeTeamsInfo(splitNum) {
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
+subscribeArchive(1);
 // Archiwum split 1 — leniwie przy pierwszym wejściu w zakładkę (patrz: showView)
 
 // ── config listener (jeden, obsługuje też split2SoonMode) ────────────────────
