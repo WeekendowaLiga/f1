@@ -1341,6 +1341,7 @@ function hideSplash() {
         splash.style.display = 'none';
         var app = document.getElementById('main-app');
         if (app) app.style.display = 'block';
+        if (window._resetInactivityTimer) window._resetInactivityTimer();
     }, 500);
 }
 function showSplash() {
@@ -1353,6 +1354,32 @@ function showSplash() {
     splash.style.transform = '';
     splash.classList.remove('hiding');
 }
+
+// ── Timer nieaktywności — powrót do splasha po 10 minutach ──────────────────
+(function() {
+    var INACTIVITY_MS = 10 * 60 * 1000; // 10 minut
+    var _inactivityTimer = null;
+
+    function resetInactivityTimer() {
+        // Nie rób nic jeśli splash jest już widoczny
+        var splash = document.getElementById('splash-screen');
+        if (splash && splash.style.display !== 'none' && !splash.classList.contains('hiding')) return;
+        clearTimeout(_inactivityTimer);
+        _inactivityTimer = setTimeout(function() {
+            showSplash();
+        }, INACTIVITY_MS);
+    }
+
+    ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click'].forEach(function(evt) {
+        document.addEventListener(evt, resetInactivityTimer, { passive: true });
+    });
+
+    // Uruchom timer od razu (zacznie odliczać gdy użytkownik wejdzie do apki)
+    resetInactivityTimer();
+
+    // Eksponuj reset żeby hideSplash mógł go zrestartować
+    window._resetInactivityTimer = resetInactivityTimer;
+})();
 setTimeout(function() {
     var splash = document.getElementById('splash-screen');
     if (splash && splash.style.display !== 'none') {
@@ -3014,25 +3041,23 @@ function subscribeTeamsInfo(splitNum) {
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
-// Archiwum split 1 — leniwie przy pierwszym wejściu w zakładkę
+// Archiwum split 1 — leniwie przy pierwszym wejściu w zakładkę (patrz: showView)
 
-// Listener dla split2 soon mode z config
-onValue(ref(db, 'config/split2SoonMode'), snap => {
-    const val = snap.val();
-    split2SoonMode = (val === null || val === true || val === undefined); // domyślnie true
-    const tog = document.getElementById('adm-split2-soon-toggle');
-    if (tog) tog.checked = !!split2SoonMode;
-    // Odśwież overlay jeśli jesteśmy w split 2
-    if (currentSplit === 2) ui._applySplitView();
-});
-
+// ── config listener (jeden, obsługuje też split2SoonMode) ────────────────────
 onValue(ref(db, 'config'), snap => {
     const c = snap.val(); if (!c) return;
+
+    // split2SoonMode (zastępuje osobny listener)
+    const soonVal = c.split2SoonMode;
+    split2SoonMode = (soonVal === null || soonVal === true || soonVal === undefined);
+    const tog = document.getElementById('adm-split2-soon-toggle');
+    if (tog) tog.checked = !!split2SoonMode;
+    if (currentSplit === 2) ui._applySplitView();
+
     if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
         socialConfig = c.socialIcons;
         ['discord', 'youtube', 'tiktok'].forEach(p => {
-
             const cfg = c.socialIcons[p] || {};
             const urlInput = document.getElementById('social-url-' + p);
             const iconInput = document.getElementById('social-icon-' + p);
@@ -3094,13 +3119,13 @@ onValue(ref(db, 'config'), snap => {
             document.getElementById('timer-s').innerText = s.toString().padStart(2,'0');
         }, 1000);
     }
-	localStorage.setItem('f1_heroConfig', JSON.stringify(cachedHeroConfig));
+    localStorage.setItem('f1_heroConfig', JSON.stringify(cachedHeroConfig));
     renderSplashCountdown(cachedHeroConfig);
     if (c.heroTitle) document.getElementById('adm-hero-title').value = c.heroTitle;
     if (c.heroDate)  document.getElementById('adm-hero-date').value = c.heroDate;
     if (c.showNews !== undefined) document.getElementById('adm-show-news').checked = c.showNews;
     if (c.newsContent) document.getElementById('adm-news-content').value = c.newsContent;
-	if (c.regulaminContent !== undefined) {
+    if (c.regulaminContent !== undefined) {
         const display = document.getElementById('regulamin-content-display');
         const textarea = document.getElementById('regulamin-textarea');
         if (display) display.innerHTML = c.regulaminContent || '<div class="regulamin-empty"><span>📋</span>Regulamin zostanie dodany wkrótce.</div>';
@@ -3116,63 +3141,65 @@ onValue(ref(db, 'config'), snap => {
     }
 });
 
-// Stare listenery standings/lastRace/archive zastąpione przez split1/split2 powyżej
-
-
-onValue(ref(db, 'gallery'), snap => {
-    const data = snap.val();
-    const albumsGrid = document.getElementById('gallery-albums');
-    const manager = document.getElementById('adm-gallery-manager');
-    const albumSelect = document.getElementById('adm-entry-album');
-    if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.innerHTML = "Brak albumów."; albumSelect.innerHTML = '<option value="">— Wybierz album —</option>'; return; }
-    window.galleryData = data;
-    const entries = Object.entries(data).sort((a, b) => {
-        const ao = a[1].order, bo = b[1].order;
-        if (ao !== undefined && bo !== undefined) return ao - bo;
-        if (ao !== undefined) return -1; if (bo !== undefined) return 1;
-        return a[0] < b[0] ? -1 : 1;
+// ── Galeria — leniwie: ładuj tylko gdy użytkownik wejdzie w zakładkę ─────────
+let gallerySubscribed = false;
+function subscribeGallery() {
+    if (gallerySubscribed) return;
+    gallerySubscribed = true;
+    onValue(ref(db, 'gallery'), snap => {
+        const data = snap.val();
+        const albumsGrid = document.getElementById('gallery-albums');
+        const manager = document.getElementById('adm-gallery-manager');
+        const albumSelect = document.getElementById('adm-entry-album');
+        if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.innerHTML = "Brak albumów."; albumSelect.innerHTML = '<option value="">— Wybierz album —</option>'; return; }
+        window.galleryData = data;
+        const entries = Object.entries(data).sort((a, b) => {
+            const ao = a[1].order, bo = b[1].order;
+            if (ao !== undefined && bo !== undefined) return ao - bo;
+            if (ao !== undefined) return -1; if (bo !== undefined) return 1;
+            return a[0] < b[0] ? -1 : 1;
+        });
+        albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
+        const sortedForGrid = [...entries].sort((a, b) => {
+            const ap = a[1].pinned ? 1 : 0, bp = b[1].pinned ? 1 : 0;
+            return bp - ap;
+        });
+        albumsGrid.innerHTML = sortedForGrid.map(([id, gal]) => {
+            const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
+            const isPinned = !!gal.pinned;
+            const pinnedBadge = isPinned ? `<div style="position:absolute;top:14px;left:14px;z-index:20;background:var(--f1-red);color:#fff;border-radius:8px;padding:6px 14px;font-family:var(--font-display);font-size:18px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(225,6,0,0.4);">📌 PRZYPIĘTY</div>` : '';
+            const pinnedBorder = isPinned ? 'outline:3px solid var(--f1-red);outline-offset:-3px;' : '';
+            const pinBtn = isLoggedIn ? `<button class="album-edit-btn visible" style="top:16px;right:90px;" onclick="event.stopPropagation();ui.togglePinAlbum('${id}',${isPinned})">${isPinned ? '📌 ODEPNIJ' : '📌 PRZYPNIJ'}</button>` : '';
+            return `<div class="album-card" style="${pinnedBorder}">
+                <div class="album-click-zone" onclick="ui.openAlbum('${id}')"></div>
+                ${gal.cover ? `<img class="album-card-img" src="${gal.cover}" alt="${gal.name}">` : ''}
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 60%);pointer-events:none;"></div>
+                ${pinnedBadge}
+                ${pinBtn}
+                <button class="album-edit-btn ${isLoggedIn ? 'visible' : ''}" onclick="event.stopPropagation();ui.editAlbumNameFromGrid('${id}','${gal.name.replace(/'/g,"\\'")}',this)">✎ NAZWA</button>
+                <div class="album-info" style="pointer-events:none;">
+                    <div class="album-name">${gal.name}</div>
+                    <div style="font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,0.6);margin-top:6px;letter-spacing:1px;">${entryCount} ${entryCount===1?'wpis':'wpisów'}</div>
+                </div>
+            </div>`;
+        }).join('');
+        const saveBtn = document.getElementById('btn-save-gallery-order');
+        manager.innerHTML = `<div class="reorder-list" id="gallery-reorder-list">` +
+            entries.map(([id, gal]) => `
+            <div class="reorder-item" data-id="${id}">
+                <span class="reorder-handle">⠿</span>
+                <span class="reorder-label">${gal.name}</span>
+                <div class="reorder-actions">
+                    <button class="btn-action btn-secondary btn-sm" onclick="ui.editAlbumCover('${id}','${(gal.cover||'').replace(/'/g,"\\'")}')">🖼</button>
+                    <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('gallery/${id}')">🗑</button>
+                </div>
+            </div>`).join('') + `</div>`;
+        if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
+        const reorderList = document.getElementById('gallery-reorder-list');
+        if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
+        if (window._currentAlbumId && data[window._currentAlbumId]) ui.openAlbum(window._currentAlbumId);
     });
-    albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
-    // Pinned album pierwszy
-const sortedForGrid = [...entries].sort((a, b) => {
-    const ap = a[1].pinned ? 1 : 0, bp = b[1].pinned ? 1 : 0;
-    return bp - ap;
-});
-albumsGrid.innerHTML = sortedForGrid.map(([id, gal]) => {
-    const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
-    const isPinned = !!gal.pinned;
-    const pinnedBadge = isPinned ? `<div style="position:absolute;top:14px;left:14px;z-index:20;background:var(--f1-red);color:#fff;border-radius:8px;padding:6px 14px;font-family:var(--font-display);font-size:18px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(225,6,0,0.4);">📌 PRZYPIĘTY</div>` : '';
-    const pinnedBorder = isPinned ? 'outline:3px solid var(--f1-red);outline-offset:-3px;' : '';
-    const pinBtn = isLoggedIn ? `<button class="album-edit-btn visible" style="top:16px;right:90px;" onclick="event.stopPropagation();ui.togglePinAlbum('${id}',${isPinned})">${isPinned ? '📌 ODEPNIJ' : '📌 PRZYPNIJ'}</button>` : '';
-    return `<div class="album-card" style="${pinnedBorder}">
-        <div class="album-click-zone" onclick="ui.openAlbum('${id}')"></div>
-        ${gal.cover ? `<img class="album-card-img" src="${gal.cover}" alt="${gal.name}">` : ''}
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 60%);pointer-events:none;"></div>
-        ${pinnedBadge}
-        ${pinBtn}
-        <button class="album-edit-btn ${isLoggedIn ? 'visible' : ''}" onclick="event.stopPropagation();ui.editAlbumNameFromGrid('${id}','${gal.name.replace(/'/g,"\\'")}',this)">✎ NAZWA</button>
-        <div class="album-info" style="pointer-events:none;">
-            <div class="album-name">${gal.name}</div>
-            <div style="font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,0.6);margin-top:6px;letter-spacing:1px;">${entryCount} ${entryCount===1?'wpis':'wpisów'}</div>
-        </div>
-    </div>`;
-}).join('');
-    const saveBtn = document.getElementById('btn-save-gallery-order');
-    manager.innerHTML = `<div class="reorder-list" id="gallery-reorder-list">` +
-        entries.map(([id, gal]) => `
-        <div class="reorder-item" data-id="${id}">
-            <span class="reorder-handle">⠿</span>
-            <span class="reorder-label">${gal.name}</span>
-            <div class="reorder-actions">
-                <button class="btn-action btn-secondary btn-sm" onclick="ui.editAlbumCover('${id}','${(gal.cover||'').replace(/'/g,"\\'")}')">🖼</button>
-                <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('gallery/${id}')">🗑</button>
-            </div>
-        </div>`).join('') + `</div>`;
-    if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
-    const reorderList = document.getElementById('gallery-reorder-list');
-    if (reorderList) initReorderList(reorderList, () => { if (saveBtn) saveBtn.style.display = 'inline-flex'; });
-    if (window._currentAlbumId && data[window._currentAlbumId]) ui.openAlbum(window._currentAlbumId);
-});
+}
 
 ui.togglePinAlbum = async function(id, isPinned) {
     await update(ref(db, 'gallery/' + id), { pinned: !isPinned });
@@ -3201,29 +3228,28 @@ document.querySelectorAll('input[name="hero-mode"]').forEach(r => {
 buildLogosGrid();
 renderSocialIcons();
 
-// ===================== MIGRACJA DANYCH DO SPLIT1 =====================
-// Jednorazowa migracja: przenieś stare dane (standings/lastRace/archive/teamsInfo) 
-// do split1/ jeśli split1/ jeszcze nie ma danych
-(async () => {
-    const split1StandSnap = await new Promise(res => onValue(ref(db, 'split1/standings'), res, { onlyOnce: true }));
-    if (!split1StandSnap.val()) {
-        // Skopiuj standings
-        const standSnap = await new Promise(res => onValue(ref(db, 'standings'), res, { onlyOnce: true }));
-        if (standSnap.val()) await set(ref(db, 'split1/standings'), standSnap.val());
-        // Skopiuj lastRace
-        const lrSnap = await new Promise(res => onValue(ref(db, 'lastRace'), res, { onlyOnce: true }));
-        if (lrSnap.val()) await set(ref(db, 'split1/lastRace'), lrSnap.val());
-        // Skopiuj archive
-        const arcSnap = await new Promise(res => onValue(ref(db, 'archive'), res, { onlyOnce: true }));
-        if (arcSnap.val()) await set(ref(db, 'split1/archive'), arcSnap.val());
-        // Skopiuj teamsInfo
-        const tiSnap = await new Promise(res => onValue(ref(db, 'teamsInfo'), res, { onlyOnce: true }));
-        if (tiSnap.val()) await set(ref(db, 'split1/teamsInfo'), tiSnap.val());
-        console.log('✅ Migracja danych do split1/ zakończona.');
-    }
-})();
+// ── Hook nawigacji — subskrybuj dane dopiero gdy zakładka jest otwierana ──────
+const _origShowView = ui.showView?.bind(ui);
+ui.showView = function(viewId) {
+    if (_origShowView) _origShowView(viewId);
+    if (viewId === 'view-gallery') subscribeGallery();
+    if (viewId === 'view-archive') subscribeArchive(currentSplit);
+};
 
-// ===================== DRAG & DROP WIERSZY TABELI WYŚCIGU =====================
+// ── switchSplit — subskrybuj dane split 2 przy pierwszym przejściu ────────────
+const _origSwitchSplit = ui.switchSplit?.bind(ui);
+ui.switchSplit = function(n) {
+    if (_origSwitchSplit) _origSwitchSplit(n);
+    // Subskrybuj podstawowe dane nowego splitu
+    subscribeStandings(n);
+    subscribeLastRace(n);
+    subscribeTeamsInfo(n);
+    // Archiwum tylko jeśli zakładka archiwum jest aktywna
+    const archiveView = document.getElementById('view-archive');
+    if (archiveView && archiveView.classList.contains('active')) subscribeArchive(n);
+};
+
+// ── Drag & drop wierszy tabeli wyścigu — używa cache zamiast odczytu z bazy ──
 function initRaceRowDragDrop(tableId, raceId, isLastRace) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -3240,26 +3266,23 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
         row.addEventListener('dragend', async () => {
             row.classList.remove('race-row-dragging');
             tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
-            // Zbierz nową kolejność i zapisz
             const rows = [...tbody.querySelectorAll('tr[data-row-idx]')];
             const splitPath = getSplitPathView();
             try {
                 if (raceId) {
-                    const s = await new Promise(res => onValue(ref(db, splitPath + '/archive/' + raceId), res, { onlyOnce: true }));
-                    const data = s.val();
+                    // Użyj cache zamiast odpytywać bazę
+                    const cached = (splitDataCache[currentSplit].archive || {})[raceId];
+                    const data = cached || null;
                     if (data && Array.isArray(data.results)) {
-                        const oldResults = data.results;
-                        const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
-                        // zaktualizuj data-row-idx
+                        const newResults = rows.map(r => data.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
                         await set(ref(db, splitPath + '/archive/' + raceId + '/results'), newResults);
                     }
                 } else if (isLastRace) {
-                    const s = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
-                    const data = s.val();
+                    // Użyj cache zamiast odpytywać bazę
+                    const data = splitDataCache[currentSplit].lastRace;
                     if (data && Array.isArray(data.results)) {
-                        const oldResults = data.results;
-                        const newResults = rows.map(r => oldResults[parseInt(r.dataset.rowIdx)]).filter(Boolean);
+                        const newResults = rows.map(r => data.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
                         await set(ref(db, splitPath + '/lastRace/results'), newResults);
                     }
