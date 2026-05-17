@@ -1964,11 +1964,14 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         reader.readAsDataURL(file);
     },
     toggleArc(id) {
-        const body = document.getElementById('arc-body-' + id);
-        const btn  = document.getElementById('arc-btn-' + id);
-        const isOpen = body.classList.toggle('open');
-        if (btn) btn.classList.toggle('open', isOpen);
-    },
+    const body = document.getElementById('arc-body-' + id);
+    const btn  = document.getElementById('arc-btn-' + id);
+    const isOpen = body.classList.toggle('open');
+    if (btn) btn.classList.toggle('open', isOpen);
+    if (isOpen && isLoggedIn) {
+        setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
+    }
+},
 	switchArchiveTab(tab) {
         const isRaces = tab === 'races';
         document.getElementById('api-archive-list').style.display = isRaces ? 'block' : 'none';
@@ -2470,8 +2473,15 @@ function rerenderArchive() {
     };
     const arcList = document.getElementById('api-archive-list');
     const qualiList = document.getElementById('api-quali-list');
-    if (arcList) arcList.innerHTML = entries.filter(([,r]) => !r.isQualifying).map(([id,r]) => makeItem(id,r,false)).join('') || '';
-    if (qualiList) qualiList.innerHTML = entries.filter(([,r]) => r.isQualifying).map(([id,r]) => makeItem(id,r,true)).join('') || '';
+if (arcList) {
+    arcList.innerHTML = entries.filter(([,r]) => !r.isQualifying).map(([id,r]) => makeItem(id,r,false)).join('') || '';
+    if (isLoggedIn) {
+        entries.filter(([,r]) => !r.isQualifying).forEach(([id, r]) => {
+            setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
+        });
+    }
+}
+if (qualiList) qualiList.innerHTML = entries.filter(([,r]) => r.isQualifying).map(([id,r]) => makeItem(id,r,true)).join('') || '';
 }
 onAuthStateChanged(auth, user => {
     isLoggedIn = !!user;
