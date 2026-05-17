@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -182,6 +183,9 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .pos-gold   { color: #f5a623 !important; font-weight: 900 !important; }
 .pos-silver { color: #b0b0b0 !important; font-weight: 900 !important; }
 .pos-bronze { color: #cd7f32 !important; font-weight: 900 !important; }
+.bot-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); font-size: 0.45em; font-family: var(--font-data); font-weight: 800; letter-spacing: 2px; padding: 2px 7px; border-radius: 3px; vertical-align: middle; margin-left: 6px; border: 1px solid rgba(255,255,255,0.2); }
+.bot-driver-name { opacity: 0.75; }
+.bot-row { opacity: 0.82; }
 .team-logo-img { width: 38px; height: 28px; object-fit: contain; vertical-align: middle; margin-right: 10px; flex-shrink: 0; }
 .constructor-row { position: relative; }
 .cteam-ferrari  { background: linear-gradient(90deg, var(--f1-red) 0%, #911d1d 100%); }
@@ -1216,10 +1220,23 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="admin-section" id="sec-countdown">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">⏱</span><span class="admin-section-title">Odliczanie do GP</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
-            <div class="form-group"><label class="form-label">Tytuł sekcji licznika:</label><input type="text" id="adm-hero-title" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII"></div>
-            <div class="form-group"><label class="form-label">Tryb wyświetlania:</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode" value="countdown" id="hero-mode-countdown" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode" value="soon" id="hero-mode-soon"> SOON</label></div></div>
-            <div id="hero-date-group" class="form-group"><label class="form-label">Data licznika (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date" class="f1-input" placeholder="2026-05-24 20:00"></div>
-            <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig()">💾 ZAPISZ ODLICZANIE</button></div>
+            <p style="color:#aaa;font-size:13px;margin-top:0;margin-bottom:16px;line-height:1.6;">Każdy split ma osobne odliczanie. Widoczne odliczanie zmienia się automatycznie po przełączeniu Splitu na stronie.</p>
+            <!-- SPLIT 1 countdown -->
+            <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;margin-bottom:20px;">
+                <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:var(--f1-red);margin-bottom:14px;">⏱ SPLIT 1</div>
+                <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>
+                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 1):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s1" value="countdown" id="hero-mode-countdown-s1" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s1" value="soon" id="hero-mode-soon-s1"> SOON</label></div></div>
+                <div id="hero-date-group-s1" class="form-group"><label class="form-label">Data licznika S1 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s1" class="f1-input" placeholder="2026-05-24 20:00"></div>
+                <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(1)">💾 ZAPISZ ODLICZANIE SPLIT 1</button></div>
+            </div>
+            <!-- SPLIT 2 countdown -->
+            <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;">
+                <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:#0078ff;margin-bottom:14px;">⏱ SPLIT 2</div>
+                <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 2):</label><input type="text" id="adm-hero-title-s2" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S2"></div>
+                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 2):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s2" value="countdown" id="hero-mode-countdown-s2" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s2" value="soon" id="hero-mode-soon-s2"> SOON</label></div></div>
+                <div id="hero-date-group-s2" class="form-group"><label class="form-label">Data licznika S2 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s2" class="f1-input" placeholder="2026-05-24 20:00"></div>
+                <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(2)">💾 ZAPISZ ODLICZANIE SPLIT 2</button></div>
+            </div>
         </div>
     </div>
     <div class="admin-section" id="sec-race">
@@ -1715,6 +1732,46 @@ function renderSplashCountdown(config) {
     splashTimerInterval = setInterval(tickSplash, 1000);
 }
 
+// ── applyHeroConfig — stosuje odliczanie dla danego splitu ──────────────────
+function applyHeroConfig(splitNum) {
+    const cfg = splitNum === 2 ? (window.heroConfigS2 || {}) : (window.heroConfigS1 || {});
+    const mode = cfg.mode || 'countdown';
+    const timerSection = document.getElementById('hero-timer-section');
+    const soonSection  = document.getElementById('hero-soon-section');
+    const titleEl      = document.getElementById('display-hero-title');
+    const splashGpName = document.getElementById('splash-gp-name');
+
+    if (titleEl) titleEl.innerText = cfg.title || 'NEXT GP';
+    if (splashGpName) {
+        if (cfg.title) { splashGpName.textContent = cfg.title; splashGpName.style.display = ''; }
+        else splashGpName.style.display = 'none';
+    }
+    cachedHeroConfig = cfg;
+    if (mode === 'soon') {
+        if (timerSection) timerSection.style.display = 'none';
+        if (soonSection)  soonSection.style.display  = 'block';
+        if (window.f1Timer) clearInterval(window.f1Timer);
+    } else {
+        if (timerSection) timerSection.style.display = 'block';
+        if (soonSection)  soonSection.style.display  = 'none';
+        if (window.f1Timer) clearInterval(window.f1Timer);
+        const targetDate = new Date((cfg.date || '').replace(' ', 'T')).getTime();
+        function tickHero() {
+            const diff = targetDate - Date.now();
+            if (diff <= 0) { document.querySelectorAll('.timer-val').forEach(el => el.innerText = '00'); return; }
+            const d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+            const td = document.getElementById('timer-d'); if(td) td.innerText = d.toString().padStart(2,'0');
+            const th = document.getElementById('timer-h'); if(th) th.innerText = h.toString().padStart(2,'0');
+            const tm = document.getElementById('timer-m'); if(tm) tm.innerText = m.toString().padStart(2,'0');
+            const ts = document.getElementById('timer-s'); if(ts) ts.innerText = s.toString().padStart(2,'0');
+        }
+        tickHero();
+        window.f1Timer = setInterval(tickHero, 1000);
+    }
+    localStorage.setItem('f1_heroConfig', JSON.stringify(cachedHeroConfig));
+    renderSplashCountdown(cachedHeroConfig);
+}
+
 let dragSrcEl = null;
 function initSplashDragDrop() {
     const list = document.getElementById('adm-splash-images-list');
@@ -1933,6 +1990,8 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         adminSplit = n;
         document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
         document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
+        // Zmień odliczanie na właściwe dla splitu
+        applyHeroConfig(n);
         this._applySplitView();
     },
     adminSwitchSplit(n) {
@@ -2056,7 +2115,10 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         document.getElementById('dp-left-accent').style.background = teamColor;
         document.getElementById('dp-team-dot').style.background = teamColor;
         document.getElementById('dp-team-badge').style.borderColor = teamColor + '44';
-        document.getElementById('dp-nick-display').textContent = nick;
+        // Sprawdź czy to bot (po nazwie albo z danych standings)
+        const isDriverBot = isRealF1Driver(nick) || (splitDataCache[currentSplit].standings?.drivers || []).find(d => d.nick.toLowerCase() === nick.toLowerCase())?.isBot;
+        const nickEl = document.getElementById('dp-nick-display');
+        if (nickEl) nickEl.innerHTML = nick + (isDriverBot ? ' <span style="display:inline-block;background:rgba(255,255,255,0.18);color:rgba(255,255,255,0.75);font-size:0.35em;font-family:var(--font-data);font-weight:800;letter-spacing:3px;padding:3px 10px;border-radius:3px;vertical-align:middle;margin-left:10px;border:1px solid rgba(255,255,255,0.25);">BOT AI</span>' : '');
         document.getElementById('dp-team-display').textContent = teamName || 'Nieznany zespół';
         document.getElementById('dp-number-bg').textContent = posCount > 0 ? String(Math.round(posSum / posCount)) : '?';
 
@@ -2471,12 +2533,26 @@ window.dbCore = {
         await set(ref(db, 'config'), { ...current, showNews: document.getElementById('adm-show-news').checked, newsContent: document.getElementById('adm-news-content').value });
         alert("News zapisany!");
     },
-    async saveCountdownConfig() {
+    async saveCountdownConfig(splitNum) {
         const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
         const current = snap.val() || {};
-        const mode = document.querySelector('input[name="hero-mode"]:checked').value;
-        await set(ref(db, 'config'), { ...current, heroTitle: document.getElementById('adm-hero-title').value, heroDate: document.getElementById('adm-hero-date').value, heroMode: mode });
-        alert("Odliczanie zapisane!");
+        if (splitNum === 1) {
+            const mode = document.querySelector('input[name="hero-mode-s1"]:checked').value;
+            await set(ref(db, 'config'), { ...current,
+                heroTitleS1: document.getElementById('adm-hero-title-s1').value,
+                heroDateS1:  document.getElementById('adm-hero-date-s1').value,
+                heroModeS1:  mode
+            });
+            alert("Odliczanie Split 1 zapisane!");
+        } else {
+            const mode = document.querySelector('input[name="hero-mode-s2"]:checked').value;
+            await set(ref(db, 'config'), { ...current,
+                heroTitleS2: document.getElementById('adm-hero-title-s2').value,
+                heroDateS2:  document.getElementById('adm-hero-date-s2').value,
+                heroModeS2:  mode
+            });
+            alert("Odliczanie Split 2 zapisane!");
+        }
     },
     async publishRace() {
         const splitPath = getSplitPath(adminSplit);
@@ -2555,8 +2631,9 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
                     }
                 }
                 if (driverMap[nickKey]) { driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts; if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1; }
-                else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0 }; }
-                if (teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
+                else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0, isBot }; }
+                // Boty nie wliczają punktów do klasyfikacji konstruktorów
+                if (!isBot && teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
             });
             const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
             const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
@@ -2913,9 +2990,7 @@ function renderStandings() {
             const posC = i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
             const tc = getTeamClass(d.team);
             const safeNick = (d.nick||'').replace(/'/g,"\\'");
-            const nickHtml = isBot
-                ? `<span>${d.nick}</span>`
-                : `<span class="driver-name-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil">${d.nick}</span>`;
+            const nickHtml = `<span class="driver-name-clickable${isBot ? ' bot-driver-name' : ''}" onclick="ui.openDriverProfile('${safeNick}')" title="${isBot ? 'Profil bota AI' : 'Profil kierowcy'}">${d.nick}${isBot ? ' <span class="bot-badge">BOT</span>' : ''}</span>`;
             // index in original array for editable cells
             const origIdx = sd.drivers.indexOf(d);
             const posHtml = isLoggedIn
@@ -3010,9 +3085,9 @@ function subscribeStandings(splitNum) {
                     const reorderList = document.getElementById('standings-reorder-list');
                     if (reorderList) {
                         reorderList.innerHTML = d.drivers.map((dr, i) => `
-                        <div class="reorder-item" data-idx="${i}">
+                        <div class="reorder-item" data-idx="${i}" data-nick="${dr.nick}">
                             <span class="reorder-handle">⠿</span>
-                            <span class="reorder-label">${dr.nick}</span>
+                            <span class="reorder-label">${dr.nick}${dr.isBot ? ' <span style="font-size:10px;background:#444;color:#aaa;padding:1px 6px;border-radius:2px;letter-spacing:1px;margin-left:4px;">BOT</span>' : ''}</span>
                         </div>`).join('');
                         initReorderList(reorderList, () => { document.getElementById('btn-save-standings-order').style.display = 'inline-flex'; });
                     }
@@ -3127,35 +3202,21 @@ onValue(ref(db, 'config'), snap => {
     track.style.animation = 'none'; clone.style.animation = 'none'; void track.offsetWidth;
     track.style.animation = 'f1-marquee 40.55s linear infinite';
     clone.style.animation = 'f1-marquee 40.55s linear infinite'; clone.style.animationDelay = '-20.55s';
-    document.getElementById('display-hero-title').innerText = c.heroTitle || "NEXT GP ";
-    const splashGpName = document.getElementById('splash-gp-name');
-    if (splashGpName && c.heroTitle) { splashGpName.textContent = c.heroTitle; splashGpName.style.display = ''; }
-    else if (splashGpName) { splashGpName.style.display = 'none'; }
-    const mode = c.heroMode || 'countdown';
-    const timerSection = document.getElementById('hero-timer-section');
-    const soonSection = document.getElementById('hero-soon-section');
-    cachedHeroConfig = { mode, date: c.heroDate || '', title: c.heroTitle || '' };
-    if (mode === 'soon') {
-        timerSection.style.display = 'none'; soonSection.style.display = 'block';
-        if (window.f1Timer) clearInterval(window.f1Timer);
-    } else {
-        timerSection.style.display = 'block'; soonSection.style.display = 'none';
-        if (window.f1Timer) clearInterval(window.f1Timer);
-        const targetDate = new Date((c.heroDate || '').replace(' ', 'T')).getTime();
-        window.f1Timer = setInterval(() => {
-            const diff = targetDate - Date.now();
-            if (diff <= 0) { document.querySelectorAll('.timer-val').forEach(el => el.innerText = "00"); return; }
-            const d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
-            document.getElementById('timer-d').innerText = d.toString().padStart(2,'0');
-            document.getElementById('timer-h').innerText = h.toString().padStart(2,'0');
-            document.getElementById('timer-m').innerText = m.toString().padStart(2,'0');
-            document.getElementById('timer-s').innerText = s.toString().padStart(2,'0');
-        }, 1000);
-    }
-    localStorage.setItem('f1_heroConfig', JSON.stringify(cachedHeroConfig));
-    renderSplashCountdown(cachedHeroConfig);
-    if (c.heroTitle) document.getElementById('adm-hero-title').value = c.heroTitle;
-    if (c.heroDate)  document.getElementById('adm-hero-date').value = c.heroDate;
+    // Zapisz per-split hero configs do globalnego obiektu
+    window.heroConfigS1 = { mode: c.heroModeS1 || 'countdown', date: c.heroDateS1 || '', title: c.heroTitleS1 || '' };
+    window.heroConfigS2 = { mode: c.heroModeS2 || 'countdown', date: c.heroDateS2 || '', title: c.heroConfigS2?.title || c.heroTitleS2 || '' };
+    window.heroConfigS2 = { mode: c.heroModeS2 || 'countdown', date: c.heroDateS2 || '', title: c.heroTitleS2 || '' };
+
+    // Wypełnij pola admina
+    if (c.heroTitleS1 !== undefined) { const el = document.getElementById('adm-hero-title-s1'); if(el) el.value = c.heroTitleS1; }
+    if (c.heroDateS1  !== undefined) { const el = document.getElementById('adm-hero-date-s1');  if(el) el.value = c.heroDateS1;  }
+    if (c.heroModeS1) { const r = document.querySelector(`input[name="hero-mode-s1"][value="${c.heroModeS1}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s1').style.display = c.heroModeS1 === 'soon' ? 'none' : 'block'; }
+    if (c.heroTitleS2 !== undefined) { const el = document.getElementById('adm-hero-title-s2'); if(el) el.value = c.heroTitleS2; }
+    if (c.heroDateS2  !== undefined) { const el = document.getElementById('adm-hero-date-s2');  if(el) el.value = c.heroDateS2;  }
+    if (c.heroModeS2) { const r = document.querySelector(`input[name="hero-mode-s2"][value="${c.heroModeS2}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s2').style.display = c.heroModeS2 === 'soon' ? 'none' : 'block'; }
+
+    // Zastosuj odliczanie dla aktywnego splitu
+    applyHeroConfig(currentSplit);
     if (c.showNews !== undefined) document.getElementById('adm-show-news').checked = c.showNews;
     if (c.newsContent) document.getElementById('adm-news-content').value = c.newsContent;
     if (c.regulaminContent !== undefined) {
@@ -3252,9 +3313,14 @@ ui.editAlbumCover = async function(id, currentCover) {
     if (newCover !== null && newCover.trim() !== currentCover) await update(ref(db, 'gallery/' + id), { cover: newCover.trim() });
 };
 
-document.querySelectorAll('input[name="hero-mode"]').forEach(r => {
+document.querySelectorAll('input[name="hero-mode-s1"]').forEach(r => {
     r.addEventListener('change', function() {
-        document.getElementById('hero-date-group').style.display = this.value === 'soon' ? 'none' : 'block';
+        document.getElementById('hero-date-group-s1').style.display = this.value === 'soon' ? 'none' : 'block';
+    });
+});
+document.querySelectorAll('input[name="hero-mode-s2"]').forEach(r => {
+    r.addEventListener('change', function() {
+        document.getElementById('hero-date-group-s2').style.display = this.value === 'soon' ? 'none' : 'block';
     });
 });
 
