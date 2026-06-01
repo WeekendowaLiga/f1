@@ -2049,10 +2049,13 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
     },
     // ===================== PROFIL KIEROWCY =====================
     openDriverProfile(nick) {
-        if (!nick || nick === '—' || nick.trim() === '') return;
+    if (!nick || nick === '—' || nick.trim() === '') return;
 
-        // Zbierz wyścigi z archiwum (posortowane rosnąco wg order/timestamp)
-       const arcEntries = Object.values(archiveDataCache)
+    // Upewnij się że archiwum aktywnego splitu jest zasubskrybowane
+    subscribeArchive(currentSplit);
+
+    // Zbierz wyścigi z archiwum (posortowane rosnąco wg order/timestamp)
+    const arcEntries = Object.values(archiveDataCache)
     .filter(race => !race.isTraining && !race.isQualifying)
     .sort((a, b) => {
         const ao = a.order, bo = b.order;
