@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -1270,7 +1269,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="reorder-list" id="standings-reorder-list"></div>
     <button class="btn-action" id="btn-save-standings-order" onclick="dbCore.saveStandingsOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ</button>
 </div>
-            <div class="btn-row"><button class="btn-action" onclick="dbCore.saveStandings()">💾 ZAPISZ KLASYFIKACJE</button></div>
+            <div class="btn-row">
+                <button class="btn-action" onclick="dbCore.saveStandings()">💾 ZAPISZ KLASYFIKACJE</button>
+                <button class="btn-action" style="background:#1a5c1a;border-color:#2d8a2d;" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive()" title="Przelicza PKT i wygrane na podstawie archiwum wyścigów">🔄 PRZELICZ Z ARCHIWUM</button>
+            </div>
+            <p style="color:#666;font-size:11px;margin-top:6px;line-height:1.5;">💡 „Przelicz z archiwum" — sumuje PKT ze wszystkich wyścigów (bez treningów/kwalifikacji) i nadpisuje klasyfikację. Boty AI nie są wliczane do konstruktorów.</p>
         </div>
     </div>
     <div class="admin-section" id="sec-logos">
@@ -2241,8 +2244,12 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
                 }
             } catch(e) { console.error('Błąd zapisu arc:', e); }
         };
+        // FIX #2: Enter zapisuje bez blur na elemencie nadrzędnym (bez zwijania accordion)
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); save(); }
+            if (e.key === 'Escape') { saved = true; input.value = current; const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = current; span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field); if (input.parentNode) input.replaceWith(span); }
+        });
         input.addEventListener('blur', save);
-        input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } if (e.key === 'Escape') { saved = true; input.value = current; input.blur(); } });
     },
 
     editLastRaceCell(el, rowIdx, field) {
@@ -2369,17 +2376,28 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         const input = document.createElement('input'); input.type = 'text'; input.value = current;
         input.style.cssText = 'width:80px;font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--f1-red);background:transparent;border:none;border-bottom:2px solid var(--f1-red);text-align:center;outline:none;';
         el.replaceWith(input); input.focus(); input.select();
+        let saved = false;
         const save = async () => {
+            if (saved) return; saved = true;
             const newVal = input.value.trim();
             const span = document.createElement('span'); span.className = 'editable-cell'; span.textContent = newVal;
             span.onclick = () => ui.editCell(span, dbPath, type, idx, field);
             input.replaceWith(span);
-            const s = await new Promise(res => onValue(ref(db, dbPath), res, { onlyOnce: true }));
-            const cur = s.val(); cur[type][idx][field] = newVal;
-            await set(ref(db, dbPath), cur);
+            // FIX #3: zawsze używaj aktualnej ścieżki splitu (dbPath może zawierać przestarzały split)
+            const actualPath = getSplitPath() + '/standings';
+            const s = await new Promise(res => onValue(ref(db, actualPath), res, { onlyOnce: true }));
+            const cur = s.val();
+            if (cur && cur[type] && cur[type][idx] !== undefined) {
+                cur[type][idx][field] = newVal;
+                // Zaktualizuj lokalny cache
+                if (splitDataCache[currentSplit].standings && splitDataCache[currentSplit].standings[type]) {
+                    splitDataCache[currentSplit].standings[type][idx][field] = newVal;
+                }
+                await set(ref(db, actualPath), cur);
+            }
         };
         input.addEventListener('blur', save);
-        input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); save(); } if (e.key === 'Escape') { saved = true; input.value = current; const span = document.createElement('span'); span.className = 'editable-cell'; span.textContent = current; span.onclick = () => ui.editCell(span, dbPath, type, idx, field); input.replaceWith(span); } });
     },
     async editLastRaceName() {
         if (!isLoggedIn) return;
@@ -2456,17 +2474,25 @@ function rerenderArchive() {
         if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return (b[1].timestamp || 0) - (a[1].timestamp || 0);
     });
+    // FIX #1+#2: Zapamiętaj które accordion są otwarte przed przerenderowaniem
+    const openIds = new Set();
+    document.querySelectorAll('.archive-body.open').forEach(el => {
+        const id = el.id.replace('arc-body-', '');
+        if (id) openIds.add(id);
+    });
     const makeItem = (id, race, isQuali) => {
         const editPart = isLoggedIn
             ? `id="arc-name-${id}" class="arc-edit-name editable-mode" onclick="ui.editArchiveName('${id}', '${(race.name||'').replace(/'/g,"\\'")}')"`
             : `id="arc-name-${id}" class="arc-edit-name"`;
         const tableHtml = isQuali ? renderQualifyingTable(race.results, id) : renderRaceTable(race.results, id, false, race.isTraining);
+        // FIX #1: dodajemy klasy open jeśli był otwarty przed przerenderowaniem
+        const isOpen = openIds.has(id);
         return `<div class="archive-item">
-            <button class="archive-header" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
+            <button class="archive-header${isOpen ? ' open' : ''}" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
                 <span ${editPart}>${race.name}</span>${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
-            <div class="archive-body" id="arc-body-${id}">
+            <div class="archive-body${isOpen ? ' open' : ''}" id="arc-body-${id}">
                 <div style="padding:20px;border-top:2px solid #eee;overflow-x:auto;">${tableHtml}</div>
             </div>
         </div>`;
@@ -2642,8 +2668,7 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
                 }
                 if (driverMap[nickKey]) { driverMap[nickKey].pts = (parseInt(driverMap[nickKey].pts) || 0) + pts; if (isWin) driverMap[nickKey].wins = (parseInt(driverMap[nickKey].wins) || 0) + 1; }
                 else { driverMap[nickKey] = { nick: r.nick, team: r.team, pts, wins: isWin ? 1 : 0, isBot }; }
-                // Boty nie wliczają punktów do klasyfikacji konstruktorów
-                if (!isBot && teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
+                if (teamKey) { if (teamMap[teamKey]) { teamMap[teamKey].pts = (parseInt(teamMap[teamKey].pts) || 0) + pts; } else { teamMap[teamKey] = { team: r.team, pts }; } }
             });
             const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
             const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
@@ -2789,6 +2814,93 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         await update(ref(db), updates);
         alert("Kolejność albumów zapisana!");
         document.getElementById('btn-save-gallery-order').style.display = 'none';
+    },
+
+    // FIX #4: Przelicz standings na podstawie danych z archiwum
+    async recalcStandingsFromArchive() {
+        if (!isLoggedIn) return;
+        const splitPath = getSplitPath(adminSplit);
+        const arcSnap = await new Promise(res => onValue(ref(db, splitPath + '/archive'), res, { onlyOnce: true }));
+        const archive = arcSnap.val();
+        if (!archive || Object.keys(archive).length === 0) { alert('Brak danych w archiwum dla tego splitu.'); return; }
+
+        // Pobierz aktualne standings (żeby zachować isBot, photo, kolejność)
+        const sdSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
+        const currentSd = sdSnap.val() || { drivers: [], teams: [] };
+
+        // Zbuduj mapę kierowców z aktualnych standings (nick => cała reszta metadanych)
+        const driverMeta = {};
+        (currentSd.drivers || []).forEach(d => {
+            driverMeta[(d.nick || '').toLowerCase()] = { ...d, pts: 0, wins: 0 };
+        });
+
+        // Zbiór nicków ZNANYCH graczy ligowych (isBot=false w standings) — priorytet nad isRealF1Driver()
+        // Gracz może mieć nick identyczny z prawdziwym kierowcą F1 — standings jest źródłem prawdy
+        const knownHumanNicks = new Set(
+            (currentSd.drivers || [])
+                .filter(d => !d.isBot)
+                .map(d => (d.nick || '').toLowerCase())
+        );
+        const knownBotNicks = new Set(
+            (currentSd.drivers || [])
+                .filter(d => d.isBot)
+                .map(d => (d.nick || '').toLowerCase())
+        );
+
+        const teamMap = {};
+
+        // Posortuj wyścigi wg order/timestamp
+        const races = Object.values(archive).sort((a, b) => {
+            const ao = a.order, bo = b.order;
+            if (ao !== undefined && bo !== undefined) return ao - bo;
+            if (ao !== undefined) return -1; if (bo !== undefined) return 1;
+            return (a.timestamp || 0) - (b.timestamp || 0);
+        });
+
+        let racesProcessed = 0;
+        races.forEach(race => {
+            if (!race.results || race.isTraining || race.isQualifying) return;
+            racesProcessed++;
+            race.results.forEach(r => {
+                const pts = parseInt(r.pts) || 0;
+                const nickKey = (r.nick || '').toLowerCase();
+                const teamKey = (r.team ? normalizeTeamName(r.team) : '').toLowerCase();
+                const isWin = parseInt(r.pos) === 1;
+
+                // Określ czy bot: standings są źródłem prawdy.
+                // Jeśli nick jest w standings jako gracz — nigdy nie jest botem,
+                // nawet jeśli jego nick brzmi jak kierowca F1 (np. "Franco COLAPINTO").
+                // Fallback na isRealF1Driver() tylko gdy nicka nie ma w standings.
+                let isBot;
+                if (knownHumanNicks.has(nickKey)) {
+                    isBot = false;
+                } else if (knownBotNicks.has(nickKey)) {
+                    isBot = true;
+                } else {
+                    isBot = isRealF1Driver(r.nick);
+                }
+
+                if (!driverMeta[nickKey]) {
+                    driverMeta[nickKey] = { nick: r.nick, team: normalizeTeamName(r.team) || '', pts: 0, wins: 0, isBot };
+                }
+                driverMeta[nickKey].pts = (driverMeta[nickKey].pts || 0) + pts;
+                if (isWin) driverMeta[nickKey].wins = (driverMeta[nickKey].wins || 0) + 1;
+                // Aktualizuj nazwę zespołu na najnowszą
+                if (r.team) driverMeta[nickKey].team = normalizeTeamName(r.team);
+
+                if (teamKey) {
+                    const tLabel = normalizeTeamName(r.team);
+                    if (!teamMap[teamKey]) teamMap[teamKey] = { team: tLabel, pts: 0 };
+                    teamMap[teamKey].pts += pts;
+                }
+            });
+        });
+
+        const drivers = Object.values(driverMeta).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
+        const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
+
+        await set(ref(db, splitPath + '/standings'), { drivers, teams });
+        alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${adminSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);
     }
 };
 
