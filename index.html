@@ -157,12 +157,12 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .f1-table tbody tr:nth-child(2)  { animation-delay: 0.08s; }
 .f1-table tbody tr:nth-child(3)  { animation-delay: 0.12s; }
 .f1-table tbody tr:nth-child(4)  { animation-delay: 0.16s; }
-.f1-table tbody tr:nth-child(5)  { animation-delay: 0.20.55s; }
+.f1-table tbody tr:nth-child(5)  { animation-delay: 0.20s; }
 .f1-table tbody tr:nth-child(6)  { animation-delay: 0.24s; }
 .f1-table tbody tr:nth-child(7)  { animation-delay: 0.28s; }
 .f1-table tbody tr:nth-child(8)  { animation-delay: 0.32s; }
 .f1-table tbody tr:nth-child(9)  { animation-delay: 0.36s; }
-.f1-table tbody tr:nth-child(n+10) { animation-delay: 0.40.55s; }
+.f1-table tbody tr:nth-child(n+10) { animation-delay: 0.40s; }
 .f1-card { background: var(--f1-white); border: 1px solid var(--f1-light-grey); border-top: 20px solid var(--f1-black); box-shadow: 0 30px 60px rgba(0,0,0,0.07); margin-bottom: 80px; overflow: visible; transition: box-shadow 0.4s ease, transform 0.3s ease; }
 .f1-card:hover { box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 0 0 1px rgba(225,6,0,0.12); transform: translateY(-3px); }
 .f1-card-title { padding: 40px 50px; background: #f8f8f9; border-bottom: 2px solid #eee; font-family: var(--font-display); font-size: 40px; text-transform: uppercase; color: var(--f1-black); display: flex; align-items: center; letter-spacing: var(--ls-heading); }
@@ -222,7 +222,6 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .team-rb       { border-left: 15px solid #004cff; } .txt-rb       { color: #004cff; }
 .driver-cell { display: flex; align-items: center; gap: 18px; }
 .driver-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(0,0,0,0.12); flex-shrink: 0; background: #eee; }
-/* KLIKALNE NICKI */
 .driver-name-clickable {
     font-weight: 700; font-size: 40px; letter-spacing: 1px;
     cursor: pointer; transition: color 0.2s;
@@ -253,6 +252,20 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .arc-cell-editable:hover::after { content: ' ✎'; font-size: 0.6em; opacity: 0.5; }
 .race-row-dragging { opacity: 0.35; background: rgba(225,6,0,0.08) !important; }
 .race-row-dragover { border-top: 3px solid var(--f1-red) !important; }
+
+/* ===================== TABS W WYŚCIGU (Last Race + Archive) ===================== */
+.race-tabs { display: flex; border-bottom: 3px solid #eee; margin-bottom: 0; }
+.race-tab-btn {
+    font-family: var(--font-display); font-size: 22px; font-weight: 900;
+    letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px;
+    background: transparent; color: #999; border: none; cursor: pointer;
+    border-bottom: 3px solid transparent; margin-bottom: -3px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.race-tab-btn.active { color: var(--f1-black); border-bottom-color: var(--f1-red); }
+.race-tab-btn:hover:not(.active) { color: var(--f1-dark-grey); }
+.race-tab-pane { display: none; }
+.race-tab-pane.active { display: block; }
 
 /* ===================== ARCHIWUM ===================== */
 .archive-body { display: block !important; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.6s cubic-bezier(0.19,1,0.22,1), opacity 0.3s ease; }
@@ -323,7 +336,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-editable { cursor: pointer; border-bottom: 2px dashed rgba(255,255,255,0.2); transition: border-color 0.2s, background 0.2s; padding: 2px 6px 2px 2px; border-radius: 3px; display: inline-block; width: 100%; box-sizing: border-box; }
 .tpc-editable:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
 .tpc-editable:hover::after { content: ' ✎'; font-size: 0.6em; opacity: 0.6; }
-/* Klikalne nazwy kierowców na kartach zespołu */
 .tpc-driver-clickable {
     cursor: pointer;
     border-bottom: 2px dashed rgba(255,255,255,0.35);
@@ -707,7 +719,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     background: rgba(255,255,255,0.14);
     color: #fff;
 }
-/* Sekcje które są per-split — schowane gdy nie dotyczy */
 .split-only-section { transition: opacity 0.2s; }
 
 /* ===================== MOBILNE ===================== */
@@ -817,7 +828,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 	.tpc-field-value.tpc-big { font-size: 14px; }
 	.team-page-card { min-height: unset; }
     .adm-team-fields { grid-template-columns: 1fr; }
-    /* Profil telefon */
     .dp-nick { font-size: 46px; }
     .dp-header { padding: 40px 24px 30px; flex-direction: column; align-items: flex-start; gap: 20px; }
     .dp-team-logo-wrap { display: none; }
@@ -831,23 +841,18 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .dp-race-table th { font-size: 10px; padding: 12px 8px; }
     .dp-pts-cell { font-size: 22px !important; }
     #driver-profile-overlay { padding: 0; position: fixed; overflow-y: scroll; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-    #driver-profile-modal { border-radius: 0; min-height: 100vh; min-height: 100.55svh; }
+    #driver-profile-modal { border-radius: 0; min-height: 100vh; min-height: 100svh; }
     .dp-close-btn { top: 14px; right: 14px; width: 46px; height: 46px; }
     .dp-stats-row { flex-wrap: wrap; }
     .dp-stat { flex: 0 0 25%; border-bottom: 1px solid rgba(255,255,255,0.07); }
-    /* Tabela wyścigów w profilu scroll */
     #driver-profile-modal .dp-races-section { padding: 16px 0 30px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     #driver-profile-modal .dp-race-table { table-layout: auto; min-width: 580px; width: 100%; }
     #driver-profile-modal .dp-race-table th { font-size: 11px; padding: 14px 14px; white-space: nowrap; letter-spacing: 1px; }
     #driver-profile-modal .dp-race-table td { font-size: 17px; padding: 16px 14px; white-space: nowrap; letter-spacing: 0; word-break: normal; }
     #driver-profile-modal .dp-race-table .dp-pts-cell { font-size: 20px !important; padding-right: 14px !important; }
     #driver-profile-modal .dp-race-table .dp-pos-cell { font-size: 22px; }
-    /* Statystyki — kolumny telfon */
-    @media (max-width: 380px) {
-    .dp-stat { flex: 0 0 25%; }
-    }
-	/* fonty */
-    body, input, textarea, select, button {
+    .race-tab-btn { font-size: 16px; padding: 12px 20px; }
+	body, input, textarea, select, button {
         font-family: var(--font-body) !important;
     }
     .f1-table td, .dp-race-table td, .archive-header,
@@ -855,7 +860,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .f1-card-title, .nav-item {
         font-family: inherit;
     }
-    /* autozoom of */
     input, textarea, select { font-size: 16px !important; }
     .f1-table td { font-size: 16px; }
 }
@@ -1062,7 +1066,15 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div id="view-last-race" class="page-view">
         <div class="f1-card">
             <div class="f1-card-title" id="display-last-race-name">WYNIKI: OSTATNI WYŚCIG</div>
-            <div style="overflow-x: auto;" id="api-last-race-results"></div>
+            <!-- ZMIANA: struktura z tabsami dla wyścigu i kwalifikacji -->
+            <div id="api-last-race-wrapper">
+                <div class="race-tabs" id="last-race-tabs" style="display:none;">
+                    <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
+                    <button class="race-tab-btn" id="last-tab-quali-btn" onclick="ui.switchRaceTab('last','quali',this)">⏱ KWALIFIKACJE</button>
+                </div>
+                <div id="last-race-tab-race" class="race-tab-pane active" style="overflow-x:auto;"></div>
+                <div id="last-race-tab-quali" class="race-tab-pane" style="overflow-x:auto;"></div>
+            </div>
         </div>
     </div>
     <div id="view-archive" class="page-view">
@@ -1127,7 +1139,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
         <div class="dp-races-section">
             <div class="dp-races-title">Historia Wyścigów</div>
-            <div id="dp-races-content"><div style="text-align:center;padding:60px;font-family:var(--font-display);font-size:26px;color:var(--f1-red);letter-spacing:4px;text-transform:uppercase;animation:splashPulse 1.5s ease infinite;">Ładowanie...</div></div>
+            <div id="dp-races-content"></div>
         </div>
     </div>
 </div>
@@ -1158,7 +1170,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a> 
     </div>
     <div class="admin-body">
-    <!-- SEKCJA SPLIT 2 STATUS (tylko widoczna gdy split 2 aktywny w adminie) -->
     <div class="admin-section split-only-section" id="sec-split2soon" style="display:none;">
         <div class="admin-section-header open" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body open">
@@ -1220,7 +1231,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">⏱</span><span class="admin-section-title">Odliczanie do GP</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
             <p style="color:#aaa;font-size:13px;margin-top:0;margin-bottom:16px;line-height:1.6;">Każdy split ma osobne odliczanie. Widoczne odliczanie zmienia się automatycznie po przełączeniu Splitu na stronie.</p>
-            <!-- SPLIT 1 countdown -->
             <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;margin-bottom:20px;">
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:var(--f1-red);margin-bottom:14px;">⏱ SPLIT 1</div>
                 <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>
@@ -1228,7 +1238,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 <div id="hero-date-group-s1" class="form-group"><label class="form-label">Data licznika S1 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s1" class="f1-input" placeholder="2026-05-24 20:00"></div>
                 <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(1)">💾 ZAPISZ ODLICZANIE SPLIT 1</button></div>
             </div>
-            <!-- SPLIT 2 countdown -->
             <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;">
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:#0078ff;margin-bottom:14px;">⏱ SPLIT 2</div>
                 <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 2):</label><input type="text" id="adm-hero-title-s2" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S2"></div>
@@ -1247,7 +1256,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="form-group no-bonus-box"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
             <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
 			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
-			<label class="check-group"><input type="checkbox" id="pub-qualifying"> TRENINGI (nick | zespół | najlepszy czas)</label>
+			<!-- ZMIANA: kwalifikacje z nowym formatem i opcją dodania do last race -->
+            <label class="check-group"><input type="checkbox" id="pub-qualifying"> KWALIFIKACJE (Nick | Zespół | Czas | P startowa)</label>
+            <label class="check-group" style="margin-left:28px;opacity:0.85;font-size:13px;"><input type="checkbox" id="pub-quali-to-last"> Pokaż też w zakładce "Ostatni Wyścig" (jako zakładka Kwalifikacje)</label>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.publishRace()">📤 PUBLIKUJ WYNIKI</button></div>
         </div>
     </div>
@@ -1344,41 +1355,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
 </div>
 
-<!-- PROFIL POZA main-app -->
-<div id="driver-profile-overlay" onclick="ui.closeDriverProfile(event)">
-    <div id="driver-profile-modal">
-        <div class="dp-top-bar" id="dp-top-bar"></div>
-        <button class="dp-close-btn" onclick="ui.closeDriverProfile(null,true)">✕</button>
-        <div class="dp-header">
-            <div class="dp-header-grid-bg"></div>
-            <div class="dp-left-accent" id="dp-left-accent"></div>
-            <div class="dp-header-content">
-                <div class="dp-nick" id="dp-nick-display">—</div>
-                <div class="dp-team-badge" id="dp-team-badge">
-                    <div class="dp-team-dot" id="dp-team-dot"></div>
-                    <span class="dp-team-name" id="dp-team-display">—</span>
-                </div>
-            </div>
-            <div class="dp-team-logo-wrap" id="dp-logo-wrap"></div>
-            <div class="dp-number-bg" id="dp-number-bg"></div>
-        </div>
-        <div class="dp-stats-row">
-            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-races">0</span><span class="dp-stat-label">Wyścigi</span></div>
-            <div class="dp-stat"><span class="dp-stat-val dp-highlight" id="dp-stat-pts">0</span><span class="dp-stat-label">Łączne PKT</span></div>
-            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-wins">0</span><span class="dp-stat-label">Wygrane</span></div>
-            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-podiums">0</span><span class="dp-stat-label">Podium</span></div>
-            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-best">—</span><span class="dp-stat-label">Najlepsza Poz.</span></div>
-            <div class="dp-stat"><span class="dp-stat-val" id="dp-stat-avg">—</span><span class="dp-stat-label">Śr. Poz.</span></div>
-            <div class="dp-stat"><span class="dp-stat-val dp-purple" id="dp-stat-fl">0</span><span class="dp-stat-label">Najszybsze okrążenia</span></div>
-            <div class="dp-stat"><span class="dp-stat-val dp-highlight" id="dp-stat-pp">0</span><span class="dp-stat-label">Pole Position</span></div>
-        </div>
-        <div class="dp-races-section">
-            <div class="dp-races-title">Historia Wyścigów</div>
-            <div id="dp-races-content"><div style="text-align:center;padding:60px;font-family:var(--font-display);font-size:26px;color:var(--f1-red);letter-spacing:4px;text-transform:uppercase;animation:splashPulse 1.5s ease infinite;">Ładowanie...</div></div>
-        </div>
-    </div>
-</div>
-
 <script>
 function hideSplash() {
     var splash = document.getElementById('splash-screen');
@@ -1405,13 +1381,11 @@ function showSplash() {
     splash.classList.remove('hiding');
 }
 
-// ── Timer nieaktywności — powrót do splasha po 10 minutach ──────────────────
 (function() {
-    var INACTIVITY_MS = 10 * 60 * 1000; // 10 minut
+    var INACTIVITY_MS = 10 * 60 * 1000;
     var _inactivityTimer = null;
 
     function resetInactivityTimer() {
-        // Nie rób nic jeśli splash jest już widoczny
         var splash = document.getElementById('splash-screen');
         if (splash && splash.style.display !== 'none' && !splash.classList.contains('hiding')) return;
         clearTimeout(_inactivityTimer);
@@ -1424,10 +1398,7 @@ function showSplash() {
         document.addEventListener(evt, resetInactivityTimer, { passive: true });
     });
 
-    // Uruchom timer od razu (zacznie odliczać gdy użytkownik wejdzie do apki)
     resetInactivityTimer();
-
-    // Eksponuj reset żeby hideSplash mógł go zrestartować
     window._resetInactivityTimer = resetInactivityTimer;
 })();
 setTimeout(function() {
@@ -1456,10 +1427,9 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 let isLoggedIn = false;
-let currentSplit = 1;        // aktywny split w widoku (1 lub 2)
-let adminSplit = 1;          // aktywny split w panelu admina (1 lub 2)
-let split2SoonMode = true;   // czy split 2 pokazuje SOON dla niezalogowanych
-// cache danych per split
+let currentSplit = 1;
+let adminSplit = 1;
+let split2SoonMode = true;
 let splitDataCache = {
     1: { standings: null, lastRace: null, archive: {}, teamsInfo: {} },
     2: { standings: null, lastRace: null, archive: {}, teamsInfo: {} }
@@ -1472,13 +1442,10 @@ let socialIconUploads = {};
 let teamsInfoData = {};
 const getTeamsInfoData = () => splitDataCache[currentSplit].teamsInfo || teamsInfoData;
 
-// ===================== CACHE DANYCH DO PROFILI =====================
-// Gettery zawsze zwracają dane aktualnego splitu
 const getArchiveDataCache = () => splitDataCache[currentSplit].archive;
 const getLastRaceDataCache = () => splitDataCache[currentSplit].lastRace;
-// Aliasy dla kompatybilności wstecznej (będą zastąpione przez gettery poniżej)
-let archiveDataCache = {};   // { firebaseId: { name, results, timestamp, order } }
-let lastRaceDataCache = null; // { name, results, timestamp }
+let archiveDataCache = {};
+let lastRaceDataCache = null;
 
 const TEAM_DEFS = [
     { key: 'ferrari',  label: 'Ferrari',      color: '#ef1a2d', fullName: 'Scuderia Ferrari HP' },
@@ -1509,7 +1476,7 @@ const TEAM_DEFAULTS = {
 const DEFAULT_DISCORD_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`;
 const DEFAULT_YOUTUBE_SVG = `<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
 const DEFAULT_TIKTOK_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.19a8.16 8.16 0 0 0 4.77 1.52V6.25a4.85 4.85 0 0 1-1-.56z" fill="#69C9D0" transform="translate(-1, 1)"/><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.19a8.16 8.16 0 0 0 4.77 1.52V6.25a4.85 4.85 0 0 1-1-.56z" fill="#EE1D52" transform="translate(1, -1)"/><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.19a8.16 8.16 0 0 0 4.77 1.52V6.25a4.85 4.85 0 0 1-1-.56z" fill="#ffffff"/></svg>`;
-// ===================== HELPER: kolor zespołu =====================
+
 const getTeamColorByName = (teamName) => {
     const n = (teamName || '').toLowerCase().trim();
     if (n.includes('ferrari') || n.includes('scuderia')) return '#ef1a2d';
@@ -1525,7 +1492,6 @@ const getTeamColorByName = (teamName) => {
     return '#e10600';
 };
 
-// ===================== HELPER: najszybsze okrążenie =====================
 const findFastestLapIdx = (results) => {
     const toSec = (t) => {
         if (!t || t === '-' || t === '' || t === '—') return Infinity;
@@ -1540,10 +1506,8 @@ const findFastestLapIdx = (results) => {
     return idx;
 };
 
-// ===================== HELPER: aktualny zespół kierowcy =====================
 const getDriverCurrentTeam = (nick) => {
     const nl = (nick || '').toLowerCase().trim();
-    // 1. Szukaj w zakładce Teams (teamsInfoData)
     for (const [teamKey, info] of Object.entries(teamsInfoData)) {
         const d1 = (info.driver1 || '').toLowerCase().trim();
         const d2 = (info.driver2 || '').toLowerCase().trim();
@@ -1552,7 +1516,6 @@ const getDriverCurrentTeam = (nick) => {
             return def ? def.label : teamKey;
         }
     }
-    // 2. Szukaj w najnowszym wyścigu archiwum (po timestamp)
     const sorted = Object.values(archiveDataCache).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     for (const race of sorted) {
         if (race.results) {
@@ -1560,7 +1523,6 @@ const getDriverCurrentTeam = (nick) => {
             if (r && r.team) return r.team;
         }
     }
-    // 3. Szukaj w lastRace
     if (lastRaceDataCache && lastRaceDataCache.results) {
         const r = lastRaceDataCache.results.find(r => (r.nick || '').toLowerCase() === nl);
         if (r && r.team) return r.team;
@@ -1568,7 +1530,6 @@ const getDriverCurrentTeam = (nick) => {
     return '';
 };
 
-// ===================== RENDER ZAKŁADKI ZESPOŁY =====================
 function renderTeamsPage() {
     const container = document.getElementById('teams-grid-container');
     if (!container) return;
@@ -1591,7 +1552,6 @@ function renderTeamsPage() {
             return `<div class="tpc-field"><div class="tpc-field-label">${label}</div><div class="tpc-field-value">${inner}</div></div>`;
         };
 
-        // Kierowca — klikalny jeśli nie jest pusty i nie jesteśmy w trybie edycji
         const makeDriverField = (fieldKey, value, label) => {
             const display = value || '—';
             const isEmpty = !value || value.trim() === '';
@@ -1735,7 +1695,6 @@ function renderSplashCountdown(config) {
     splashTimerInterval = setInterval(tickSplash, 1000);
 }
 
-// ── applyHeroConfig — stosuje odliczanie dla danego splitu ──────────────────
 function applyHeroConfig(splitNum) {
     const cfg = splitNum === 2 ? (window.heroConfigS2 || {}) : (window.heroConfigS1 || {});
     const mode = cfg.mode || 'countdown';
@@ -1798,15 +1757,53 @@ function initReorderList(listEl, onDrop) {
     });
 }
 
+// ===================== RENDER TABELI KWALIFIKACJI (nowa, prosta) =====================
+const renderQualiTable = (results, raceId = null) => {
+    if (!results || results.length === 0) return '<p style="padding:20px;color:#aaa;font-family:var(--font-data);font-size:22px;">Brak danych kwalifikacji.</p>';
+    const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
+    return `<table class="f1-table"><thead><tr>
+        <th class="col-pos">P</th>
+        <th class="col-driver">Kierowca</th>
+        <th>Zespół</th>
+        <th style="width:220px;">Najlepszy czas</th>
+        <th style="width:120px;text-align:center;">P. startowa</th>
+    </tr></thead><tbody>${results.map((r, i) => {
+        const safeNick = (r.nick || '').replace(/'/g, "\\'");
+        const nickHtml = `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${r.nick||'—'}</span>`;
+        return `<tr class="${getTeamClass(r.team)}">
+            <td class="col-pos ${posClass(i)}">${i+1}</td>
+            <td class="col-driver">
+    <span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${i},'nick')">
+        ${r.nick || '—'}
+    </span>
+</td>
+            <td class="${getTeamClass(r.team).replace('team-','txt-')}">
+    <span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${i},'team')">
+        ${r.team || '—'}
+    </span>
+</td>
+            <td class="${i === 0 ? 'fastest-lap' : 'col-best-lap'}" style="font-weight:700;">
+    <span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${i},'best')">
+        ${r.best || '—'}
+    </span>
+</td>
+            <td style="text-align:center;color:rgba(0,0,0,0.5);">
+    <span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${i},'startPos')">
+        ${r.startPos || r.grid || String(i + 1)}
+    </span>
+</td>
+        </tr>`;
+    }).join('')}</tbody></table>`;
+};
+
 window.ui = {
     switchPage(pageId, navEl) {
         document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.getElementById('view-' + pageId).classList.add('active');
         navEl.classList.add('active');
-        if (pageId === 'gallery') this.closeAlbum();
-		if (pageId === 'gallery') { this.closeAlbum(); subscribeGallery(); }
-if (pageId === 'archive') subscribeArchive(currentSplit);
+        if (pageId === 'gallery') { this.closeAlbum(); subscribeGallery(); }
+        if (pageId === 'archive') subscribeArchive(currentSplit);
         if (pageId === 'teams') renderTeamsPage();
         if (pageId === 'regulamin') {
             const editBtn = document.getElementById('regulamin-edit-btn');
@@ -1967,36 +1964,51 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         reader.readAsDataURL(file);
     },
     toggleArc(id) {
-    const body = document.getElementById('arc-body-' + id);
-    const btn  = document.getElementById('arc-btn-' + id);
-    const isOpen = body.classList.toggle('open');
-    if (btn) btn.classList.toggle('open', isOpen);
-    if (isOpen && isLoggedIn) {
-        setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
-    }
-},
-	switchArchiveTab(tab) {
+        const body = document.getElementById('arc-body-' + id);
+        const btn  = document.getElementById('arc-btn-' + id);
+        const isOpen = body.classList.toggle('open');
+        if (btn) btn.classList.toggle('open', isOpen);
+        if (isOpen && isLoggedIn) {
+            setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
+        }
+    },
+    switchArchiveTab(tab) {
         const isRaces = tab === 'races';
         document.getElementById('api-archive-list').style.display = isRaces ? 'block' : 'none';
         document.getElementById('api-quali-list').style.display = isRaces ? 'none' : 'block';
         const activeStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;';
         const inactiveStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;';
         document.getElementById('arc-tab-races').style.cssText = isRaces ? activeStyle : inactiveStyle;
-       document.getElementById('arc-tab-quali').style.cssText = isRaces ? inactiveStyle : activeStyle;
-       if (!isLoggedIn) document.getElementById('arc-tab-quali').style.display = 'none';
+        document.getElementById('arc-tab-quali').style.cssText = isRaces ? inactiveStyle : activeStyle;
+        if (!isLoggedIn) document.getElementById('arc-tab-quali').style.display = 'none';
     },
+
+    // ===================== PRZEŁĄCZANIE ZAKŁADEK W LAST RACE =====================
+    switchRaceTab(context, tab, btn) {
+        if (context === 'last') {
+            document.querySelectorAll('#last-race-tabs .race-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('[id^="last-race-tab-"]').forEach(p => p.classList.remove('active'));
+            const pane = document.getElementById('last-race-tab-' + tab);
+            if (pane) pane.classList.add('active');
+        }
+        if (btn) btn.classList.add('active');
+    },
+
     // ===================== SPLIT SWITCHER =====================
     switchSplit(n) {
         if (currentSplit === n) return;
         currentSplit = n;
-        // Przyciski nav
         document.getElementById('nav-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('nav-split2-btn').classList.toggle('active', n === 2);
-        // Synchronizuj split admina
         adminSplit = n;
         document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
         document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
-        // Zmień odliczanie na właściwe dla splitu
+        // Subskrybuj dane nowego splitu
+        subscribeStandings(n);
+        subscribeLastRace(n);
+        subscribeTeamsInfo(n);
+        const archiveView = document.getElementById('view-archive');
+        if (archiveView && archiveView.classList.contains('active')) subscribeArchive(n);
         applyHeroConfig(n);
         this._applySplitView();
     },
@@ -2004,15 +2016,11 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         adminSplit = n;
         document.getElementById('adm-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('adm-split2-btn').classList.toggle('active', n === 2);
-        // Sekcje per-split w TOC
         const split2SoonToc = document.querySelector('a.split-only-toc[href="#sec-split2soon"]');
         if (split2SoonToc) split2SoonToc.style.display = n === 2 ? '' : 'none';
-        // Sekcja split2soon
         const split2sec = document.getElementById('sec-split2soon');
         if (split2sec) split2sec.style.display = n === 2 ? '' : 'none';
-        // Przeładuj formularze dla właściwego splitu
         const splitPath = n === 1 ? 'split1' : 'split2';
-        // Załaduj standings do formularza
         const sd = splitDataCache[n].standings;
         if (sd) {
             const driversRaw = document.getElementById('adm-drivers-raw');
@@ -2020,11 +2028,8 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
             if (driversRaw && sd.drivers) driversRaw.value = sd.drivers.map(d => `${d.isBot ? 'BOT:' : ''}${d.nick} | ${d.team} | ${d.photo || ''} | ${d.wins || 0} | ${d.pts || 0}`).join('\n');
             if (teamsRaw && sd.teams) teamsRaw.value = sd.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
         }
-        // Przeładuj archiwum
         buildAdmArchiveManager();
-        // Przeładuj zespoły
         buildTeamsAdminList();
-        // Załaduj status split2 jeśli n==2
         if (n === 2) {
             const tog = document.getElementById('adm-split2-soon-toggle');
             if (tog) tog.checked = !!split2SoonMode;
@@ -2036,67 +2041,95 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         const overlay = document.getElementById('split2-soon-overlay');
         if (overlay) overlay.classList.toggle('visible', isSoon);
         if (!isSoon) {
-            // Sync cache aliases
             archiveDataCache = splitDataCache[n].archive;
             lastRaceDataCache = splitDataCache[n].lastRace;
             teamsInfoData = splitDataCache[n].teamsInfo || {};
-            // Przerenderuj widoki
             rerenderLastRace();
             rerenderArchive();
             renderStandings();
             if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
         }
     },
-    // ===================== PROFIL KIEROWCY =====================
-    openDriverProfile(nick) {
-    if (!nick || nick === '—' || nick.trim() === '') return;
 
-    // Upewnij się że archiwum aktywnego splitu jest zasubskrybowane
-    subscribeArchive(currentSplit);
+    // ===================== PROFIL KIEROWCY — ASYNC, CZEKA NA DANE =====================
+    async openDriverProfile(nick) {
+        if (!nick || nick === '—' || nick.trim() === '') return;
 
-    // Zbierz wyścigi z archiwum (posortowane rosnąco wg order/timestamp)
-    const arcEntries = Object.values(archiveDataCache)
-    .filter(race => !race.isTraining && !race.isQualifying)
-    .sort((a, b) => {
-        const ao = a.order, bo = b.order;
-        if (ao !== undefined && bo !== undefined) return ao - bo;
-        if (ao !== undefined) return -1; if (bo !== undefined) return 1;
-        return (a.timestamp || 0) - (b.timestamp || 0);
-    });
-        // Odwróć żeby najnowsze były na górze w tabeli profilu
+        // Pokaż modal od razu z loading state
+        const overlay = document.getElementById('driver-profile-overlay');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        overlay.scrollTop = 0;
+        // Wyczyść poprzednie dane i pokaż loading
+        document.getElementById('dp-nick-display').textContent = nick;
+        document.getElementById('dp-team-display').textContent = '…';
+        document.getElementById('dp-top-bar').style.background = 'var(--f1-red)';
+        document.getElementById('dp-left-accent').style.background = 'var(--f1-red)';
+        document.getElementById('dp-team-dot').style.background = 'var(--f1-red)';
+        document.getElementById('dp-logo-wrap').innerHTML = '';
+        document.getElementById('dp-number-bg').textContent = '';
+        ['dp-stat-races','dp-stat-pts','dp-stat-wins','dp-stat-podiums','dp-stat-best','dp-stat-avg','dp-stat-fl','dp-stat-pp'].forEach(id => {
+            const el = document.getElementById(id); if(el) el.textContent = '…';
+        });
+        document.getElementById('dp-races-content').innerHTML = `<div style="text-align:center;padding:60px;font-family:var(--font-display);font-size:26px;color:var(--f1-red);letter-spacing:4px;text-transform:uppercase;animation:splashPulse 1.5s ease infinite;">Ładowanie...</div>`;
+
+        // Jeśli archiwum splitu NIE jest jeszcze zasubskrybowane — subskrybuj i POCZEKAJ na pierwsze dane
+        if (!splitSubscribed[currentSplit].archive) {
+            await new Promise(resolve => {
+                const sp = currentSplit === 1 ? 'split1' : 'split2';
+                splitSubscribed[currentSplit].archive = true;
+                let resolved = false;
+                onValue(ref(db, sp + '/archive'), snap => {
+                    const d = snap.val();
+                    splitDataCache[currentSplit].archive = d || {};
+                    archiveDataCache = splitDataCache[currentSplit].archive;
+                    rerenderArchive();
+                    buildAdmArchiveManager();
+                    if (!resolved) { resolved = true; resolve(); }
+                });
+            });
+        } else {
+            // Dane już są w cache — upewnij się że alias jest aktualny
+            archiveDataCache = splitDataCache[currentSplit].archive;
+        }
+
+        // Teraz oblicz statystyki z załadowanych danych
+        const arcEntries = Object.values(archiveDataCache)
+            .filter(race => !race.isTraining && !race.isQualifying)
+            .sort((a, b) => {
+                const ao = a.order, bo = b.order;
+                if (ao !== undefined && bo !== undefined) return ao - bo;
+                if (ao !== undefined) return -1; if (bo !== undefined) return 1;
+                return (a.timestamp || 0) - (b.timestamp || 0);
+            });
+
         const arcEntriesReversed = [...arcEntries].reverse();
 
-       const allRaces = [];
+        const allRaces = [];
         arcEntriesReversed.forEach(race => {
-    if (race.results && !race.isTraining) {
-        const r = race.results.find(r => (r.nick || '').toLowerCase() === nick.toLowerCase());
-        if (r) allRaces.push({ raceName: race.name || 'Wyścig', ...r });
-    }
-});
+            if (race.results && !race.isTraining) {
+                const r = race.results.find(r => (r.nick || '').toLowerCase() === nick.toLowerCase());
+                if (r) allRaces.push({ raceName: race.name || 'Wyścig', ...r });
+            }
+        });
 
-       let totalPts = 0, wins = 0, podiums = 0, bestPos = Infinity, posSum = 0, posCount = 0;
+        let totalPts = 0, wins = 0, podiums = 0, bestPos = Infinity, posSum = 0, posCount = 0;
         let fastestLaps = 0, polePositions = 0;
 
-        // Dla każdego wyścigu sprawdź czy kierowca miał najszybszy czas spośród WSZYSTKICH w tym wyścigu
         const globalFastRaceIndices = new Set();
         arcEntries.forEach(race => {
-    if (!race.results) return;
+            if (!race.results) return;
             const fastInRace = findFastestLapIdx(race.results);
             if (fastInRace === -1) return;
             const fastNick = (race.results[fastInRace].nick || '').toLowerCase();
             if (fastNick === nick.toLowerCase()) {
-                // Znajdź indeks tego wyścigu w allRaces
                 const raceIdx = allRaces.findIndex(r => r.raceName === (race.name || 'Wyścig'));
                 if (raceIdx !== -1) globalFastRaceIndices.add(raceIdx);
             }
         });
 
-       const bonusPts = 0;
-
         allRaces.forEach((r, i) => {
-            // 3. Dodajemy punkty z bazy + nasz wyliczony bonus
             totalPts += (parseInt(r.pts) || 0);
-
             const pos = parseInt(r.pos);
             if (!isNaN(pos) && pos > 0) {
                 if (pos === 1) wins++;
@@ -2105,39 +2138,33 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
                 posSum += pos; posCount++;
             }
             if (globalFastRaceIndices.has(i)) fastestLaps++;
-            // Pole position: startował z 1. miejsca
             const startPos = parseInt((r.start || '').toString().replace(/^(Start:)?\s*/i, '').trim());
             if (startPos === 1) polePositions++;
         });
         const avgPos = posCount > 0 ? (posSum / posCount).toFixed(1) : '—';
 
-        // Znajdź zespół
         const teamName = getDriverCurrentTeam(nick);
         const teamColor = getTeamColorByName(teamName);
-
-        // Logo zespołu
         const teamDef = TEAM_DEFS.find(t => t.label.toLowerCase() === teamName.toLowerCase());
         const logoUrl = teamDef ? (teamLogos[teamDef.key] || '') : '';
 
-        // Ustaw UI modala
+        // Ustaw kolory
         document.getElementById('dp-top-bar').style.background = teamColor;
         document.getElementById('dp-left-accent').style.background = teamColor;
         document.getElementById('dp-team-dot').style.background = teamColor;
         document.getElementById('dp-team-badge').style.borderColor = teamColor + '44';
-        // Sprawdź czy to bot (po nazwie albo z danych standings)
+
         const isDriverBot = isRealF1Driver(nick) || (splitDataCache[currentSplit].standings?.drivers || []).find(d => d.nick.toLowerCase() === nick.toLowerCase())?.isBot;
         const nickEl = document.getElementById('dp-nick-display');
         if (nickEl) nickEl.innerHTML = nick + (isDriverBot ? ' <span style="display:inline-block;background:rgba(255,255,255,0.18);color:rgba(255,255,255,0.75);font-size:0.35em;font-family:var(--font-data);font-weight:800;letter-spacing:3px;padding:3px 10px;border-radius:3px;vertical-align:middle;margin-left:10px;border:1px solid rgba(255,255,255,0.25);">BOT AI</span>' : '');
         document.getElementById('dp-team-display').textContent = teamName || 'Nieznany zespół';
         document.getElementById('dp-number-bg').textContent = posCount > 0 ? String(Math.round(posSum / posCount)) : '?';
 
-        // Logo
         const logoWrap = document.getElementById('dp-logo-wrap');
         logoWrap.innerHTML = logoUrl
             ? `<img class="dp-team-logo" src="${logoUrl}" alt="${teamName}" onerror="this.style.display='none'">`
             : '';
 
-        // Statystyki
         document.getElementById('dp-stat-races').textContent = allRaces.length;
         document.getElementById('dp-stat-pts').textContent = totalPts;
         document.getElementById('dp-stat-wins').textContent = wins;
@@ -2147,7 +2174,6 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         document.getElementById('dp-stat-fl').textContent = fastestLaps;
         document.getElementById('dp-stat-pp').textContent = polePositions;
 
-        // Historia wyścigów
         const content = document.getElementById('dp-races-content');
         if (allRaces.length === 0) {
             content.innerHTML = `<div class="dp-no-races"><span>🏁</span>Brak danych wyścigowych dla tego gracza</div>`;
@@ -2175,19 +2201,13 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
                         <td style="color:${tColor};font-weight:700;">${r.team || '—'}</td>
                         <td style="text-align:center;color:rgba(255,255,255,0.6);">${clean(r.start)}</td>
                         <td style="text-align:center;color:rgba(255,255,255,0.6);">${clean(r.pit)}</td>
-                        <td class="${isFast ? 'dp-fastest-cell' : ''}">${r.best || '—'}${isFast ? ' ' : ''}</td>
+                        <td class="${isFast ? 'dp-fastest-cell' : ''}">${r.best || '—'}${isFast ? ' ⚡' : ''}</td>
                         <td style="color:rgba(255,255,255,0.65);">${r.time || '—'}</td>
-                       <td class="dp-pts-cell">${parseInt(r.pts) || 0}</td>
+                        <td class="dp-pts-cell">${parseInt(r.pts) || 0}</td>
                     </tr>`;
                 }).join('')}</tbody>
             </table></div>`;
         }
-
-  // Pokaż modal
-        const overlay = document.getElementById('driver-profile-overlay');
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        overlay.scrollTop = 0;
     },
 
     closeDriverProfile(event, force) {
@@ -2197,7 +2217,6 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
         }
     },
 
-    // ===================== EDYCJA POLA KARTY ZESPOŁU =====================
     editTeamField(el, teamKey, fieldKey) {
         if (!isLoggedIn) return;
         const current = el.textContent.trim();
@@ -2247,7 +2266,6 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
                 }
             } catch(e) { console.error('Błąd zapisu arc:', e); }
         };
-        // FIX #2: Enter zapisuje bez blur na elemencie nadrzędnym (bez zwijania accordion)
         input.addEventListener('keydown', e => {
             if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); save(); }
             if (e.key === 'Escape') { saved = true; input.value = current; const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = current; span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field); if (input.parentNode) input.replaceWith(span); }
@@ -2316,17 +2334,17 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
                     let fileId = ''; const m1 = src.match(/\/d\/([^/\?&]+)/); const m2 = src.match(/[?&]id=([^&]+)/);
                     if (m1) fileId = m1[1]; else if (m2) fileId = m2[1];
                     mediaHtml = fileId ? `<iframe src="https://drive.google.com/file/d/${fileId}/preview" allowfullscreen></iframe>` : `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;"><source src="${src}"></video>`;
-					} else if (src.includes('medal.tv')) {
-    let medalId = '';
-    const mGames = src.match(/medal\.tv\/games\/[^\/]+\/clips\/([^\/\?&#]+)/);
-    const mClips = src.match(/medal\.tv\/clips?\/([^\/\?&#]+)/);
-    if (mGames) medalId = mGames[1];
-    else if (mClips) medalId = mClips[1];
-    if (medalId) {
-        mediaHtml = `<iframe src="https://medal.tv/clip/${medalId}/auto?loop=0&autostart=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-    } else {
-        mediaHtml = `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#111;"><a href="${src}" target="_blank" rel="noopener" style="color:var(--f1-red);font-family:var(--font-display);font-size:28px;letter-spacing:2px;text-decoration:none;">▶ OTWÓRZ NA MEDAL.TV</a></div>`;
-    }
+                } else if (src.includes('medal.tv')) {
+                    let medalId = '';
+                    const mGames = src.match(/medal\.tv\/games\/[^\/]+\/clips\/([^\/\?&#]+)/);
+                    const mClips = src.match(/medal\.tv\/clips?\/([^\/\?&#]+)/);
+                    if (mGames) medalId = mGames[1];
+                    else if (mClips) medalId = mClips[1];
+                    if (medalId) {
+                        mediaHtml = `<iframe src="https://medal.tv/clip/${medalId}/auto?loop=0&autostart=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+                    } else {
+                        mediaHtml = `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#111;"><a href="${src}" target="_blank" rel="noopener" style="color:var(--f1-red);font-family:var(--font-display);font-size:28px;letter-spacing:2px;text-decoration:none;">▶ OTWÓRZ NA MEDAL.TV</a></div>`;
+                    }
                 } else if (/\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/.test(cleanSrc)) {
                     mediaHtml = `<img src="${src}" alt="${entry.title || ''}" style="width:100%;height:100%;object-fit:cover;">`;
                 } else {
@@ -2385,19 +2403,7 @@ if (pageId === 'archive') subscribeArchive(currentSplit);
             const newVal = input.value.trim();
             const span = document.createElement('span'); span.className = 'editable-cell'; span.textContent = newVal;
             span.onclick = () => ui.editCell(span, dbPath, type, idx, field);
-            input.replaceWith(span);
-            // FIX #3: zawsze używaj aktualnej ścieżki splitu (dbPath może zawierać przestarzały split)
-            const actualPath = getSplitPath() + '/standings';
-            const s = await new Promise(res => onValue(ref(db, actualPath), res, { onlyOnce: true }));
-            const cur = s.val();
-            if (cur && cur[type] && cur[type][idx] !== undefined) {
-                cur[type][idx][field] = newVal;
-                // Zaktualizuj lokalny cache
-                if (splitDataCache[currentSplit].standings && splitDataCache[currentSplit].standings[type]) {
-                    splitDataCache[currentSplit].standings[type][idx][field] = newVal;
-                }
-                await set(ref(db, actualPath), cur);
-            }
+            if (input.parentNode) input.replaceWith(span);
         };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); save(); } if (e.key === 'Escape') { saved = true; input.value = current; const span = document.createElement('span'); span.className = 'editable-cell'; span.textContent = current; span.onclick = () => ui.editCell(span, dbPath, type, idx, field); input.replaceWith(span); } });
@@ -2442,23 +2448,45 @@ window.authCore = {
     },
     logout() { signOut(auth).then(() => location.reload()); }
 };
+
+// ===================== RENDER LAST RACE Z ZAKŁADKAMI =====================
 function rerenderLastRace() {
     const data = splitDataCache[currentSplit].lastRace;
     lastRaceDataCache = data;
-    const container = document.getElementById('api-last-race-results');
     const titleEl = document.getElementById('display-last-race-name');
+    const racePane = document.getElementById('last-race-tab-race');
+    const qualiPane = document.getElementById('last-race-tab-quali');
+    const tabsBar = document.getElementById('last-race-tabs');
+    const qualiTabBtn = document.getElementById('last-tab-quali-btn');
+
     if (!data) {
-        if (container) container.innerHTML = '<p style="padding:40px;color:#aaa;">Brak danych dla tego splitu.</p>';
+        if (racePane) racePane.innerHTML = '<p style="padding:40px;color:#aaa;">Brak danych dla tego splitu.</p>';
         if (titleEl) titleEl.textContent = 'WYNIKI: OSTATNI WYŚCIG';
+        if (tabsBar) tabsBar.style.display = 'none';
         return;
     }
+
     if (isLoggedIn) {
         titleEl.innerHTML = `WYNIKI: <span class="editable-title" onclick="ui.editLastRaceName()" title="Kliknij aby edytować">${data.name}</span>`;
     } else {
-        titleEl.textContent = 'WYNIKI: ' + data.name;
+        titleEl.textContent = 'WYNIKI: ' + (data.name || 'OSTATNI WYŚCIG');
     }
-container.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
-if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
+
+    // Renderuj wyniki wyścigu
+    if (racePane) {
+        racePane.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
+        if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
+    }
+
+    // Sprawdź czy są kwalifikacje powiązane z tym wyścigiem
+    const qualiData = data.qualiResults || null;
+    if (qualiData && qualiData.length > 0) {
+        if (tabsBar) tabsBar.style.display = 'flex';
+        if (qualiPane) qualiPane.innerHTML = renderQualiTable(qualiData, null);
+    } else {
+        if (tabsBar) tabsBar.style.display = 'none';
+        if (qualiPane) qualiPane.innerHTML = '';
+    }
 }
 
 function rerenderArchive() {
@@ -2477,22 +2505,45 @@ function rerenderArchive() {
         if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return (b[1].timestamp || 0) - (a[1].timestamp || 0);
     });
-    // FIX #1+#2: Zapamiętaj które accordion są otwarte przed przerenderowaniem
+
     const openIds = new Set();
     document.querySelectorAll('.archive-body.open').forEach(el => {
         const id = el.id.replace('arc-body-', '');
         if (id) openIds.add(id);
     });
+
     const makeItem = (id, race, isQuali) => {
         const editPart = isLoggedIn
             ? `id="arc-name-${id}" class="arc-edit-name editable-mode" onclick="ui.editArchiveName('${id}', '${(race.name||'').replace(/'/g,"\\'")}')"`
             : `id="arc-name-${id}" class="arc-edit-name"`;
-        const tableHtml = isQuali ? renderQualifyingTable(race.results, id) : renderRaceTable(race.results, id, false, race.isTraining);
-        // FIX #1: dodajemy klasy open jeśli był otwarty przed przerenderowaniem
         const isOpen = openIds.has(id);
+
+        let tableHtml;
+        if (isQuali) {
+            tableHtml = renderQualiTable(race.results, id);
+        } else if (race.isTraining) {
+            tableHtml = renderRaceTable(race.results, id, false, true);
+        } else {
+            // Wyścig z potencjalnymi zakładkami kwalifikacji
+            const hasQuali = race.qualiResults && race.qualiResults.length > 0;
+            if (hasQuali) {
+                tableHtml = `
+                    <div class="race-tabs" style="margin-bottom:0;">
+                        <button class="race-tab-btn active" onclick="ui.switchArcTab(this,'${id}','race')">🏁 WYŚCIG</button>
+                        <button class="race-tab-btn" onclick="ui.switchArcTab(this,'${id}','quali')">⏱ KWALIFIKACJE</button>
+                    </div>
+                    <div id="arc-tab-race-${id}" class="race-tab-pane active">${renderRaceTable(race.results, id, false, false)}</div>
+                    <div id="arc-tab-quali-${id}" class="race-tab-pane">${renderQualiTable(race.qualiResults, id)}</div>
+                `;
+            } else {
+                tableHtml = renderRaceTable(race.results, id, false, false);
+            }
+        }
+
         return `<div class="archive-item">
             <button class="archive-header${isOpen ? ' open' : ''}" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
-                <span ${editPart}>${race.name}</span>${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
+                <span ${editPart}>${race.name}</span>
+                ${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
             <div class="archive-body${isOpen ? ' open' : ''}" id="arc-body-${id}">
@@ -2500,18 +2551,31 @@ function rerenderArchive() {
             </div>
         </div>`;
     };
+
     const arcList = document.getElementById('api-archive-list');
     const qualiList = document.getElementById('api-quali-list');
-if (arcList) {
-    arcList.innerHTML = entries.filter(([,r]) => !r.isQualifying).map(([id,r]) => makeItem(id,r,false)).join('') || '';
-    if (isLoggedIn) {
-        entries.filter(([,r]) => !r.isQualifying).forEach(([id, r]) => {
-            setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
-        });
+    if (arcList) {
+        arcList.innerHTML = entries.filter(([,r]) => !r.isQualifying).map(([id,r]) => makeItem(id,r,false)).join('') || '';
+        if (isLoggedIn) {
+            entries.filter(([,r]) => !r.isQualifying).forEach(([id]) => {
+                setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
+            });
+        }
     }
+    if (qualiList) qualiList.innerHTML = entries.filter(([,r]) => r.isQualifying).map(([id,r]) => makeItem(id,r,true)).join('') || '';
 }
-if (qualiList) qualiList.innerHTML = entries.filter(([,r]) => r.isQualifying).map(([id,r]) => makeItem(id,r,true)).join('') || '';
-}
+
+// Przełączanie zakładek w archiwum (wyścig/kwalifikacje)
+ui.switchArcTab = function(btn, id, tab) {
+    const parent = btn.closest('.archive-body') || btn.closest('div');
+    if (!parent) return;
+    parent.querySelectorAll('.race-tab-btn').forEach(b => b.classList.remove('active'));
+    parent.querySelectorAll('.race-tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const pane = document.getElementById(`arc-tab-${tab}-${id}`);
+    if (pane) pane.classList.add('active');
+};
+
 onAuthStateChanged(auth, user => {
     isLoggedIn = !!user;
     document.getElementById('btn-open-login').classList.toggle('hidden', !!user);
@@ -2519,13 +2583,13 @@ onAuthStateChanged(auth, user => {
     const qualiTab = document.getElementById('arc-tab-quali');
     if (qualiTab) qualiTab.style.display = user ? '' : 'none';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
-    // Po zalogowaniu odśwież overlay split 2 (admin widzi dane)
     if (currentSplit === 2) ui._applySplitView();
     if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
     rerenderLastRace();
     rerenderArchive();
     renderStandings();
 });
+
 window.dbCore = {
     async saveSplashContent() {
         const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
@@ -2542,7 +2606,7 @@ window.dbCore = {
             let url = '';
             if (fileData && fileData.value && fileData.value.startsWith('data:')) { url = fileData.value; }
             else if (urlInput) { url = urlInput.value?.trim() || ''; }
-           if (url) images.push({ url, align, width, scale });
+            if (url) images.push({ url, align, width, scale });
         });
         await set(ref(db, 'config'), { ...current, splashContent: document.getElementById('adm-splash-content').value, splashImages: images, splashImage: images.length === 1 ? images[0].url : (current.splashImage || '') });
         alert("Strona startowa zapisana!");
@@ -2553,7 +2617,6 @@ window.dbCore = {
         const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
         const current = snap.val() || {};
         const platforms = ['discord', 'youtube', 'tiktok'];
-
         const social = {};
         platforms.forEach(p => {
             const url = document.getElementById('social-url-' + p)?.value?.trim() || '';
@@ -2600,6 +2663,41 @@ window.dbCore = {
         const noBonusRaw = document.getElementById('adm-no-bonus-nicks').value;
         const noBonusNicks = new Set(noBonusRaw.split('\n').map(s => s.trim().toLowerCase()).filter(Boolean));
         const lines = raw.split('\n').filter(l => l.trim());
+
+        const isQualifying = document.getElementById('pub-qualifying').checked;
+        const qualiToLast = document.getElementById('pub-quali-to-last').checked;
+
+        if (isQualifying) {
+            // Format kwalifikacji: Nick | Zespół | Czas | P startowa
+            const qualResults = lines.map((line, i) => {
+                const p = line.split('|').map(s => s.trim());
+                return {
+                    nick: p[0] || '',
+                    team: normalizeTeamName(p[1] || ''),
+                    best: p[2] || '',
+                    startPos: p[3] || String(i + 1),
+                    grid: p[3] || String(i + 1)
+                };
+            });
+            const qualObj = { name: title, results: qualResults, timestamp: Date.now(), isQualifying: true };
+            // Zapisz do archiwum
+            await push(ref(db, splitPath + '/archive'), qualObj);
+            // Opcjonalnie: dodaj kwalifikacje do lastRace jako qualiResults
+            if (qualiToLast) {
+                const lrSnap = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
+                const lrData = lrSnap.val();
+                if (lrData) {
+                    await update(ref(db, splitPath + '/lastRace'), { qualiResults: qualResults });
+                } else {
+                    await set(ref(db, splitPath + '/lastRace'), { name: title, results: [], qualiResults: qualResults, timestamp: Date.now() });
+                }
+            }
+            alert(`✅ KWALIFIKACJE opublikowane! (Split ${adminSplit})${qualiToLast ? '\n+ Dodane do zakładki Ostatni Wyścig' : ''}`);
+            document.getElementById('pub-qualifying').checked = false;
+            document.getElementById('pub-quali-to-last').checked = false;
+            return;
+        }
+
         const isTabFormat = lines.length > 0 && lines[0].includes('\t') && !lines[0].includes('|');
         let results;
         if (isTabFormat) {
@@ -2615,36 +2713,25 @@ window.dbCore = {
                 return { pos: index + 1, nick: p[0], team: normalizeTeamName(p[1]), start: p[2], pit: p[3], best: p[4], time: p[5], pts: p[6] };
             });
         }
-		const isQualifying = document.getElementById('pub-qualifying').checked;
-        if (isQualifying) {
-            const qualResults = lines.map(line => {
-                const p = line.split('|').map(s => s.trim());
-                return { nick: p[0], team: normalizeTeamName(p[1] || ''), best: p[2] || '' };
-            });
-            const qualObj = { name: title, results: qualResults, timestamp: Date.now(), isQualifying: true };
-            await push(ref(db, splitPath + '/archive'), qualObj);
-            alert('✅ TRENINGI opublikowane! (Split ' + adminSplit + ')');
-            document.getElementById('pub-qualifying').checked = false;
-            return;
-        }
+
         const isTraining = document.getElementById('pub-training').checked;
 
-// Policz bonus
-const resultsWithBonus = results.map(r => {
-    const nickKey = (r.nick || '').toLowerCase();
-    const isBot = isRealF1Driver(r.nick);
-    const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
-    const isDnfDsq = dnfTags.some(s => (r.time || '').toString().toUpperCase().includes(s) || (r.pos || '').toString().toUpperCase().includes(s));
-    const isManualExcluded = noBonusNicks.has(nickKey);
-    const basePts = parseInt(r.pts) || 0;
-    let bonusPts = 0;
-    if (!isBot && !isDnfDsq && !isManualExcluded && !isTraining) bonusPts = 3;
-    return { ...r, pts: String(basePts + bonusPts), hasBonus: bonusPts > 0 };
-});
+        const resultsWithBonus = results.map(r => {
+            const nickKey = (r.nick || '').toLowerCase();
+            const isBot = isRealF1Driver(r.nick);
+            const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
+            const isDnfDsq = dnfTags.some(s => (r.time || '').toString().toUpperCase().includes(s) || (r.pos || '').toString().toUpperCase().includes(s));
+            const isManualExcluded = noBonusNicks.has(nickKey);
+            const basePts = parseInt(r.pts) || 0;
+            let bonusPts = 0;
+            if (!isBot && !isDnfDsq && !isManualExcluded && !isTraining) bonusPts = 3;
+            return { ...r, pts: String(basePts + bonusPts), hasBonus: bonusPts > 0 };
+        });
 
-const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isTraining && { isTraining: true }) };
+        const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isTraining && { isTraining: true }) };
         if (document.getElementById('pub-last').checked) await set(ref(db, splitPath + '/lastRace'), raceObj);
         if (document.getElementById('pub-archive').checked) await push(ref(db, splitPath + '/archive'), raceObj);
+
         if (!isTraining) {
             const standSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
             const currentStandings = standSnap.val() || { drivers: [], teams: [] };
@@ -2781,7 +2868,7 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         alert("Kolejność wyścigów zapisana!");
         document.getElementById('btn-save-archive-order').style.display = 'none';
     },
-	async saveStandingsOrder() {
+    async saveStandingsOrder() {
         const splitPath = getSplitPath(adminSplit);
         const snap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
         const data = snap.val();
@@ -2818,8 +2905,6 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         alert("Kolejność albumów zapisana!");
         document.getElementById('btn-save-gallery-order').style.display = 'none';
     },
-
-    // FIX #4: Przelicz standings na podstawie danych z archiwum
     async recalcStandingsFromArchive() {
         if (!isLoggedIn) return;
         const splitPath = getSplitPath(adminSplit);
@@ -2827,32 +2912,22 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
         const archive = arcSnap.val();
         if (!archive || Object.keys(archive).length === 0) { alert('Brak danych w archiwum dla tego splitu.'); return; }
 
-        // Pobierz aktualne standings (żeby zachować isBot, photo, kolejność)
         const sdSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
         const currentSd = sdSnap.val() || { drivers: [], teams: [] };
 
-        // Zbuduj mapę kierowców z aktualnych standings (nick => cała reszta metadanych)
         const driverMeta = {};
         (currentSd.drivers || []).forEach(d => {
             driverMeta[(d.nick || '').toLowerCase()] = { ...d, pts: 0, wins: 0 };
         });
 
-        // Zbiór nicków ZNANYCH graczy ligowych (isBot=false w standings) — priorytet nad isRealF1Driver()
-        // Gracz może mieć nick identyczny z prawdziwym kierowcą F1 — standings jest źródłem prawdy
         const knownHumanNicks = new Set(
-            (currentSd.drivers || [])
-                .filter(d => !d.isBot)
-                .map(d => (d.nick || '').toLowerCase())
+            (currentSd.drivers || []).filter(d => !d.isBot).map(d => (d.nick || '').toLowerCase())
         );
         const knownBotNicks = new Set(
-            (currentSd.drivers || [])
-                .filter(d => d.isBot)
-                .map(d => (d.nick || '').toLowerCase())
+            (currentSd.drivers || []).filter(d => d.isBot).map(d => (d.nick || '').toLowerCase())
         );
 
         const teamMap = {};
-
-        // Posortuj wyścigi wg order/timestamp
         const races = Object.values(archive).sort((a, b) => {
             const ao = a.order, bo = b.order;
             if (ao !== undefined && bo !== undefined) return ao - bo;
@@ -2869,26 +2944,16 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
                 const nickKey = (r.nick || '').toLowerCase();
                 const teamKey = (r.team ? normalizeTeamName(r.team) : '').toLowerCase();
                 const isWin = parseInt(r.pos) === 1;
-
-                // Określ czy bot: standings są źródłem prawdy.
-                // Jeśli nick jest w standings jako gracz — nigdy nie jest botem,
-                // nawet jeśli jego nick brzmi jak kierowca F1 (np. "Franco COLAPINTO").
-                // Fallback na isRealF1Driver() tylko gdy nicka nie ma w standings.
                 let isBot;
-                if (knownHumanNicks.has(nickKey)) {
-                    isBot = false;
-                } else if (knownBotNicks.has(nickKey)) {
-                    isBot = true;
-                } else {
-                    isBot = isRealF1Driver(r.nick);
-                }
+                if (knownHumanNicks.has(nickKey)) isBot = false;
+                else if (knownBotNicks.has(nickKey)) isBot = true;
+                else isBot = isRealF1Driver(r.nick);
 
                 if (!driverMeta[nickKey]) {
                     driverMeta[nickKey] = { nick: r.nick, team: normalizeTeamName(r.team) || '', pts: 0, wins: 0, isBot };
                 }
                 driverMeta[nickKey].pts = (driverMeta[nickKey].pts || 0) + pts;
                 if (isWin) driverMeta[nickKey].wins = (driverMeta[nickKey].wins || 0) + 1;
-                // Aktualizuj nazwę zespołu na najnowszą
                 if (r.team) driverMeta[nickKey].team = normalizeTeamName(r.team);
 
                 if (teamKey) {
@@ -2901,7 +2966,6 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
 
         const drivers = Object.values(driverMeta).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
-
         await set(ref(db, splitPath + '/standings'), { drivers, teams });
         alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${adminSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);
     }
@@ -2959,7 +3023,6 @@ const getConstructorClass = (teamName) => {
     return "";
 };
 const getTeamKey = (teamName) => { const tc = getTeamClass(teamName); return tc ? tc.replace('team-', '') : ''; };
-
 const findFastestLap = (results) => findFastestLapIdx(results);
 
 // ===================== RENDEROWANIE TABELI WYŚCIGU =====================
@@ -3000,20 +3063,21 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
                    <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
                    <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
                    <td>${cellEdit(r.time, i, 'time')}</td>
-                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="  PKT za dojechanie"></span>` : ''}</td>`
+                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="PKT za dojechanie"></span>` : ''}</td>`
             }
         </tr>`).join('')}</tbody></table>`;
 };
-// nick — klikalny span otwierający profil
+
 const nickSpan = (nick, rowIdx, raceId, isLastRace) => {
     const safeNick = (nick || '').replace(/'/g, "\\'");
     const profileBtn = `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')" title="Profil kierowcy">${nick || '—'}</span>`;
     if (!isLoggedIn) return profileBtn;
-    // Admin może edytować nick + kliknąć profil osobnym przyciskiem
     if (raceId) return `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${rowIdx},'nick')">${nick || '—'}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>`;
     if (isLastRace) return `<span class="arc-cell-editable" onclick="ui.editLastRaceCell(this,${rowIdx},'nick')">${nick || '—'}</span> <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>`;
     return profileBtn;
 };
+
+// Stara funkcja renderQualifyingTable — dla archiwum zakładka Treningi
 const renderQualifyingTable = (results, raceId = null) => {
     if (!results || results.length === 0) return '<p style="padding:20px;">Brak wyników.</p>';
     results = results.map(r => ({ ...r, team: normalizeTeamName(r.team) }));
@@ -3038,16 +3102,12 @@ const renderQualifyingTable = (results, raceId = null) => {
         const leaderSec = toSec(sorted[0].best);
         const gap = (i === 0 || bestSec === Infinity) ? '0:00,000' : '+' + (bestSec - leaderSec).toFixed(3).replace('.', ',') + 's';
         const safeNick = (r.nick || '').replace(/'/g, "\\'");
-        const nickHtml = isLoggedIn && raceId
-            ? `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${results.indexOf(r)},'nick')">${r.nick||'—'}</span>`
-            : `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')">${r.nick||'—'}</span>`;
-        const bestHtml = isLoggedIn && raceId
-            ? `<span class="arc-cell-editable fastest-lap" onclick="ui.editArcCell(this,'${raceId}',${results.indexOf(r)},'best')">${r.best||'—'}</span>`
-            : `<span class="fastest-lap">${r.best||'—'}</span>`;
+        const nickHtml = `<span class="nick-clickable" onclick="ui.openDriverProfile('${safeNick}')">${r.nick||'—'}</span>`;
+        const bestHtml = `<span class="fastest-lap">${r.best||'—'}</span>`;
         return `<tr class="${getTeamClass(r.team)}">
             <td class="col-pos ${posClass(i)}">${i+1}</td>
             <td class="col-driver">${nickHtml}</td>
-            <td class="${getTeamClass(r.team).replace('team-','txt-')}">${isLoggedIn && raceId ? `<span class="arc-cell-editable" onclick="ui.editArcCell(this,'${raceId}',${results.indexOf(r)},'team')">${r.team||'—'}</span>` : r.team||'—'}</td>
+            <td class="${getTeamClass(r.team).replace('team-','txt-')}">${r.team||'—'}</td>
             <td>${bestHtml}</td>
             <td style="text-align:right;padding-right:40px;font-family:var(--font-display);font-size:28px;color:${i===0?'var(--f1-red)':'#888'};font-weight:${i===0?'900':'400'};">${gap}</td>
         </tr>`;
@@ -3063,13 +3123,9 @@ function renderConstructorRow(r, i) {
         ? `<img src="${logoUrl}" class="constructor-logo-main" alt="${r.team}" onerror="this.style.display='none'">`
         : `<div style="width:6px;height:50px;background:rgba(255,255,255,0.4);border-radius:3px;flex-shrink:0;"></div>`;
     return `<tr class="constructor-row ${cClass}">
-        <td class="col-pos" style="font-weight:900;">
-    ${isLoggedIn
-        ? `<span class="arc-cell-editable ${posClass}" onclick="ui.editCell(this,'standings','teams',${i},'pos')">${r.pos||i+1}</span>`
-        : `<span class="${posClass}">${r.pos||i+1}</span>`}
-</td>
+        <td class="col-pos" style="font-weight:900;"><span class="${posClass}">${r.pos||i+1}</span></td>
         <td style="font-weight:700;font-size:18px;letter-spacing:1px;white-space:normal;">
-            <div class="constructor-name-cell">${leftDecor}${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `${isLoggedIn ? `<span class="editable-cell" style="filter:brightness(0) invert(1);" onclick="ui.editCell(this,'standings','teams',${i},'team')">${r.team}</span>` : `<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span>`}`}`}`}`}`}`}`}`}`}</div>
+            <div class="constructor-name-cell">${leftDecor}<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span></div>
         </td>
         <td class="col-pts" style="padding-right:10px;">
             <span class="cteam-pts-cell">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','teams',${i},'pts')">${r.pts}</span>` : r.pts}</span>
@@ -3095,8 +3151,6 @@ const isRealF1Driver = (name) => {
     return words.some(w => w.length > 3 && REAL_F1_DRIVERS.has(w));
 };
 
-// ===================== FIREBASE LISTENERS =====================
-
 // ===================== RENDER STANDINGS =====================
 function renderStandings() {
     const sd = splitDataCache[currentSplit].standings;
@@ -3116,7 +3170,6 @@ function renderStandings() {
             const tc = getTeamClass(d.team);
             const safeNick = (d.nick||'').replace(/'/g,"\\'");
             const nickHtml = `<span class="driver-name-clickable${isBot ? ' bot-driver-name' : ''}" onclick="ui.openDriverProfile('${safeNick}')" title="${isBot ? 'Profil bota AI' : 'Profil kierowcy'}">${d.nick}${isBot ? ' <span class="bot-badge">BOT</span>' : ''}</span>`;
-            // index in original array for editable cells
             const origIdx = sd.drivers.indexOf(d);
             const posHtml = isLoggedIn
                 ? `<span class="arc-cell-editable ${posC}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'pos')">${d.pos||i+1}</span>`
@@ -3145,7 +3198,6 @@ function renderStandings() {
     }
 }
 
-// ===================== HELPER: ścieżka aktywnego splitu =====================
 function getSplitPath(split) {
     const s = split !== undefined ? split : (document.getElementById('adm-split1-btn')?.classList.contains('active') ? 1 : 2);
     return s === 1 ? 'split1' : 'split2';
@@ -3154,7 +3206,6 @@ function getSplitPathView() {
     return currentSplit === 1 ? 'split1' : 'split2';
 }
 
-// ===================== BUILD ADM ARCHIVE MANAGER =====================
 function buildAdmArchiveManager() {
     const manager = document.getElementById('adm-archive-manager');
     if (!manager) return;
@@ -3176,7 +3227,7 @@ function buildAdmArchiveManager() {
         entries.map(([id, race]) => `
         <div class="reorder-item" data-id="${id}">
             <span class="reorder-handle">⠿</span>
-            <span class="reorder-label">${race.name || id}${race.isTraining ? ' <span style="font-size:11px;color:#888;">[TRENING]</span>' : ''}</span>
+            <span class="reorder-label">${race.name || id}${race.isTraining ? ' <span style="font-size:11px;color:#888;">[TRENING]</span>' : ''}${race.isQualifying ? ' <span style="font-size:11px;color:#6088d6;">[KWAL.]</span>' : ''}</span>
             <div class="reorder-actions">
                 <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('${splitPath}/archive/${id}')">🗑</button>
             </div>
@@ -3188,7 +3239,6 @@ function buildAdmArchiveManager() {
 }
 
 // ===================== FIREBASE SPLIT 1 & 2 LISTENERS =====================
-// Flagi: które dane zostały już zasubskrybowane
 const splitSubscribed = { 1: { standings: false, lastRace: false, archive: false, teamsInfo: false }, 2: { standings: false, lastRace: false, archive: false, teamsInfo: false } };
 
 function subscribeStandings(splitNum) {
@@ -3269,18 +3319,16 @@ function subscribeTeamsInfo(splitNum) {
     });
 }
 
-// Split 1 ładuj od razu (strona startuje na split 1)
+// Ładuj split 1 od razu
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
 subscribeArchive(1);
-// Archiwum split 1 — leniwie przy pierwszym wejściu w zakładkę (patrz: showView)
 
-// ── config listener (jeden, obsługuje też split2SoonMode) ────────────────────
+// ── config listener ──────────────────────────────────────────────────────────
 onValue(ref(db, 'config'), snap => {
     const c = snap.val(); if (!c) return;
 
-    // split2SoonMode (zastępuje osobny listener)
     const soonVal = c.split2SoonMode;
     split2SoonMode = (soonVal === null || soonVal === true || soonVal === undefined);
     const tog = document.getElementById('adm-split2-soon-toggle');
@@ -3327,12 +3375,10 @@ onValue(ref(db, 'config'), snap => {
     track.style.animation = 'none'; clone.style.animation = 'none'; void track.offsetWidth;
     track.style.animation = 'f1-marquee 40.55s linear infinite';
     clone.style.animation = 'f1-marquee 40.55s linear infinite'; clone.style.animationDelay = '-20.55s';
-    // Zapisz per-split hero configs do globalnego obiektu
+
     window.heroConfigS1 = { mode: c.heroModeS1 || 'countdown', date: c.heroDateS1 || '', title: c.heroTitleS1 || '' };
-    window.heroConfigS2 = { mode: c.heroModeS2 || 'countdown', date: c.heroDateS2 || '', title: c.heroConfigS2?.title || c.heroTitleS2 || '' };
     window.heroConfigS2 = { mode: c.heroModeS2 || 'countdown', date: c.heroDateS2 || '', title: c.heroTitleS2 || '' };
 
-    // Wypełnij pola admina
     if (c.heroTitleS1 !== undefined) { const el = document.getElementById('adm-hero-title-s1'); if(el) el.value = c.heroTitleS1; }
     if (c.heroDateS1  !== undefined) { const el = document.getElementById('adm-hero-date-s1');  if(el) el.value = c.heroDateS1;  }
     if (c.heroModeS1) { const r = document.querySelector(`input[name="hero-mode-s1"][value="${c.heroModeS1}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s1').style.display = c.heroModeS1 === 'soon' ? 'none' : 'block'; }
@@ -3340,7 +3386,6 @@ onValue(ref(db, 'config'), snap => {
     if (c.heroDateS2  !== undefined) { const el = document.getElementById('adm-hero-date-s2');  if(el) el.value = c.heroDateS2;  }
     if (c.heroModeS2) { const r = document.querySelector(`input[name="hero-mode-s2"][value="${c.heroModeS2}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s2').style.display = c.heroModeS2 === 'soon' ? 'none' : 'block'; }
 
-    // Zastosuj odliczanie dla aktywnego splitu
     applyHeroConfig(currentSplit);
     if (c.showNews !== undefined) document.getElementById('adm-show-news').checked = c.showNews;
     if (c.newsContent) document.getElementById('adm-news-content').value = c.newsContent;
@@ -3360,7 +3405,7 @@ onValue(ref(db, 'config'), snap => {
     }
 });
 
-// ── Galeria — leniwie: ładuj tylko gdy użytkownik wejdzie w zakładkę ─────────
+// ── Galeria ──────────────────────────────────────────────────────────────────
 let gallerySubscribed = false;
 function subscribeGallery() {
     if (gallerySubscribed) return;
@@ -3379,11 +3424,7 @@ function subscribeGallery() {
             return a[0] < b[0] ? -1 : 1;
         });
         albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
-        const sortedForGrid = [...entries].sort((a, b) => {
-            const ap = a[1].pinned ? 1 : 0, bp = b[1].pinned ? 1 : 0;
-            return bp - ap;
-        });
-        albumsGrid.innerHTML = sortedForGrid.map(([id, gal]) => {
+        albumsGrid.innerHTML = entries.map(([id, gal]) => {
             const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
             const isPinned = !!gal.pinned;
             const pinnedBadge = isPinned ? `<div style="position:absolute;top:14px;left:14px;z-index:20;background:var(--f1-red);color:#fff;border-radius:8px;padding:6px 14px;font-family:var(--font-display);font-size:18px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(225,6,0,0.4);">📌 PRZYPIĘTY</div>` : '';
@@ -3452,28 +3493,7 @@ document.querySelectorAll('input[name="hero-mode-s2"]').forEach(r => {
 buildLogosGrid();
 renderSocialIcons();
 
-// ── Hook nawigacji — subskrybuj dane dopiero gdy zakładka jest otwierana ──────
-const _origShowView = ui.showView?.bind(ui);
-ui.showView = function(viewId) {
-    if (_origShowView) _origShowView(viewId);
-    if (viewId === 'view-gallery') subscribeGallery();
-    if (viewId === 'view-archive') subscribeArchive(currentSplit);
-};
-
-// ── switchSplit — subskrybuj dane split 2 przy pierwszym przejściu ────────────
-const _origSwitchSplit = ui.switchSplit?.bind(ui);
-ui.switchSplit = function(n) {
-    if (_origSwitchSplit) _origSwitchSplit(n);
-    // Subskrybuj podstawowe dane nowego splitu
-    subscribeStandings(n);
-    subscribeLastRace(n);
-    subscribeTeamsInfo(n);
-    // Archiwum tylko jeśli zakładka archiwum jest aktywna
-    const archiveView = document.getElementById('view-archive');
-    if (archiveView && archiveView.classList.contains('active')) subscribeArchive(n);
-};
-
-// ── Drag & drop wierszy tabeli wyścigu — używa cache zamiast odczytu z bazy ──
+// ── Drag & drop wierszy tabeli wyścigu ────────────────────────────────────────
 function initRaceRowDragDrop(tableId, raceId, isLastRace) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -3494,16 +3514,13 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
             const splitPath = getSplitPathView();
             try {
                 if (raceId) {
-                    // Użyj cache zamiast odpytywać bazę
                     const cached = (splitDataCache[currentSplit].archive || {})[raceId];
-                    const data = cached || null;
-                    if (data && Array.isArray(data.results)) {
-                        const newResults = rows.map(r => data.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
+                    if (cached && Array.isArray(cached.results)) {
+                        const newResults = rows.map(r => cached.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
                         await set(ref(db, splitPath + '/archive/' + raceId + '/results'), newResults);
                     }
                 } else if (isLastRace) {
-                    // Użyj cache zamiast odpytywać bazę
                     const data = splitDataCache[currentSplit].lastRace;
                     if (data && Array.isArray(data.results)) {
                         const newResults = rows.map(r => data.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
