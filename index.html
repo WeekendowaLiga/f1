@@ -2200,7 +2200,7 @@ window.ui = {
                         <td style="color:${tColor};font-weight:700;">${r.team || '—'}</td>
                         <td style="text-align:center;color:rgba(255,255,255,0.6);">${clean(r.start)}</td>
                         <td style="text-align:center;color:rgba(255,255,255,0.6);">${clean(r.pit)}</td>
-                        <td class="${isFast ? 'dp-fastest-cell' : ''}">${r.best || '—'}${isFast ? ' ⚡' : ''}</td>
+                        <td class="${isFast ? 'dp-fastest-cell' : ''}">${r.best || '—'}${isFast ? ' ' : ''}</td>
                         <td style="color:rgba(255,255,255,0.65);">${r.time || '—'}</td>
                         <td class="dp-pts-cell">${parseInt(r.pts) || 0}</td>
                     </tr>`;
