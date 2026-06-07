@@ -1080,7 +1080,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div id="view-archive" class="page-view">
         <div style="display:flex;gap:0;margin-bottom:30px;border-bottom:4px solid var(--f1-black);">
             <button id="arc-tab-races" onclick="ui.switchArchiveTab('races')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;">🏁 WYŚCIGI</button>
-            <button id="arc-tab-quali" onclick="ui.switchArchiveTab('quali')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;display:none;">⏱ KWALIFIKACJE</button>
+            <button id="arc-tab-quali" onclick="ui.switchArchiveTab('quali')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;">⏱ KWALIFIKACJE</button>
         </div>
         <div id="api-archive-list"></div>
         <div id="api-quali-list" style="display:none;"></div>
@@ -1980,7 +1980,6 @@ window.ui = {
         const inactiveStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;';
         document.getElementById('arc-tab-races').style.cssText = isRaces ? activeStyle : inactiveStyle;
         document.getElementById('arc-tab-quali').style.cssText = isRaces ? inactiveStyle : activeStyle;
-        if (!isLoggedIn) document.getElementById('arc-tab-quali').style.display = 'none';
     },
 
     // ===================== PRZEŁĄCZANIE ZAKŁADEK W LAST RACE =====================
@@ -2581,7 +2580,7 @@ onAuthStateChanged(auth, user => {
     document.getElementById('btn-open-login').classList.toggle('hidden', !!user);
     document.getElementById('btn-open-admin').classList.toggle('hidden', !user);
     const qualiTab = document.getElementById('arc-tab-quali');
-    if (qualiTab) qualiTab.style.display = user ? '' : 'none';
+    if (qualiTab) qualiTab.style.display = '';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
     if (currentSplit === 2) ui._applySplitView();
     if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
