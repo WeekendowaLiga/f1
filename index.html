@@ -1157,14 +1157,16 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <button class="admin-split-btn" id="adm-split2-btn" onclick="ui.adminSwitchSplit(2)">SPLIT 2</button>
     </div>
     <div class="admin-toc">
+        <a class="split-only-toc" href="#sec-race" onclick="ui.openAdminSection('sec-race')">🏁 Wyścig</a>
+        <a class="split-only-toc" href="#sec-archive" onclick="ui.openAdminSection('sec-archive')">📁 Archiwum</a>
+        <a class="split-only-toc" href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
+        <span style="width:2px;background:rgba(255,255,255,0.15);margin:4px 6px;"></span>
         <a href="#sec-splash" onclick="ui.openAdminSection('sec-splash')">🖼 Splash</a>
         <a href="#sec-social" onclick="ui.openAdminSection('sec-social')">🔗 Social</a>
         <a href="#sec-news" onclick="ui.openAdminSection('sec-news')">📢 News</a>
         <a href="#sec-countdown" onclick="ui.openAdminSection('sec-countdown')">⏱ Odliczanie</a>
         <a class="split-only-toc" href="#sec-split2soon" onclick="ui.openAdminSection('sec-split2soon')" style="display:none;">🔒 Split 2 Status</a>
-        <a class="split-only-toc" href="#sec-race" onclick="ui.openAdminSection('sec-race')">🏁 Wyścig</a>
-        <a class="split-only-toc" href="#sec-archive" onclick="ui.openAdminSection('sec-archive')">📁 Archiwum</a>
-        <a class="split-only-toc" href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
+        <span style="width:2px;background:rgba(255,255,255,0.15);margin:4px 6px;"></span>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
         <a class="split-only-toc" href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
         <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a> 
@@ -1233,14 +1235,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <p style="color:#aaa;font-size:13px;margin-top:0;margin-bottom:16px;line-height:1.6;">Każdy split ma osobne odliczanie. Widoczne odliczanie zmienia się automatycznie po przełączeniu Splitu na stronie.</p>
             <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;margin-bottom:20px;">
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:var(--f1-red);margin-bottom:14px;">⏱ SPLIT 1</div>
-                <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>
-                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 1):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s1" value="countdown" id="hero-mode-countdown-s1" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s1" value="soon" id="hero-mode-soon-s1"> SOON</label></div></div>
+<div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 1):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s1" value="countdown" id="hero-mode-countdown-s1" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s1" value="soon" id="hero-mode-soon-s1"> SOON</label></div></div>
                 <div id="hero-date-group-s1" class="form-group"><label class="form-label">Data licznika S1 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s1" class="f1-input" placeholder="2026-05-24 20:00"></div>
                 <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(1)">💾 ZAPISZ ODLICZANIE SPLIT 1</button></div>
             </div>
             <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;">
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:#0078ff;margin-bottom:14px;">⏱ SPLIT 2</div>
-                <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 2):</label><input type="text" id="adm-hero-title-s2" class="f1-input" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S2"></div>
+                <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 2):</label><input type="text" id="adm-hero-title-s2" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S2"></div>
                 <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 2):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s2" value="countdown" id="hero-mode-countdown-s2" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s2" value="soon" id="hero-mode-soon-s2"> SOON</label></div></div>
                 <div id="hero-date-group-s2" class="form-group"><label class="form-label">Data licznika S2 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s2" class="f1-input" placeholder="2026-05-24 20:00"></div>
                 <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(2)">💾 ZAPISZ ODLICZANIE SPLIT 2</button></div>
@@ -1250,11 +1251,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="admin-section" id="sec-race">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🏁</span><span class="admin-section-title">Dodaj Wyniki Wyścigu</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
-            <div class="form-group"><label class="form-label">Pełna nazwa wyścigu:</label><input type="text" id="adm-race-title" class="f1-input" placeholder="np. GP Silverstone - Runda 5"></div>
+            <div class="form-group"><label class="form-label">Pełna nazwa wyścigu:</label><input type="text" id="adm-race-title" class="f1-input" list="gp-names-list" placeholder="np. GP Silverstone - Runda 5"><datalist id="gp-names-list"></datalist></div>
             <div class="form-group"><label class="form-label">Dane wyścigu<span class="form-hint">① Wklej tabelę z gry F1 25 (format z tabulatorami wykrywany auto)<br>② Ręczny: Nick | Zespół | Start | Pit | Najlepsze | Czas | Pkt</span></label><textarea id="adm-race-raw" class="f1-textarea" rows="10" placeholder="Wklej tutaj..."></textarea></div>
             <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>  PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
-            <div class="form-group no-bonus-box"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
-            <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
+<details style="margin-top:16px;">
+                <summary style="cursor:pointer;font-weight:800;font-size:13px;text-transform:uppercase;color:#666;">⚙ Zaawansowane: wyklucz nicki z bonusu</summary>
+                <div class="form-group no-bonus-box" style="margin-top:10px;"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
+            </details>            <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
 			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
 			<!-- ZMIANA: kwalifikacje z nowym formatem i opcją dodania do last race -->
             <label class="check-group"><input type="checkbox" id="pub-qualifying"> KWALIFIKACJE (Nick | Zespół | Czas | P startowa)</label>
@@ -1275,11 +1278,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <p style="color:#888;font-size:13px;margin-top:0;line-height:1.6;">Boty: np. <b>BOT:Max Verstappen</b></p>
             <div class="form-group"><label class="form-label">Wszyscy kierowcy (Nick | Team | Foto-URL | Wygrane | Pkt)</label><textarea id="adm-drivers-raw" class="f1-textarea" rows="12"></textarea></div>
             <div class="form-group"><label class="form-label">Zespoły (Team | Pkt):</label><textarea id="adm-teams-raw" class="f1-textarea" rows="6"></textarea></div>
-			<div id="standings-reorder-box" style="margin-bottom:20px;display:none;">
-    <label class="form-label">Kolejność kierowców (przeciągnij)</label>
-    <div class="reorder-list" id="standings-reorder-list"></div>
-    <button class="btn-action" id="btn-save-standings-order" onclick="dbCore.saveStandingsOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ</button>
-</div>
+			
             <div class="btn-row">
                 <button class="btn-action" onclick="dbCore.saveStandings()">💾 ZAPISZ KLASYFIKACJE</button>
                 <button class="btn-action" style="background:#1a5c1a;border-color:#2d8a2d;" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive()" title="Przelicza PKT i wygrane na podstawie archiwum wyścigów">🔄 PRZELICZ Z ARCHIWUM</button>
@@ -1302,22 +1301,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="admin-section" id="sec-gallery">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">📷</span><span class="admin-section-title">Zarządzanie Galerią</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
-            <div style="background:#f4f4f7;border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:22px;">
-                <h4 style="margin:0 0 16px;font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:#333;">1. UTWÓRZ ALBUM</h4>
-                <div class="form-group"><label class="form-label">Nazwa albumu:</label><input type="text" id="adm-gal-name" class="f1-input" placeholder="np. GP Monako 2026"></div>
-                <div class="form-group"><label class="form-label">Link do okładki (URL):</label><input type="text" id="adm-gal-cover" class="f1-input" placeholder="https://..."></div>
-                <div class="btn-row"><button class="btn-action" onclick="dbCore.createAlbum()">＋ UTWÓRZ ALBUM</button></div>
-            </div>
-            <div style="background:#f4f4f7;border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:22px;">
-                <h4 style="margin:0 0 16px;font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:#333;">2. DODAJ WPIS DO ALBUMU</h4>
-                <div class="form-group"><label class="form-label">Wybierz album:</label><select id="adm-entry-album" class="f1-input" style="cursor:pointer;"><option value="">— Wybierz album —</option></select></div>
-                <div class="form-group"><label class="form-label">Tytuł wpisu:</label><input type="text" id="adm-entry-title" class="f1-input" placeholder="np. TRENINGI — highlight"></div>
-                <div class="form-group"><label class="form-label">Typ mediów:</label><div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;"><label class="check-group"><input type="radio" name="media-type" value="youtube" checked onchange="ui.switchMediaType(this.value)"> YouTube URL</label><label class="check-group"><input type="radio" name="media-type" value="url" onchange="ui.switchMediaType(this.value)"> Bezpośredni URL</label><label class="check-group"><input type="radio" name="media-type" value="upload" onchange="ui.switchMediaType(this.value)"> Prześlij plik</label></div></div>
-                <div id="media-input-youtube" class="form-group"><label class="form-label">Link YouTube:</label><input type="text" id="adm-entry-youtube" class="f1-input" placeholder="https://youtu.be/..."></div>
-                <div id="media-input-url" class="form-group hidden"><label class="form-label">Bezpośredni URL:</label><input type="text" id="adm-entry-url" class="f1-input" placeholder="https://...mp4 lub ...jpg"></div>
-                <div id="media-input-upload" class="form-group hidden"><label class="form-label">Prześlij plik:</label><input type="file" id="adm-entry-file" class="f1-input" accept="video/*,image/*" style="padding:10px;"><span class="form-hint" style="color:#e10600;">⚠ Zalecane do ~50MB.</span></div>
-                <div class="btn-row"><button class="btn-action" onclick="dbCore.addEntry()">＋ DODAJ WPIS</button><span id="adm-entry-status" style="font-size:14px;color:#666;"></span></div>
-            </div>
             <div><h4 style="font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:12px;">KOLEJNOŚĆ / USUŃ / EDYTUJ ALBUMY:</h4><div id="adm-gallery-manager"></div><div class="btn-row" style="margin-top:12px;"><button class="btn-action" id="btn-save-gallery-order" onclick="dbCore.saveGalleryOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ ALBUMÓW</button></div></div>
         </div>
     </div>
@@ -2312,8 +2295,12 @@ window.ui = {
         } else { titleEl.textContent = album.name; }
         const grid = document.getElementById('album-content-grid');
         const entries = album.entries ? Object.entries(album.entries) : [];
-        if (entries.length === 0) { grid.innerHTML = '<p style="font-family:var(--font-data);font-size:30px;color:#999;letter-spacing:1px;">Brak wpisów w tym albumie.</p>'; return; }
-        grid.innerHTML = entries.map(([entryId, entry]) => {
+        const addEntryTile = isLoggedIn ? `
+            <div class="media-entry" style="display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;background:#f0f0f2;" onclick="ui.quickAddEntry('${id}')">
+                <div style="font-family:var(--font-display);font-size:70px;color:#bbb;">＋</div>
+            </div>` : '';
+        if (entries.length === 0) { grid.innerHTML = addEntryTile + (isLoggedIn ? '' : '<p style="font-family:var(--font-data);font-size:30px;color:#999;letter-spacing:1px;">Brak wpisów w tym albumie.</p>'); return; }
+        grid.innerHTML = addEntryTile + entries.map(([entryId, entry]) => {
             let mediaHtml = '';
             const src = entry.src || '';
             if (entry.type === 'youtube') {
@@ -2358,6 +2345,15 @@ window.ui = {
                 : (entry.title ? `<div class="media-entry-title">${entry.title}</div>` : '');
             return `<div class="media-entry">${entryTitleHtml}<div class="media-entry-body" style="position:relative;">${mediaHtml}${deleteBtn}</div></div>`;
         }).join('');
+    },
+	quickAddEntry(albumId) {
+        if (!isLoggedIn) return;
+        const title = prompt('Tytuł wpisu (opcjonalnie, Enter aby pominąć):') || '';
+        const src = prompt('Wklej link (YouTube, mp4, jpg, streamable, etc.):');
+        if (!src || !src.trim()) return;
+        const isYoutube = src.includes('youtu.be') || src.includes('youtube.com');
+        push(ref(db, `gallery/${albumId}/entries`), { title, type: isYoutube ? 'youtube' : 'url', src: src.trim() })
+            .then(() => ui.openAlbum(albumId));
     },
     editAlbumName(id, currentName, el) {
         if (!isLoggedIn) return;
@@ -2423,6 +2419,15 @@ window.ui = {
         const save = async () => { const newVal = input.value.trim(); await update(ref(db, splitPath + '/lastRace'), { name: newVal }); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
+    },
+	async deleteDriverFromStandings(idx) {
+        if (!confirm('Usunąć tego kierowcę z klasyfikacji?')) return;
+        const sp = getSplitPathView();
+        const snap = await new Promise(res => onValue(ref(db, sp + '/standings'), res, { onlyOnce: true }));
+        const data = snap.val();
+        if (!data || !Array.isArray(data.drivers)) return;
+        data.drivers.splice(idx, 1);
+        await set(ref(db, sp + '/standings'), data);
     },
     async editArchiveName(id, currentName) {
         if (!isLoggedIn) return;
@@ -2867,24 +2872,6 @@ window.dbCore = {
         alert("Kolejność wyścigów zapisana!");
         document.getElementById('btn-save-archive-order').style.display = 'none';
     },
-    async saveStandingsOrder() {
-        const splitPath = getSplitPath(adminSplit);
-        const snap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
-        const data = snap.val();
-        if (!data) return;
-        const list = document.getElementById('standings-reorder-list');
-        if (!list) return;
-        const items = [...list.querySelectorAll('.reorder-item')];
-        const drivers = [...(data.drivers || [])];
-        items.forEach((item, i) => {
-            const nick = item.dataset.nick;
-            const d = drivers.find(d => d.nick === nick);
-            if (d) d.order = i;
-        });
-        await set(ref(db, splitPath + '/standings'), { ...data, drivers });
-        alert('Kolejność zapisana!');
-        document.getElementById('btn-save-standings-order').style.display = 'none';
-    },
     async saveSplit2SoonMode() {
         const tog = document.getElementById('adm-split2-soon-toggle');
         const val = tog ? tog.checked : true;
@@ -3179,9 +3166,12 @@ function renderStandings() {
             const winsHtml = isLoggedIn
                 ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'wins')">${d.wins||0}</span>`
                 : `${d.wins||0}`;
+            const deleteBtn = isLoggedIn
+                ? `<span style="cursor:pointer;color:#c00;font-weight:900;margin-left:10px;font-size:0.6em;" onclick="event.stopPropagation();ui.deleteDriverFromStandings(${origIdx})" title="Usuń kierowcę">🗑</span>`
+                : '';
             return `<tr class="${tc}${isBot ? ' bot-row' : ''}">
                 <td class="col-pos">${posHtml}</td>
-                <td class="col-driver"><div class="driver-cell">${nickHtml}</div></td>
+                <td class="col-driver"><div class="driver-cell">${nickHtml}${deleteBtn}</div></td>
                 <td class="${tc.replace('team-','txt-')}" style="font-size:28px;">${d.team||''}</td>
                 <td style="text-align:center;">${winsHtml}</td>
                 <td class="col-pts">${ptsHtml}</td>
@@ -3205,9 +3195,20 @@ function getSplitPathView() {
     return currentSplit === 1 ? 'split1' : 'split2';
 }
 
+function refreshGpNamesDatalist() {
+    const names = new Set();
+    [1, 2].forEach(s => {
+        const arc = splitDataCache[s].archive || {};
+        Object.values(arc).forEach(r => { if (r.name) names.add(r.name); });
+    });
+    const dl = document.getElementById('gp-names-list');
+    if (dl) dl.innerHTML = [...names].map(n => `<option value="${n}">`).join('');
+}
+
 function buildAdmArchiveManager() {
     const manager = document.getElementById('adm-archive-manager');
     if (!manager) return;
+    refreshGpNamesDatalist();
     const data = splitDataCache[adminSplit].archive;
     if (!data || Object.keys(data).length === 0) {
         manager.innerHTML = '<p style="color:#999;font-size:13px;">Brak wpisów w archiwum.</p>';
@@ -3253,19 +3254,6 @@ function subscribeStandings(splitNum) {
                 const teamsRaw = document.getElementById('adm-teams-raw');
                 if (driversRaw && d.drivers) driversRaw.value = d.drivers.map(dr => `${dr.isBot ? 'BOT:' : ''}${dr.nick} | ${dr.team} | ${dr.photo || ''} | ${dr.wins || 0} | ${dr.pts || 0}`).join('\n');
                 if (teamsRaw && d.teams) teamsRaw.value = d.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
-                const reorderBox = document.getElementById('standings-reorder-box');
-                if (reorderBox && d.drivers && d.drivers.length > 0) {
-                    reorderBox.style.display = 'block';
-                    const reorderList = document.getElementById('standings-reorder-list');
-                    if (reorderList) {
-                        reorderList.innerHTML = d.drivers.map((dr, i) => `
-                        <div class="reorder-item" data-idx="${i}" data-nick="${dr.nick}">
-                            <span class="reorder-handle">⠿</span>
-                            <span class="reorder-label">${dr.nick}${dr.isBot ? ' <span style="font-size:10px;background:#444;color:#aaa;padding:1px 6px;border-radius:2px;letter-spacing:1px;margin-left:4px;">BOT</span>' : ''}</span>
-                        </div>`).join('');
-                        initReorderList(reorderList, () => { document.getElementById('btn-save-standings-order').style.display = 'inline-flex'; });
-                    }
-                }
             }
             if (currentSplit === splitNum) renderStandings();
         }
@@ -3415,7 +3403,7 @@ function subscribeGallery() {
         const manager = document.getElementById('adm-gallery-manager');
         const albumSelect = document.getElementById('adm-entry-album');
         if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.innerHTML = "Brak albumów."; albumSelect.innerHTML = '<option value="">— Wybierz album —</option>'; return; }
-        window.galleryData = data;
+       window.galleryData = data;
         const entries = Object.entries(data).sort((a, b) => {
             const ao = a[1].order, bo = b[1].order;
             if (ao !== undefined && bo !== undefined) return ao - bo;
@@ -3423,7 +3411,11 @@ function subscribeGallery() {
             return a[0] < b[0] ? -1 : 1;
         });
         albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
-        albumsGrid.innerHTML = entries.map(([id, gal]) => {
+        const addAlbumTile = isLoggedIn ? `
+            <div class="album-card" style="display:flex;align-items:center;justify-content:center;cursor:pointer;border-bottom:15px solid #444;background:#1a1a22;" onclick="ui.quickCreateAlbum()">
+                <div style="font-family:var(--font-display);font-size:90px;color:rgba(255,255,255,0.4);">＋</div>
+            </div>` : '';
+        albumsGrid.innerHTML = addAlbumTile + entries.map(([id, gal]) => {
             const entryCount = gal.entries ? Object.keys(gal.entries).length : 0;
             const isPinned = !!gal.pinned;
             const pinnedBadge = isPinned ? `<div style="position:absolute;top:14px;left:14px;z-index:20;background:var(--f1-red);color:#fff;border-radius:8px;padding:6px 14px;font-family:var(--font-display);font-size:18px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(225,6,0,0.4);">📌 PRZYPIĘTY</div>` : '';
@@ -3459,7 +3451,12 @@ function subscribeGallery() {
         if (window._currentAlbumId && data[window._currentAlbumId]) ui.openAlbum(window._currentAlbumId);
     });
 }
-
+ui.quickCreateAlbum = async function() {
+    const name = prompt('Nazwa nowego albumu:');
+    if (!name || !name.trim()) return;
+    const cover = prompt('URL okładki (opcjonalnie, Enter aby pominąć):') || '';
+    await push(ref(db, 'gallery'), { name: name.trim(), cover: cover.trim(), entries: {} });
+};
 ui.togglePinAlbum = async function(id, isPinned) {
     await update(ref(db, 'gallery/' + id), { pinned: !isPinned });
 };
