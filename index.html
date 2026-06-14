@@ -1235,14 +1235,24 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <p style="color:#aaa;font-size:13px;margin-top:0;margin-bottom:16px;line-height:1.6;">Każdy split ma osobne odliczanie. Widoczne odliczanie zmienia się automatycznie po przełączeniu Splitu na stronie.</p>
             <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;margin-bottom:20px;">
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:var(--f1-red);margin-bottom:14px;">⏱ SPLIT 1</div>
-<div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 1):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s1" value="countdown" id="hero-mode-countdown-s1" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s1" value="soon" id="hero-mode-soon-s1"> SOON</label></div></div>
+                <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>
+                <div class="form-group">
+                    <label class="form-label">Nazwa GP (do podpowiedzi)<span class="form-hint">np. "Australian Grand Prix" — na tej podstawie podpowiemy nazwę wyników i albumu w galerii</span></label>
+                    <input type="text" id="adm-gp-name-s1" class="f1-input" placeholder="np. Australian Grand Prix" oninput="ui.updateGpPreview(1)">
+                    <div id="gp-preview-s1" style="margin-top:8px;font-size:12px;color:#666;line-height:1.6;"></div>
+                </div>
+                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 1):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s1" value="countdown" id="hero-mode-countdown-s1" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s1" value="soon" id="hero-mode-soon-s1"> SOON</label></div></div>
                 <div id="hero-date-group-s1" class="form-group"><label class="form-label">Data licznika S1 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s1" class="f1-input" placeholder="2026-05-24 20:00"></div>
                 <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(1)">💾 ZAPISZ ODLICZANIE SPLIT 1</button></div>
             </div>
             <div style="border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:16px;">
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:#0078ff;margin-bottom:14px;">⏱ SPLIT 2</div>
                 <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 2):</label><input type="text" id="adm-hero-title-s2" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S2"></div>
-                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 2):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s2" value="countdown" id="hero-mode-countdown-s2" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s2" value="soon" id="hero-mode-soon-s2"> SOON</label></div></div>
+                <div class="form-group">
+                    <label class="form-label">Nazwa GP (do podpowiedzi)<span class="form-hint">np. "Australian Grand Prix" — na tej podstawie podpowiemy nazwę wyników i albumu w galerii</span></label>
+                    <input type="text" id="adm-gp-name-s2" class="f1-input" placeholder="np. Australian Grand Prix" oninput="ui.updateGpPreview(2)">
+                    <div id="gp-preview-s2" style="margin-top:8px;font-size:12px;color:#666;line-height:1.6;"></div>
+                </div>                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 2):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s2" value="countdown" id="hero-mode-countdown-s2" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s2" value="soon" id="hero-mode-soon-s2"> SOON</label></div></div>
                 <div id="hero-date-group-s2" class="form-group"><label class="form-label">Data licznika S2 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s2" class="f1-input" placeholder="2026-05-24 20:00"></div>
                 <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(2)">💾 ZAPISZ ODLICZANIE SPLIT 2</button></div>
             </div>
@@ -1251,9 +1261,15 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="admin-section" id="sec-race">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🏁</span><span class="admin-section-title">Dodaj Wyniki Wyścigu</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
-            <div class="form-group"><label class="form-label">Pełna nazwa wyścigu:</label><input type="text" id="adm-race-title" class="f1-input" list="gp-names-list" placeholder="np. GP Silverstone - Runda 5"><datalist id="gp-names-list"></datalist></div>
-            <div class="form-group"><label class="form-label">Dane wyścigu<span class="form-hint">① Wklej tabelę z gry F1 25 (format z tabulatorami wykrywany auto)<br>② Ręczny: Nick | Zespół | Start | Pit | Najlepsze | Czas | Pkt</span></label><textarea id="adm-race-raw" class="f1-textarea" rows="10" placeholder="Wklej tutaj..."></textarea></div>
-            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>  PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
+<div class="form-group">
+    <label class="form-label">Pełna nazwa wyścigu:</label>
+    <input type="text" id="adm-race-title" class="f1-input" list="gp-names-list" placeholder="np. GP Silverstone - Runda 5">
+    <datalist id="gp-names-list"></datalist>
+    <div id="race-title-suggestion-box" style="margin-top:8px;display:none;background:#f0f9f0;border:1.5px solid #4caf50;border-radius:6px;padding:10px 14px;font-size:13px;color:#2a6e2a;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <span>💡 Podpowiedź: <strong id="race-title-suggestion-text"></strong></span>
+        <button type="button" class="btn-action btn-sm" onclick="ui.useRaceTitleSuggestion()">✓ UŻYJ</button>
+    </div>
+</div>            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
 <details style="margin-top:16px;">
                 <summary style="cursor:pointer;font-weight:800;font-size:13px;text-transform:uppercase;color:#666;">⚙ Zaawansowane: wyklucz nicki z bonusu</summary>
                 <div class="form-group no-bonus-box" style="margin-top:10px;"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
@@ -1301,9 +1317,10 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div class="admin-section" id="sec-gallery">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">📷</span><span class="admin-section-title">Zarządzanie Galerią</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
-            <div><h4 style="font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:12px;">KOLEJNOŚĆ / USUŃ / EDYTUJ ALBUMY:</h4><div id="adm-gallery-manager"></div><div class="btn-row" style="margin-top:12px;"><button class="btn-action" id="btn-save-gallery-order" onclick="dbCore.saveGalleryOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ ALBUMÓW</button></div></div>
-        </div>
-    </div>
+<div class="btn-row" style="margin-bottom:16px;">
+    <button class="btn-action" onclick="ui.quickCreateAlbumForGp()">📷 + ALBUM DLA AKTUALNEGO GP</button>
+</div>
+<div><h4 style="font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:12px;">KOLEJNOŚĆ / USUŃ / EDYTUJ ALBUMY:</h4><div id="adm-gallery-manager"></div><div class="btn-row" style="margin-top:12px;"><button class="btn-action" id="btn-save-gallery-order" onclick="dbCore.saveGalleryOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ ALBUMÓW</button></div></div>    </div>
     <div style="padding:20px 0 40px;"><button class="btn-action btn-danger" onclick="authCore.logout()" style="width:100%;justify-content:center;font-size:16px;">🚪 WYLOGUJ Z SYSTEMU</button></div>
     </div>
 </div>
@@ -1802,8 +1819,42 @@ window.ui = {
         document.getElementById('admin-overlay').classList.toggle('open', show);
         if (show) { buildLogosGrid(); buildTeamsAdminList(); }
     },
-    toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 'flex' : 'none'; },
-    toggleAdminSection(header) {
+toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 'flex' : 'none'; },
+    updateGpPreview(splitNum) {
+        const input = document.getElementById('adm-gp-name-s' + splitNum);
+        const preview = document.getElementById('gp-preview-s' + splitNum);
+        if (!input) return;
+        const val = input.value.trim();
+        if (splitNum === 1) window.gpNameS1 = val; else window.gpNameS2 = val;
+        if (preview) {
+            if (!val) { preview.innerHTML = ''; }
+            else {
+                const round = getNextRoundNumber(splitNum);
+                preview.innerHTML = `🏁 Wyniki: <strong>ROUND ${round} ${val.toUpperCase()}</strong> &nbsp;|&nbsp; 📷 Galeria: <strong>${gpNameToShort(val)}</strong>`;
+            }
+        }
+        if (adminSplit === splitNum) this.refreshRaceTitleSuggestion();
+    },
+    refreshRaceTitleSuggestion() {
+        const box = document.getElementById('race-title-suggestion-box');
+        const textEl = document.getElementById('race-title-suggestion-text');
+        if (!box || !textEl) return;
+        const suggestion = buildRaceTitleSuggestion(adminSplit);
+        if (suggestion) { textEl.textContent = suggestion; box.style.display = 'flex'; }
+        else { box.style.display = 'none'; }
+    },
+    useRaceTitleSuggestion() {
+        const suggestion = buildRaceTitleSuggestion(adminSplit);
+        if (suggestion) document.getElementById('adm-race-title').value = suggestion;
+    },
+    async quickCreateAlbumForGp() {
+        const gpName = currentSplit === 2 ? window.gpNameS2 : window.gpNameS1;
+        const suggested = gpName ? gpNameToShort(gpName) : '';
+        const name = prompt('Nazwa albumu:', suggested);
+        if (!name || !name.trim()) return;
+        const cover = prompt('URL okładki (opcjonalnie, Enter aby pominąć):') || '';
+        await push(ref(db, 'gallery'), { name: name.trim(), cover: cover.trim(), entries: {} });
+    },    toggleAdminSection(header) {
         const body = header.nextElementSibling;
         const isOpen = body.classList.toggle('open');
         header.classList.toggle('open', isOpen);
@@ -1994,7 +2045,7 @@ window.ui = {
         applyHeroConfig(n);
         this._applySplitView();
     },
-    adminSwitchSplit(n) {
+   adminSwitchSplit(n) {
         adminSplit = n;
         document.getElementById('adm-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('adm-split2-btn').classList.toggle('active', n === 2);
@@ -2010,8 +2061,11 @@ window.ui = {
             if (driversRaw && sd.drivers) driversRaw.value = sd.drivers.map(d => `${d.isBot ? 'BOT:' : ''}${d.nick} | ${d.team} | ${d.photo || ''} | ${d.wins || 0} | ${d.pts || 0}`).join('\n');
             if (teamsRaw && sd.teams) teamsRaw.value = sd.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
         }
+        subscribeArchive(n);
         buildAdmArchiveManager();
         buildTeamsAdminList();
+        ui.updateGpPreview(n);
+        ui.refreshRaceTitleSuggestion();
         if (n === 2) {
             const tog = document.getElementById('adm-split2-soon-toggle');
             if (tog) tog.checked = !!split2SoonMode;
@@ -2612,7 +2666,7 @@ window.dbCore = {
             else if (urlInput) { url = urlInput.value?.trim() || ''; }
             if (url) images.push({ url, align, width, scale });
         });
-        await set(ref(db, 'config'), { ...current, splashContent: document.getElementById('adm-splash-content').value, splashImages: images, splashImage: images.length === 1 ? images[0].url : (current.splashImage || '') });
+await set(ref(db, 'config'), { ...current, splashContent: document.getElementById('adm-splash-content').value, splashImages: images, splashImage: images.length === 1 ? images[0].url : (current.splashImage || '') });
         alert("Strona startowa zapisana!");
         document.getElementById('splash-custom-content').innerHTML = document.getElementById('adm-splash-content').value;
         renderSplashImages(images);
@@ -2639,7 +2693,7 @@ window.dbCore = {
         await set(ref(db, 'config'), { ...current, showNews: document.getElementById('adm-show-news').checked, newsContent: document.getElementById('adm-news-content').value });
         alert("News zapisany!");
     },
-    async saveCountdownConfig(splitNum) {
+  async saveCountdownConfig(splitNum) {
         const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
         const current = snap.val() || {};
         if (splitNum === 1) {
@@ -2647,7 +2701,8 @@ window.dbCore = {
             await set(ref(db, 'config'), { ...current,
                 heroTitleS1: document.getElementById('adm-hero-title-s1').value,
                 heroDateS1:  document.getElementById('adm-hero-date-s1').value,
-                heroModeS1:  mode
+                heroModeS1:  mode,
+                gpNameS1: document.getElementById('adm-gp-name-s1').value
             });
             alert("Odliczanie Split 1 zapisane!");
         } else {
@@ -2655,7 +2710,8 @@ window.dbCore = {
             await set(ref(db, 'config'), { ...current,
                 heroTitleS2: document.getElementById('adm-hero-title-s2').value,
                 heroDateS2:  document.getElementById('adm-hero-date-s2').value,
-                heroModeS2:  mode
+                heroModeS2:  mode,
+                gpNameS2: document.getElementById('adm-gp-name-s2').value
             });
             alert("Odliczanie Split 2 zapisane!");
         }
@@ -2965,8 +3021,23 @@ const extractYtId = (url) => {
     m = url.match(/embed\/([^?&]+)/); if (m) return m[1];
     return url;
 };
-const normalizeTeamName = (name) => {
-    if (!name) return name;
+const gpNameToShort = (gpName) => {
+    if (!gpName) return '';
+    const short = gpName.replace(/grand\s*prix/i, '').replace(/\s+/g, ' ').trim();
+    return short ? short + ' GP' : 'GP';
+};
+const getNextRoundNumber = (splitNum) => {
+    const arc = (splitDataCache[splitNum] && splitDataCache[splitNum].archive) || {};
+    const count = Object.values(arc).filter(r => !r.isTraining && !r.isQualifying).length;
+    return count + 1;
+};
+const buildRaceTitleSuggestion = (splitNum) => {
+    const gpName = (splitNum === 2 ? window.gpNameS2 : window.gpNameS1) || '';
+    if (!gpName.trim()) return '';
+    const round = getNextRoundNumber(splitNum);
+    return `ROUND ${round} ${gpName.trim().toUpperCase()}`;
+};
+const normalizeTeamName = (name) => {    if (!name) return name;
     const n = name.toLowerCase().trim();
     if (n.includes('ferrari') || n.includes('scuderia')) return 'Scuderia Ferrari HP';
     if (n.includes('red bull') && !n.includes('racing bull') && !n.includes('visa')) return 'Red Bull';
@@ -3049,7 +3120,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
                    <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
                    <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
                    <td>${cellEdit(r.time, i, 'time')}</td>
-                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="PKT za dojechanie"></span>` : ''}</td>`
+                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="Bonus +3 PKT za dojechanie do mety">+3</span>` : ''}</td>`
             }
         </tr>`).join('')}</tbody></table>`;
 };
@@ -3206,6 +3277,7 @@ function refreshGpNamesDatalist() {
 }
 
 function buildAdmArchiveManager() {
+    ui.refreshRaceTitleSuggestion();
     const manager = document.getElementById('adm-archive-manager');
     if (!manager) return;
     refreshGpNamesDatalist();
@@ -3371,7 +3443,14 @@ onValue(ref(db, 'config'), snap => {
     if (c.heroModeS1) { const r = document.querySelector(`input[name="hero-mode-s1"][value="${c.heroModeS1}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s1').style.display = c.heroModeS1 === 'soon' ? 'none' : 'block'; }
     if (c.heroTitleS2 !== undefined) { const el = document.getElementById('adm-hero-title-s2'); if(el) el.value = c.heroTitleS2; }
     if (c.heroDateS2  !== undefined) { const el = document.getElementById('adm-hero-date-s2');  if(el) el.value = c.heroDateS2;  }
-    if (c.heroModeS2) { const r = document.querySelector(`input[name="hero-mode-s2"][value="${c.heroModeS2}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s2').style.display = c.heroModeS2 === 'soon' ? 'none' : 'block'; }
+if (c.heroModeS2) { const r = document.querySelector(`input[name="hero-mode-s2"][value="${c.heroModeS2}"]`); if(r) r.checked = true; document.getElementById('hero-date-group-s2').style.display = c.heroModeS2 === 'soon' ? 'none' : 'block'; }
+
+    window.gpNameS1 = c.gpNameS1 || '';
+    window.gpNameS2 = c.gpNameS2 || '';
+    if (c.gpNameS1 !== undefined) { const el = document.getElementById('adm-gp-name-s1'); if(el) el.value = c.gpNameS1; }
+    if (c.gpNameS2 !== undefined) { const el = document.getElementById('adm-gp-name-s2'); if(el) el.value = c.gpNameS2; }
+    ui.updateGpPreview(1);
+    ui.updateGpPreview(2);
 
     applyHeroConfig(currentSplit);
     if (c.showNews !== undefined) document.getElementById('adm-show-news').checked = c.showNews;
@@ -3449,7 +3528,9 @@ if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.i
     });
 }
 ui.quickCreateAlbum = async function() {
-    const name = prompt('Nazwa nowego albumu:');
+    const gpName = currentSplit === 2 ? window.gpNameS2 : window.gpNameS1;
+    const suggested = gpName ? gpNameToShort(gpName) : '';
+    const name = prompt('Nazwa nowego albumu:', suggested);
     if (!name || !name.trim()) return;
     const cover = prompt('URL okładki (opcjonalnie, Enter aby pominąć):') || '';
     await push(ref(db, 'gallery'), { name: name.trim(), cover: cover.trim(), entries: {} });
