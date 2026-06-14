@@ -3053,7 +3053,9 @@ const extractYtId = (url) => {
 };
 const gpNameToShort = (gpName) => {
     if (!gpName) return '';
-    const short = gpName.replace(/grand\s*prix/i, '').replace(/\s+/g, ' ').trim();
+    // Czyści popularne człony i zwraca oczyszczoną, krótką nazwę wielkimi literami
+    return gpName.replace(/(Grand Prix|GP|Gf|Wyścig o|o puchar|puchar)/gi, '').trim().toUpperCase();
+};
     return short ? short + ' GP' : 'GP';
 };
 const getNextRoundNumber = (splitNum) => {
@@ -3422,7 +3424,7 @@ onValue(ref(db, 'config'), snap => {
     split2SoonMode = (soonVal === null || soonVal === true || soonVal === undefined);
     const tog = document.getElementById('adm-split2-soon-toggle');
     if (tog) tog.checked = !!split2SoonMode;
-    if (currentSplit === 2) ui._applySplitView();
+    this._applySplitView()
 
     if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
@@ -3634,12 +3636,30 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
                 }
             } catch(e) { console.error('Błąd zapisu kolejności:', e); }
         });
-        row.addEventListener('dragover', e => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
-            if (row !== dragSrcRow) row.classList.add('race-row-dragover');
-        });
+       row.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
+    if (row !== dragSrcRow) {
+        row.classList.add('race-row-dragover');
+    }
+    return false;
+});
+
+row.addEventListener('drop', e => {
+    e.stopPropagation();
+    if (dragSrcRow && dragSrcRow !== row) {
+        const allRows = [...tbody.querySelectorAll('tr[data-row-idx]')];
+        const srcIdx = allRows.indexOf(dragSrcRow);
+        const dstIdx = allRows.indexOf(row);
+        if (srcIdx < dstIdx) {
+            tbody.insertBefore(dragSrcRow, row.nextSibling);
+        } else {
+            tbody.insertBefore(dragSrcRow, row);
+        }
+    }
+    return false;
+});
         row.addEventListener('drop', e => {
             e.stopPropagation();
             if (dragSrcRow && dragSrcRow !== row) {
