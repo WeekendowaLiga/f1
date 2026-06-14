@@ -3401,16 +3401,13 @@ function subscribeGallery() {
         const data = snap.val();
         const albumsGrid = document.getElementById('gallery-albums');
         const manager = document.getElementById('adm-gallery-manager');
-        const albumSelect = document.getElementById('adm-entry-album');
-        if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.innerHTML = "Brak albumów."; albumSelect.innerHTML = '<option value="">— Wybierz album —</option>'; return; }
-       window.galleryData = data;
+if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.innerHTML = "Brak albumów."; return; }       window.galleryData = data;
         const entries = Object.entries(data).sort((a, b) => {
             const ao = a[1].order, bo = b[1].order;
             if (ao !== undefined && bo !== undefined) return ao - bo;
             if (ao !== undefined) return -1; if (bo !== undefined) return 1;
             return a[0] < b[0] ? -1 : 1;
         });
-        albumSelect.innerHTML = '<option value="">— Wybierz album —</option>' + entries.map(([id, gal]) => `<option value="${id}">${gal.name}</option>`).join('');
         const addAlbumTile = isLoggedIn ? `
             <div class="album-card" style="display:flex;align-items:center;justify-content:center;cursor:pointer;border-bottom:15px solid #444;background:#1a1a22;" onclick="ui.quickCreateAlbum()">
                 <div style="font-family:var(--font-display);font-size:90px;color:rgba(255,255,255,0.4);">＋</div>
