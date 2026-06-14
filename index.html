@@ -1169,8 +1169,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <span style="width:2px;background:rgba(255,255,255,0.15);margin:4px 6px;"></span>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
         <a class="split-only-toc" href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
-        <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a>
-<a href="#sec-discord" onclick="ui.openAdminSection('sec-discord')">💬 Discord</a>
+        <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a> 
     </div>
     <div class="admin-body">
     <div class="admin-section split-only-section" id="sec-split2soon" style="display:none;">
@@ -1270,11 +1269,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <span>💡 Podpowiedź: <strong id="race-title-suggestion-text"></strong></span>
         <button type="button" class="btn-action btn-sm" onclick="ui.useRaceTitleSuggestion()">✓ UŻYJ</button>
     </div>
-</div>
-<div class="form-group">
-    <label class="form-label">Wyniki wyścigu (Nick | Zespół | Grid | Pit | Najl. okr. | Czas | PKT):<span class="form-hint">Jeden kierowca per linia. Możesz też wkleić dane z tabulatorami (format z gry).</span></label>
-    <textarea id="adm-race-raw" class="f1-textarea" rows="14" placeholder="Przykład:&#10;Czosn | McLaren | 1 | 2 | 1:23,456 | +0,000 | 25&#10;Driver2 | Ferrari | 2 | 1 | 1:23,789 | +0,333 | 18"></textarea>
-</div>        <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
+</div>            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
 <details style="margin-top:16px;">
                 <summary style="cursor:pointer;font-weight:800;font-size:13px;text-transform:uppercase;color:#666;">⚙ Zaawansowane: wyklucz nicki z bonusu</summary>
                 <div class="form-group no-bonus-box" style="margin-top:10px;"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
@@ -1326,32 +1321,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <button class="btn-action" onclick="ui.quickCreateAlbumForGp()">📷 + ALBUM DLA AKTUALNEGO GP</button>
 </div>
 <div><h4 style="font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:12px;">KOLEJNOŚĆ / USUŃ / EDYTUJ ALBUMY:</h4><div id="adm-gallery-manager"></div><div class="btn-row" style="margin-top:12px;"><button class="btn-action" id="btn-save-gallery-order" onclick="dbCore.saveGalleryOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ ALBUMÓW</button></div></div>    </div>
-    <div class="admin-section" id="sec-discord">
-    <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">💬</span><span class="admin-section-title">Wyślij na Discord</span><span class="admin-section-arrow">▼</span></div>
-    <div class="admin-section-body">
-        <p style="color:#888;font-size:13px;margin-top:0;line-height:1.6;">Webhooks są zapisywane lokalnie w Twojej przeglądarce (nie w Firebase).</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
-            <div class="form-group" style="margin:0;"><label class="form-label">Webhook — Wyniki S1</label><input type="text" id="webhook-results-s1" class="f1-input" placeholder="https://discord.com/api/webhooks/..." style="font-size:12px;padding:10px;"></div>
-            <div class="form-group" style="margin:0;"><label class="form-label">Webhook — Wyniki S2</label><input type="text" id="webhook-results-s2" class="f1-input" placeholder="https://discord.com/api/webhooks/..." style="font-size:12px;padding:10px;"></div>
-            <div class="form-group" style="margin:0;"><label class="form-label">Webhook — Klasyfikacja S1</label><input type="text" id="webhook-standings-s1" class="f1-input" placeholder="https://discord.com/api/webhooks/..." style="font-size:12px;padding:10px;"></div>
-            <div class="form-group" style="margin:0;"><label class="form-label">Webhook — Klasyfikacja S2</label><input type="text" id="webhook-standings-s2" class="f1-input" placeholder="https://discord.com/api/webhooks/..." style="font-size:12px;padding:10px;"></div>
-        </div>
-        <div class="btn-row"><button class="btn-action btn-secondary btn-sm" onclick="discordCore.saveWebhooks()">💾 ZAPISZ WEBHOOKS</button></div>
-        <hr style="margin:20px 0;border:none;border-top:1px solid #e0e0e0;">
-        <p style="font-weight:800;font-size:12px;text-transform:uppercase;color:#666;letter-spacing:2px;margin-bottom:12px;">Wyniki ostatniego wyścigu</p>
-        <div class="btn-row" style="margin-bottom:16px;">
-            <button class="btn-action" onclick="discordCore.sendResults(1)" style="background:#5865F2;">💬 WYŚLIJ WYNIKI SPLIT 1</button>
-            <button class="btn-action" onclick="discordCore.sendResults(2)" style="background:#5865F2;">💬 WYŚLIJ WYNIKI SPLIT 2</button>
-        </div>
-        <p style="font-weight:800;font-size:12px;text-transform:uppercase;color:#666;letter-spacing:2px;margin-bottom:12px;">Klasyfikacja kierowców i konstruktorów</p>
-        <div class="btn-row">
-            <button class="btn-action" onclick="discordCore.sendStandings(1)" style="background:#5865F2;">💬 WYŚLIJ KLASYFIKACJĘ SPLIT 1</button>
-            <button class="btn-action" onclick="discordCore.sendStandings(2)" style="background:#5865F2;">💬 WYŚLIJ KLASYFIKACJĘ SPLIT 2</button>
-        </div>
-        <div id="discord-send-status" style="margin-top:12px;font-size:13px;font-weight:700;min-height:20px;"></div>
-    </div>
-</div>
-	<div style="padding:20px 0 40px;"><button class="btn-action btn-danger" onclick="authCore.logout()" style="width:100%;justify-content:center;font-size:16px;">🚪 WYLOGUJ Z SYSTEMU</button></div>
+    <div style="padding:20px 0 40px;"><button class="btn-action btn-danger" onclick="authCore.logout()" style="width:100%;justify-content:center;font-size:16px;">🚪 WYLOGUJ Z SYSTEMU</button></div>
     </div>
 </div>
 
@@ -3053,9 +3023,7 @@ const extractYtId = (url) => {
 };
 const gpNameToShort = (gpName) => {
     if (!gpName) return '';
-    // Czyści popularne człony i zwraca oczyszczoną, krótką nazwę wielkimi literami
-    return gpName.replace(/(Grand Prix|GP|Gf|Wyścig o|o puchar|puchar)/gi, '').trim().toUpperCase();
-};
+    const short = gpName.replace(/grand\s*prix/i, '').replace(/\s+/g, ' ').trim();
     return short ? short + ' GP' : 'GP';
 };
 const getNextRoundNumber = (splitNum) => {
@@ -3152,7 +3120,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
                    <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
                    <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
                    <td>${cellEdit(r.time, i, 'time')}</td>
-                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>`
+                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="Bonus +3 PKT za dojechanie do mety">+3</span>` : ''}</td>`
             }
         </tr>`).join('')}</tbody></table>`;
 };
@@ -3424,7 +3392,7 @@ onValue(ref(db, 'config'), snap => {
     split2SoonMode = (soonVal === null || soonVal === true || soonVal === undefined);
     const tog = document.getElementById('adm-split2-soon-toggle');
     if (tog) tog.checked = !!split2SoonMode;
-    this._applySplitView()
+    if (currentSplit === 2) ui._applySplitView();
 
     if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
@@ -3636,30 +3604,12 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
                 }
             } catch(e) { console.error('Błąd zapisu kolejności:', e); }
         });
-       row.addEventListener('dragover', e => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
-    if (row !== dragSrcRow) {
-        row.classList.add('race-row-dragover');
-    }
-    return false;
-});
-
-row.addEventListener('drop', e => {
-    e.stopPropagation();
-    if (dragSrcRow && dragSrcRow !== row) {
-        const allRows = [...tbody.querySelectorAll('tr[data-row-idx]')];
-        const srcIdx = allRows.indexOf(dragSrcRow);
-        const dstIdx = allRows.indexOf(row);
-        if (srcIdx < dstIdx) {
-            tbody.insertBefore(dragSrcRow, row.nextSibling);
-        } else {
-            tbody.insertBefore(dragSrcRow, row);
-        }
-    }
-    return false;
-});
+        row.addEventListener('dragover', e => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            tbody.querySelectorAll('tr').forEach(r => r.classList.remove('race-row-dragover'));
+            if (row !== dragSrcRow) row.classList.add('race-row-dragover');
+        });
         row.addEventListener('drop', e => {
             e.stopPropagation();
             if (dragSrcRow && dragSrcRow !== row) {
@@ -3672,89 +3622,9 @@ row.addEventListener('drop', e => {
     });
 }
 
-// ===================== DISCORD WEBHOOKS =====================
-const WEBHOOK_STORAGE_KEY = 'f1_discord_webhooks';
-
-window.discordCore = {
-    saveWebhooks() {
-        const data = {
-            resultsS1:   document.getElementById('webhook-results-s1').value.trim(),
-            resultsS2:   document.getElementById('webhook-results-s2').value.trim(),
-            standingsS1: document.getElementById('webhook-standings-s1').value.trim(),
-            standingsS2: document.getElementById('webhook-standings-s2').value.trim(),
-        };
-        localStorage.setItem(WEBHOOK_STORAGE_KEY, JSON.stringify(data));
-        alert('✅ Webhooks zapisane!');
-    },
-    loadWebhooks() {
-        try { const r = localStorage.getItem(WEBHOOK_STORAGE_KEY); return r ? JSON.parse(r) : {}; } catch { return {}; }
-    },
-    setStatus(msg, color = '#2a6e2a') {
-        const el = document.getElementById('discord-send-status');
-        if (el) { el.textContent = msg; el.style.color = color; }
-    },
-    async send(webhookUrl, payload) {
-        if (!webhookUrl) { this.setStatus('❌ Brak URL webhooka!', '#c00'); return false; }
-        try {
-            const res = await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            return res.ok;
-        } catch(e) { console.error('Discord webhook error:', e); return false; }
-    },
-    getMedal(pos) {
-        if (pos === 1) return '🥇';
-        if (pos === 2) return '🥈';
-        if (pos === 3) return '🥉';
-        return `**${pos}.**`;
-    },
-    async sendResults(splitNum) {
-        const hooks = this.loadWebhooks();
-        const url = splitNum === 1 ? hooks.resultsS1 : hooks.resultsS2;
-        if (!url) { this.setStatus(`❌ Brak webhooka dla wyników Split ${splitNum}!`, '#c00'); return; }
-        const data = splitDataCache[splitNum].lastRace;
-        if (!data || !data.results || data.results.length === 0) {
-            this.setStatus(`❌ Brak danych ostatniego wyścigu dla Split ${splitNum}!`, '#c00'); return;
-        }
-        this.setStatus('⏳ Wysyłanie...');
-        const teamEmojis = { ferrari: '🔴', mercedes: '🩵', redbull: '🔵', mclaren: '🟠', aston: '🟢', alpine: '💙', williams: '🔷', sauber: '🟩', haas: '⬜', rb: '🫐' };
-        const getEmoji = (team) => { const t = (team || '').toLowerCase(); for (const [key, emoji] of Object.entries(teamEmojis)) { if (t.includes(key)) return emoji; } return '🏎️'; };
-        const toSec = (t) => { if (!t || t === '-') return Infinity; const m = t.toString().match(/^(\d+):(\d+)[\.,](\d+)$/); if (m) return parseInt(m[1])*60+parseInt(m[2])+parseInt(m[3])/1000; const s = parseFloat((t+'').replace(',','.')); return isNaN(s) ? Infinity : s; };
-        const fastestIdx = data.results.reduce((best, r, i) => toSec(r.best) < toSec(data.results[best]?.best ?? '') ? i : best, 0);
-        const lines = data.results.map((r, i) => {
-            const medal = this.getMedal(parseInt(r.pos) || i+1);
-            const fl = i === fastestIdx ? ' ⚡' : '';
-            const pts = r.pts ? ` — **${r.pts} PKT**` : '';
-            return `${medal} ${getEmoji(r.team)} **${r.nick}** *(${r.team || '?'})* ${pts}${fl}`;
-        });
-        const payload = { embeds: [{ title: `🏁 ${data.name || 'Ostatni Wyścig'} — Split ${splitNum}`, description: lines.join('\n'), color: splitNum === 1 ? 0xe10600 : 0x0078ff, footer: { text: 'Weekendowa Liga F1' }, timestamp: new Date().toISOString() }] };
-        const ok = await this.send(url, payload);
-        this.setStatus(ok ? `✅ Wyniki Split ${splitNum} wysłane!` : `❌ Błąd wysyłania!`, ok ? '#2a6e2a' : '#c00');
-    },
-    async sendStandings(splitNum) {
-        const hooks = this.loadWebhooks();
-        const url = splitNum === 1 ? hooks.standingsS1 : hooks.standingsS2;
-        if (!url) { this.setStatus(`❌ Brak webhooka dla klasyfikacji Split ${splitNum}!`, '#c00'); return; }
-        const sd = splitDataCache[splitNum].standings;
-        if (!sd) { this.setStatus(`❌ Brak danych klasyfikacji dla Split ${splitNum}!`, '#c00'); return; }
-        this.setStatus('⏳ Wysyłanie...');
-        const humanDrivers = (sd.drivers || []).filter(d => !d.isBot);
-        const driverLines = humanDrivers.map((d, i) => `${this.getMedal(i+1)} **${d.nick}** *(${d.team || '?'})* — **${d.pts || 0} PKT**`).join('\n');
-        const teamLines = (sd.teams || []).map((t, i) => `${this.getMedal(i+1)} **${t.team}** — **${t.pts || 0} PKT**`).join('\n');
-        const payload = { embeds: [
-            { title: `🏆 Klasyfikacja Kierowców — Split ${splitNum}`, description: driverLines || '*Brak danych*', color: splitNum === 1 ? 0xe10600 : 0x0078ff, footer: { text: 'Weekendowa Liga F1' }, timestamp: new Date().toISOString() },
-            { title: `🏎️ Klasyfikacja Konstruktorów — Split ${splitNum}`, description: teamLines || '*Brak danych*', color: splitNum === 1 ? 0xe10600 : 0x0078ff }
-        ]};
-        const ok = await this.send(url, payload);
-        this.setStatus(ok ? `✅ Klasyfikacja Split ${splitNum} wysłana!` : `❌ Błąd wysyłania!`, ok ? '#2a6e2a' : '#c00');
-    }
-};
-(function() {
-    const data = discordCore.loadWebhooks();
-    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
-    set('webhook-results-s1', data.resultsS1);
-    set('webhook-results-s2', data.resultsS2);
-    set('webhook-standings-s1', data.standingsS1);
-    set('webhook-standings-s2', data.standingsS2);
-})();
+} catch(err) {
+    console.error('Firebase/App error:', err);
+}
 </script>
 </body>
 </html>
