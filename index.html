@@ -147,6 +147,81 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .soon-box { display: inline-block; font-family: var(--font-display); font-size: 130px; font-weight: 900; color: var(--f1-red); letter-spacing: 8px; position: relative; animation: soonPulse 2s ease infinite; text-shadow: 0 0 60px rgba(225,6,0,0.4); }
 @keyframes soonPulse { 0%, 100% { text-shadow: 0 0 40px rgba(225,6,0,0.3); } 50% { text-shadow: 0 0 80px rgba(225,6,0,0.7); } }
 
+/* ===================== MEGA ANIMACJE F1 ===================== */
+@keyframes f1SlideInLeft { from { opacity: 0; transform: translateX(-60px) skewX(-5deg); } to { opacity: 1; transform: translateX(0) skewX(0); } }
+@keyframes f1SlideInRight { from { opacity: 0; transform: translateX(60px) skewX(5deg); } to { opacity: 1; transform: translateX(0) skewX(0); } }
+@keyframes f1SlideInUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes f1SlideInDown { from { opacity: 0; transform: translateY(-40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes f1ZoomIn { from { opacity: 0; transform: scale(0.7) rotateX(10deg); } to { opacity: 1; transform: scale(1) rotateX(0); } }
+@keyframes f1FlipIn { from { opacity: 0; transform: perspective(600px) rotateY(-90deg); } to { opacity: 1; transform: perspective(600px) rotateY(0); } }
+@keyframes f1GlitchIn { 0% { opacity: 0; transform: translateX(-4px) skewX(-8deg); clip-path: inset(30% 0 40% 0); } 20% { opacity: 0.7; transform: translateX(4px) skewX(4deg); clip-path: inset(0% 0 0% 0); } 40% { opacity: 0.5; transform: translateX(-2px) skewX(-3deg); clip-path: inset(60% 0 10% 0); } 60% { opacity: 0.9; transform: translateX(1px); clip-path: inset(0% 0 0% 0); } 80% { opacity: 1; transform: translateX(0); } 100% { opacity: 1; transform: none; } }
+@keyframes f1RedFlash { 0%, 100% { box-shadow: none; } 50% { box-shadow: 0 0 0 3px var(--f1-red), 0 0 30px rgba(225,6,0,0.5); } }
+@keyframes f1BorderSweep { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0% 0 0); } }
+@keyframes f1CountUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes f1ModalIn { 0% { opacity: 0; transform: translateY(-30px) scale(0.93) rotateX(8deg); } 60% { transform: translateY(4px) scale(1.01) rotateX(-1deg); } 100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } }
+@keyframes f1OverlayIn { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(12px); } }
+@keyframes f1RedLineIn { from { width: 0; opacity: 0; } to { width: 100%; opacity: 1; } }
+@keyframes f1StaggerIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes f1Shake { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-8px) rotate(-1deg)} 30%{transform:translateX(8px) rotate(1deg)} 45%{transform:translateX(-6px)} 60%{transform:translateX(6px)} 75%{transform:translateX(-3px)} 90%{transform:translateX(3px)} }
+@keyframes f1SuccessPop { 0%{transform:scale(0.5) rotate(-10deg);opacity:0} 60%{transform:scale(1.15) rotate(3deg);opacity:1} 80%{transform:scale(0.95) rotate(-1deg)} 100%{transform:scale(1) rotate(0);opacity:1} }
+@keyframes f1NavUnderline { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+@keyframes f1TableRowIn { from { opacity: 0; transform: translateX(-30px); filter: blur(2px); } to { opacity: 1; transform: translateX(0); filter: blur(0); } }
+@keyframes f1HeroTextIn { 0% { opacity: 0; letter-spacing: 20px; transform: translateY(20px); } 100% { opacity: 1; letter-spacing: 4px; transform: translateY(0); } }
+@keyframes f1CardFlip { 0% { opacity: 0; transform: perspective(800px) rotateX(25deg) translateY(30px); } 100% { opacity: 1; transform: perspective(800px) rotateX(0) translateY(0); } }
+@keyframes f1PulseRed { 0%,100% { background: var(--f1-red); } 50% { background: #ff2a25; box-shadow: 0 0 20px rgba(225,6,0,0.7); } }
+@keyframes f1Spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes f1ModalRowIn { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+
+/* APLIKACJA ANIMACJI */
+.page-view.active { animation: f1SlideInUp 0.45s cubic-bezier(0.19,1,0.22,1) forwards; }
+.f1-card { animation: f1CardFlip 0.5s cubic-bezier(0.19,1,0.22,1) both; }
+.f1-table tbody tr { animation: f1TableRowIn 0.4s cubic-bezier(0.19,1,0.22,1) both; }
+.f1-table tbody tr:nth-child(1)  { animation-delay: 0.04s; }
+.f1-table tbody tr:nth-child(2)  { animation-delay: 0.08s; }
+.f1-table tbody tr:nth-child(3)  { animation-delay: 0.12s; }
+.f1-table tbody tr:nth-child(4)  { animation-delay: 0.16s; }
+.f1-table tbody tr:nth-child(5)  { animation-delay: 0.20s; }
+.f1-table tbody tr:nth-child(6)  { animation-delay: 0.24s; }
+.f1-table tbody tr:nth-child(7)  { animation-delay: 0.28s; }
+.f1-table tbody tr:nth-child(8)  { animation-delay: 0.32s; }
+.f1-table tbody tr:nth-child(9)  { animation-delay: 0.36s; }
+.f1-table tbody tr:nth-child(n+10) { animation-delay: 0.40s; }
+.nav-item { transition: color 0.25s, background 0.25s, letter-spacing 0.3s cubic-bezier(0.19,1,0.22,1); }
+.nav-item:hover { letter-spacing: calc(var(--ls-nav) + 1px); }
+.nav-item::after { transition: left 0.4s cubic-bezier(0.19,1,0.22,1); }
+.f1-card { transition: box-shadow 0.4s ease, transform 0.35s cubic-bezier(0.19,1,0.22,1); }
+.f1-card:hover { transform: translateY(-5px) scale(1.002); }
+.team-page-card { transition: transform 0.4s cubic-bezier(0.19,1,0.22,1), box-shadow 0.4s ease; }
+.team-page-card:hover { transform: translateY(-10px) scale(1.02) skewX(-1deg) !important; }
+.album-card { transition: transform 0.45s cubic-bezier(0.19,1,0.22,1), box-shadow 0.45s ease; }
+.album-card:hover { transform: translateY(-8px) scale(1.025) !important; }
+.btn-action { transition: background 0.25s, transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s; }
+.btn-action:hover { transform: translateY(-3px) scale(1.04); }
+.btn-action:active { transform: translateY(0) scale(0.97); }
+.nick-chip { transition: transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s, border-color 0.15s, background 0.15s; }
+.nick-chip:hover { transform: translateY(-3px) scale(1.07) !important; }
+.nick-chip:active { transform: scale(0.95) !important; }
+.archive-header { transition: background 0.3s, padding-left 0.35s cubic-bezier(0.19,1,0.22,1), border-left 0.3s, color 0.25s; }
+.archive-body { transition: max-height 0.7s cubic-bezier(0.19,1,0.22,1), opacity 0.4s ease; }
+.timer-unit { transition: transform 0.35s cubic-bezier(0.19,1,0.22,1), border-color 0.3s, box-shadow 0.3s; }
+.timer-unit:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 20px 40px rgba(225,6,0,0.3); }
+.split-btn { transition: background 0.25s cubic-bezier(0.19,1,0.22,1), color 0.2s, transform 0.2s; }
+.split-btn:hover:not(.active) { transform: scale(1.06); }
+.split-btn.active { animation: f1PulseRed 2s ease infinite; }
+.driver-name-clickable { transition: color 0.2s, transform 0.2s, border-color 0.2s; }
+.driver-name-clickable:hover { transform: translateX(4px); }
+.header-social-btn { transition: background 0.25s, border-color 0.25s, transform 0.3s cubic-bezier(0.19,1,0.22,1), box-shadow 0.25s; }
+.header-social-btn:hover { transform: translateY(-4px) rotate(-5deg) scale(1.1) !important; }
+.splash-social-btn { transition: background 0.25s, border-color 0.25s, transform 0.3s cubic-bezier(0.19,1,0.22,1); }
+.splash-social-btn:hover { transform: translateY(-4px) scale(1.15) rotate(-5deg) !important; }
+.f1-logo { transition: box-shadow 0.3s, transform 0.35s cubic-bezier(0.19,1,0.22,1); }
+.f1-logo:hover { transform: skewX(-15deg) scale(1.05) !important; }
+.reorder-item { transition: box-shadow 0.2s, opacity 0.2s, transform 0.2s; }
+.reorder-item:hover { transform: translateX(4px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+.admin-section-header { transition: background 0.25s, padding-left 0.25s; }
+.adm-team-row { transition: box-shadow 0.2s, transform 0.2s; }
+.adm-team-row:hover { transform: translateX(3px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.toast-notice { transition: opacity 0.35s cubic-bezier(0.19,1,0.22,1), transform 0.4s cubic-bezier(0.19,1,0.22,1); }
 /* ===================== MAIN CONTENT ===================== */
 .main-content { max-width: 2400px; margin: 0 auto; padding: 0 40px 200px; }
 .page-view { display: none; }
@@ -1067,7 +1142,152 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
     <style>
         @keyframes plPulse{0%,100%{opacity:0.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
-    </style>
+/* ===================== MODAL DODAJ WYNIKI ===================== */
+#add-race-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 25000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 40px 20px 80px;
+    animation: f1OverlayIn 0.3s ease forwards;
+}
+#add-race-modal-overlay.open { display: flex; }
+#add-race-modal {
+    background: var(--f1-black);
+    width: 100%; max-width: 1400px;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    animation: f1ModalIn 0.5s cubic-bezier(0.19,1,0.22,1) forwards;
+    border: 1px solid rgba(255,255,255,0.07);
+}
+.arm-top-bar { height: 8px; background: var(--f1-red); animation: f1RedLineIn 0.6s 0.2s ease both; }
+.arm-header {
+    background: #111;
+    padding: 28px 48px;
+    display: flex; align-items: center; gap: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: relative; overflow: hidden;
+}
+.arm-header::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px); pointer-events: none; }
+.arm-header-icon { font-size: 36px; animation: f1SuccessPop 0.5s 0.3s cubic-bezier(0.19,1,0.22,1) both; }
+.arm-header-title { font-family: var(--font-display); font-size: 36px; font-weight: 900; color: var(--f1-white); letter-spacing: 3px; text-transform: uppercase; flex: 1; }
+.arm-close { width: 52px; height: 52px; border-radius: 8px; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+.arm-close:hover { background: var(--f1-red); border-color: var(--f1-red); color: #fff; transform: rotate(90deg) scale(1.1); }
+.arm-body { padding: 36px 48px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.arm-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 28px; animation: f1ModalRowIn 0.4s cubic-bezier(0.19,1,0.22,1) both; }
+.arm-section:nth-child(1) { animation-delay: 0.1s; }
+.arm-section:nth-child(2) { animation-delay: 0.15s; }
+.arm-section:nth-child(3) { grid-column: 1/-1; animation-delay: 0.2s; }
+.arm-section-title { font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--f1-red); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+.arm-section-title::before { content: ''; width: 4px; height: 18px; background: var(--f1-red); flex-shrink: 0; }
+.arm-input { width: 100%; padding: 16px; background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-family: var(--font-data); font-size: 16px; letter-spacing: 1px; box-sizing: border-box; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; }
+.arm-input:focus { border-color: var(--f1-red); outline: none; background: rgba(255,255,255,0.09); box-shadow: 0 0 0 3px rgba(225,6,0,0.15); }
+.arm-textarea { width: 100%; padding: 16px; background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-family: monospace; font-size: 13px; min-height: 200px; resize: vertical; box-sizing: border-box; transition: border-color 0.2s, background 0.2s; line-height: 1.6; }
+.arm-textarea:focus { border-color: var(--f1-red); outline: none; background: rgba(255,255,255,0.09); }
+.arm-label { font-family: var(--font-data); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.45); margin-bottom: 8px; display: block; }
+.arm-form-group { margin-bottom: 20px; }
+.arm-form-group:last-child { margin-bottom: 0; }
+.arm-check-group { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-family: var(--font-data); font-size: 15px; color: rgba(255,255,255,0.75); cursor: pointer; padding: 12px 16px; background: rgba(255,255,255,0.04); border-radius: 6px; border: 1px solid rgba(255,255,255,0.07); transition: background 0.2s, border-color 0.2s; }
+.arm-check-group:hover { background: rgba(255,255,255,0.08); border-color: rgba(225,6,0,0.3); }
+.arm-check-group input { width: 18px; height: 18px; accent-color: var(--f1-red); cursor: pointer; }
+.arm-bonus-info { background: rgba(76,175,80,0.1); border: 1.5px solid rgba(76,175,80,0.4); border-radius: 8px; padding: 14px 18px; font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-top: 12px; }
+.arm-bonus-info b { color: #4caf50; }
+.arm-footer { padding: 24px 48px 36px; display: flex; justify-content: flex-end; gap: 14px; border-top: 1px solid rgba(255,255,255,0.07); }
+.arm-nick-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); margin-top: 10px; min-height: 56px; }
+.arm-nick-chip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15); font-family: var(--font-data); font-size: 14px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; color: #fff; transition: transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s, border-color 0.2s, background 0.2s; }
+.arm-nick-chip:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 20px rgba(0,0,0,0.3); border-color: var(--f1-red); background: rgba(225,6,0,0.15); }
+.arm-nick-chip:active { transform: scale(0.95); }
+.arm-chip-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.arm-hint { font-family: var(--font-data); font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; margin-top: 6px; }
+.arm-btn { background: var(--f1-red); color: #fff; padding: 18px 40px; border: none; font-family: var(--font-display); font-weight: 900; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; border-radius: 4px; transition: background 0.25s, transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s; }
+.arm-btn:hover { background: #ff2020; transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 30px rgba(225,6,0,0.5); }
+.arm-btn:active { transform: scale(0.97); }
+.arm-btn-sec { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); padding: 18px 30px; border: 1.5px solid rgba(255,255,255,0.15); font-family: var(--font-display); font-weight: 900; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; border-radius: 4px; transition: background 0.2s, color 0.2s, transform 0.2s; }
+.arm-btn-sec:hover { background: rgba(255,255,255,0.14); color: #fff; transform: translateY(-2px); }
+.arm-filtered-label { font-family: var(--font-display); font-size: 11px; font-weight: 900; letter-spacing: 3px; color: var(--f1-red); text-transform: uppercase; margin-bottom: 8px; display: none; }
+.arm-filtered-label.visible { display: block; animation: f1SlideInDown 0.3s cubic-bezier(0.19,1,0.22,1); }
+
+/* ===================== MODAL GALERII ===================== */
+#gallery-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 25000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    animation: f1OverlayIn 0.3s ease forwards;
+}
+#gallery-modal-overlay.open { display: flex; }
+#gallery-modal {
+    background: var(--f1-black);
+    width: 100%; max-width: 800px;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    animation: f1ModalIn 0.45s cubic-bezier(0.19,1,0.22,1) forwards;
+}
+.gm-top-bar { height: 6px; background: var(--f1-red); }
+.gm-header { background: #111; padding: 24px 36px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.gm-header-title { font-family: var(--font-display); font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 3px; text-transform: uppercase; flex: 1; }
+.gm-close { width: 46px; height: 46px; border-radius: 6px; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; transition: background 0.2s, transform 0.2s; }
+.gm-close:hover { background: var(--f1-red); border-color: var(--f1-red); color: #fff; transform: rotate(90deg); }
+.gm-body { padding: 32px 36px 24px; }
+.gm-form-group { margin-bottom: 20px; }
+.gm-label { font-family: var(--font-data); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 8px; display: block; }
+.gm-input { width: 100%; padding: 16px; background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-family: var(--font-data); font-size: 16px; letter-spacing: 1px; box-sizing: border-box; transition: border-color 0.2s, background 0.2s; }
+.gm-input:focus { border-color: var(--f1-red); outline: none; background: rgba(255,255,255,0.09); }
+.gm-type-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.gm-type-btn { flex: 1; padding: 14px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 6px; color: rgba(255,255,255,0.5); font-family: var(--font-display); font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-align: center; }
+.gm-type-btn.active { border-color: var(--f1-red); color: #fff; background: rgba(225,6,0,0.12); }
+.gm-type-btn:hover:not(.active) { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.08); }
+.gm-footer { padding: 20px 36px 32px; display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid rgba(255,255,255,0.07); }
+.gm-btn { background: var(--f1-red); color: #fff; padding: 16px 36px; border: none; font-family: var(--font-display); font-weight: 900; font-size: 15px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; border-radius: 4px; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
+.gm-btn:hover { background: #ff2020; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(225,6,0,0.4); }
+.gm-btn-sec { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); padding: 16px 28px; border: 1.5px solid rgba(255,255,255,0.15); font-family: var(--font-display); font-weight: 900; font-size: 15px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; border-radius: 4px; transition: background 0.2s, transform 0.2s; }
+.gm-btn-sec:hover { background: rgba(255,255,255,0.14); color: #fff; transform: translateY(-2px); }
+.gm-spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: f1Spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
+
+/* Przycisk dodawania wyników w last race / archive */
+.add-results-btn {
+    display: none;
+    align-items: center; gap: 10px;
+    background: rgba(225,6,0,0.12);
+    border: 2px dashed rgba(225,6,0,0.5);
+    border-radius: 8px;
+    padding: 16px 28px;
+    margin: 0 0 0 20px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--f1-red);
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s;
+    animation: f1SlideInRight 0.4s cubic-bezier(0.19,1,0.22,1) both;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.add-results-btn:hover { background: rgba(225,6,0,0.22); border-color: var(--f1-red); transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 24px rgba(225,6,0,0.3); }
+.add-results-btn.logged-in { display: inline-flex; }
+.add-results-btn-icon { font-size: 18px; }
+
+@media (max-width: 1024px) {
+    .arm-body { grid-template-columns: 1fr; }
+    .arm-section:nth-child(3) { grid-column: 1; }
+    .arm-body, .arm-header, .arm-footer { padding-left: 20px; padding-right: 20px; }
+    .gm-body, .gm-header, .gm-footer { padding-left: 20px; padding-right: 20px; }
+    .arm-header-title { font-size: 22px; }
+}
+</style>
 </div>
 
 <div id="splash-screen" onclick="hideSplash()">
@@ -1199,7 +1419,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
     <div id="view-last-race" class="page-view">
         <div class="f1-card">
-            <div class="f1-card-title" id="display-last-race-name">WYNIKI: OSTATNI WYŚCIG</div>
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0;">
+    <div class="f1-card-title" id="display-last-race-name" style="flex:1;margin-bottom:0;">WYNIKI: OSTATNI WYŚCIG</div>
+    <button class="add-results-btn" id="add-results-btn-last" onclick="ui.openAddRaceModal()" style="margin:12px 20px 12px 0;">
+        <span class="add-results-btn-icon">➕</span>
+        DODAJ WYNIKI
+    </button>
+</div>
             <!-- ZMIANA: struktura z tabsami dla wyścigu i kwalifikacji -->
             <div id="api-last-race-wrapper">
                 <div class="race-tabs" id="last-race-tabs" style="display:none;">
@@ -1212,9 +1438,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
     </div>
     <div id="view-archive" class="page-view">
-        <div style="display:flex;gap:0;margin-bottom:30px;border-bottom:4px solid var(--f1-black);">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0;margin-bottom:30px;border-bottom:4px solid var(--f1-black);">
             <button id="arc-tab-races" onclick="ui.switchArchiveTab('races')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;">🏁 WYŚCIGI</button>
             <button id="arc-tab-quali" onclick="ui.switchArchiveTab('quali')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;">⏱ KWALIFIKACJE</button>
+            <button class="add-results-btn" id="add-results-btn-archive" onclick="ui.openAddRaceModal()" style="margin-bottom:4px;margin-left:auto;margin-right:0;">
+                <span class="add-results-btn-icon">➕</span>
+                DODAJ WYNIKI
+            </button>
         </div>
         <div id="api-archive-list"></div>
         <div id="api-quali-list" style="display:none;"></div>
@@ -1477,6 +1707,90 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 </div>
 
 </div><!-- /#main-app -->
+<!-- ===================== MODAL DODAJ WYNIKI ===================== -->
+<div id="add-race-modal-overlay" onclick="ui.closeAddRaceModal(event)">
+    <div id="add-race-modal">
+        <div class="arm-top-bar"></div>
+        <div class="arm-header">
+            <span class="arm-header-icon">🏁</span>
+            <span class="arm-header-title">Dodaj Wyniki Wyścigu</span>
+            <button class="arm-close" onclick="ui.closeAddRaceModal(null,true)">✕</button>
+        </div>
+        <div class="arm-body">
+            <!-- Kolumna lewa: tytuł + opcje -->
+            <div class="arm-section">
+                <div class="arm-section-title">Informacje</div>
+                <div class="arm-form-group">
+                    <label class="arm-label">Pełna nazwa wyścigu</label>
+                    <input type="text" class="arm-input" id="arm-race-title" list="gp-names-list" placeholder="np. ROUND 5 GP SILVERSTONE">
+                    <div id="arm-title-suggestion-box" style="margin-top:8px;display:none;background:rgba(76,175,80,0.1);border:1.5px solid rgba(76,175,80,0.4);border-radius:6px;padding:10px 14px;font-size:13px;color:rgba(76,175,80,0.9);display:none;align-items:center;justify-content:space-between;gap:10px;">
+                        <span>💡 <strong id="arm-title-suggestion-text"></strong></span>
+                        <button type="button" class="arm-btn" style="padding:8px 18px;font-size:12px;" onclick="ui.useArmTitleSuggestion()">✓ UŻYJ</button>
+                    </div>
+                </div>
+                <div class="arm-form-group">
+                    <label class="arm-label">Gdzie opublikować</label>
+                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-last" checked> 📺 Ostatni Wyścig</label>
+                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-archive" checked> 📁 Archiwum Wyścigów</label>
+                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-training"> 🔧 Trening (bez PKT)</label>
+                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-qualifying"> ⏱ Kwalifikacje (Nick|Zespół|Czas|P.startowa)</label>
+                    <label class="arm-check-group" style="margin-left:28px;opacity:0.8;font-size:13px;"><input type="checkbox" id="arm-pub-quali-to-last"> → Pokaż też w Ostatni Wyścig</label>
+                </div>
+                <div class="arm-bonus-info">
+                    <b>Bonusy:</b> ✅ Dojechał = +3 PKT &nbsp; ❌ DNF/DSQ/DNS = 0 &nbsp; 🤖 Boty = 0
+                </div>
+            </div>
+            <!-- Kolumna prawa: nicki chips -->
+            <div class="arm-section">
+                <div class="arm-section-title">Szybkie wstawianie nicków</div>
+                <div class="arm-filtered-label" id="arm-filtered-label">🎯 Filtrując po zespole z wklejonego tekstu</div>
+                <div class="arm-nick-chips" id="arm-nick-chips">
+                    <span style="font-family:var(--font-data);font-size:13px;color:rgba(255,255,255,0.3);letter-spacing:1px;">Wklej wyniki najpierw, a nicki pojawią się z filtrem zespołu...</span>
+                </div>
+                <div class="arm-hint">Kliknij nick → wkleja go z nazwą zespołu do pola wyników</div>
+                <div class="arm-form-group" style="margin-top:20px;">
+                    <details>
+                        <summary style="cursor:pointer;font-family:var(--font-data);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);list-style:none;display:flex;align-items:center;gap:8px;">
+                            <span>⚙ ZAAWANSOWANE: wyklucz z bonusu</span>
+                        </summary>
+                        <div style="margin-top:12px;">
+                            <label class="arm-label">Nicki BEZ PKT za dojechanie</label>
+                            <textarea class="arm-textarea" id="arm-no-bonus-nicks" rows="3" placeholder="NickGracza1&#10;NickGracza2" style="min-height:80px;"></textarea>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <!-- Pełna szerokość: textarea wyniki -->
+            <div class="arm-section">
+                <div class="arm-section-title">Wyniki</div>
+                <label class="arm-label">Format: Nick | Zespół | P. startowa | Pit | Najl. okrążenie | Czas | PKT</label>
+                <textarea class="arm-textarea" id="arm-race-raw" rows="14" placeholder="NickGracza | Ferrari | Start: 1 | Pit: 2 | 1:32,456 | 1:45:23.123 | 25&#10;NickGracza2 | Mercedes | Start: 2 | Pit: 1 | 1:33,102 | +12.456 | 18" oninput="ui.onArmRawInput(this)"></textarea>
+            </div>
+        </div>
+        <div class="arm-footer">
+            <button class="arm-btn-sec" onclick="ui.closeAddRaceModal(null,true)">ANULUJ</button>
+            <button class="arm-btn" onclick="ui.submitAddRaceModal()">📤 PUBLIKUJ WYNIKI</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== MODAL GALERII ===================== -->
+<div id="gallery-modal-overlay" onclick="ui.closeGalleryModal(event)">
+    <div id="gallery-modal">
+        <div class="gm-top-bar"></div>
+        <div class="gm-header">
+            <span id="gm-header-icon" style="font-size:26px;">📷</span>
+            <span class="gm-header-title" id="gm-header-title">Nowy album</span>
+            <button class="gm-close" onclick="ui.closeGalleryModal(null,true)">✕</button>
+        </div>
+        <div class="gm-body" id="gm-body"></div>
+        <div class="gm-footer">
+            <button class="gm-btn-sec" onclick="ui.closeGalleryModal(null,true)">ANULUJ</button>
+            <button class="gm-btn" id="gm-submit-btn" onclick="ui.submitGalleryModal()">💾 ZAPISZ</button>
+        </div>
+    </div>
+</div>
+
 <div id="regulamin-editor-overlay">
     <div id="regulamin-editor-modal">
         <div class="reg-editor-header">
@@ -1989,14 +2303,12 @@ toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 
         const suggestion = buildRaceTitleSuggestion(adminSplit);
         if (suggestion) document.getElementById('adm-race-title').value = suggestion;
     },
-    async quickCreateAlbumForGp() {
+    quickCreateAlbumForGp() {
         const gpName = currentSplit === 2 ? window.gpNameS2 : window.gpNameS1;
         const suggested = gpName ? gpNameToShort(gpName) : '';
-        const name = prompt('Nazwa albumu:', suggested);
-        if (!name || !name.trim()) return;
-        const cover = prompt('URL okładki (opcjonalnie, Enter aby pominąć):') || '';
-        await push(ref(db, 'gallery'), { name: name.trim(), cover: cover.trim(), entries: {} });
-    },    toggleAdminSection(header) {
+        ui.openGalleryModal('album', null, suggested);
+    },
+	toggleAdminSection(header) {
         const body = header.nextElementSibling;
         const isOpen = body.classList.toggle('open');
         header.classList.toggle('open', isOpen);
@@ -2545,14 +2857,7 @@ toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 
     },
 	quickAddEntry(albumId) {
         if (!isLoggedIn) return;
-        const title = prompt('Tytuł wpisu (opcjonalnie, Enter aby pominąć):') || '';
-        const typeChoice = prompt('Jaki to typ linku?\n\n1 = YouTube\n2 = Bezpośredni URL (mp4, jpg, streamable, drive, medal.tv, itd.)', '1');
-        if (typeChoice === null) return;
-        const isYoutube = typeChoice.trim() === '1';
-        const src = prompt(isYoutube ? 'Wklej link YouTube:' : 'Wklej bezpośredni URL:');
-        if (!src || !src.trim()) return;
-        push(ref(db, `gallery/${albumId}/entries`), { title, type: isYoutube ? 'youtube' : 'url', src: src.trim() })
-            .then(() => ui.openAlbum(albumId));
+        ui.openGalleryModal('entry', albumId);
     },
     editAlbumName(id, currentName, el) {
         if (!isLoggedIn) return;
@@ -2640,6 +2945,265 @@ toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 
         input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); if (e.key==='Escape'){input.value=currentName;input.blur();} });
     }
 };
+
+// ===================== MODAL DODAJ WYNIKI =====================
+ui.openAddRaceModal = function() {
+    if (!isLoggedIn) return;
+    // Sync tytułu
+    const suggestion = buildRaceTitleSuggestion(adminSplit);
+    const titleInput = document.getElementById('arm-race-title');
+    if (titleInput && !titleInput.value) titleInput.value = suggestion || '';
+    const suggBox = document.getElementById('arm-title-suggestion-box');
+    const suggText = document.getElementById('arm-title-suggestion-text');
+    if (suggBox && suggText && suggestion) { suggText.textContent = suggestion; suggBox.style.display = 'flex'; }
+    // Buduj chips
+    ui._buildArmNickChips(null);
+    const overlay = document.getElementById('add-race-modal-overlay');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('arm-race-title')?.focus(), 200);
+};
+
+ui.closeAddRaceModal = function(event, force) {
+    if (force || (event && event.target === document.getElementById('add-race-modal-overlay'))) {
+        document.getElementById('add-race-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+};
+
+ui.useArmTitleSuggestion = function() {
+    const s = buildRaceTitleSuggestion(adminSplit);
+    if (s) document.getElementById('arm-race-title').value = s;
+};
+
+ui.onArmRawInput = function(textarea) {
+    // Parsuj wklejony tekst i wykryj nicki + zespoły
+    const lines = textarea.value.split('\n').filter(l => l.trim());
+    const teamNickMap = {}; // team → [nicks]
+    lines.forEach(line => {
+        const parts = line.split('|').map(s => s.trim());
+        const nick = parts[0]; const team = parts[1];
+        if (nick && team) {
+            const tNorm = normalizeTeamName(team);
+            if (!teamNickMap[tNorm]) teamNickMap[tNorm] = [];
+            // Tylko nicki które nie są botami F1
+            if (!isRealF1Driver(nick)) {
+                if (!teamNickMap[tNorm].includes(nick)) teamNickMap[tNorm].push(nick);
+            }
+        }
+    });
+    ui._buildArmNickChips(Object.keys(teamNickMap).length > 0 ? teamNickMap : null);
+};
+
+ui._buildArmNickChips = function(teamNickMap) {
+    const container = document.getElementById('arm-nick-chips');
+    const filteredLabel = document.getElementById('arm-filtered-label');
+    if (!container) return;
+
+    if (teamNickMap && Object.keys(teamNickMap).length > 0) {
+        // Tryb filtrowania: pokaż nicki z każdego zespołu z wklejonego tekstu
+        if (filteredLabel) filteredLabel.classList.add('visible');
+        const allChips = [];
+        Object.entries(teamNickMap).forEach(([team, nicks]) => {
+            const color = getTeamColorByName(team);
+            nicks.forEach(nick => {
+                const safeNick = nick.replace(/'/g, "\\'");
+                const safeTeam = team.replace(/'/g, "\\'");
+                allChips.push(`<span class="arm-nick-chip" onclick="ui.insertArmNick('${safeNick}','${safeTeam}')" style="border-color:${color}33;" title="${team}">
+                    <span class="arm-chip-dot" style="background:${color};"></span>
+                    ${nick}
+                </span>`);
+            });
+        });
+        container.innerHTML = allChips.length
+            ? allChips.map((c, i) => `<span style="animation:f1StaggerIn 0.3s ${i * 0.05}s both;">${c}</span>`).join('')
+            : '<span style="font-family:var(--font-data);font-size:13px;color:rgba(255,255,255,0.3);">Brak graczy (tylko boty?) w wklejonych danych</span>';
+    } else {
+        // Tryb domyślny: pokaż wszystkich graczy z klasyfikacji
+        if (filteredLabel) filteredLabel.classList.remove('visible');
+        const sd = splitDataCache[adminSplit].standings;
+        const ti = splitDataCache[adminSplit].teamsInfo || {};
+        const map = new Map();
+        (sd?.drivers || []).filter(d => !d.isBot).forEach(d => {
+            if (d.nick) map.set(d.nick.toLowerCase(), { nick: d.nick, team: d.team || '' });
+        });
+        TEAM_DEFS.forEach(t => {
+            const info = ti[t.key];
+            if (!info) return;
+            [info.driver1, info.driver2].forEach(dn => {
+                if (dn && dn.trim() && !map.has(dn.toLowerCase())) map.set(dn.toLowerCase(), { nick: dn.trim(), team: t.label });
+            });
+        });
+        const list = [...map.values()].sort((a, b) => a.nick.localeCompare(b.nick));
+        if (list.length === 0) {
+            container.innerHTML = '<span style="font-family:var(--font-data);font-size:13px;color:rgba(255,255,255,0.3);">Brak zapisanych graczy — wklej wyniki żeby zobaczyć filtrowanie</span>';
+        } else {
+            container.innerHTML = list.map((d, i) => {
+                const color = getTeamColorByName(d.team);
+                const safeNick = d.nick.replace(/'/g, "\\'");
+                const safeTeam = (d.team || '').replace(/'/g, "\\'");
+                return `<span style="animation:f1StaggerIn 0.3s ${i * 0.04}s both;display:inline-block;">
+                    <span class="arm-nick-chip" onclick="ui.insertArmNick('${safeNick}','${safeTeam}')">
+                        <span class="arm-chip-dot" style="background:${color};"></span>
+                        ${d.nick}
+                    </span>
+                </span>`;
+            }).join('');
+        }
+    }
+};
+
+ui.insertArmNick = function(nick, team) {
+    const ta = document.getElementById('arm-race-raw');
+    if (!ta) return;
+    const prefix = ta.value && !ta.value.endsWith('\n') ? '\n' : '';
+    ta.value += `${prefix}${nick} | ${team} | `;
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = ta.value.length;
+};
+
+ui.submitAddRaceModal = async function() {
+    // Skopiuj wartości do pól admina i wywołaj publishRace
+    const copyField = (from, to) => {
+        const src = document.getElementById(from);
+        const dst = document.getElementById(to);
+        if (src && dst) dst.value = src.value;
+    };
+    const copyCheck = (from, to) => {
+        const src = document.getElementById(from);
+        const dst = document.getElementById(to);
+        if (src && dst) dst.checked = src.checked;
+    };
+    copyField('arm-race-title', 'adm-race-title');
+    copyField('arm-race-raw', 'adm-race-raw');
+    copyField('arm-no-bonus-nicks', 'adm-no-bonus-nicks');
+    copyCheck('arm-pub-last', 'pub-last');
+    copyCheck('arm-pub-archive', 'pub-archive');
+    copyCheck('arm-pub-training', 'pub-training');
+    copyCheck('arm-pub-qualifying', 'pub-qualifying');
+    copyCheck('arm-pub-quali-to-last', 'pub-quali-to-last');
+
+    ui.closeAddRaceModal(null, true);
+    await dbCore.publishRace();
+
+    // Wyczyść formularz
+    document.getElementById('arm-race-title').value = '';
+    document.getElementById('arm-race-raw').value = '';
+    document.getElementById('arm-no-bonus-nicks').value = '';
+    document.getElementById('arm-pub-last').checked = true;
+    document.getElementById('arm-pub-archive').checked = true;
+    document.getElementById('arm-pub-training').checked = false;
+    document.getElementById('arm-pub-qualifying').checked = false;
+    document.getElementById('arm-pub-quali-to-last').checked = false;
+    ui._buildArmNickChips(null);
+};
+
+// ===================== MODAL GALERII =====================
+let _galleryModalMode = null;
+let _galleryModalAlbumId = null;
+
+ui.openGalleryModal = function(mode, albumId, suggested) {
+    _galleryModalMode = mode;
+    _galleryModalAlbumId = albumId;
+    const overlay = document.getElementById('gallery-modal-overlay');
+    const body = document.getElementById('gm-body');
+    const titleEl = document.getElementById('gm-header-title');
+    const iconEl = document.getElementById('gm-header-icon');
+    const submitBtn = document.getElementById('gm-submit-btn');
+
+    if (mode === 'album') {
+        titleEl.textContent = 'Nowy album';
+        iconEl.textContent = '📷';
+        submitBtn.textContent = '📷 UTWÓRZ ALBUM';
+        body.innerHTML = `
+            <div class="gm-form-group">
+                <label class="gm-label">Nazwa albumu</label>
+                <input type="text" class="gm-input" id="gm-album-name" placeholder="np. GP Monaco 2026" value="${suggested || ''}" style="margin-bottom:0;">
+            </div>
+            <div class="gm-form-group">
+                <label class="gm-label">URL okładki (opcjonalnie)</label>
+                <input type="text" class="gm-input" id="gm-album-cover" placeholder="https://example.com/foto.jpg">
+            </div>`;
+        setTimeout(() => document.getElementById('gm-album-name')?.focus(), 100);
+    } else if (mode === 'entry') {
+        titleEl.textContent = 'Dodaj wpis do albumu';
+        iconEl.textContent = '🎬';
+        submitBtn.textContent = '➕ DODAJ WPIS';
+        body.innerHTML = `
+            <div class="gm-form-group">
+                <label class="gm-label">Tytuł wpisu (opcjonalnie)</label>
+                <input type="text" class="gm-input" id="gm-entry-title" placeholder="np. Highlights z kwalifikacji">
+            </div>
+            <div class="gm-form-group">
+                <label class="gm-label">Typ mediów</label>
+                <div class="gm-type-row">
+                    <div class="gm-type-btn active" id="gm-type-youtube" onclick="ui.setGmType('youtube')">▶ YouTube</div>
+                    <div class="gm-type-btn" id="gm-type-url" onclick="ui.setGmType('url')">🔗 URL / Streamable / Drive / Medal.tv</div>
+                </div>
+            </div>
+            <div class="gm-form-group" id="gm-src-group">
+                <label class="gm-label" id="gm-src-label">Link YouTube</label>
+                <input type="text" class="gm-input" id="gm-entry-src" placeholder="https://youtu.be/...">
+            </div>`;
+        setTimeout(() => document.getElementById('gm-entry-title')?.focus(), 100);
+    }
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+};
+
+ui.setGmType = function(type) {
+    document.querySelectorAll('.gm-type-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('gm-type-' + type);
+    if (btn) btn.classList.add('active');
+    const label = document.getElementById('gm-src-label');
+    const input = document.getElementById('gm-entry-src');
+    if (type === 'youtube') {
+        if (label) label.textContent = 'Link YouTube';
+        if (input) input.placeholder = 'https://youtu.be/...';
+    } else {
+        if (label) label.textContent = 'Bezpośredni URL';
+        if (input) input.placeholder = 'https://streamable.com/... lub mp4, jpg, drive, medal.tv...';
+    }
+};
+
+ui.closeGalleryModal = function(event, force) {
+    if (force || (event && event.target === document.getElementById('gallery-modal-overlay'))) {
+        document.getElementById('gallery-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+};
+
+ui.submitGalleryModal = async function() {
+    const submitBtn = document.getElementById('gm-submit-btn');
+    const origText = submitBtn.textContent;
+    submitBtn.innerHTML = '<span class="gm-spinner"></span>ZAPISUJĘ...';
+    submitBtn.disabled = true;
+
+    try {
+        if (_galleryModalMode === 'album') {
+            const name = document.getElementById('gm-album-name')?.value?.trim();
+            const cover = document.getElementById('gm-album-cover')?.value?.trim() || '';
+            if (!name) { alert('Podaj nazwę albumu.'); return; }
+            await push(ref(db, 'gallery'), { name, cover, entries: {} });
+        } else if (_galleryModalMode === 'entry') {
+            const title = document.getElementById('gm-entry-title')?.value?.trim() || '';
+            const activeTypeBtn = document.querySelector('.gm-type-btn.active');
+            const type = activeTypeBtn?.id?.replace('gm-type-', '') || 'youtube';
+            const src = document.getElementById('gm-entry-src')?.value?.trim();
+            if (!src) { alert('Podaj URL lub link.'); return; }
+            await push(ref(db, `gallery/${_galleryModalAlbumId}/entries`), { title, type, src });
+            ui.openAlbum(_galleryModalAlbumId);
+        }
+        ui.closeGalleryModal(null, true);
+        ui.showToast('✓ Zapisano pomyślnie!');
+    } finally {
+        submitBtn.innerHTML = origText;
+        submitBtn.disabled = false;
+    }
+};
+
+// ===================== PRZYCISK DODAJ WYNIKI — pokazuj gdy zalogowany =====================
 
 window.authCore = {
     login() {
@@ -2848,6 +3412,9 @@ onAuthStateChanged(auth, user => {
     document.getElementById('btn-open-admin').classList.toggle('hidden', !user);
     document.getElementById('quick-standings-bar')?.classList.toggle('visible', isLoggedIn);
     document.getElementById('quick-countdown-editor')?.classList.toggle('visible', isLoggedIn);
+    // Przyciski dodaj wyniki
+    document.getElementById('add-results-btn-last')?.classList.toggle('logged-in', isLoggedIn);
+    document.getElementById('add-results-btn-archive')?.classList.toggle('logged-in', isLoggedIn);
     const qualiTab = document.getElementById('arc-tab-quali');
     if (qualiTab) qualiTab.style.display = '';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
@@ -3738,13 +4305,11 @@ if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.i
         if (window._currentAlbumId && data[window._currentAlbumId]) ui.openAlbum(window._currentAlbumId);
     });
 }
-ui.quickCreateAlbum = async function() {
+ui.quickCreateAlbum = function() {
+    if (!isLoggedIn) return;
     const gpName = currentSplit === 2 ? window.gpNameS2 : window.gpNameS1;
     const suggested = gpName ? gpNameToShort(gpName) : '';
-    const name = prompt('Nazwa nowego albumu:', suggested);
-    if (!name || !name.trim()) return;
-    const cover = prompt('URL okładki (opcjonalnie, Enter aby pominąć):') || '';
-    await push(ref(db, 'gallery'), { name: name.trim(), cover: cover.trim(), entries: {} });
+    ui.openGalleryModal('album', null, suggested);
 };
 ui.togglePinAlbum = async function(id, isPinned) {
     await update(ref(db, 'gallery/' + id), { pinned: !isPinned });
