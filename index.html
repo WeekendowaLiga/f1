@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -721,6 +722,131 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .split-only-section { transition: opacity 0.2s; }
 
+/* ===================== QUICK ACTIONS (BEZ OTWIERANIA ADMINA) ===================== */
+.quick-action-bar {
+    display: none;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: rgba(225,6,0,0.06);
+    border: 1.5px dashed rgba(225,6,0,0.35);
+    border-radius: 8px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    animation: quickBarIn 0.5s cubic-bezier(0.19,1,0.22,1) both;
+}
+.quick-action-bar.visible { display: flex; }
+.quick-action-bar .qa-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--f1-red);
+}
+.btn-quick {
+    background: var(--f1-black);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+.btn-quick:hover { background: var(--f1-red); transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 20px rgba(225,6,0,0.35); }
+.btn-quick:active { transform: translateY(0) scale(0.98); }
+@keyframes quickBarIn { from { opacity: 0; transform: translateY(-10px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+#quick-countdown-editor {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 30px;
+    padding: 18px 26px;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px dashed rgba(225,6,0,0.4);
+    border-radius: 8px;
+    animation: quickBarIn 0.5s cubic-bezier(0.19,1,0.22,1) both;
+}
+#quick-countdown-editor.visible { display: flex; }
+#quick-countdown-editor .qa-label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+}
+#quick-countdown-date-input {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-family: var(--font-data);
+    font-size: 18px;
+    letter-spacing: 1px;
+    transition: border-color 0.2s, background 0.2s;
+}
+#quick-countdown-date-input:focus { outline: none; border-color: var(--f1-red); background: rgba(255,255,255,0.12); }
+
+.nick-chip-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 16px;
+    padding: 14px;
+    background: #f4f4f7;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+}
+.nick-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1.5px solid #ddd;
+    font-family: var(--font-data);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.nick-chip:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 14px rgba(0,0,0,0.15); border-color: var(--f1-red); }
+.nick-chip .chip-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+.toast-notice {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--f1-black);
+    color: #fff;
+    padding: 18px 32px;
+    border-radius: 8px;
+    border-left: 6px solid #4caf50;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.toast-notice.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* ===================== MOBILNE ===================== */
 @media (max-width: 1024px) {
 	.cteam-pts-cell { font-size: 20px !important; padding: 4px 10px !important; min-width: 60px; }
@@ -1032,10 +1158,18 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div id="hero-soon-section" style="display:none;">
         <div class="soon-box">SOON</div>
     </div>
+    <div id="quick-countdown-editor">
+        <span class="qa-label">🔒 Szybka edycja daty</span>
+        <input type="datetime-local" id="quick-countdown-date-input" onchange="ui.saveQuickCountdownDate()">
+    </div>
 </section>
 
 <main class="main-content">
     <div id="view-standings" class="page-view active">
+        <div id="quick-standings-bar" class="quick-action-bar">
+            <span class="qa-label">Szybka akcja</span>
+            <button class="btn-quick" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive(currentSplit)">🔄 PRZELICZ Z ARCHIWUM</button>
+        </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; overflow-x: auto;">
             <div class="f1-card">
                 <div class="f1-card-title">Klasyfikacja Kierowców</div>
@@ -1144,6 +1278,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
 </div>
 
+<div id="toast-notice" class="toast-notice"></div>
 <div id="admin-overlay" onclick="ui.toggleAdmin(false)"></div>
 <div id="admin-sidebar">
     <div class="admin-header-bar">
@@ -1268,8 +1403,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div id="race-title-suggestion-box" style="margin-top:8px;display:none;background:#f0f9f0;border:1.5px solid #4caf50;border-radius:6px;padding:10px 14px;font-size:13px;color:#2a6e2a;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
         <span>💡 Podpowiedź: <strong id="race-title-suggestion-text"></strong></span>
         <button type="button" class="btn-action btn-sm" onclick="ui.useRaceTitleSuggestion()">✓ UŻYJ</button>
-    </div>
-</div>            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
+   </div>
+            <div class="form-group">
+                <label class="form-label">Wyniki wyścigu<span class="form-hint">Jedna linia = jeden kierowca. Format: Nick | Zespół | P. startowa | Pit | Najlepsze okrążenie | Czas | PKT (bazowe, bez bonusu)</span></label>
+                <div class="form-hint" style="margin-bottom:6px;">Kliknij nick, żeby wstawić go razem z poprawną nazwą zespołu:</div>
+                <div id="race-nick-chips" class="nick-chip-bar"></div>
+                <textarea id="adm-race-raw" class="f1-textarea" rows="10" placeholder="NickGracza | Ferrari | Start: 1 | Pit: 2 | 1:32,456 | 1:45:23.123 | 25&#10;NickGracza2 | Mercedes | Start: 2 | Pit: 1 | 1:33,102 | +12.456 | 18"></textarea>
+            </div>
+            <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
 <details style="margin-top:16px;">
                 <summary style="cursor:pointer;font-weight:800;font-size:13px;text-transform:uppercase;color:#666;">⚙ Zaawansowane: wyklucz nicki z bonusu</summary>
                 <div class="form-group no-bonus-box" style="margin-top:10px;"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
@@ -1732,8 +1873,9 @@ function applyHeroConfig(splitNum) {
     }
     localStorage.setItem('f1_heroConfig', JSON.stringify(cachedHeroConfig));
     renderSplashCountdown(cachedHeroConfig);
+    const quickDateInput = document.getElementById('quick-countdown-date-input');
+    if (quickDateInput) quickDateInput.value = (cfg.date || '').replace(' ', 'T');
 }
-
 let dragSrcEl = null;
 function initSplashDragDrop() {
     const list = document.getElementById('adm-splash-images-list');
@@ -1817,7 +1959,7 @@ window.ui = {
     toggleAdmin(show) {
         document.getElementById('admin-sidebar').classList.toggle('open', show);
         document.getElementById('admin-overlay').classList.toggle('open', show);
-        if (show) { buildLogosGrid(); buildTeamsAdminList(); }
+        if (show) { buildLogosGrid(); buildTeamsAdminList(); buildRaceNickChips(); }
     },
 toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 'flex' : 'none'; },
     updateGpPreview(splitNum) {
@@ -2064,6 +2206,7 @@ toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 
         subscribeArchive(n);
         buildAdmArchiveManager();
         buildTeamsAdminList();
+        buildRaceNickChips();
         ui.updateGpPreview(n);
         ui.refreshRaceTitleSuggestion();
         if (n === 2) {
@@ -2403,9 +2546,11 @@ toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 
 	quickAddEntry(albumId) {
         if (!isLoggedIn) return;
         const title = prompt('Tytuł wpisu (opcjonalnie, Enter aby pominąć):') || '';
-        const src = prompt('Wklej link (YouTube, mp4, jpg, streamable, etc.):');
+        const typeChoice = prompt('Jaki to typ linku?\n\n1 = YouTube\n2 = Bezpośredni URL (mp4, jpg, streamable, drive, medal.tv, itd.)', '1');
+        if (typeChoice === null) return;
+        const isYoutube = typeChoice.trim() === '1';
+        const src = prompt(isYoutube ? 'Wklej link YouTube:' : 'Wklej bezpośredni URL:');
         if (!src || !src.trim()) return;
-        const isYoutube = src.includes('youtu.be') || src.includes('youtube.com');
         push(ref(db, `gallery/${albumId}/entries`), { title, type: isYoutube ? 'youtube' : 'url', src: src.trim() })
             .then(() => ui.openAlbum(albumId));
     },
@@ -2634,10 +2779,75 @@ ui.switchArcTab = function(btn, id, tab) {
     if (pane) pane.classList.add('active');
 };
 
+// ===================== TOAST / NICK CHIPS / SZYBKIE ODLICZANIE =====================
+ui.showToast = function(message) {
+    const toast = document.getElementById('toast-notice');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+};
+
+function buildRaceNickChips() {
+    const container = document.getElementById('race-nick-chips');
+    if (!container) return;
+    const sd = splitDataCache[adminSplit].standings;
+    const ti = splitDataCache[adminSplit].teamsInfo || {};
+    const map = new Map();
+    (sd?.drivers || []).forEach(d => { if (d.nick) map.set(d.nick.toLowerCase(), { nick: d.nick, team: d.team || '' }); });
+    TEAM_DEFS.forEach(t => {
+        const info = ti[t.key];
+        if (!info) return;
+        [info.driver1, info.driver2].forEach(dn => {
+            if (dn && dn.trim() && !map.has(dn.toLowerCase())) map.set(dn.toLowerCase(), { nick: dn.trim(), team: t.label });
+        });
+    });
+    const list = [...map.values()].sort((a, b) => a.nick.localeCompare(b.nick));
+    if (list.length === 0) { container.innerHTML = '<span style="font-size:12px;color:#999;">Brak zapisanych kierowców — uzupełnij ich w sekcji Klasyfikacje lub Zespoły.</span>'; return; }
+    container.innerHTML = list.map(d => {
+        const color = getTeamColorByName(d.team);
+        const safeNick = d.nick.replace(/'/g, "\\'");
+        const safeTeam = (d.team || '').replace(/'/g, "\\'");
+        return `<span class="nick-chip" onclick="ui.insertNickIntoRaceRaw('${safeNick}','${safeTeam}')"><span class="chip-dot" style="background:${color};"></span>${d.nick}</span>`;
+    }).join('');
+}
+
+ui.insertNickIntoRaceRaw = function(nick, team) {
+    const ta = document.getElementById('adm-race-raw');
+    if (!ta) return;
+    const prefix = ta.value && !ta.value.endsWith('\n') ? '\n' : '';
+    ta.value += `${prefix}${nick} | ${team} | `;
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = ta.value.length;
+};
+
+ui.saveQuickCountdownDate = async function() {
+    const input = document.getElementById('quick-countdown-date-input');
+    if (!input || !input.value) return;
+    const dateStr = input.value.replace('T', ' ');
+    const n = currentSplit;
+    const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
+    const current = snap.val() || {};
+    const updates = n === 1
+        ? { heroDateS1: dateStr, heroModeS1: 'countdown' }
+        : { heroDateS2: dateStr, heroModeS2: 'countdown' };
+    await set(ref(db, 'config'), { ...current, ...updates });
+    const dateInputAdm = document.getElementById('adm-hero-date-s' + n);
+    if (dateInputAdm) dateInputAdm.value = dateStr;
+    const modeRadio = document.querySelector(`input[name="hero-mode-s${n}"][value="countdown"]`);
+    if (modeRadio) modeRadio.checked = true;
+    const dateGroup = document.getElementById('hero-date-group-s' + n);
+    if (dateGroup) dateGroup.style.display = 'block';
+    ui.showToast('✓ Data odliczania zapisana');
+};
+
 onAuthStateChanged(auth, user => {
     isLoggedIn = !!user;
     document.getElementById('btn-open-login').classList.toggle('hidden', !!user);
     document.getElementById('btn-open-admin').classList.toggle('hidden', !user);
+    document.getElementById('quick-standings-bar')?.classList.toggle('visible', isLoggedIn);
+    document.getElementById('quick-countdown-editor')?.classList.toggle('visible', isLoggedIn);
     const qualiTab = document.getElementById('arc-tab-quali');
     if (qualiTab) qualiTab.style.display = '';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
@@ -2947,9 +3157,10 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         alert("Kolejność albumów zapisana!");
         document.getElementById('btn-save-gallery-order').style.display = 'none';
     },
-    async recalcStandingsFromArchive() {
+    async recalcStandingsFromArchive(splitNum) {
         if (!isLoggedIn) return;
-        const splitPath = getSplitPath(adminSplit);
+        const targetSplit = splitNum || adminSplit;
+        const splitPath = getSplitPath(targetSplit);
         const arcSnap = await new Promise(res => onValue(ref(db, splitPath + '/archive'), res, { onlyOnce: true }));
         const archive = arcSnap.val();
         if (!archive || Object.keys(archive).length === 0) { alert('Brak danych w archiwum dla tego splitu.'); return; }
@@ -3009,8 +3220,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         const drivers = Object.values(driverMeta).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         await set(ref(db, splitPath + '/standings'), { drivers, teams });
-        alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${adminSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);
-    }
+alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);    }
 };
 
 // ===================== HELPERS =====================
@@ -3120,7 +3330,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
                    <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
                    <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
                    <td>${cellEdit(r.time, i, 'time')}</td>
-                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}${r.hasBonus ? `<span style="font-size:0.55em;color:#4caf50;font-weight:900;letter-spacing:1px;margin-left:4px;display:inline-block;" title="Bonus +3 PKT za dojechanie do mety">+3</span>` : ''}</td>`
+                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>`
             }
         </tr>`).join('')}</tbody></table>`;
 };
@@ -3326,6 +3536,7 @@ function subscribeStandings(splitNum) {
                 const teamsRaw = document.getElementById('adm-teams-raw');
                 if (driversRaw && d.drivers) driversRaw.value = d.drivers.map(dr => `${dr.isBot ? 'BOT:' : ''}${dr.nick} | ${dr.team} | ${dr.photo || ''} | ${dr.wins || 0} | ${dr.pts || 0}`).join('\n');
                 if (teamsRaw && d.teams) teamsRaw.value = d.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
+                buildRaceNickChips();
             }
             if (currentSplit === splitNum) renderStandings();
         }
@@ -3373,7 +3584,7 @@ function subscribeTeamsInfo(splitNum) {
                 teamsInfoData = d;
                 if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
             }
-            if (adminSplit === splitNum) buildTeamsAdminList();
+            if (adminSplit === splitNum) { buildTeamsAdminList(); buildRaceNickChips(); }
         }
     });
 }
