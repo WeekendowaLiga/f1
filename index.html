@@ -4767,8 +4767,9 @@ _getUsedCircuits() {
         if (available.length === 0) { alert('Wszystkie tory zostały już użyte w archiwum!'); return; }
 
         this._spinning = true;
-        reject() {
         this._result = null;
+
+        // Reset wyniku
         document.getElementById('cdm-result-box').classList.remove('show');
         document.getElementById('cdm-btn-accept').style.display = 'none';
         document.getElementById('cdm-btn-reject').style.display = 'none';
@@ -4880,7 +4881,7 @@ reel.style.transform = `translateX(${snapX}px)`;
             alert('Błąd zapisu do Firebase: ' + e.message);
 			}
         },
-		
+		reject () {
         this._result = null;
         document.getElementById('cdm-result-box').classList.remove('show');
         document.getElementById('cdm-btn-accept').style.display = 'none';
