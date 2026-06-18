@@ -4890,11 +4890,23 @@ async accept() {
         document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
         this._buildReel(this._getAvailable());
     }
-};
+}; // To zamyka obiekt circuitDraw
 
 window.splitDataCache = splitDataCache;
 window.currentSplitRef = () => currentSplit;
+// ZMIEŃ TO NA TEN KOD:
 
+// 1. Najpierw sprawdź, czy zmienna w ogóle istnieje, albo zdefiniuj ją jako pustą, jeśli jej nie ma:
+if (typeof splitDataCache === 'undefined') {
+    var splitDataCache = {}; 
+}
+if (typeof currentSplit === 'undefined') {
+    var currentSplit = null;
+}
+
+// 2. Dopiero teraz przypisz do okna:
+window.splitDataCache = splitDataCache;
+window.currentSplitRef = () => currentSplit;
 </script>
 </body>
 </html>
