@@ -1598,20 +1598,22 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
     <div class="admin-body">
     <div class="admin-section" id="sec-circuit-draw">
-        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🎰</span><span class="admin-section-title">Losowanie toru GP</span><span class="admin-section-arrow">▼</span></div>
-        <div class="admin-section-body">
-            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Losuje tor spośród torów z kalendarza F1 2025, które nie zostały jeszcze użyte w archiwum. Po zaakceptowaniu ustawia GP na odliczaniu jako SOON.</p>
-            <div class="btn-row" style="margin-bottom:0;">
-                <button class="btn-action" onclick="circuitDraw.open()" style="background:linear-gradient(135deg,#e10600,#8b0000);font-size:18px;padding:20px 40px;letter-spacing:3px;">🎰 OTWÓRZ LOSOWANIE</button>
-            </div>
+    <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🎰</span><span class="admin-section-title">Losowanie toru GP</span><span class="admin-section-arrow">▼</span></div>
+    <div class="admin-section-body">
+        <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Losuje tor spośród torów z kalendarza F1 2025, które nie zostały jeszcze użyte w archiwum. Po zaakceptowaniu ustawia GP na odliczaniu jako SOON.</p>
+        <div class="btn-row" style="margin-bottom:0;">
+            <button class="btn-action" onclick="circuitDraw.open()" style="background:linear-gradient(135deg,#e10600,#8b0000);font-size:18px;padding:20px 40px;letter-spacing:3px;">🎰 OTWÓRZ LOSOWANIE</button>
         </div>
     </div>
-        <div class="admin-section-header open" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
-        <div class="admin-section-body open">
-            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Kontroluj czy Split 2 jest widoczny dla niezalogowanych użytkowników czy pokazuje tylko ekran "SOON".</p>
-            <label class="check-group"><input type="checkbox" id="adm-split2-soon-toggle"> SPLIT 2 W TRYBIE SOON (niezalogowani widzą tylko napis SOON)</label>
-            <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplit2SoonMode()">💾 ZAPISZ STATUS SPLIT 2</button></div>
-        </div>
+</div>
+<div class="admin-section" id="sec-split2soon">
+    <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
+    <div class="admin-section-body">
+        <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Kontroluj czy Split 2 jest widoczny dla niezalogowanych użytkowników czy pokazuje tylko ekran "SOON".</p>
+        <label class="check-group"><input type="checkbox" id="adm-split2-soon-toggle"> SPLIT 2 W TRYBIE SOON (niezalogowani widzą tylko napis SOON)</label>
+        <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplit2SoonMode()">💾 ZAPISZ STATUS SPLIT 2</button></div>
+    </div>
+</div>
     </div>
     <div class="admin-section" id="sec-splash">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🖼</span><span class="admin-section-title">Strona Startowa (Splash)</span><span class="admin-section-arrow">▼</span></div> 
@@ -4569,7 +4571,7 @@ const F1_CIRCUITS_2025 = [
     { name: 'Hungarian Grand Prix',     short: 'Hungarian GP',     country: 'Węgry',        flag: '🇭🇺', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Hungary_Circuit.png' },
     { name: 'Dutch Grand Prix',         short: 'Dutch GP',         country: 'Holandia',     flag: '🇳🇱', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Netherlands_Circuit.png' },
     { name: 'Italian Grand Prix',       short: 'Italian GP',       country: 'Włochy',       flag: '🇮🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Italy_Circuit.png' },
-    { name: 'Azerbaijan Grand Prix',    short: 'Azerbaijan GP',    country: 'Azerbejdżan',  flag: '🇦🇿', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Azerbaijan_Circuit.png' },
+    { name: 'Azerbaijan Grand Prix', short: 'Azerbaijan GP', country: 'Azerbejdżan', flag: '🇦🇿', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Baku_Circuit.png' },
     { name: 'Singapore Grand Prix',     short: 'Singapore GP',     country: 'Singapur',     flag: '🇸🇬', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Singapore_Circuit.png' },
     { name: 'United States Grand Prix', short: 'United States GP', country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/USA_Circuit.png' },
     { name: 'Mexico City Grand Prix',   short: 'Mexico City GP',   country: 'Meksyk',       flag: '🇲🇽', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Mexico_Circuit.png' },
@@ -4584,25 +4586,33 @@ window.circuitDraw = {
     _result: null,
     _usedNames: new Set(),
 
-    _getUsedCircuits() {
-        const used = new Set();
-        // Zbierz z archiwum obu splitów
-        [1, 2].forEach(s => {
-            const arc = (window.splitDataCache ? window.splitDataCache[s].archive : {}) || {};
-            Object.values(arc).forEach(r => {
-                if (!r.isTraining && !r.isQualifying && r.name) {
-                    F1_CIRCUITS_2025.forEach(c => {
-                        if (r.name.toLowerCase().includes(c.short.replace(' GP','').toLowerCase()) ||
-                            r.name.toLowerCase().includes(c.name.toLowerCase().replace(' grand prix','')))
-                            used.add(c.name);
-                    });
-                }
-            });
+_getUsedCircuits() {
+    const used = new Set();
+    [1, 2].forEach(s => {
+        const arc = (window.splitDataCache ? window.splitDataCache[s].archive : {}) || {};
+        Object.values(arc).forEach(r => {
+            if (!r.isTraining && !r.isQualifying && r.name) {
+                const raceName = r.name.toLowerCase()
+                    .replace(/round\s*\d+\s*[-–—]?\s*/i, '')
+                    .trim();
+                F1_CIRCUITS_2025.forEach(c => {
+                    const circuitShort = c.short.replace(' GP','').toLowerCase().trim();
+                    const circuitFull = c.name.toLowerCase().replace(' grand prix','').trim();
+                    const circuitGP = c.short.toLowerCase().trim();
+                    if (
+                        raceName.includes(circuitShort) ||
+                        raceName.includes(circuitFull) ||
+                        raceName.includes(circuitGP) ||
+                        raceName.includes(c.name.toLowerCase())
+                    ) {
+                        used.add(c.name);
+                    }
+                });
+            }
         });
-        // Też z Firebase — sprawdź globalnie
-        const allArc = Object.values((window.splitDataCache || {}));
-        return used;
-    },
+    });
+    return used;
+},
 
     _getAvailable() {
         const used = this._getUsedCircuits();
@@ -4698,10 +4708,9 @@ window.circuitDraw = {
         // Zbuduj taśmę: 40 kart losowych + winner w pozycji ~35-38 (po prawej)
         const filler = [];
         for (let i = 0; i < 38; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
-        const winnerIdx = 36;
-        filler.splice(winnerIdx, 0, winner);
-        // Doklej trochę na koniec
-        for (let i = 0; i < 5; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
+   const winnerIdx = 32;
+filler.splice(winnerIdx, 0, winner);
+for (let i = 0; i < 8; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
 
         reel.innerHTML = filler.map((c, i) => {
             const isUsed = used.has(c.name) && c.name !== winner.name;
@@ -4722,9 +4731,9 @@ window.circuitDraw = {
 
         // Cel: wyśrodkuj kartę winnerIdx
         const targetX = -(winnerIdx * cardWidth) + (wrapWidth / 2) - (cardWidth / 2);
-        // Dodaj losowy offset żeby nie lądowało idealnie w środku karty
-        const jitter = (Math.random() - 0.5) * 30;
-        const finalX = targetX + jitter;
+const jitter = (Math.random() - 0.5) * 20;
+const finalX = targetX + jitter;
+const snapX = Math.round(targetX);
 
         // Animacja: najpierw szybko, potem zwalnia (ease-out)
         const duration = 3500 + Math.random() * 1000;
@@ -4733,9 +4742,8 @@ window.circuitDraw = {
 
         setTimeout(() => {
             // Snap do środka dokładnie
-            const snapX = targetX;
-            reel.style.transition = 'transform 0.3s cubic-bezier(0.19,1,0.22,1)';
-            reel.style.transform = `translateX(${snapX}px)`;
+            reel.style.transition = 'transform 0.25s cubic-bezier(0.19,1,0.22,1)';
+reel.style.transform = `translateX(${snapX}px)`;
 
             setTimeout(() => {
                 // Podświetl wygraną kartę
