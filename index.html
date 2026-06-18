@@ -610,7 +610,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .social-icon-upload-label:hover { background: var(--f1-red); }
 .auth-overlay { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.95); z-index: 99999; 
+    background: rgba(0,0,0,0.95); z-index: 999999 !important; 
     display: none; align-items: center; justify-content: center; 
     backdrop-filter: blur(10px); 
 }
@@ -2381,7 +2381,14 @@ window.ui = {
         document.getElementById('admin-overlay').classList.toggle('open', show);
         if (show) { buildLogosGrid(); buildTeamsAdminList(); buildRaceNickChips(); }
     },
-toggleAuth(show) { document.getElementById('auth-modal').style.display = show ? 'flex' : 'none'; },
+toggleAuth(show) { 
+    const modal = document.getElementById('auth-modal');
+    if (modal) {
+        modal.style.display = show ? 'flex' : 'none';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+    }
+},
     updateGpPreview(splitNum) {
         const input = document.getElementById('adm-gp-name-s' + splitNum);
         const preview = document.getElementById('gp-preview-s' + splitNum);
