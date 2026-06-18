@@ -1597,23 +1597,23 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <a href="#sec-circuit-draw" onclick="ui.openAdminSection('sec-circuit-draw')">🎰 Losowanie toru</a>
     </div>
     <div class="admin-body">
-    <div class="admin-section" id="sec-circuit-draw">
-    <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🎰</span><span class="admin-section-title">Losowanie toru GP</span><span class="admin-section-arrow">▼</span></div>
-    <div class="admin-section-body">
-        <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Losuje tor spośród torów z kalendarza F1 2025, które nie zostały jeszcze użyte w archiwum. Po zaakceptowaniu ustawia GP na odliczaniu jako SOON.</p>
-        <div class="btn-row" style="margin-bottom:0;">
-            <button class="btn-action" onclick="circuitDraw.open()" style="background:linear-gradient(135deg,#e10600,#8b0000);font-size:18px;padding:20px 40px;letter-spacing:3px;">🎰 OTWÓRZ LOSOWANIE</button>
+   <div class="admin-section" id="sec-circuit-draw">
+        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🎰</span><span class="admin-section-title">Losowanie toru GP</span><span class="admin-section-arrow">▼</span></div>
+        <div class="admin-section-body">
+            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Losuje tor spośród torów z kalendarza F1 2025, które nie zostały jeszcze użyte w archiwum. Po zaakceptowaniu ustawia GP na odliczaniu jako SOON.</p>
+            <div class="btn-row" style="margin-bottom:0;">
+                <button class="btn-action" onclick="circuitDraw.open()" style="background:linear-gradient(135deg,#e10600,#8b0000);font-size:18px;padding:20px 40px;letter-spacing:3px;">🎰 OTWÓRZ LOSOWANIE</button>
+            </div>
         </div>
     </div>
-</div>
-<div class="admin-section" id="sec-split2soon">
-    <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
-    <div class="admin-section-body">
-        <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Kontroluj czy Split 2 jest widoczny dla niezalogowanych użytkowników czy pokazuje tylko ekran "SOON".</p>
-        <label class="check-group"><input type="checkbox" id="adm-split2-soon-toggle"> SPLIT 2 W TRYBIE SOON (niezalogowani widzą tylko napis SOON)</label>
-        <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplit2SoonMode()">💾 ZAPISZ STATUS SPLIT 2</button></div>
+    <div class="admin-section" id="sec-split2soon">
+        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
+        <div class="admin-section-body">
+            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Kontroluj czy Split 2 jest widoczny dla niezalogowanych użytkowników czy pokazuje tylko ekran "SOON".</p>
+            <label class="check-group"><input type="checkbox" id="adm-split2-soon-toggle"> SPLIT 2 W TRYBIE SOON (niezalogowani widzą tylko napis SOON)</label>
+            <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplit2SoonMode()">💾 ZAPISZ STATUS SPLIT 2</button></div>
+        </div>
     </div>
-</div>
     </div>
     <div class="admin-section" id="sec-splash">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🖼</span><span class="admin-section-title">Strona Startowa (Splash)</span><span class="admin-section-arrow">▼</span></div> 
@@ -3257,14 +3257,22 @@ ui.openGalleryModal = function(mode, albumId, suggested) {
         iconEl.textContent = '📷';
         submitBtn.textContent = '📷 UTWÓRZ ALBUM';
         body.innerHTML = `
-            <div class="gm-form-group">
-                <label class="gm-label">Nazwa albumu</label>
-                <input type="text" class="gm-input" id="gm-album-name" placeholder="np. GP Monaco 2026" value="${suggested || ''}" style="margin-bottom:0;">
-            </div>
-            <div class="gm-form-group">
-                <label class="gm-label">URL okładki (opcjonalnie)</label>
-                <input type="text" class="gm-input" id="gm-album-cover" placeholder="https://example.com/foto.jpg">
-            </div>`;
+    <div class="gm-form-group">
+        <label class="gm-label">Nazwa albumu</label>
+        <input type="text" class="gm-input" id="gm-album-name" placeholder="np. GP Monaco 2026" value="${suggested || ''}" style="margin-bottom:0;" oninput="ui.predictAlbumCover(this.value)">
+    </div>
+    <div class="gm-form-group">
+        <label class="gm-label">URL okładki (opcjonalnie)</label>
+        <input type="text" class="gm-input" id="gm-album-cover" placeholder="https://example.com/foto.jpg" oninput="ui.previewAlbumCoverImg(this.value)">
+        <div id="gm-cover-preview" style="margin-top:10px;display:none;text-align:center;">
+            <img id="gm-cover-img" src="" style="max-width:100%;max-height:160px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);object-fit:cover;" onerror="document.getElementById('gm-cover-preview').style.display='none'">
+        </div>
+        <div id="gm-cover-suggestions" style="margin-top:10px;display:none;">
+            <div style="font-family:var(--font-data);font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Sugerowane okładki:</div>
+            <div id="gm-cover-chips" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+        </div>
+    </div>`;
+if (suggested) setTimeout(() => ui.predictAlbumCover(suggested), 50);`;
         setTimeout(() => document.getElementById('gm-album-name')?.focus(), 100);
     } else if (mode === 'entry') {
         titleEl.textContent = 'Dodaj wpis do albumu';
@@ -4588,24 +4596,46 @@ window.circuitDraw = {
 
 _getUsedCircuits() {
     const used = new Set();
+    // Mapa słów kluczowych z nazw archiwalnych na nazwy torów F1
+    const KEYWORD_MAP = [
+        { keys: ['australian','australia','albert park'],           name: 'Australian Grand Prix' },
+        { keys: ['chinese','china','shanghai'],                     name: 'Chinese Grand Prix' },
+        { keys: ['japanese','japan','suzuka'],                      name: 'Japanese Grand Prix' },
+        { keys: ['bahrain','sakhir'],                               name: 'Bahrain Grand Prix' },
+        { keys: ['saudi','arabia','jeddah'],                        name: 'Saudi Arabian Grand Prix' },
+        { keys: ['miami'],                                          name: 'Miami Grand Prix' },
+        { keys: ['emilia','romagna','imola'],                       name: 'Emilia Romagna Grand Prix' },
+        { keys: ['monaco','monte carlo'],                           name: 'Monaco Grand Prix' },
+        { keys: ['spanish','spain','barcelona','catalunya'],        name: 'Spanish Grand Prix' },
+        { keys: ['canadian','canada','montreal','villeneuve'],      name: 'Canadian Grand Prix' },
+        { keys: ['austrian','austria','spielberg','red bull ring'], name: 'Austrian Grand Prix' },
+        { keys: ['british','britain','silverstone'],                name: 'British Grand Prix' },
+        { keys: ['belgian','belgium','spa','francorchamps'],        name: 'Belgian Grand Prix' },
+        { keys: ['hungarian','hungary','hungaroring','budapest'],   name: 'Hungarian Grand Prix' },
+        { keys: ['dutch','netherlands','zandvoort'],                name: 'Dutch Grand Prix' },
+        { keys: ['italian','italy','monza'],                        name: 'Italian Grand Prix' },
+        { keys: ['azerbaijan','baku'],                             name: 'Azerbaijan Grand Prix' },
+        { keys: ['singapore','marina bay'],                        name: 'Singapore Grand Prix' },
+        { keys: ['united states','usa','austin','cota'],            name: 'United States Grand Prix' },
+        { keys: ['mexico','mexico city','hermanos'],                name: 'Mexico City Grand Prix' },
+        { keys: ['paulo','sao paulo','brasil','brazil','interlagos'], name: 'São Paulo Grand Prix' },
+        { keys: ['las vegas','vegas'],                              name: 'Las Vegas Grand Prix' },
+        { keys: ['qatar','losail'],                                 name: 'Qatar Grand Prix' },
+        { keys: ['abu dhabi','yas marina','yas'],                   name: 'Abu Dhabi Grand Prix' },
+    ];
+
     [1, 2].forEach(s => {
         const arc = (window.splitDataCache ? window.splitDataCache[s].archive : {}) || {};
         Object.values(arc).forEach(r => {
             if (!r.isTraining && !r.isQualifying && r.name) {
+                // Wyczyść prefiks "ROUND X -" i normalizuj
                 const raceName = r.name.toLowerCase()
                     .replace(/round\s*\d+\s*[-–—]?\s*/i, '')
+                    .replace(/gp\s*/i, '')
                     .trim();
-                F1_CIRCUITS_2025.forEach(c => {
-                    const circuitShort = c.short.replace(' GP','').toLowerCase().trim();
-                    const circuitFull = c.name.toLowerCase().replace(' grand prix','').trim();
-                    const circuitGP = c.short.toLowerCase().trim();
-                    if (
-                        raceName.includes(circuitShort) ||
-                        raceName.includes(circuitFull) ||
-                        raceName.includes(circuitGP) ||
-                        raceName.includes(c.name.toLowerCase())
-                    ) {
-                        used.add(c.name);
+                KEYWORD_MAP.forEach(entry => {
+                    if (entry.keys.some(k => raceName.includes(k))) {
+                        used.add(entry.name);
                     }
                 });
             }
@@ -4730,10 +4760,11 @@ for (let i = 0; i < 8; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random(
         void reel.offsetWidth;
 
         // Cel: wyśrodkuj kartę winnerIdx
-        const targetX = -(winnerIdx * cardWidth) + (wrapWidth / 2) - (cardWidth / 2);
-const jitter = (Math.random() - 0.5) * 20;
-const finalX = targetX + jitter;
+        const cardHalfWidth = cardWidth / 2;
+const targetX = -(winnerIdx * cardWidth) + (wrapWidth / 2) - cardHalfWidth;
 const snapX = Math.round(targetX);
+const jitter = (Math.random() - 0.5) * 10;
+const finalX = snapX + jitter;
 
         // Animacja: najpierw szybko, potem zwalnia (ease-out)
         const duration = 3500 + Math.random() * 1000;
@@ -4742,7 +4773,7 @@ const snapX = Math.round(targetX);
 
         setTimeout(() => {
             // Snap do środka dokładnie
-            reel.style.transition = 'transform 0.25s cubic-bezier(0.19,1,0.22,1)';
+            reel.style.transition = 'transform 0.2s ease-out';
 reel.style.transform = `translateX(${snapX}px)`;
 
             setTimeout(() => {
@@ -4795,6 +4826,89 @@ reel.style.transform = `translateX(${snapX}px)`;
             console.error(e);
             alert('Błąd zapisu do Firebase: ' + e.message);
         }
+		predictAlbumCover(name) {
+    const coverInput = document.getElementById('gm-album-cover');
+    const suggestionsBox = document.getElementById('gm-cover-suggestions');
+    const chipsBox = document.getElementById('gm-cover-chips');
+    if (!coverInput || !suggestionsBox || !chipsBox) return;
+
+    const n = (name || '').toLowerCase().trim();
+    if (!n) { suggestionsBox.style.display = 'none'; return; }
+
+    // Znajdź pasujący tor z F1_CIRCUITS_2025
+    const circuits = window.F1_CIRCUITS_2025_COVERS || {
+        'australian': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Albert_Park_Circuit_2011.svg/1200px-Albert_Park_Circuit_2011.svg.png',
+        'chinese':    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Shanghai_International_Circuit_track_map.svg/1200px-Shanghai_International_Circuit_track_map.svg.png',
+        'japanese':   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Suzuka_circuit_map.svg/1200px-Suzuka_circuit_map.svg.png',
+        'bahrain':    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Bahrain_International_Circuit--2004.svg/1200px-Bahrain_International_Circuit--2004.svg.png',
+        'saudi':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Jeddah_Corniche_Circuit_2021.svg/1200px-Jeddah_Corniche_Circuit_2021.svg.png',
+        'miami':      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Miami_International_Autodrome_circuit_map.svg/1200px-Miami_International_Autodrome_circuit_map.svg.png',
+        'emilia':     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Autodromo_Enzo_e_Dino_Ferrari_track_map.svg/1200px-Autodromo_Enzo_e_Dino_Ferrari_track_map.svg.png',
+        'romagna':    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Autodromo_Enzo_e_Dino_Ferrari_track_map.svg/1200px-Autodromo_Enzo_e_Dino_Ferrari_track_map.svg.png',
+        'imola':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Autodromo_Enzo_e_Dino_Ferrari_track_map.svg/1200px-Autodromo_Enzo_e_Dino_Ferrari_track_map.svg.png',
+        'monaco':     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Monte_Carlo_Formula_1_track_map.svg/1200px-Monte_Carlo_Formula_1_track_map.svg.png',
+        'spanish':    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Circuit_de_Barcelona-Catalunya_track_map.svg/1200px-Circuit_de_Barcelona-Catalunya_track_map.svg.png',
+        'barcelona':  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Circuit_de_Barcelona-Catalunya_track_map.svg/1200px-Circuit_de_Barcelona-Catalunya_track_map.svg.png',
+        'canada':     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Circuit_Gilles_Villeneuve_track_map.svg/1200px-Circuit_Gilles_Villeneuve_track_map.svg.png',
+        'austrian':   'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/RedBull_ring_2016.svg/1200px-RedBull_ring_2016.svg.png',
+        'british':    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Silverstone_Circuit_2020.svg/1200px-Silverstone_Circuit_2020.svg.png',
+        'silverstone':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Silverstone_Circuit_2020.svg/1200px-Silverstone_Circuit_2020.svg.png',
+        'belgian':    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Spa-Francorchamps_of_Belgium.svg/1200px-Spa-Francorchamps_of_Belgium.svg.png',
+        'spa':        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Spa-Francorchamps_of_Belgium.svg/1200px-Spa-Francorchamps_of_Belgium.svg.png',
+        'hungarian':  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Hungaroring.svg/1200px-Hungaroring.svg.png',
+        'dutch':      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Zandvoort_track_map.svg/1200px-Zandvoort_track_map.svg.png',
+        'zandvoort':  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Zandvoort_track_map.svg/1200px-Zandvoort_track_map.svg.png',
+        'italian':    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Monza_track_map.svg/1200px-Monza_track_map.svg.png',
+        'monza':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Monza_track_map.svg/1200px-Monza_track_map.svg.png',
+        'azerbaijan': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Baku_City_Circuit_track_map.svg/1200px-Baku_City_Circuit_track_map.svg.png',
+        'baku':       'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Baku_City_Circuit_track_map.svg/1200px-Baku_City_Circuit_track_map.svg.png',
+        'singapore':  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Singapore_Street_Circuit_track_map.svg/1200px-Singapore_Street_Circuit_track_map.svg.png',
+        'united states':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Austin_circuit.svg/1200px-Austin_circuit.svg.png',
+        'austin':     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Austin_circuit.svg/1200px-Austin_circuit.svg.png',
+        'cota':       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Austin_circuit.svg/1200px-Austin_circuit.svg.png',
+        'mexico':     'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Autodromo_Hermanos_Rodriguez_track_map.svg/1200px-Autodromo_Hermanos_Rodriguez_track_map.svg.png',
+        'paulo':      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg/1200px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg.png',
+        'brasil':     'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg/1200px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg.png',
+        'interlagos': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg/1200px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg.png',
+        'las vegas':  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Las_Vegas_Strip_Circuit_map.svg/1200px-Las_Vegas_Strip_Circuit_map.svg.png',
+        'vegas':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Las_Vegas_Strip_Circuit_map.svg/1200px-Las_Vegas_Strip_Circuit_map.svg.png',
+        'qatar':      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Losail_International_Circuit_track_map.svg/1200px-Losail_International_Circuit_track_map.svg.png',
+        'losail':     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Losail_International_Circuit_track_map.svg/1200px-Losail_International_Circuit_track_map.svg.png',
+        'abu dhabi':  'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Yas_Marina_Circuit_track_map.svg/1200px-Yas_Marina_Circuit_track_map.svg.png',
+        'yas':        'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Yas_Marina_Circuit_track_map.svg/1200px-Yas_Marina_Circuit_track_map.svg.png',
+    };
+
+    const matches = [];
+    for (const [keyword, url] of Object.entries(circuits)) {
+        if (n.includes(keyword)) matches.push({ keyword, url });
+    }
+
+    if (matches.length === 0) { suggestionsBox.style.display = 'none'; return; }
+
+    suggestionsBox.style.display = 'block';
+    const best = matches[0];
+    // Ustaw automatycznie jeśli pole jest puste
+    if (!coverInput.value || coverInput.value.trim() === '') {
+        coverInput.value = best.url;
+        ui.previewAlbumCoverImg(best.url);
+    }
+
+    chipsBox.innerHTML = [...new Set(matches.map(m => m.url))].slice(0, 3).map((url, i) => {
+        const kw = matches[i]?.keyword || '';
+        return `<div onclick="document.getElementById('gm-album-cover').value='${url}';ui.previewAlbumCoverImg('${url}')" style="cursor:pointer;border-radius:4px;overflow:hidden;border:2px solid rgba(255,255,255,0.1);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--f1-red)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+            <img src="${url}" style="width:80px;height:50px;object-fit:cover;display:block;" onerror="this.parentElement.style.display='none'">
+        </div>`;
+    }).join('');
+},
+
+previewAlbumCoverImg(url) {
+    const preview = document.getElementById('gm-cover-preview');
+    const img = document.getElementById('gm-cover-img');
+    if (!preview || !img) return;
+    if (!url || !url.startsWith('http')) { preview.style.display = 'none'; return; }
+    img.src = url;
+    preview.style.display = 'block';
+},
     },
 
     reject() {
