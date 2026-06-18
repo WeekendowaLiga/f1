@@ -4879,7 +4879,7 @@ async accept() {
         }
     },
 
-    reject() {
+   reject() {
         this._result = null;
         document.getElementById('cdm-result-box').classList.remove('show');
         document.getElementById('cdm-btn-accept').style.display = 'none';
@@ -4892,11 +4892,7 @@ async accept() {
     }
 }; // To zamyka obiekt circuitDraw
 
-window.splitDataCache = splitDataCache;
-window.currentSplitRef = () => currentSplit;
-// ZMIEŃ TO NA TEN KOD:
-
-// 1. Najpierw sprawdź, czy zmienna w ogóle istnieje, albo zdefiniuj ją jako pustą, jeśli jej nie ma:
+// ZABEZPIECZENIE ZMIENNYCH:
 if (typeof splitDataCache === 'undefined') {
     var splitDataCache = {}; 
 }
@@ -4904,9 +4900,14 @@ if (typeof currentSplit === 'undefined') {
     var currentSplit = null;
 }
 
-// 2. Dopiero teraz przypisz do okna:
 window.splitDataCache = splitDataCache;
 window.currentSplitRef = () => currentSplit;
+
+// OSTATECZNE WYŁĄCZENIE LOADERA (JEŚLI GO MASZ):
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader'); // Sprawdź czy masz element o id 'loader'
+    if (loader) loader.style.display = 'none';
+});
 </script>
 </body>
 </html>
