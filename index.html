@@ -1287,6 +1287,65 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .gm-body, .gm-header, .gm-footer { padding-left: 20px; padding-right: 20px; }
     .arm-header-title { font-size: 22px; }
 }
+/* ===================== MODAL LOSOWANIA TORU ===================== */
+#circuit-draw-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.96);
+    z-index: 30000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#circuit-draw-overlay.open { display: flex; }
+#circuit-draw-modal {
+    background: #0d0d14;
+    width: 100%; max-width: 1400px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(225,6,0,0.3);
+    box-shadow: 0 0 80px rgba(225,6,0,0.2);
+    display: flex; flex-direction: column;
+    max-height: 95vh;
+}
+.cdm-top-bar { height: 6px; background: linear-gradient(90deg, #e10600, #ff4444, #e10600); background-size: 200% 100%; animation: cdmBar 2s linear infinite; }
+@keyframes cdmBar { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+.cdm-header { background: #111; padding: 20px 36px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+.cdm-header-title { font-family: var(--font-display); font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 4px; text-transform: uppercase; flex: 1; }
+.cdm-close { width: 46px; height: 46px; border-radius: 6px; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; transition: background 0.2s, transform 0.2s; }
+.cdm-close:hover { background: var(--f1-red); border-color: var(--f1-red); color: #fff; transform: rotate(90deg); }
+.cdm-body { padding: 28px 36px 24px; display: flex; flex-direction: column; align-items: center; gap: 20px; flex: 1; overflow: hidden; }
+.cdm-status-line { font-family: var(--font-data); font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 3px; text-transform: uppercase; }
+.cdm-reel-wrap { width: 100%; overflow: hidden; position: relative; border: 2px solid rgba(225,6,0,0.3); border-radius: 8px; background: #08080f; height: 260px; }
+.cdm-reel-wrap::before, .cdm-reel-wrap::after { content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 10; pointer-events: none; }
+.cdm-reel-wrap::before { left: 0; background: linear-gradient(to right, #08080f 0%, transparent 100%); }
+.cdm-reel-wrap::after { right: 0; background: linear-gradient(to left, #08080f 0%, transparent 100%); }
+.cdm-pointer { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 4px; background: var(--f1-red); z-index: 20; box-shadow: 0 0 20px rgba(225,6,0,0.8); pointer-events: none; }
+.cdm-pointer::before, .cdm-pointer::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 0; height: 0; }
+.cdm-pointer::before { top: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 14px solid var(--f1-red); }
+.cdm-pointer::after { bottom: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 14px solid var(--f1-red); }
+.cdm-reel { display: flex; gap: 12px; padding: 8px 12px; will-change: transform; transition: transform 0s linear; white-space: nowrap; height: 100%; align-items: center; }
+.cdm-card { flex-shrink: 0; width: 180px; height: 230px; background: #13131e; border: 2px solid rgba(255,255,255,0.08); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; overflow: hidden; position: relative; transition: border-color 0.3s, box-shadow 0.3s; cursor: default; }
+.cdm-card.highlight { border-color: var(--f1-red); box-shadow: 0 0 30px rgba(225,6,0,0.5), inset 0 0 20px rgba(225,6,0,0.05); }
+.cdm-card.used { opacity: 0.3; filter: grayscale(1); }
+.cdm-card-img { position: absolute; inset: 0; width: 100%; height: 70%; object-fit: contain; object-position: center; padding: 10px; box-sizing: border-box; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
+.cdm-card-flag { position: absolute; top: 8px; right: 8px; font-size: 22px; line-height: 1; }
+.cdm-card-label { width: 100%; background: rgba(0,0,0,0.85); padding: 8px 6px 10px; text-align: center; position: relative; z-index: 2; border-top: 2px solid rgba(225,6,0,0.3); }
+.cdm-card-country { font-family: var(--font-data); font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; }
+.cdm-card-name { font-family: var(--font-display); font-size: 13px; font-weight: 900; color: #fff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; margin-top: 2px; }
+.cdm-result-box { display: none; flex-direction: column; align-items: center; gap: 10px; padding: 20px; background: rgba(225,6,0,0.08); border: 2px solid rgba(225,6,0,0.4); border-radius: 10px; width: 100%; max-width: 500px; text-align: center; animation: f1ZoomIn 0.5s cubic-bezier(0.19,1,0.22,1) both; }
+.cdm-result-box.show { display: flex; }
+.cdm-result-flag { font-size: 52px; line-height: 1; }
+.cdm-result-label { font-family: var(--font-data); font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 4px; text-transform: uppercase; }
+.cdm-result-name { font-family: var(--font-display); font-size: 44px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 3px; line-height: 1; }
+.cdm-result-country { font-family: var(--font-data); font-size: 18px; color: var(--f1-red); letter-spacing: 3px; }
+.cdm-footer { padding: 16px 36px 24px; display: flex; gap: 14px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; flex-wrap: wrap; }
+.cdm-btn-spin { background: linear-gradient(135deg, #e10600, #ff2020); color: #fff; padding: 18px 48px; border: none; font-family: var(--font-display); font-weight: 900; font-size: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 4px; border-radius: 6px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 30px rgba(225,6,0,0.4); }
+.cdm-btn-spin:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 40px rgba(225,6,0,0.6); }
+.cdm-btn-spin:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.cdm-btn-accept { background: #1a7a1a; color: #fff; padding: 18px 36px; border: none;
 </style>
 </div>
 
@@ -1534,10 +1593,19 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <span style="width:2px;background:rgba(255,255,255,0.15);margin:4px 6px;"></span>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
         <a class="split-only-toc" href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
-        <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a> 
+        <a href="#sec-gallery" onclick="ui.openAdminSection('sec-gallery')">📷 Galeria</a>
+        <a href="#sec-circuit-draw" onclick="ui.openAdminSection('sec-circuit-draw')">🎰 Losowanie toru</a>
     </div>
     <div class="admin-body">
-    <div class="admin-section split-only-section" id="sec-split2soon" style="display:none;">
+    <div class="admin-section" id="sec-circuit-draw">
+        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🎰</span><span class="admin-section-title">Losowanie toru GP</span><span class="admin-section-arrow">▼</span></div>
+        <div class="admin-section-body">
+            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Losuje tor spośród torów z kalendarza F1 2025, które nie zostały jeszcze użyte w archiwum. Po zaakceptowaniu ustawia GP na odliczaniu jako SOON.</p>
+            <div class="btn-row" style="margin-bottom:0;">
+                <button class="btn-action" onclick="circuitDraw.open()" style="background:linear-gradient(135deg,#e10600,#8b0000);font-size:18px;padding:20px 40px;letter-spacing:3px;">🎰 OTWÓRZ LOSOWANIE</button>
+            </div>
+        </div>
+    </div>
         <div class="admin-section-header open" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body open">
             <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Kontroluj czy Split 2 jest widoczny dla niezalogowanych użytkowników czy pokazuje tylko ekran "SOON".</p>
@@ -1764,7 +1832,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="arm-section">
                 <div class="arm-section-title">Wyniki</div>
                 <label class="arm-label">Format: Nick | Zespół | P. startowa | Pit | Najl. okrążenie | Czas | PKT</label>
-                <textarea class="arm-textarea" id="arm-race-raw" rows="14" placeholder="NickGracza | Ferrari | Start: 1 | Pit: 2 | 1:32,456 | 1:45:23.123 | 25&#10;NickGracza2 | Mercedes | Start: 2 | Pit: 1 | 1:33,102 | +12.456 | 18" oninput="ui.onArmRawInput(this)"></textarea>
+                oninput="ui.onArmRawInput(this)" onclick="ui.onArmRawInput(this)" onkeyup="ui.onArmRawInput(this)"
             </div>
         </div>
         <div class="arm-footer">
@@ -1790,7 +1858,36 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
     </div>
 </div>
-
+<!-- ===================== MODAL LOSOWANIA TORU ===================== -->
+<div id="circuit-draw-overlay">
+    <div id="circuit-draw-modal">
+        <div class="cdm-top-bar"></div>
+        <div class="cdm-header">
+            <span style="font-size:28px;">🎰</span>
+            <span class="cdm-header-title">Losowanie toru GP — Sezon 2025</span>
+            <button class="cdm-close" onclick="circuitDraw.close()">✕</button>
+        </div>
+        <div class="cdm-body">
+            <div class="cdm-status-line" id="cdm-status">Gotowy do losowania</div>
+            <div class="cdm-reel-wrap">
+                <div class="cdm-pointer"></div>
+                <div class="cdm-reel" id="cdm-reel"></div>
+            </div>
+            <div class="cdm-result-box" id="cdm-result-box">
+                <div class="cdm-result-flag" id="cdm-result-flag"></div>
+                <div class="cdm-result-label">WYLOSOWANY TOR</div>
+                <div class="cdm-result-name" id="cdm-result-name"></div>
+                <div class="cdm-result-country" id="cdm-result-country"></div>
+            </div>
+            <div class="cdm-used-count" id="cdm-used-count"></div>
+        </div>
+        <div class="cdm-footer">
+            <button class="cdm-btn-spin" id="cdm-btn-spin" onclick="circuitDraw.spin()">🎰 LOSUJ TOR</button>
+            <button class="cdm-btn-accept" id="cdm-btn-accept" onclick="circuitDraw.accept()">✅ AKCEPTUJ</button>
+            <button class="cdm-btn-reject" id="cdm-btn-reject" onclick="circuitDraw.reject()">🔄 LOSUJ PONOWNIE</button>
+        </div>
+    </div>
+</div>
 <div id="regulamin-editor-overlay">
     <div id="regulamin-editor-modal">
         <div class="reg-editor-header">
@@ -1880,6 +1977,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
+// Eksport do globalnego scope dla circuitDraw.accept()
+window._fbDb = db;
+window._fbFirebase = { ref, onValue, set, update, push, remove };
 
 let isLoggedIn = false;
 let currentSplit = 1;
@@ -2977,32 +3077,71 @@ ui.useArmTitleSuggestion = function() {
 };
 
 ui.onArmRawInput = function(textarea) {
-    // Parsuj wklejony tekst i wykryj nicki + zespoły
     const lines = textarea.value.split('\n').filter(l => l.trim());
-    const teamNickMap = {}; // team → [nicks]
+    // Zbierz jakie zespoły są w wklejonych danych (tylko linie z botami/nieznanymi)
+    const teamsInText = new Set();
     lines.forEach(line => {
         const parts = line.split('|').map(s => s.trim());
-        const nick = parts[0]; const team = parts[1];
-        if (nick && team) {
-            const tNorm = normalizeTeamName(team);
-            if (!teamNickMap[tNorm]) teamNickMap[tNorm] = [];
-            // Tylko nicki które nie są botami F1
-            if (!isRealF1Driver(nick)) {
-                if (!teamNickMap[tNorm].includes(nick)) teamNickMap[tNorm].push(nick);
-            }
-        }
+        const team = parts[1];
+        if (team) teamsInText.add(normalizeTeamName(team));
     });
-    ui._buildArmNickChips(Object.keys(teamNickMap).length > 0 ? teamNickMap : null);
+
+    if (teamsInText.size === 0) {
+        ui._buildArmNickChips(null);
+        return;
+    }
+
+    // Kursorowa pozycja: znajdź aktualną linię i jej zespół
+    const cursorPos = textarea.selectionStart;
+    const textBefore = textarea.value.substring(0, cursorPos);
+    const currentLineText = textBefore.split('\n').pop() || '';
+    const currentLineParts = currentLineText.split('|').map(s => s.trim());
+    const currentTeamRaw = currentLineParts[1] || '';
+    const currentTeam = currentTeamRaw ? normalizeTeamName(currentTeamRaw) : null;
+
+    // Zbierz graczy z teamsInfo i standings pasujących do zespołu z aktualnej linii
+    const ti = splitDataCache[adminSplit].teamsInfo || {};
+    const sd = splitDataCache[adminSplit].standings;
+    const map = new Map(); // nick.lower → { nick, team }
+
+    TEAM_DEFS.forEach(t => {
+        const info = ti[t.key];
+        if (!info) return;
+        [info.driver1, info.driver2].forEach(dn => {
+            if (dn && dn.trim()) map.set(dn.toLowerCase(), { nick: dn.trim(), team: t.label });
+        });
+    });
+    (sd?.drivers || []).filter(d => !d.isBot).forEach(d => {
+        if (d.nick && !map.has(d.nick.toLowerCase())) map.set(d.nick.toLowerCase(), { nick: d.nick, team: d.team || '' });
+    });
+
+    const allPlayers = [...map.values()];
+
+    // Jeśli cursor jest na linii z określonym zespołem — filtruj po tym zespole
+    if (currentTeam) {
+        const filtered = allPlayers.filter(p => normalizeTeamName(p.team) === currentTeam);
+        if (filtered.length > 0) {
+            const teamNickMap = { [currentTeam]: filtered.map(p => p.nick) };
+            ui._buildArmNickChips(teamNickMap, currentTeam);
+            return;
+        }
+    }
+
+    // Fallback: pokaż wszystkich
+    ui._buildArmNickChips(null);
 };
 
-ui._buildArmNickChips = function(teamNickMap) {
+ui._buildArmNickChips = function(teamNickMap, activeTeam) {
     const container = document.getElementById('arm-nick-chips');
     const filteredLabel = document.getElementById('arm-filtered-label');
     if (!container) return;
 
     if (teamNickMap && Object.keys(teamNickMap).length > 0) {
         // Tryb filtrowania: pokaż nicki z każdego zespołu z wklejonego tekstu
-        if (filteredLabel) filteredLabel.classList.add('visible');
+if (filteredLabel) {
+            filteredLabel.classList.add('visible');
+            if (activeTeam) filteredLabel.textContent = `🎯 Kierowcy z zespołu: ${activeTeam}`;
+        }
         const allChips = [];
         Object.entries(teamNickMap).forEach(([team, nicks]) => {
             const color = getTeamColorByName(team);
@@ -4401,6 +4540,272 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
 } catch(err) {
     console.error('Firebase/App error:', err);
 }
+
+// ===================== FIX: modalne okna otwierają się na środku strony =====================
+// Upewnij się że overlay'e są dziećmi body, nie admina
+document.addEventListener('DOMContentLoaded', () => {
+    const overlays = ['add-race-modal-overlay', 'gallery-modal-overlay', 'circuit-draw-overlay'];
+    overlays.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.parentNode !== document.body) document.body.appendChild(el);
+    });
+});
+
+// ===================== LOGIKA LOSOWANIA TORÓW =====================
+const F1_CIRCUITS_2025 = [
+    { name: 'Australian Grand Prix',    short: 'Australian GP',    country: 'Australia',    flag: '🇦🇺', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Australia_Circuit.png' },
+    { name: 'Chinese Grand Prix',       short: 'Chinese GP',       country: 'China',        flag: '🇨🇳', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/China_Circuit.png' },
+    { name: 'Japanese Grand Prix',      short: 'Japanese GP',      country: 'Japan',        flag: '🇯🇵', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Japan_Circuit.png' },
+    { name: 'Bahrain Grand Prix',       short: 'Bahrain GP',       country: 'Bahrain',      flag: '🇧🇭', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Bahrain_Circuit.png' },
+    { name: 'Saudi Arabian Grand Prix', short: 'Saudi Arabian GP', country: 'Arabia Saud.',  flag: '🇸🇦', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Saudi_Arabia_Circuit.png' },
+    { name: 'Miami Grand Prix',         short: 'Miami GP',         country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Miami_Circuit.png' },
+    { name: 'Emilia Romagna Grand Prix',short: 'Emilia Romagna GP',country: 'Włochy',       flag: '🇮🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Emilia_Romagna_Circuit.png' },
+    { name: 'Monaco Grand Prix',        short: 'Monaco GP',        country: 'Monako',       flag: '🇲🇨', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Monaco_Circuit.png' },
+    { name: 'Spanish Grand Prix',       short: 'Spanish GP',       country: 'Hiszpania',    flag: '🇪🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Spain_Circuit.png' },
+    { name: 'Canadian Grand Prix',      short: 'Canadian GP',      country: 'Kanada',       flag: '🇨🇦', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Canada_Circuit.png' },
+    { name: 'Austrian Grand Prix',      short: 'Austrian GP',      country: 'Austria',      flag: '🇦🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png' },
+    { name: 'British Grand Prix',       short: 'British GP',       country: 'W. Brytania',  flag: '🇬🇧', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png' },
+    { name: 'Belgian Grand Prix',       short: 'Belgian GP',       country: 'Belgia',       flag: '🇧🇪', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Belgium_Circuit.png' },
+    { name: 'Hungarian Grand Prix',     short: 'Hungarian GP',     country: 'Węgry',        flag: '🇭🇺', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Hungary_Circuit.png' },
+    { name: 'Dutch Grand Prix',         short: 'Dutch GP',         country: 'Holandia',     flag: '🇳🇱', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Netherlands_Circuit.png' },
+    { name: 'Italian Grand Prix',       short: 'Italian GP',       country: 'Włochy',       flag: '🇮🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Italy_Circuit.png' },
+    { name: 'Azerbaijan Grand Prix',    short: 'Azerbaijan GP',    country: 'Azerbejdżan',  flag: '🇦🇿', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Azerbaijan_Circuit.png' },
+    { name: 'Singapore Grand Prix',     short: 'Singapore GP',     country: 'Singapur',     flag: '🇸🇬', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Singapore_Circuit.png' },
+    { name: 'United States Grand Prix', short: 'United States GP', country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/USA_Circuit.png' },
+    { name: 'Mexico City Grand Prix',   short: 'Mexico City GP',   country: 'Meksyk',       flag: '🇲🇽', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Mexico_Circuit.png' },
+    { name: 'São Paulo Grand Prix',     short: 'São Paulo GP',     country: 'Brazylia',     flag: '🇧🇷', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Brazil_Circuit.png' },
+    { name: 'Las Vegas Grand Prix',     short: 'Las Vegas GP',     country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Las_Vegas_Circuit.png' },
+    { name: 'Qatar Grand Prix',         short: 'Qatar GP',         country: 'Katar',        flag: '🇶🇦', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Qatar_Circuit.png' },
+    { name: 'Abu Dhabi Grand Prix',     short: 'Abu Dhabi GP',     country: 'Abu Dhabi',    flag: '🇦🇪', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Abu_Dhabi_Circuit.png' },
+];
+
+window.circuitDraw = {
+    _spinning: false,
+    _result: null,
+    _usedNames: new Set(),
+
+    _getUsedCircuits() {
+        const used = new Set();
+        // Zbierz z archiwum obu splitów
+        [1, 2].forEach(s => {
+            const arc = (window.splitDataCache ? window.splitDataCache[s].archive : {}) || {};
+            Object.values(arc).forEach(r => {
+                if (!r.isTraining && !r.isQualifying && r.name) {
+                    F1_CIRCUITS_2025.forEach(c => {
+                        if (r.name.toLowerCase().includes(c.short.replace(' GP','').toLowerCase()) ||
+                            r.name.toLowerCase().includes(c.name.toLowerCase().replace(' grand prix','')))
+                            used.add(c.name);
+                    });
+                }
+            });
+        });
+        // Też z Firebase — sprawdź globalnie
+        const allArc = Object.values((window.splitDataCache || {}));
+        return used;
+    },
+
+    _getAvailable() {
+        const used = this._getUsedCircuits();
+        return F1_CIRCUITS_2025.filter(c => !used.has(c.name));
+    },
+
+    _buildReel(available) {
+        const reel = document.getElementById('cdm-reel');
+        if (!reel) return;
+        const all = F1_CIRCUITS_2025;
+        const used = this._getUsedCircuits();
+        // Buduj taśmę: wiele kopii shuffled
+        const shuffle = (arr) => { const a = [...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+        const pool = [...shuffle(all), ...shuffle(all), ...shuffle(all), ...shuffle(available), ...shuffle(available)];
+        reel.innerHTML = pool.map((c, i) => {
+            const isUsed = used.has(c.name);
+            return `<div class="cdm-card${isUsed ? ' used' : ''}" data-name="${c.name}" data-idx="${i}">
+                <img class="cdm-card-img" src="${c.img}" alt="${c.short}" onerror="this.style.opacity=0.2">
+                <span class="cdm-card-flag">${c.flag}</span>
+                <div class="cdm-card-label">
+                    <div class="cdm-card-country">${c.country}</div>
+                    <div class="cdm-card-name">${c.short.replace(' GP','')}</div>
+                </div>
+            </div>`;
+        }).join('');
+        reel.style.transform = 'translateX(0)';
+        reel.style.transition = 'none';
+    },
+
+    open() {
+        const overlay = document.getElementById('circuit-draw-overlay');
+        if (!overlay) return;
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        this._result = null;
+        this._spinning = false;
+        const available = this._getAvailable();
+        this._buildReel(available);
+        this._updateStatus(available);
+        // Reset UI
+        document.getElementById('cdm-result-box').classList.remove('show');
+        document.getElementById('cdm-btn-spin').style.display = '';
+        document.getElementById('cdm-btn-spin').disabled = available.length === 0;
+        document.getElementById('cdm-btn-accept').style.display = 'none';
+        document.getElementById('cdm-btn-reject').style.display = 'none';
+        document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
+    },
+
+    close() {
+        const overlay = document.getElementById('circuit-draw-overlay');
+        if (overlay) overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    },
+
+    _updateStatus(available) {
+        const used = F1_CIRCUITS_2025.length - (available || this._getAvailable()).length;
+        document.getElementById('cdm-used-count').textContent =
+            `Użyte: ${used}/${F1_CIRCUITS_2025.length} torów • Dostępne: ${(available || this._getAvailable()).length}`;
+        document.getElementById('cdm-status').textContent =
+            (available || this._getAvailable()).length === 0
+                ? '⚠️ Wszystkie tory zostały już wylosowane!'
+                : 'Gotowy do losowania';
+    },
+
+    spin() {
+        if (this._spinning) return;
+        const available = this._getAvailable();
+        if (available.length === 0) { alert('Wszystkie tory zostały już użyte w archiwum!'); return; }
+
+        this._spinning = true;
+        this._result = null;
+
+        // Reset wyniku
+        document.getElementById('cdm-result-box').classList.remove('show');
+        document.getElementById('cdm-btn-accept').style.display = 'none';
+        document.getElementById('cdm-btn-reject').style.display = 'none';
+        document.getElementById('cdm-btn-spin').disabled = true;
+        document.getElementById('cdm-status').textContent = '🎰 Losowanie w toku...';
+        document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
+
+        // Wybierz losowy dostępny tor
+        const winner = available[Math.floor(Math.random() * available.length)];
+
+        // Zbuduj świeżą taśmę i wstaw winner w odpowiedniej pozycji
+        const reel = document.getElementById('cdm-reel');
+        const reelWrap = document.querySelector('.cdm-reel-wrap');
+        const wrapWidth = reelWrap.offsetWidth;
+        const cardWidth = 180 + 12; // card + gap
+
+        const shuffle = (arr) => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+        const used = this._getUsedCircuits();
+
+        // Zbuduj taśmę: 40 kart losowych + winner w pozycji ~35-38 (po prawej)
+        const filler = [];
+        for (let i = 0; i < 38; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
+        const winnerIdx = 36;
+        filler.splice(winnerIdx, 0, winner);
+        // Doklej trochę na koniec
+        for (let i = 0; i < 5; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
+
+        reel.innerHTML = filler.map((c, i) => {
+            const isUsed = used.has(c.name) && c.name !== winner.name;
+            const isWinner = i === winnerIdx;
+            return `<div class="cdm-card${isUsed ? ' used' : ''}" data-name="${c.name}" data-winner="${isWinner}">
+                <img class="cdm-card-img" src="${c.img}" alt="${c.short}" onerror="this.style.opacity=0.2">
+                <span class="cdm-card-flag">${c.flag}</span>
+                <div class="cdm-card-label">
+                    <div class="cdm-card-country">${c.country}</div>
+                    <div class="cdm-card-name">${c.short.replace(' GP','')}</div>
+                </div>
+            </div>`;
+        }).join('');
+
+        reel.style.transition = 'none';
+        reel.style.transform = 'translateX(0)';
+        void reel.offsetWidth;
+
+        // Cel: wyśrodkuj kartę winnerIdx
+        const targetX = -(winnerIdx * cardWidth) + (wrapWidth / 2) - (cardWidth / 2);
+        // Dodaj losowy offset żeby nie lądowało idealnie w środku karty
+        const jitter = (Math.random() - 0.5) * 30;
+        const finalX = targetX + jitter;
+
+        // Animacja: najpierw szybko, potem zwalnia (ease-out)
+        const duration = 3500 + Math.random() * 1000;
+        reel.style.transition = `transform ${duration}ms cubic-bezier(0.17, 0.67, 0.12, 1.0)`;
+        reel.style.transform = `translateX(${finalX}px)`;
+
+        setTimeout(() => {
+            // Snap do środka dokładnie
+            const snapX = targetX;
+            reel.style.transition = 'transform 0.3s cubic-bezier(0.19,1,0.22,1)';
+            reel.style.transform = `translateX(${snapX}px)`;
+
+            setTimeout(() => {
+                // Podświetl wygraną kartę
+                const cards = reel.querySelectorAll('.cdm-card');
+                const winCard = cards[winnerIdx];
+                if (winCard) winCard.classList.add('highlight', 'winner');
+
+                // Pokaż wynik
+                this._result = winner;
+                document.getElementById('cdm-result-flag').textContent = winner.flag;
+                document.getElementById('cdm-result-name').textContent = winner.name.replace(' Grand Prix', ' GP');
+                document.getElementById('cdm-result-country').textContent = winner.country;
+                document.getElementById('cdm-result-box').classList.add('show');
+                document.getElementById('cdm-status').textContent = `🏁 Wylosowano: ${winner.name}`;
+                document.getElementById('cdm-btn-spin').style.display = 'none';
+                document.getElementById('cdm-btn-accept').style.display = '';
+                document.getElementById('cdm-btn-reject').style.display = '';
+                this._spinning = false;
+            }, 350);
+        }, duration + 50);
+    },
+
+    async accept() {
+        if (!this._result) return;
+        const c = this._result;
+        // Pobierz config z Firebase i zapisz tytuł + tryb SOON
+        try {
+            // Użyj funkcji Firebase z głównego modułu
+            // Przez globalny dostęp do db (musimy go wyeksportować)
+            if (!window._fbDb) { alert('Błąd: brak połączenia z Firebase.'); return; }
+            const { ref: fbRef, onValue: fbOnValue, set: fbSet } = window._fbFirebase;
+            const db = window._fbDb;
+            const snap = await new Promise(res => fbOnValue(fbRef(db, 'config'), res, { onlyOnce: true }));
+            const cfg = snap.val() || {};
+            const title = `NEXT RACE: ${c.name.toUpperCase()}`;
+            await fbSet(fbRef(db, 'config'), {
+                ...cfg,
+                heroTitleS1: title,
+                heroModeS1: 'soon',
+                heroTitleS2: title,
+                heroModeS2: 'soon',
+                gpNameS1: c.name,
+                gpNameS2: c.name,
+            });
+            this.close();
+            if (window.ui && window.ui.showToast) window.ui.showToast(`✅ Zaakceptowano: ${c.name} — odliczanie ustawione na SOON`);
+            else alert(`✅ Zaakceptowano: ${c.name}\nOdliczanie ustawione na SOON dla obu splitów.`);
+        } catch(e) {
+            console.error(e);
+            alert('Błąd zapisu do Firebase: ' + e.message);
+        }
+    },
+
+    reject() {
+        this._result = null;
+        document.getElementById('cdm-result-box').classList.remove('show');
+        document.getElementById('cdm-btn-accept').style.display = 'none';
+        document.getElementById('cdm-btn-reject').style.display = 'none';
+        document.getElementById('cdm-btn-spin').style.display = '';
+        document.getElementById('cdm-btn-spin').disabled = false;
+        document.getElementById('cdm-status').textContent = 'Odrzucono — losuj ponownie';
+        document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
+        // Przebuduj taśmę
+        this._buildReel(this._getAvailable());
+    }
+};
+
+// Eksportuj splitDataCache żeby circuitDraw miał dostęp
+window.splitDataCache = splitDataCache;
+
 </script>
 </body>
 </html>
