@@ -608,7 +608,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .social-icon-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 200px; }
 .social-icon-upload-label { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; background: #333; color: #fff; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; transition: background 0.2s; white-space: nowrap; }
 .social-icon-upload-label:hover { background: var(--f1-red); }
-.auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+.auth-overlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.95); z-index: 99999; 
+    display: none; align-items: center; justify-content: center; 
+    backdrop-filter: blur(10px); 
+}
 .auth-card { background: var(--f1-white); width: 600px; padding: 70px; border-top: 25px solid var(--f1-red); box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
 .auth-card h2 { font-family: var(--font-display); font-size: 40px; text-align: center; margin-bottom: 50px; letter-spacing: 4px; }
 .hidden { display: none !important; }
@@ -1776,6 +1781,16 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 </div>
 
 </div><!-- /#main-app -->
+
+<div id="auth-modal" class="auth-overlay">
+    <div class="auth-card">
+        <h2>AUTORYZACJA</h2>
+        <div class="form-group"><input type="email" id="field-email" class="f1-input" placeholder="Adres E-mail"></div>
+        <div class="form-group"><input type="password" id="field-pass" class="f1-input" placeholder="Hasło"></div>
+        <button class="btn-action" style="width:100%;justify-content:center;" onclick="authCore.login()">ZALOGUJ SIĘ</button>
+        <button class="btn-action btn-danger" style="width:100%;margin:16px 0 0 0;justify-content:center;" onclick="ui.toggleAuth(false)">ANULUJ</button>
+    </div>
+</div>
 <!-- ===================== MODAL DODAJ WYNIKI ===================== -->
 <div id="add-race-modal-overlay" onclick="ui.closeAddRaceModal(event)">
     <div id="add-race-modal">
