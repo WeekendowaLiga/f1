@@ -4851,13 +4851,10 @@ reel.style.transform = `translateX(${snapX}px)`;
         }, duration + 50);
     },
 
-    async accept() {
+async accept() {
         if (!this._result) return;
         const c = this._result;
-        // Pobierz config z Firebase i zapisz tytuł + tryb SOON
         try {
-            // Użyj funkcji Firebase z głównego modułu
-            // Przez globalny dostęp do db (musimy go wyeksportować)
             if (!window._fbDb) { alert('Błąd: brak połączenia z Firebase.'); return; }
             const { ref: fbRef, onValue: fbOnValue, set: fbSet } = window._fbFirebase;
             const db = window._fbDb;
@@ -4879,9 +4876,10 @@ reel.style.transform = `translateX(${snapX}px)`;
         } catch(e) {
             console.error(e);
             alert('Błąd zapisu do Firebase: ' + e.message);
-			}
-        },
-		reject () {
+        }
+    },
+
+    reject() {
         this._result = null;
         document.getElementById('cdm-result-box').classList.remove('show');
         document.getElementById('cdm-btn-accept').style.display = 'none';
@@ -4890,13 +4888,10 @@ reel.style.transform = `translateX(${snapX}px)`;
         document.getElementById('cdm-btn-spin').disabled = false;
         document.getElementById('cdm-status').textContent = 'Odrzucono — losuj ponownie';
         document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
-        // Przebuduj taśmę
         this._buildReel(this._getAvailable());
     }
 };
 
-// Eksportuj splitDataCache żeby circuitDraw miał dostęp
-// Eksportuj od razu żeby circuitDraw miał dostęp
 window.splitDataCache = splitDataCache;
 window.currentSplitRef = () => currentSplit;
 
