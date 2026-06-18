@@ -1345,7 +1345,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .cdm-btn-spin { background: linear-gradient(135deg, #e10600, #ff2020); color: #fff; padding: 18px 48px; border: none; font-family: var(--font-display); font-weight: 900; font-size: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 4px; border-radius: 6px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 30px rgba(225,6,0,0.4); }
 .cdm-btn-spin:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 40px rgba(225,6,0,0.6); }
 .cdm-btn-spin:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-.cdm-btn-accept { background: #1a7a1a; color: #fff; padding: 18px 36px; border: none;
+.cdm-btn-accept { background: #1a7a1a; color: #fff; padding: 18px 36px; border: none; }
 </style>
 </div>
 
@@ -1833,7 +1833,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="arm-section">
                 <div class="arm-section-title">Wyniki</div>
                 <label class="arm-label">Format: Nick | Zespół | P. startowa | Pit | Najl. okrążenie | Czas | PKT</label>
-                oninput="ui.onArmRawInput(this)" onclick="ui.onArmRawInput(this)" onkeyup="ui.onArmRawInput(this)"
+                <textarea id="arm-race-raw" class="arm-textarea" rows="10" oninput="ui.onArmRawInput(this)" onclick="ui.onArmRawInput(this)" onkeyup="ui.onArmRawInput(this)"></textarea>
             </div>
         </div>
         <div class="arm-footer">
@@ -4824,7 +4824,74 @@ reel.style.transform = `translateX(${snapX}px)`;
         } catch(e) {
             console.error(e);
             alert('Błąd zapisu do Firebase: ' + e.message);
-        }
+			}
+        },
+		predictAlbumCover(name) {
+    const coverInput = document.getElementById('gm-album-cover');
+    const suggestionsBox = document.getElementById('gm-cover-suggestions');
+    const chipsBox = document.getElementById('gm-cover-chips');
+    if (!coverInput || !suggestionsBox || !chipsBox) return;
+
+    const n = (name || '').toLowerCase().trim();
+    if (!n) { suggestionsBox.style.display = 'none'; return; }
+
+    // Znajdź pasujący tor z F1_CIRCUITS_2025
+    const circuits = window.F1_CIRCUITS_2025_COVERS || {
+        'australian': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Albert_Park_Circuit_2011.svg/1200px-Albert_Park_Circuit_2011.svg.png',
+        'chinese':    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Shanghai_International_Circuit_track_map.svg/1200px-Shanghai_International_Circuit_track_map.svg.png',
+        'japanese':   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Suzuka_circuit_map.svg/1200px-Suzuka_circuit_map.svg.png',
+        'bahrain':    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Bahrain_International_Circuit--2004.svg/1200px-Bahrain_International_Circuit--2004.svg.png',
+        'saudi':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Jeddah_Corniche_Circuit_2021.svg/1200px-Jeddah_Corniche_Circuit_2021.svg.png',
+        'miami':      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Miami_International_Autodrome_circuit_map.svg/1200px-Miami_International_Autodrome_circuit_map.svg.png',
+        'emilia':     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Autodromo_Enzo_e_Dino_Ferrari_track_map.svg/1200px-Autodromo_Enzo_e_Dino_Ferrari_track_map.svg.png',
+        'romagna':    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Autodromo_Enzo_e_Dino_Ferrari_track_map.svg/1200px-Autodromo_Enzo_e_Dino_Ferrari_track_map.svg.png',
+        'imola':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Autodromo_Enzo_e_Dino_Ferrari_track_map.svg/1200px-Autodromo_Enzo_e_Dino_Ferrari_track_map.svg.png',
+        'monaco':     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Monte_Carlo_Formula_1_track_map.svg/1200px-Monte_Carlo_Formula_1_track_map.svg.png',
+        'spanish':    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Circuit_de_Barcelona-Catalunya_track_map.svg/1200px-Circuit_de_Barcelona-Catalunya_track_map.svg.png',
+        'barcelona':  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Circuit_de_Barcelona-Catalunya_track_map.svg/1200px-Circuit_de_Barcelona-Catalunya_track_map.svg.png',
+        'canada':     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Circuit_Gilles_Villeneuve_track_map.svg/1200px-Circuit_Gilles_Villeneuve_track_map.svg.png',
+        'austrian':   'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/RedBull_ring_2016.svg/1200px-RedBull_ring_2016.svg.png',
+        'british':    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Silverstone_Circuit_2020.svg/1200px-Silverstone_Circuit_2020.svg.png',
+        'silverstone':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Silverstone_Circuit_2020.svg/1200px-Silverstone_Circuit_2020.svg.png',
+        'belgian':    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Spa-Francorchamps_of_Belgium.svg/1200px-Spa-Francorchamps_of_Belgium.svg.png',
+        'spa':        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Spa-Francorchamps_of_Belgium.svg/1200px-Spa-Francorchamps_of_Belgium.svg.png',
+        'hungarian':  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Hungaroring.svg/1200px-Hungaroring.svg.png',
+        'dutch':      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Zandvoort_track_map.svg/1200px-Zandvoort_track_map.svg.png',
+        'zandvoort':  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Zandvoort_track_map.svg/1200px-Zandvoort_track_map.svg.png',
+        'italian':    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Monza_track_map.svg/1200px-Monza_track_map.svg.png',
+        'monza':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Monza_track_map.svg/1200px-Monza_track_map.svg.png',
+        'azerbaijan': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Baku_City_Circuit_track_map.svg/1200px-Baku_City_Circuit_track_map.svg.png',
+        'baku':       'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Baku_City_Circuit_track_map.svg/1200px-Baku_City_Circuit_track_map.svg.png',
+        'singapore':  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Singapore_Street_Circuit_track_map.svg/1200px-Singapore_Street_Circuit_track_map.svg.png',
+        'united states':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Austin_circuit.svg/1200px-Austin_circuit.svg.png',
+        'austin':     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Austin_circuit.svg/1200px-Austin_circuit.svg.png',
+        'cota':       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Austin_circuit.svg/1200px-Austin_circuit.svg.png',
+        'mexico':     'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Autodromo_Hermanos_Rodriguez_track_map.svg/1200px-Autodromo_Hermanos_Rodriguez_track_map.svg.png',
+        'paulo':      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg/1200px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg.png',
+        'brasil':     'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg/1200px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg.png',
+        'interlagos': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg/1200px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_track_map.svg.png',
+        'las vegas':  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Las_Vegas_Strip_Circuit_map.svg/1200px-Las_Vegas_Strip_Circuit_map.svg.png',
+        'vegas':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Las_Vegas_Strip_Circuit_map.svg/1200px-Las_Vegas_Strip_Circuit_map.svg.png',
+        'qatar':      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Losail_International_Circuit_track_map.svg/1200px-Losail_International_Circuit_track_map.svg.png',
+        'losail':     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Losail_International_Circuit_track_map.svg/1200px-Losail_International_Circuit_track_map.svg.png',
+        'abu dhabi':  'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Yas_Marina_Circuit_track_map.svg/1200px-Yas_Marina_Circuit_track_map.svg.png',
+        'yas':        'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Yas_Marina_Circuit_track_map.svg/1200px-Yas_Marina_Circuit_track_map.svg.png',
+    
+};
+    const matches = [];
+    for (const [keyword, url] of Object.entries(circuits)) {
+        if (n.includes(keyword)) matches.push({ keyword, url });
+    }
+
+    if (matches.length === 0) { suggestionsBox.style.display = 'none'; return; }
+
+    suggestionsBox.style.display = 'block';
+    const best = matches[0];
+    // Ustaw automatycznie jeśli pole jest puste
+    if (!coverInput.value || coverInput.value.trim() === '') {
+        coverInput.value = best.url;
+        ui.previewAlbumCoverImg(best.url);
+    }
 
     chipsBox.innerHTML = [...new Set(matches.map(m => m.url))].slice(0, 3).map((url, i) => {
         const kw = matches[i]?.keyword || '';
