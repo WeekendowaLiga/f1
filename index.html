@@ -1336,13 +1336,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .cdm-card.highlight { border-color: var(--f1-red); box-shadow: 0 0 30px rgba(225,6,0,0.5), inset 0 0 20px rgba(225,6,0,0.05); }
 .cdm-card.used { opacity: 0.3; filter: grayscale(1); }
 .cdm-card-img { position: absolute; inset: 0; width: 100%; height: 70%; object-fit: contain; object-position: center; padding: 10px; box-sizing: border-box; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
-.cdm-card-flag { position: absolute; top: 8px; right: 8px; font-size: 22px; line-height: 1; }
+.cdm-card-flag img { width: 32px; height: 22px; object-fit: cover; border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); display: block; }
 .cdm-card-label { width: 100%; background: rgba(0,0,0,0.85); padding: 8px 6px 10px; text-align: center; position: relative; z-index: 2; border-top: 2px solid rgba(225,6,0,0.3); }
 .cdm-card-country { font-family: var(--font-data); font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; }
 .cdm-card-name { font-family: var(--font-display); font-size: 13px; font-weight: 900; color: #fff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; margin-top: 2px; }
 .cdm-result-box { display: none; flex-direction: column; align-items: center; gap: 10px; padding: 20px; background: rgba(225,6,0,0.08); border: 2px solid rgba(225,6,0,0.4); border-radius: 10px; width: 100%; max-width: 500px; text-align: center; animation: f1ZoomIn 0.5s cubic-bezier(0.19,1,0.22,1) both; }
 .cdm-result-box.show { display: flex; }
-.cdm-result-flag { font-size: 52px; line-height: 1; }
+.cdm-result-flag img { width: 78px; height: 53px; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); display: block; margin: 0 auto; }
 .cdm-result-label { font-family: var(--font-data); font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 4px; text-transform: uppercase; }
 .cdm-result-name { font-family: var(--font-display); font-size: 44px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 3px; line-height: 1; }
 .cdm-result-country { font-family: var(--font-data); font-size: 18px; color: var(--f1-red); letter-spacing: 3px; }
@@ -1995,6 +1995,7 @@ let splitDataCache = {
     1: { standings: null, lastRace: null, archive: {}, teamsInfo: {} },
     2: { standings: null, lastRace: null, archive: {}, teamsInfo: {} }
 };
+window.splitDataCache = splitDataCache; // realny cache, dostępny globalnie od razu
 let splashTimerInterval = null;
 let cachedHeroConfig = { mode: 'countdown', date: '', title: '' };
 let teamLogos = {};
@@ -4636,31 +4637,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===================== LOGIKA LOSOWANIA TORÓW =====================
+const flagImgHtml = (code, w, h) => `<img src="https://flagcdn.com/w80/${code}.png" srcset="https://flagcdn.com/w160/${code}.png 2x" width="${w}" height="${h}" alt="" loading="lazy" style="width:${w}px;height:${h}px;object-fit:cover;display:block;">`;
+
 const F1_CIRCUITS_2025 = [
-    { name: 'Australian Grand Prix',    short: 'Australian GP',    country: 'Australia',    flag: '🇦🇺', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Australia_Circuit.png' },
-    { name: 'Chinese Grand Prix',       short: 'Chinese GP',       country: 'China',        flag: '🇨🇳', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/China_Circuit.png' },
-    { name: 'Japanese Grand Prix',      short: 'Japanese GP',      country: 'Japan',        flag: '🇯🇵', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Japan_Circuit.png' },
-    { name: 'Bahrain Grand Prix',       short: 'Bahrain GP',       country: 'Bahrain',      flag: '🇧🇭', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Bahrain_Circuit.png' },
-    { name: 'Saudi Arabian Grand Prix', short: 'Saudi Arabian GP', country: 'Arabia Saud.',  flag: '🇸🇦', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Saudi_Arabia_Circuit.png' },
-    { name: 'Miami Grand Prix',         short: 'Miami GP',         country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Miami_Circuit.png' },
-    { name: 'Emilia Romagna Grand Prix',short: 'Emilia Romagna GP',country: 'Włochy',       flag: '🇮🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Emilia_Romagna_Circuit.png' },
-    { name: 'Monaco Grand Prix',        short: 'Monaco GP',        country: 'Monako',       flag: '🇲🇨', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Monaco_Circuit.png' },
-    { name: 'Spanish Grand Prix',       short: 'Spanish GP',       country: 'Hiszpania',    flag: '🇪🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Spain_Circuit.png' },
-    { name: 'Canadian Grand Prix',      short: 'Canadian GP',      country: 'Kanada',       flag: '🇨🇦', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Canada_Circuit.png' },
-    { name: 'Austrian Grand Prix',      short: 'Austrian GP',      country: 'Austria',      flag: '🇦🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png' },
-    { name: 'British Grand Prix',       short: 'British GP',       country: 'W. Brytania',  flag: '🇬🇧', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png' },
-    { name: 'Belgian Grand Prix',       short: 'Belgian GP',       country: 'Belgia',       flag: '🇧🇪', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Belgium_Circuit.png' },
-    { name: 'Hungarian Grand Prix',     short: 'Hungarian GP',     country: 'Węgry',        flag: '🇭🇺', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Hungary_Circuit.png' },
-    { name: 'Dutch Grand Prix',         short: 'Dutch GP',         country: 'Holandia',     flag: '🇳🇱', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Netherlands_Circuit.png' },
-    { name: 'Italian Grand Prix',       short: 'Italian GP',       country: 'Włochy',       flag: '🇮🇹', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Italy_Circuit.png' },
-    { name: 'Azerbaijan Grand Prix', short: 'Azerbaijan GP', country: 'Azerbejdżan', flag: '🇦🇿', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Baku_Circuit.png' },
-    { name: 'Singapore Grand Prix',     short: 'Singapore GP',     country: 'Singapur',     flag: '🇸🇬', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Singapore_Circuit.png' },
-    { name: 'United States Grand Prix', short: 'United States GP', country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/USA_Circuit.png' },
-    { name: 'Mexico City Grand Prix',   short: 'Mexico City GP',   country: 'Meksyk',       flag: '🇲🇽', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Mexico_Circuit.png' },
-    { name: 'São Paulo Grand Prix',     short: 'São Paulo GP',     country: 'Brazylia',     flag: '🇧🇷', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Brazil_Circuit.png' },
-    { name: 'Las Vegas Grand Prix',     short: 'Las Vegas GP',     country: 'USA',          flag: '🇺🇸', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Las_Vegas_Circuit.png' },
-    { name: 'Qatar Grand Prix',         short: 'Qatar GP',         country: 'Katar',        flag: '🇶🇦', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Qatar_Circuit.png' },
-    { name: 'Abu Dhabi Grand Prix',     short: 'Abu Dhabi GP',     country: 'Abu Dhabi',    flag: '🇦🇪', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Abu_Dhabi_Circuit.png' },
+    { name: 'Australian Grand Prix',    short: 'Australian GP',    country: 'Australia',    flagCode: 'au', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Australia_Circuit.png' },
+    { name: 'Chinese Grand Prix',       short: 'Chinese GP',       country: 'China',        flagCode: 'cn', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/China_Circuit.png' },
+    { name: 'Japanese Grand Prix',      short: 'Japanese GP',      country: 'Japan',        flagCode: 'jp', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Japan_Circuit.png' },
+    { name: 'Bahrain Grand Prix',       short: 'Bahrain GP',       country: 'Bahrain',      flagCode: 'bh', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Bahrain_Circuit.png' },
+    { name: 'Saudi Arabian Grand Prix', short: 'Saudi Arabian GP', country: 'Arabia Saud.',  flagCode: 'sa', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Saudi_Arabia_Circuit.png' },
+    { name: 'Miami Grand Prix',         short: 'Miami GP',         country: 'USA',          flagCode: 'us', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Miami_Circuit.png' },
+    { name: 'Emilia Romagna Grand Prix',short: 'Emilia Romagna GP',country: 'Włochy',       flagCode: 'it', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Emilia_Romagna_Circuit.png' },
+    { name: 'Monaco Grand Prix',        short: 'Monaco GP',        country: 'Monako',       flagCode: 'mc', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Monaco_Circuit.png' },
+    { name: 'Spanish Grand Prix',       short: 'Spanish GP',       country: 'Hiszpania',    flagCode: 'es', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Spain_Circuit.png' },
+    { name: 'Canadian Grand Prix',      short: 'Canadian GP',      country: 'Kanada',       flagCode: 'ca', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Canada_Circuit.png' },
+    { name: 'Austrian Grand Prix',      short: 'Austrian GP',      country: 'Austria',      flagCode: 'at', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png' },
+    { name: 'British Grand Prix',       short: 'British GP',       country: 'W. Brytania',  flagCode: 'gb', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png' },
+    { name: 'Belgian Grand Prix',       short: 'Belgian GP',       country: 'Belgia',       flagCode: 'be', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Belgium_Circuit.png' },
+    { name: 'Hungarian Grand Prix',     short: 'Hungarian GP',     country: 'Węgry',        flagCode: 'hu', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Hungary_Circuit.png' },
+    { name: 'Dutch Grand Prix',         short: 'Dutch GP',         country: 'Holandia',     flagCode: 'nl', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Netherlands_Circuit.png' },
+    { name: 'Italian Grand Prix',       short: 'Italian GP',       country: 'Włochy',       flagCode: 'it', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Italy_Circuit.png' },
+    { name: 'Azerbaijan Grand Prix', short: 'Azerbaijan GP', country: 'Azerbejdżan', flagCode: 'az', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Baku_Circuit.png' },
+    { name: 'Singapore Grand Prix',     short: 'Singapore GP',     country: 'Singapur',     flagCode: 'sg', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Singapore_Circuit.png' },
+    { name: 'United States Grand Prix', short: 'United States GP', country: 'USA',          flagCode: 'us', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/USA_Circuit.png' },
+    { name: 'Mexico City Grand Prix',   short: 'Mexico City GP',   country: 'Meksyk',       flagCode: 'mx', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Mexico_Circuit.png' },
+    { name: 'São Paulo Grand Prix',     short: 'São Paulo GP',     country: 'Brazylia',     flagCode: 'br', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Brazil_Circuit.png' },
+    { name: 'Las Vegas Grand Prix',     short: 'Las Vegas GP',     country: 'USA',          flagCode: 'us', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Las_Vegas_Circuit.png' },
+    { name: 'Qatar Grand Prix',         short: 'Qatar GP',         country: 'Katar',        flagCode: 'qa', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Qatar_Circuit.png' },
+    { name: 'Abu Dhabi Grand Prix',     short: 'Abu Dhabi GP',     country: 'Abu Dhabi',    flagCode: 'ae', img: 'https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Abu_Dhabi_Circuit.png' },
 ];
 
 window.circuitDraw = {
@@ -4697,23 +4700,32 @@ _getUsedCircuits() {
         { keys: ['abu dhabi','yas marina','yas'],                        name: 'Abu Dhabi Grand Prix' },
     ];
 
+    const matchAndAdd = (rawText) => {
+        if (!rawText) return;
+        const clean = rawText.toLowerCase()
+            .replace(/next race:?/gi, '')
+            .replace(/round\s*\d+\s*[-–—]?\s*/i, '')
+            .replace(/gp\b/gi, '')
+            .trim();
+        KEYWORD_MAP.forEach(entry => {
+            if (entry.keys.some(k => clean.includes(k))) used.add(entry.name);
+        });
+    };
+
     const cache = window.splitDataCache || {};
     [1, 2].forEach(s => {
         const arc = (cache[s] && cache[s].archive) ? cache[s].archive : {};
         Object.values(arc).forEach(r => {
-            if (!r.isTraining && !r.isQualifying && r.name) {
-                const raceName = r.name.toLowerCase()
-                    .replace(/round\s*\d+\s*[-–—]?\s*/i, '')
-                    .replace(/gp\b/gi, '')
-                    .trim();
-                KEYWORD_MAP.forEach(entry => {
-                    if (entry.keys.some(k => raceName.includes(k))) {
-                        used.add(entry.name);
-                    }
-                });
-            }
+            if (!r.isTraining && !r.isQualifying && r.name) matchAndAdd(r.name);
         });
     });
+
+   
+    matchAndAdd(window.gpNameS1);
+    matchAndAdd(window.gpNameS2);
+    matchAndAdd(window.heroConfigS1 && window.heroConfigS1.title);
+    matchAndAdd(window.heroConfigS2 && window.heroConfigS2.title);
+
     return used;
 },
 
@@ -4726,16 +4738,16 @@ _getUsedCircuits() {
     _buildReel(available) {
         const reel = document.getElementById('cdm-reel');
         if (!reel) return;
-        const all = F1_CIRCUITS_2025;
-        const used = this._getUsedCircuits();
-        // Buduj taśmę: wiele kopii shuffled
-        const shuffle = (arr) => { const a = [...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
-        const pool = [...shuffle(all), ...shuffle(all), ...shuffle(all), ...shuffle(available), ...shuffle(available)];
+        // ZMIANA: taśma w STAŁEJ kolejności (bez losowego tasowania) — kolejka zawsze zaczyna się od nowa, w tej samej kolejności
+        let pool = [];
+        if (available.length > 0) {
+            const repeats = Math.max(4, Math.ceil(20 / available.length));
+            for (let i = 0; i < repeats; i++) pool.push(...available);
+        }
         reel.innerHTML = pool.map((c, i) => {
-            const isUsed = used.has(c.name);
-            return `<div class="cdm-card${isUsed ? ' used' : ''}" data-name="${c.name}" data-idx="${i}">
+            return `<div class="cdm-card" data-name="${c.name}" data-idx="${i}">
                 <img class="cdm-card-img" src="${c.img}" alt="${c.short}" onerror="this.style.opacity=0.2">
-                <span class="cdm-card-flag">${c.flag}</span>
+                <span class="cdm-card-flag">${flagImgHtml(c.flagCode, 32, 22)}</span>
                 <div class="cdm-card-label">
                     <div class="cdm-card-country">${c.country}</div>
                     <div class="cdm-card-name">${c.short}</div>
@@ -4747,39 +4759,52 @@ _getUsedCircuits() {
     },
 
   open() {
-        const overlay = document.getElementById('circuit-draw-overlay');
-        if (!overlay) return;
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        this._result = null;
-        this._spinning = false;
-        document.getElementById('cdm-result-box').classList.remove('show');
-        document.getElementById('cdm-btn-spin').style.display = '';
-        document.getElementById('cdm-btn-spin').disabled = true;
-        document.getElementById('cdm-btn-accept').style.display = 'none';
-        document.getElementById('cdm-btn-reject').style.display = 'none';
-        document.getElementById('cdm-status').textContent = 'Ładowanie danych archiwum...';
-        document.getElementById('cdm-reel').innerHTML = '';
+    const overlay = document.getElementById('circuit-draw-overlay');
+    if (!overlay) return;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    this._result = null;
+    this._spinning = false;
+    document.getElementById('cdm-result-box').classList.remove('show');
+    document.getElementById('cdm-btn-spin').style.display = '';
+    document.getElementById('cdm-btn-spin').disabled = true;
+    document.getElementById('cdm-btn-accept').style.display = 'none';
+    document.getElementById('cdm-btn-reject').style.display = 'none';
+    document.getElementById('cdm-status').textContent = 'Ładowanie danych archiwum...';
+    document.getElementById('cdm-reel').innerHTML = '';
 
-        const { ref: fbRef, onValue: fbOnValue } = window._fbFirebase;
-        const db = window._fbDb;
-        let loaded1 = false, loaded2 = false;
-        const onBothLoaded = () => {
-            if (!loaded1 || !loaded2) return;
+    const { ref: fbRef, onValue: fbOnValue } = window._fbFirebase;
+    const db = window._fbDb;
+
+    const finishLoading = () => {
+        try {
             const available = this._getAvailable();
             this._buildReel(available);
             this._updateStatus(available);
             document.getElementById('cdm-btn-spin').disabled = available.length === 0;
-        };
-        fbOnValue(fbRef(db, 'split1/archive'), snap => {
-            if(window.splitDataCache) window.splitDataCache[1].archive = snap.val() || {};
-            loaded1 = true; onBothLoaded();
-        }, { onlyOnce: true });
-        fbOnValue(fbRef(db, 'split2/archive'), snap => {
-            if(window.splitDataCache) window.splitDataCache[2].archive = snap.val() || {};
-            loaded2 = true; onBothLoaded();
-        }, { onlyOnce: true });
-    },
+        } catch (e) {
+            console.error('Błąd podczas losowania toru:', e);
+            document.getElementById('cdm-status').textContent = '❌ Błąd: ' + e.message + ' (sprawdź konsolę F12)';
+        }
+    };
+
+   
+    let s1Ready = false, s2Ready = false;
+    const maybeFinish = () => { if (s1Ready && s2Ready) finishLoading(); };
+
+    fbOnValue(fbRef(db, 'split1/archive'), snap => {
+        if (window.splitDataCache) window.splitDataCache[1].archive = snap.val() || {};
+        s1Ready = true; maybeFinish();
+    }, (err) => { console.error('Błąd split1/archive:', err); s1Ready = true; maybeFinish(); }, { onlyOnce: true });
+
+    fbOnValue(fbRef(db, 'split2/archive'), snap => {
+        if (window.splitDataCache) window.splitDataCache[2].archive = snap.val() || {};
+        s2Ready = true; maybeFinish();
+    }, (err) => { console.error('Błąd split2/archive:', err); s2Ready = true; maybeFinish(); }, { onlyOnce: true });
+
+    // Zabezpieczenie — nawet jak coś nie odpowie, po 6s i tak ruszamy dalej
+    setTimeout(() => { if (!(s1Ready && s2Ready)) { s1Ready = true; s2Ready = true; finishLoading(); } }, 6000);
+},
 
     close() {
         const overlay = document.getElementById('circuit-draw-overlay');
@@ -4813,68 +4838,64 @@ _getUsedCircuits() {
         document.getElementById('cdm-status').textContent = '🎰 Losowanie w toku...';
         document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
 
-        // Wybierz losowy dostępny tor
         const winner = available[Math.floor(Math.random() * available.length)];
 
-        // Zbuduj świeżą taśmę i wstaw winner w odpowiedniej pozycji
         const reel = document.getElementById('cdm-reel');
-        const reelWrap = document.querySelector('.cdm-reel-wrap');
-        const wrapWidth = reelWrap.offsetWidth;
-        const cardWidth = 180 + 12; // card + gap
+const reelWrap = document.querySelector('.cdm-reel-wrap');
 
-        const shuffle = (arr) => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
-        const used = this._getUsedCircuits();
+const FILLER_BEFORE = 90;
+const FILLER_AFTER = 14;
+const cycle = [];
+while (cycle.length < FILLER_BEFORE + FILLER_AFTER + available.length) cycle.push(...available);
+const filler = cycle.slice(0, FILLER_BEFORE);
+const winnerIdx = FILLER_BEFORE;
+filler.push(winner);
+filler.push(...cycle.slice(FILLER_BEFORE, FILLER_BEFORE + FILLER_AFTER));
 
-        // Zbuduj taśmę: 40 kart losowych + winner w pozycji ~35-38 (po prawej)
-        const filler = [];
-        for (let i = 0; i < 38; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
-   const winnerIdx = 32;
-filler.splice(winnerIdx, 0, winner);
-for (let i = 0; i < 8; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random() * F1_CIRCUITS_2025.length)]);
+reel.innerHTML = filler.map((c, i) => {
+    const isWinner = i === winnerIdx;
+    return `<div class="cdm-card" data-name="${c.name}" data-winner="${isWinner}">
+        <img class="cdm-card-img" src="${c.img}" alt="${c.short}" onerror="this.style.opacity=0.2">
+        <span class="cdm-card-flag">${flagImgHtml(c.flagCode, 32, 22)}</span>
+        <div class="cdm-card-label">
+            <div class="cdm-card-country">${c.country}</div>
+            <div class="cdm-card-name">${c.short}</div>
+        </div>
+    </div>`;
+}).join('');
 
-        reel.innerHTML = filler.map((c, i) => {
-            const isUsed = used.has(c.name) && c.name !== winner.name;
-            const isWinner = i === winnerIdx;
-            return `<div class="cdm-card${isUsed ? ' used' : ''}" data-name="${c.name}" data-winner="${isWinner}">
-                <img class="cdm-card-img" src="${c.img}" alt="${c.short}" onerror="this.style.opacity=0.2">
-                <span class="cdm-card-flag">${c.flag}</span>
-                <div class="cdm-card-label">
-                    <div class="cdm-card-country">${c.country}</div>
-                    <div class="cdm-card-name">${c.short}</div>
-                </div>
-            </div>`;
-        }).join('');
+reel.style.transition = 'none';
+reel.style.transform = 'translateX(0)';
+void reel.offsetWidth;
 
-        reel.style.transition = 'none';
-        reel.style.transform = 'translateX(0)';
-        void reel.offsetWidth;
 
-        // Cel: wyśrodkuj kartę winnerIdx
-        const cardHalfWidth = cardWidth / 2;
-const targetX = -(winnerIdx * cardWidth) + (wrapWidth / 2) - cardHalfWidth;
-const snapX = Math.round(targetX);
-const jitter = (Math.random() - 0.5) * 10;
+const winnerCardEl = reel.children[winnerIdx];
+const wrapRect = reelWrap.getBoundingClientRect();
+const cardRect = winnerCardEl.getBoundingClientRect();
+const cardCenterX = cardRect.left + cardRect.width / 2;
+const wrapCenterX = wrapRect.left + wrapRect.width / 2;
+const snapX = Math.round(wrapCenterX - cardCenterX);
+const jitterSign = Math.random() < 0.5 ? -1 : 1;
+const jitterMagnitude = 25 + Math.random() * 45; // 25–70px od środka
+const jitter = jitterSign * jitterMagnitude;
 const finalX = snapX + jitter;
 
-        // Animacja: najpierw szybko, potem zwalnia (ease-out)
-        const duration = 3500 + Math.random() * 1000;
-        reel.style.transition = `transform ${duration}ms cubic-bezier(0.17, 0.67, 0.12, 1.0)`;
-        reel.style.transform = `translateX(${finalX}px)`;
+const duration = 7000 + Math.random() * 2000;
+reel.style.transition = `transform ${duration}ms cubic-bezier(0.05, 0.85, 0.1, 1)`;
+reel.style.transform = `translateX(${finalX}px)`;
 
-        setTimeout(() => {
-            // Snap do środka dokładnie
-            reel.style.transition = 'transform 0.2s ease-out';
-            reel.style.transform = `translateX(${snapX}px)`;
+setTimeout(() => {
+    reel.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
+    reel.style.transform = `translateX(${snapX}px)`;
 
-            setTimeout(() => {
-                // Podświetl wygraną kartę
-                const cards = reel.querySelectorAll('.cdm-card');
-                const winCard = cards[winnerIdx];
-                if (winCard) winCard.classList.add('highlight', 'winner');
+    setTimeout(() => {
+        const cards = reel.querySelectorAll('.cdm-card');
+        const winCard = cards[winnerIdx];
+        if (winCard) winCard.classList.add('highlight', 'winner');
 
-                // Pokaż wynik
+        // Pokaż wynik
                 this._result = winner;
-                document.getElementById('cdm-result-flag').textContent = winner.flag;
+                document.getElementById('cdm-result-flag').innerHTML = flagImgHtml(winner.flagCode, 78, 53);
                 document.getElementById('cdm-result-name').textContent = winner.name;
                 document.getElementById('cdm-result-country').textContent = winner.country;
                 document.getElementById('cdm-result-box').classList.add('show');
@@ -4883,7 +4904,7 @@ const finalX = snapX + jitter;
                 document.getElementById('cdm-btn-accept').style.display = '';
                 document.getElementById('cdm-btn-reject').style.display = '';
                 this._spinning = false;
-            }, 350);
+            }, 600);
         }, duration);
     },
 
@@ -4927,12 +4948,8 @@ const finalX = snapX + jitter;
         this._buildReel(this._getAvailable());
     }
 };
-
-if (typeof splitDataCache === 'undefined') { var splitDataCache = {}; }
-if (typeof currentSplit === 'undefined') { var currentSplit = null; }
-
-window.splitDataCache = splitDataCache;
-window.currentSplitRef = () => currentSplit;
+if (!window.splitDataCache) { window.splitDataCache = {}; }
+if (!window.currentSplitRef) { window.currentSplitRef = () => null; }
 
 window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
