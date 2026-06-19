@@ -2383,10 +2383,17 @@ window.ui = {
     },
 toggleAuth(show) { 
     const modal = document.getElementById('auth-modal');
-    if (modal) {
-        modal.style.display = show ? 'flex' : 'none';
+    if (!modal) return;
+    if (show) {
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
         modal.style.alignItems = 'center';
         modal.style.justifyContent = 'center';
+        modal.style.position = 'fixed';
+        modal.style.inset = '0';
+        modal.style.zIndex = '999999';
+    } else {
+        modal.style.display = 'none';
     }
 },
     updateGpPreview(splitNum) {
@@ -4711,9 +4718,10 @@ _getUsedCircuits() {
 },
 
     _getAvailable() {
-        const used = this._getUsedCircuits();
-        return F1_CIRCUITS_2025.filter(c => !used.has(c.name));
-    },
+    const used = this._getUsedCircuits();
+    console.log('Używane tory:', [...used]);
+    return F1_CIRCUITS_2025.filter(c => !used.has(c.name));
+},
 
     _buildReel(available) {
         const reel = document.getElementById('cdm-reel');
@@ -4730,7 +4738,7 @@ _getUsedCircuits() {
                 <span class="cdm-card-flag">${c.flag}</span>
                 <div class="cdm-card-label">
                     <div class="cdm-card-country">${c.country}</div>
-                    <div class="cdm-card-name">${c.short.replace(' GP','')}</div>
+                    <div class="cdm-card-name">${c.short}</div>
                 </div>
             </div>`;
         }).join('');
@@ -4738,23 +4746,39 @@ _getUsedCircuits() {
         reel.style.transition = 'none';
     },
 
-    open() {
+  open() {
         const overlay = document.getElementById('circuit-draw-overlay');
         if (!overlay) return;
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
         this._result = null;
         this._spinning = false;
-        const available = this._getAvailable();
-        this._buildReel(available);
-        this._updateStatus(available);
-        // Reset UI
         document.getElementById('cdm-result-box').classList.remove('show');
         document.getElementById('cdm-btn-spin').style.display = '';
-        document.getElementById('cdm-btn-spin').disabled = available.length === 0;
+        document.getElementById('cdm-btn-spin').disabled = true;
         document.getElementById('cdm-btn-accept').style.display = 'none';
         document.getElementById('cdm-btn-reject').style.display = 'none';
-        document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
+        document.getElementById('cdm-status').textContent = 'Ładowanie danych archiwum...';
+        document.getElementById('cdm-reel').innerHTML = '';
+
+        const { ref: fbRef, onValue: fbOnValue } = window._fbFirebase;
+        const db = window._fbDb;
+        let loaded1 = false, loaded2 = false;
+        const onBothLoaded = () => {
+            if (!loaded1 || !loaded2) return;
+            const available = this._getAvailable();
+            this._buildReel(available);
+            this._updateStatus(available);
+            document.getElementById('cdm-btn-spin').disabled = available.length === 0;
+        };
+        fbOnValue(fbRef(db, 'split1/archive'), snap => {
+            if(window.splitDataCache) window.splitDataCache[1].archive = snap.val() || {};
+            loaded1 = true; onBothLoaded();
+        }, { onlyOnce: true });
+        fbOnValue(fbRef(db, 'split2/archive'), snap => {
+            if(window.splitDataCache) window.splitDataCache[2].archive = snap.val() || {};
+            loaded2 = true; onBothLoaded();
+        }, { onlyOnce: true });
     },
 
     close() {
@@ -4816,7 +4840,7 @@ for (let i = 0; i < 8; i++) filler.push(F1_CIRCUITS_2025[Math.floor(Math.random(
                 <span class="cdm-card-flag">${c.flag}</span>
                 <div class="cdm-card-label">
                     <div class="cdm-card-country">${c.country}</div>
-                    <div class="cdm-card-name">${c.short.replace(' GP','')}</div>
+                    <div class="cdm-card-name">${c.short}</div>
                 </div>
             </div>`;
         }).join('');
@@ -4840,7 +4864,7 @@ const finalX = snapX + jitter;
         setTimeout(() => {
             // Snap do środka dokładnie
             reel.style.transition = 'transform 0.2s ease-out';
-reel.style.transform = `translateX(${snapX}px)`;
+            reel.style.transform = `translateX(${snapX}px)`;
 
             setTimeout(() => {
                 // Podświetl wygraną kartę
@@ -4851,7 +4875,7 @@ reel.style.transform = `translateX(${snapX}px)`;
                 // Pokaż wynik
                 this._result = winner;
                 document.getElementById('cdm-result-flag').textContent = winner.flag;
-                document.getElementById('cdm-result-name').textContent = winner.name.replace(' Grand Prix', ' GP');
+                document.getElementById('cdm-result-name').textContent = winner.name;
                 document.getElementById('cdm-result-country').textContent = winner.country;
                 document.getElementById('cdm-result-box').classList.add('show');
                 document.getElementById('cdm-status').textContent = `🏁 Wylosowano: ${winner.name}`;
@@ -4860,10 +4884,10 @@ reel.style.transform = `translateX(${snapX}px)`;
                 document.getElementById('cdm-btn-reject').style.display = '';
                 this._spinning = false;
             }, 350);
-        }, duration + 50);
+        }, duration);
     },
 
-async accept() {
+    async accept() {
         if (!this._result) return;
         const c = this._result;
         try {
@@ -4891,7 +4915,7 @@ async accept() {
         }
     },
 
-   reject() {
+    reject() {
         this._result = null;
         document.getElementById('cdm-result-box').classList.remove('show');
         document.getElementById('cdm-btn-accept').style.display = 'none';
@@ -4902,22 +4926,16 @@ async accept() {
         document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
         this._buildReel(this._getAvailable());
     }
-}; // To zamyka obiekt circuitDraw
+};
 
-// ZABEZPIECZENIE ZMIENNYCH:
-if (typeof splitDataCache === 'undefined') {
-    var splitDataCache = {}; 
-}
-if (typeof currentSplit === 'undefined') {
-    var currentSplit = null;
-}
+if (typeof splitDataCache === 'undefined') { var splitDataCache = {}; }
+if (typeof currentSplit === 'undefined') { var currentSplit = null; }
 
 window.splitDataCache = splitDataCache;
 window.currentSplitRef = () => currentSplit;
 
-// OSTATECZNE WYŁĄCZENIE LOADERA (JEŚLI GO MASZ):
 window.addEventListener('load', () => {
-    const loader = document.getElementById('loader'); // Sprawdź czy masz element o id 'loader'
+    const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
 });
 </script>
