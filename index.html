@@ -33,6 +33,147 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
         radial-gradient(circle at 75% 75%, rgba(21,21,30,0.04) 0%, transparent 50%),
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2315151e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
+#split-transition-fx {
+    position: fixed; inset: 0;
+    z-index: 99998;
+    pointer-events: none;
+    --fx-c1: #ff3b30;
+    --fx-c2: #8b0000;
+    background: linear-gradient(115deg, var(--fx-c1) 0%, var(--fx-c2) 55%, var(--f1-black) 100%);
+    clip-path: polygon(-25% 0, -12% 0, -12% 100%, -25% 100%);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+#split-transition-fx.split2 {
+    --fx-c1: #29b6ff;
+    --fx-c2: #00366b;
+}
+#split-transition-fx::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: #fff;
+    opacity: 0;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+}
+#split-transition-fx.firing::before {
+    animation: splitFxFlash 0.85s cubic-bezier(0.76,0,0.24,1) forwards;
+}
+#split-transition-fx.firing {
+    animation: splitFxSweep 0.85s cubic-bezier(0.76,0,0.24,1) forwards;
+}
+@keyframes splitFxFlash {
+    0%   { opacity: 0; }
+    28%  { opacity: 0.85; }
+    42%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+#split-fx-stripes {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(115deg,
+        rgba(255,255,255,0.10) 0px, rgba(255,255,255,0.10) 6px,
+        transparent 6px, transparent 70px);
+    opacity: 0;
+    pointer-events: none;
+}
+#split-transition-fx.firing #split-fx-stripes {
+    animation: splitFxStripesIn 0.85s ease both;
+}
+@keyframes splitFxStripesIn {
+    0%   { opacity: 0; }
+    30%  { opacity: 1; }
+    72%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+#split-fx-checker {
+    position: absolute;
+    width: 340px; height: 60px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, 120px) skewX(-15deg);
+    background-image:
+        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+    background-color: rgba(255,255,255,0.85);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+#split-transition-fx.firing #split-fx-checker {
+    animation: splitFxCheckerIn 0.85s ease both;
+}
+@keyframes splitFxCheckerIn {
+    0%   { opacity: 0; transform: translate(-50%, 150px) skewX(-15deg); }
+    38%  { opacity: 0.9; transform: translate(-50%, 120px) skewX(-15deg); }
+    74%  { opacity: 0.9; transform: translate(-50%, 120px) skewX(-15deg); }
+    100% { opacity: 0; transform: translate(-50%, 95px) skewX(-15deg); }
+}
+#split-fx-content {
+    opacity: 0;
+    position: absolute;
+    top: 50%; left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+#split-fx-logo {
+    background: #000;
+    width: 220px; height: 165px;
+    transform: skewX(-15deg);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 0 90px rgba(0,0,0,0.7);
+}
+#split-fx-logo img { width: 85%; height: 85%; object-fit: contain; transform: skewX(15deg); }
+#split-fx-label {
+    font-family: var(--font-display);
+    font-size: 84px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    text-shadow: 0 8px 30px rgba(0,0,0,0.8);
+}
+#split-transition-fx.firing #split-fx-content {
+    animation: splitFxContentIn 0.85s ease both;
+}
+@keyframes splitFxContentIn {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+    28%  { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+    38%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    74%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+}
+@keyframes splitFxSweep {
+    0%   { clip-path: polygon(-25% 0, -12% 0, -12% 100%, -25% 100%); opacity: 1; }
+    26%  { clip-path: polygon(-25% 0, 122% 0, 122% 100%, -25% 100%); opacity: 1; }
+    78%  { clip-path: polygon(-25% 0, 122% 0, 122% 100%, -25% 100%); opacity: 1; }
+    100% { clip-path: polygon(122% 0, 138% 0, 138% 100%, 122% 100%); opacity: 1; }
+}
+@keyframes splitFxShake {
+    0%, 100% { transform: translate(0,0); }
+    15% { transform: translate(-3px, 2px); }
+    30% { transform: translate(3px, -2px); }
+    45% { transform: translate(-2px, 1px); }
+    60% { transform: translate(2px, -1px); }
+    75% { transform: translate(-1px, 1px); }
+    90% { transform: translate(1px, 0); }
+}
+.split-shaking { animation: splitFxShake 0.28s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+.split-fading {
+    opacity: 0 !important;
+    filter: blur(8px);
+    transition: opacity 0.22s ease, filter 0.22s ease;
+}
+.main-content, .f1-hero {
+    transition: opacity 0.22s ease, filter 0.22s ease;
+}
 *::-webkit-scrollbar { display: none !important; }
 #main-app {
     width: 100%;
@@ -207,7 +348,6 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .timer-unit:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 20px 40px rgba(225,6,0,0.3); }
 .split-btn { transition: background 0.25s cubic-bezier(0.19,1,0.22,1), color 0.2s, transform 0.2s; }
 .split-btn:hover:not(.active) { transform: scale(1.06); }
-.split-btn.active { animation: f1PulseRed 2s ease infinite; }
 .driver-name-clickable { transition: color 0.2s, transform 0.2s, border-color 0.2s; }
 .driver-name-clickable:hover { transform: translateX(4px); }
 .header-social-btn { transition: background 0.25s, border-color 0.25s, transform 0.3s cubic-bezier(0.19,1,0.22,1), box-shadow 0.25s; }
@@ -674,6 +814,25 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     margin-right: 10px;
     border: 1px solid rgba(255,255,255,0.1);
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+.split-toggle-wrap::before {
+    content: '';
+    position: absolute;
+    top: 4px; bottom: 4px; left: 4px;
+    width: calc(50% - 6px);
+    background: linear-gradient(135deg, var(--f1-red) 0%, #ff2020 100%);
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(225,6,0,0.6), 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.45s cubic-bezier(0.19,1,0.22,1), box-shadow 0.45s ease, background 0.45s ease;
+    z-index: 1;
+    transform: translateX(0%);
+}
+.split-toggle-wrap.split-2-active::before {
+    transform: translateX(calc(100% + 4px));
+    background: linear-gradient(135deg, #0078ff 0%, #00c2ff 100%);
+    box-shadow: 0 0 20px rgba(0,120,255,0.6), 0 4px 12px rgba(0,0,0,0.3);
 }
 .split-btn {
     font-family: var(--font-display);
@@ -687,17 +846,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     border: none;
     cursor: pointer;
     border-radius: 4px;
-    transition: background 0.25s, color 0.25s;
+    transition: color 0.25s;
     white-space: nowrap;
+    position: relative;
+    z-index: 2;
 }
-.split-btn.active {
-    background: var(--f1-red);
-    color: #fff;
-}
-.split-btn:hover:not(.active) {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-}
+.split-btn.active { background: transparent; color: #fff; }
+.split-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: #fff; }
 /* ===================== SPLIT 2 SOON OVERLAY ===================== */
 #split2-soon-overlay {
     display: none;
@@ -1355,6 +1510,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 </style>
 </div>
 
+<div id="split-transition-fx">
+    <div id="split-fx-stripes"></div>
+    <div id="split-fx-content">
+        <div id="split-fx-logo"><img src="Logo.png" alt="Logo"></div>
+        <div id="split-fx-label">SPLIT 1</div>
+    </div>
+</div>
 <div id="splash-screen" onclick="hideSplash()">
     <div id="splash-social-icons"></div>
     <div class="splash-logo-wrap">
@@ -2606,20 +2768,56 @@ toggleAuth(show) {
     // ===================== SPLIT SWITCHER =====================
     switchSplit(n) {
         if (currentSplit === n) return;
-        currentSplit = n;
+
+        // odpal flash przejścia
+        const fxLabel = document.getElementById('split-fx-label');
+        if (fxLabel) fxLabel.textContent = 'SPLIT ' + n;
+        const fxLogo = document.getElementById('split-fx-logo');
+        if (fxLogo) fxLogo.style.boxShadow = n === 2 ? '0 0 70px rgba(0,120,255,0.55)' : '0 0 70px rgba(225,6,0,0.55)';
+        const fx = document.getElementById('split-transition-fx');
+        if (fx) {
+            fx.classList.remove('firing');
+            fx.classList.toggle('split2', n === 2);
+            void fx.offsetWidth;
+            fx.classList.add('firing');
+        }
+       const shakeTarget = document.getElementById('main-app');
+        if (shakeTarget) {
+            shakeTarget.classList.remove('split-shaking');
+            void shakeTarget.offsetWidth;
+            shakeTarget.classList.add('split-shaking');
+            setTimeout(() => shakeTarget.classList.remove('split-shaking'), 300);
+        }
+
+        // suwak + aktywne przyciski od razu (ma się ruszać razem z flashem)
+        document.querySelector('.split-toggle-wrap')?.classList.toggle('split-2-active', n === 2);
         document.getElementById('nav-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('nav-split2-btn').classList.toggle('active', n === 2);
-        adminSplit = n;
-        document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
-        document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
-        // Subskrybuj dane nowego splitu
-        subscribeStandings(n);
-        subscribeLastRace(n);
-        subscribeTeamsInfo(n);
-        const archiveView = document.getElementById('view-archive');
-        if (archiveView && archiveView.classList.contains('active')) subscribeArchive(n);
-        applyHeroConfig(n);
-        this._applySplitView();
+
+        // przyciemnij/rozmyj treść na czas przelotu flasha
+        const mainContent = document.querySelector('.main-content');
+        const hero = document.querySelector('.f1-hero');
+        mainContent?.classList.add('split-fading');
+        hero?.classList.add('split-fading');
+
+        setTimeout(() => {
+            currentSplit = n;
+            adminSplit = n;
+            // (timing dopasowany do nowej animacji — patrz setTimeout poniżej)
+            document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
+            document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
+            // Subskrybuj dane nowego splitu
+            subscribeStandings(n);
+            subscribeLastRace(n);
+            subscribeTeamsInfo(n);
+            const archiveView = document.getElementById('view-archive');
+            if (archiveView && archiveView.classList.contains('active')) subscribeArchive(n);
+            applyHeroConfig(n);
+            this._applySplitView();
+
+            mainContent?.classList.remove('split-fading');
+            hero?.classList.remove('split-fading');
+        }, 330);
     },
    adminSwitchSplit(n) {
         adminSplit = n;
@@ -4671,6 +4869,7 @@ window.circuitDraw = {
     _spinning: false,
     _result: null,
     _usedNames: new Set(),
+	    _currentAnimation: null,
 
 _getUsedCircuits() {
     const used = new Set();
@@ -4737,8 +4936,10 @@ _getUsedCircuits() {
 },
 
     _buildReel(available) {
-        const reel = document.getElementById('cdm-reel');
-        if (!reel) return;
+    const reel = document.getElementById('cdm-reel');
+    if (!reel) return;
+    
+    reel.getAnimations().forEach(a => a.cancel());
         // ZMIANA: taśma w STAŁEJ kolejności (bez losowego tasowania) — kolejka zawsze zaczyna się od nowa, w tej samej kolejności
         let pool = [];
         if (available.length > 0) {
@@ -4828,6 +5029,12 @@ _getUsedCircuits() {
         const available = this._getAvailable();
         if (available.length === 0) { alert('Wszystkie tory zostały już użyte w archiwum!'); return; }
 
+if (this._currentAnimation) {
+    this._currentAnimation.cancel();
+    this._currentAnimation = null;
+}
+document.getElementById('cdm-reel')?.getAnimations().forEach(a => a.cancel());
+
         this._spinning = true;
         this._result = null;
 
@@ -4839,23 +5046,56 @@ _getUsedCircuits() {
         document.getElementById('cdm-status').textContent = '🎰 Losowanie w toku...';
         document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
 
-        // Wybierz losowy dostępny tor
         const winner = available[Math.floor(Math.random() * available.length)];
 
         const reel = document.getElementById('cdm-reel');
         const reelWrap = document.querySelector('.cdm-reel-wrap');
 
-        // ZMIANA: faza stałej maksymalnej prędkości — czas losowy 4-6s
-        const FAST_SPEED_PX_S = 1500;
-        const fastDurationMs = Math.round(4000 + Math.random() * 2000);
-        const CARD_STEP_ESTIMATE = 192; // 180px karta + 12px gap (wstępny szacunek do zbudowania taśmy)
-        const fastCardsCount = Math.ceil((FAST_SPEED_PX_S * fastDurationMs / 1000) / CARD_STEP_ESTIMATE) + 5;
-        const DECEL_CARDS = 16;
+       
+        const VMAX_PX_S = 3000;                                    // maks. prędkość (px/s)
+const rampMs     = Math.round(450 + Math.random() * 200);   // rozpęd
+const plateauMs  = Math.round(1400 + Math.random() * 900);  // KRÓCEJ: stałe maks. tempo (1.4–2.3s, było 3–5s)
+const tailMs     = 1000;                                    // OSTATNIA ~1 SEKUNDA — mega powolne pełzanie do zera
+const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodniejsze zwalnianie PRZED pełzaniem (4.2–5.8s, było 3–4.2s)
+        const decayMs    = mainDecayMs + tailMs;
+        const totalMs    = rampMs + plateauMs + decayMs;
+        const V_CREEP    = 90; // px/s — prędkość na starcie fazy "mega powoli"
+
+        
+        const velocityAt = (tMs) => {
+            if (tMs < rampMs) {
+                return VMAX_PX_S * 0.5 * (1 - Math.cos(Math.PI * tMs / rampMs));
+            } else if (tMs < rampMs + plateauMs) {
+                return VMAX_PX_S;
+            } else {
+                const td = tMs - rampMs - plateauMs;
+                if (td < mainDecayMs) {
+                    const t = td / mainDecayMs;
+                    const eased = 0.5 * (1 - Math.cos(Math.PI * t));
+                    return VMAX_PX_S + (V_CREEP - VMAX_PX_S) * eased;
+                } else {
+                    const tt = Math.min(1, (td - mainDecayMs) / tailMs);
+                    const eased = 0.5 * (1 - Math.cos(Math.PI * tt));
+                    return V_CREEP * (1 - eased);
+                }
+            }
+        };
+
+        const SAMPLES = 140;
+        const stepMs = totalMs / SAMPLES;
+        const positions = [0];
+        for (let i = 1; i <= SAMPLES; i++) {
+            positions.push(positions[i - 1] + velocityAt(i * stepMs) * (stepMs / 1000));
+        }
+        const totalDistEstimate = positions[positions.length - 1];
+
+        const CARD_STEP_ESTIMATE = 192;
+        const travelCards = Math.ceil(totalDistEstimate / CARD_STEP_ESTIMATE) + 4;
         const AFTER_CARDS = 14;
 
         const cycle = [];
-        while (cycle.length < fastCardsCount + DECEL_CARDS + AFTER_CARDS + available.length) cycle.push(...available);
-        const winnerIdx = fastCardsCount + DECEL_CARDS;
+        while (cycle.length < travelCards + AFTER_CARDS + available.length) cycle.push(...available);
+        const winnerIdx = travelCards;
         const filler = cycle.slice(0, winnerIdx);
         filler.push(winner);
         filler.push(...cycle.slice(winnerIdx, winnerIdx + AFTER_CARDS));
@@ -4875,11 +5115,7 @@ _getUsedCircuits() {
         reel.style.transform = 'translateX(0)';
         void reel.offsetWidth;
 
-        // Realny krok karty (szerokość + gap), liczony z faktycznie wyrenderowanych elementów
-        const cardStep = reel.children[1].getBoundingClientRect().left - reel.children[0].getBoundingClientRect().left;
-        const fastPhaseX = -(fastCardsCount * cardStep);
-
-        // Pozycja docelowa liczona z rzeczywistych wymiarów elementu
+        
         const winnerCardEl = reel.children[winnerIdx];
         const wrapRect = reelWrap.getBoundingClientRect();
         const cardRect = winnerCardEl.getBoundingClientRect();
@@ -4888,43 +5124,51 @@ _getUsedCircuits() {
         const snapX = Math.round(wrapCenterX - cardCenterX);
         const jitterSign = Math.random() < 0.5 ? -1 : 1;
         const jitterMagnitude = 25 + Math.random() * 45;
-        const jitter = jitterSign * jitterMagnitude;
-        const finalX = snapX + jitter;
+        const finalX = snapX + jitterSign * jitterMagnitude;
 
-        // FAZA 1: stała maksymalna prędkość (linear), losowy czas 4-6s
-        reel.style.transition = `transform ${fastDurationMs}ms linear`;
-        reel.style.transform = `translateX(${fastPhaseX}px)`;
+        const scale = finalX / totalDistEstimate;
+        const keyframes = positions.map((p, i) => ({
+            transform: `translateX(${p * scale}px)`,
+            offset: i / SAMPLES
+        }));
 
-        setTimeout(() => {
-            // FAZA 2: zwalnianie i lądowanie blisko krawędzi docelowej karty
-            const decelDuration = 2200;
-            reel.style.transition = `transform ${decelDuration}ms cubic-bezier(0.1, 0.7, 0.1, 1)`;
-            reel.style.transform = `translateX(${finalX}px)`;
+        const animation = reel.animate(keyframes, { duration: totalMs, fill: 'forwards' });
+        this._currentAnimation = animation;
 
-            setTimeout(() => {
-                // FAZA 3: docentrowanie pod wskaźnikiem
-                reel.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
-                reel.style.transform = `translateX(${snapX}px)`;
+        animation.onfinish = () => {
+    
+    animation.cancel();
+    reel.style.transition = 'none';
+    reel.style.transform = `translateX(${finalX}px)`;
+    void reel.offsetWidth;
 
-                setTimeout(() => {
-                    const cards = reel.querySelectorAll('.cdm-card');
-                    const winCard = cards[winnerIdx];
-                    if (winCard) winCard.classList.add('highlight', 'winner');
+    const wrapRectFinal = reelWrap.getBoundingClientRect();
+    const cardRectFinal = winnerCardEl.getBoundingClientRect();
+    const correction = (wrapRectFinal.left + wrapRectFinal.width / 2) - (cardRectFinal.left + cardRectFinal.width / 2);
 
-                    // Pokaż wynik
-                    this._result = winner;
-                    document.getElementById('cdm-result-flag').innerHTML = flagImgHtml(winner.flagCode, 78, 53);
-                    document.getElementById('cdm-result-name').textContent = winner.name;
-                    document.getElementById('cdm-result-country').textContent = winner.country;
-                    document.getElementById('cdm-result-box').classList.add('show');
-                    document.getElementById('cdm-status').textContent = `🏁 Wylosowano: ${winner.name}`;
-                    document.getElementById('cdm-btn-spin').style.display = 'none';
-                    document.getElementById('cdm-btn-accept').style.display = '';
-                    document.getElementById('cdm-btn-reject').style.display = '';
-                    this._spinning = false;
-                }, 600);
-            }, decelDuration);
-        }, fastDurationMs);
+    
+    reel.style.transition = 'transform 0.35s cubic-bezier(0.19,1,0.22,1)';
+    requestAnimationFrame(() => {
+        reel.style.transform = `translateX(${finalX + correction}px)`;
+    });
+    const clearTransition = () => { reel.style.transition = 'none'; reel.removeEventListener('transitionend', clearTransition); };
+    reel.addEventListener('transitionend', clearTransition, { once: true });
+
+            winnerCardEl.classList.add('highlight', 'winner');
+
+            // Pokaż wynik
+            this._result = winner;
+            document.getElementById('cdm-result-flag').innerHTML = flagImgHtml(winner.flagCode, 78, 53);
+            document.getElementById('cdm-result-name').textContent = winner.name;
+            document.getElementById('cdm-result-country').textContent = winner.country;
+            document.getElementById('cdm-result-box').classList.add('show');
+            document.getElementById('cdm-status').textContent = `🏁 Wylosowano: ${winner.name}`;
+            document.getElementById('cdm-btn-spin').style.display = 'none';
+            document.getElementById('cdm-btn-accept').style.display = '';
+            document.getElementById('cdm-btn-reject').style.display = '';
+            this._currentAnimation = null;
+            this._spinning = false;
+        };
     },
 
     async accept() {
