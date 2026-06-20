@@ -362,6 +362,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .adm-team-row { transition: box-shadow 0.2s, transform 0.2s; }
 .adm-team-row:hover { transform: translateX(3px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
 .toast-notice { transition: opacity 0.35s cubic-bezier(0.19,1,0.22,1), transform 0.4s cubic-bezier(0.19,1,0.22,1); }
+
 /* ===================== MAIN CONTENT ===================== */
 .main-content { max-width: 2400px; margin: 0 auto; padding: 0 40px 200px; }
 .page-view { display: none; }
@@ -480,8 +481,18 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .race-tab-btn.active { color: var(--f1-black); border-bottom-color: var(--f1-red); }
 .race-tab-btn:hover:not(.active) { color: var(--f1-dark-grey); }
-.race-tab-pane { display: none; }
-.race-tab-pane.active { display: block; }
+.race-tab-pane {
+    display: none;
+    opacity: 0;
+}
+.race-tab-pane.active {
+    display: block;
+    animation: tabSlideIn 0.35s cubic-bezier(0.19,1,0.22,1) forwards;
+}
+@keyframes tabSlideIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
 
 /* ===================== ARCHIWUM ===================== */
 .archive-body { display: block !important; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.6s cubic-bezier(0.19,1,0.22,1), opacity 0.3s ease; }
@@ -950,6 +961,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     background: var(--f1-red);
     color: #fff;
     border-color: var(--f1-red);
+}
+#adm-split2-btn.active {
+    background: #0078ff;
+    border-color: #0078ff;
+    box-shadow: 0 0 16px rgba(0,120,255,0.4);
 }
 .admin-split-btn:hover:not(.active) {
     background: rgba(255,255,255,0.14);
@@ -1702,6 +1718,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             </div>
         </div>
         <button class="regulamin-edit-btn" id="regulamin-edit-btn" onclick="ui.openRegulaminEditor()">✎ EDYTUJ REGULAMIN</button>
+		<button class="btn-action btn-secondary" onclick="closeRegulaminEditor()">ANULUJ</button>
+<button class="btn-action" onclick="dbCore.saveRegulamin()">💾 ZAPISZ REGULAMIN</button>
     </div>
 </main>
 
@@ -2805,7 +2823,8 @@ toggleAuth(show) {
         mainContent?.classList.add('split-fading');
         hero?.classList.add('split-fading');
 
-        setTimeout(() => {
+       setTimeout(() => {
+		document.body.classList.toggle('split2-mode', n === 2);
             currentSplit = n;
             adminSplit = n;
             // (timing dopasowany do nowej animacji — patrz setTimeout poniżej)
@@ -3922,7 +3941,9 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         }
     },
     async publishRace() {
-        const splitPath = getSplitPath(adminSplit);
+    const activeAdminSplit = document.getElementById('adm-split2-btn')?.classList.contains('active') ? 2 : 1;
+    adminSplit = activeAdminSplit;
+    const splitPath = getSplitPath(activeAdminSplit);
         const title = document.getElementById('adm-race-title').value;
         const raw = document.getElementById('adm-race-raw').value;
         const noBonusRaw = document.getElementById('adm-no-bonus-nicks').value;
