@@ -1223,8 +1223,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     }
     input, textarea, select { font-size: 16px !important; }
     .f1-table td { font-size: 16px; }
-}
-@media (max-width: 480px) {
+
+    /* Animacja przejścia split — mniejszy napis na telefonie */
+    #split-fx-content { gap: 16px; }
+    #split-fx-logo { width: 130px; height: 98px; }
+    #split-fx-label { font-size: 42px; letter-spacing: 6px; white-space: nowrap; }
+}a (max-width: 480px) {
 #view-standings .f1-card:first-child .f1-table th:nth-child(3),
 #view-standings .f1-card:first-child .f1-table td:nth-child(3) { display: none; }
     .f1-title { font-size: 26px; }
