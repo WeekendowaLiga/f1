@@ -493,6 +493,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     from { opacity: 0; transform: translateY(14px) scale(0.99); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
+.race-tab-pane.leaving {
+    display: block;
+    animation: tabSlideOut 0.22s cubic-bezier(0.19,1,0.22,1) forwards;
+}
+@keyframes tabSlideOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-12px) scale(0.985); }
+}
 
 /* ===================== ARCHIWUM ===================== */
 .archive-body { display: block !important; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.6s cubic-bezier(0.19,1,0.22,1), opacity 0.3s ease; }
@@ -505,7 +513,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .arc-edit-name { flex: 1; cursor: pointer; padding: 4px 10px; border-radius: 4px; transition: background 0.2s, color 0.2s; }
 .arc-edit-name:hover { color: var(--f1-red); background: rgba(225,6,0,0.05); }
 .arc-edit-name.editable-mode:hover::after { content: ' ✎'; font-size: 0.5em; opacity: 0.4; }
-
+@keyframes archiveListIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.archive-list-anim { animation: archiveListIn 0.35s cubic-bezier(0.19,1,0.22,1) both; }
 /* ===================== GALERIA ===================== */
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(550px, 1fr)); gap: 50px; }
 .album-card { background: var(--f1-black); height: 400px; position: relative; overflow: hidden; border-bottom: 15px solid var(--f1-red); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: transform 0.4s ease, box-shadow 0.4s ease; }
@@ -549,6 +561,19 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .team-page-card.tc-haas     { background: linear-gradient(135deg, #4a4a4a 0%, #666666 60%, #2e2e2e 95%); }
 .team-page-card.tc-rb       { background: linear-gradient(135deg, #004cff 0%, #1060ff 60%, #0030cc 80%); }
 .team-page-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: rgba(255,255,255,0.35); z-index: 1; }
+.tpc-side-sweep {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+    overflow: hidden; z-index: 2; pointer-events: none;
+}
+.tpc-side-sweep::before {
+    content: '';
+    position: absolute; left: 0; top: -100%; width: 100%; height: 100%;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.95) 50%, transparent 100%);
+    transition: top 0.65s cubic-bezier(0.19,1,0.22,1);
+}
+.team-page-card:hover .tpc-side-sweep::before {
+    top: 100%;
+}
 .team-page-card::after { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 41px); pointer-events: none; z-index: 0; }
 .tpc-header { display: flex; align-items: center; justify-content: space-between; padding: 32px 36px 20px 44px; position: relative; z-index: 2; border-bottom: 1px solid rgba(255,255,255,0.15); }
 .tpc-name { font-family: var(--font-display); font-weight: 900; font-size: 52px; color: #fff; text-transform: uppercase; letter-spacing: 2px; line-height: 1; text-shadow: 0 2px 12px rgba(0,0,0,0.4); flex: 1; }
@@ -684,6 +709,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .admin-section-header.open .admin-section-arrow { transform: rotate(180deg); }
 .admin-section-body { padding: 30px; display: none; }
 .admin-section-body.open { display: block; }
+@keyframes adminSplitFlash {
+    0%   { opacity: 0.3; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.admin-body-flash { animation: adminSplitFlash 0.4s cubic-bezier(0.19,1,0.22,1) both; }
 .form-group { margin-bottom: 22px; }
 .form-label { display: block; font-weight: 800; margin-bottom: 8px; text-transform: uppercase; font-size: 12px; color: #666; letter-spacing: 2px; }
 .form-hint { font-size: 11px; color: #999; font-weight: 400; text-transform: none; letter-spacing: 0; margin-top: 4px; display: block; }
@@ -2112,6 +2142,7 @@ function hideSplash() {
         var app = document.getElementById('main-app');
         if (app) app.style.display = 'block';
         if (window._resetInactivityTimer) window._resetInactivityTimer();
+        if (window.ui && window.ui.replayStandingsCountUp) window.ui.replayStandingsCountUp();
     }, 500);
 }
 function showSplash() {
@@ -2253,7 +2284,28 @@ const findFastestLapIdx = (results) => {
     (results || []).forEach((r, i) => { const t = toSec(r.best); if (t < best) { best = t; idx = i; } });
     return idx;
 };
-
+// ===================== COUNT-UP ANIMACJA LICZB =====================
+function animateCountUp(el, target, duration = 800) {
+    if (!el) return;
+    target = parseInt(target) || 0;
+    if (target === 0) { el.textContent = '0'; return; }
+    const start = performance.now();
+    function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased);
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target;
+    }
+    requestAnimationFrame(tick);
+}
+function runCountUps(container) {
+    if (!container) return;
+    container.querySelectorAll('[data-countup]').forEach((el, i) => {
+        const target = el.getAttribute('data-countup');
+        setTimeout(() => animateCountUp(el, target), i * 20);
+    });
+}
 const getDriverCurrentTeam = (nick) => {
     const nl = (nick || '').toLowerCase().trim();
     for (const [teamKey, info] of Object.entries(teamsInfoData)) {
@@ -2315,6 +2367,7 @@ function renderTeamsPage() {
         };
 
         return `<div class="team-page-card tc-${t.key}" style="animation-delay:${idx * 0.06}s">
+            <div class="tpc-side-sweep"></div>
             ${editHint}
             <div class="tpc-header">
                 <div>
@@ -2554,6 +2607,7 @@ window.ui = {
         if (pageId === 'gallery') { this.closeAlbum(); subscribeGallery(); }
         if (pageId === 'archive') subscribeArchive(currentSplit);
         if (pageId === 'teams') renderTeamsPage();
+        if (pageId === 'standings') runCountUps(document.getElementById('view-standings'));
         if (pageId === 'regulamin') {
             const editBtn = document.getElementById('regulamin-edit-btn');
             if (editBtn) editBtn.style.display = isLoggedIn ? 'block' : 'none';
@@ -2763,14 +2817,30 @@ toggleAuth(show) {
         const btn  = document.getElementById('arc-btn-' + id);
         const isOpen = body.classList.toggle('open');
         if (btn) btn.classList.toggle('open', isOpen);
-        if (isOpen && isLoggedIn) {
-            setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
+        if (isOpen) {
+            ui.replayRowAnimations(body);
+            if (isLoggedIn) setTimeout(() => initRaceRowDragDrop(`race-tbl-${id}`, id, false), 50);
         }
+    },
+    replayRowAnimations(container) {
+        if (!container) return;
+        container.querySelectorAll('tbody tr').forEach(row => {
+            row.style.animation = 'none';
+            void row.offsetWidth;
+            row.style.animation = '';
+        });
     },
     switchArchiveTab(tab) {
         const isRaces = tab === 'races';
-        document.getElementById('api-archive-list').style.display = isRaces ? 'block' : 'none';
-        document.getElementById('api-quali-list').style.display = isRaces ? 'none' : 'block';
+        const showEl = document.getElementById(isRaces ? 'api-archive-list' : 'api-quali-list');
+        const hideEl = document.getElementById(isRaces ? 'api-quali-list' : 'api-archive-list');
+        if (hideEl) hideEl.style.display = 'none';
+        if (showEl) {
+            showEl.style.display = 'block';
+            showEl.classList.remove('archive-list-anim');
+            void showEl.offsetWidth;
+            showEl.classList.add('archive-list-anim');
+        }
         const activeStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;';
         const inactiveStyle = 'font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;';
         document.getElementById('arc-tab-races').style.cssText = isRaces ? activeStyle : inactiveStyle;
@@ -2781,9 +2851,19 @@ toggleAuth(show) {
     switchRaceTab(context, tab, btn) {
         if (context === 'last') {
             document.querySelectorAll('#last-race-tabs .race-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('[id^="last-race-tab-"]').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('[id^="last-race-tab-"]').forEach(p => {
+                if (p.id === 'last-race-tab-' + tab) return;
+                if (p.classList.contains('active')) {
+                    p.classList.remove('active');
+                    p.classList.add('leaving');
+                    p.addEventListener('animationend', function handler() {
+                        p.classList.remove('leaving');
+                        p.removeEventListener('animationend', handler);
+                    }, { once: true });
+                }
+            });
             const pane = document.getElementById('last-race-tab-' + tab);
-            if (pane) pane.classList.add('active');
+            if (pane) { pane.classList.remove('leaving'); pane.classList.add('active'); }
         }
         if (btn) btn.classList.add('active');
     },
@@ -2844,6 +2924,8 @@ toggleAuth(show) {
         }, 330);
     },
    adminSwitchSplit(n) {
+        const body = document.querySelector('.admin-body');
+        if (body) { body.classList.remove('admin-body-flash'); void body.offsetWidth; body.classList.add('admin-body-flash'); }
         adminSplit = n;
         document.getElementById('adm-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('adm-split2-btn').classList.toggle('active', n === 2);
@@ -3000,14 +3082,14 @@ toggleAuth(show) {
             ? `<img class="dp-team-logo" src="${logoUrl}" alt="${teamName}" onerror="this.style.display='none'">`
             : '';
 
-        document.getElementById('dp-stat-races').textContent = allRaces.length;
-        document.getElementById('dp-stat-pts').textContent = totalPts;
-        document.getElementById('dp-stat-wins').textContent = wins;
-        document.getElementById('dp-stat-podiums').textContent = podiums;
+        animateCountUp(document.getElementById('dp-stat-races'), allRaces.length, 800);
+        animateCountUp(document.getElementById('dp-stat-pts'), totalPts, 900);
+        animateCountUp(document.getElementById('dp-stat-wins'), wins, 700);
+        animateCountUp(document.getElementById('dp-stat-podiums'), podiums, 750);
         document.getElementById('dp-stat-best').textContent = bestPos === Infinity ? '—' : bestPos;
         document.getElementById('dp-stat-avg').textContent = avgPos;
-        document.getElementById('dp-stat-fl').textContent = fastestLaps;
-        document.getElementById('dp-stat-pp').textContent = polePositions;
+        animateCountUp(document.getElementById('dp-stat-fl'), fastestLaps, 700);
+        animateCountUp(document.getElementById('dp-stat-pp'), polePositions, 700);
 
         const content = document.getElementById('dp-races-content');
         if (allRaces.length === 0) {
@@ -3287,6 +3369,9 @@ toggleAuth(show) {
         const save = async () => { const nv=input.value.trim(); await update(ref(db, splitPath + '/archive/'+id),{name:nv}); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); if (e.key==='Escape'){input.value=currentName;input.blur();} });
+    },
+    replayStandingsCountUp() {
+        runCountUps(document.getElementById('view-standings'));
     }
 };
 
@@ -3784,10 +3869,21 @@ ui.switchArcTab = function(btn, id, tab) {
     const parent = btn.closest('.archive-body') || btn.closest('div');
     if (!parent) return;
     parent.querySelectorAll('.race-tab-btn').forEach(b => b.classList.remove('active'));
-    parent.querySelectorAll('.race-tab-pane').forEach(p => p.classList.remove('active'));
+    const targetId = `arc-tab-${tab}-${id}`;
+    parent.querySelectorAll('.race-tab-pane').forEach(p => {
+        if (p.id === targetId) return;
+        if (p.classList.contains('active')) {
+            p.classList.remove('active');
+            p.classList.add('leaving');
+            p.addEventListener('animationend', function handler() {
+                p.classList.remove('leaving');
+                p.removeEventListener('animationend', handler);
+            }, { once: true });
+        }
+    });
     btn.classList.add('active');
-    const pane = document.getElementById(`arc-tab-${tab}-${id}`);
-    if (pane) pane.classList.add('active');
+    const pane = document.getElementById(targetId);
+    if (pane) { pane.classList.remove('leaving'); pane.classList.add('active'); }
 };
 
 // ===================== TOAST / NICK CHIPS / SZYBKIE ODLICZANIE =====================
@@ -4411,7 +4507,7 @@ function renderConstructorRow(r, i) {
             <div class="constructor-name-cell">${leftDecor}<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span></div>
         </td>
         <td class="col-pts" style="padding-right:10px;">
-            <span class="cteam-pts-cell">${isLoggedIn ? `<span class="editable-cell" onclick="ui.editCell(this,'standings','teams',${i},'pts')">${r.pts}</span>` : r.pts}</span>
+            <span class="cteam-pts-cell">${isLoggedIn ? `<span class="editable-cell" data-countup="${r.pts||0}" onclick="ui.editCell(this,'standings','teams',${i},'pts')">0</span>` : `<span data-countup="${r.pts||0}">0</span>`}</span>
         </td>
     </tr>`;
 }
@@ -4458,11 +4554,11 @@ function renderStandings() {
                 ? `<span class="arc-cell-editable ${posC}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'pos')">${d.pos||i+1}</span>`
                 : `<span class="${posC}">${d.pos||i+1}</span>`;
             const ptsHtml = isLoggedIn
-                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'pts')">${d.pts||0}</span>`
-                : `${d.pts||0}`;
+                ? `<span class="editable-cell" data-countup="${d.pts||0}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'pts')">0</span>`
+                : `<span data-countup="${d.pts||0}">0</span>`;
             const winsHtml = isLoggedIn
-                ? `<span class="editable-cell" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'wins')">${d.wins||0}</span>`
-                : `${d.wins||0}`;
+                ? `<span class="editable-cell" data-countup="${d.wins||0}" onclick="ui.editCell(this,'${getSplitPath()}/standings','drivers',${origIdx},'wins')">0</span>`
+                : `<span data-countup="${d.wins||0}">0</span>`;
             const deleteBtn = isLoggedIn
                 ? `<span style="cursor:pointer;color:#c00;font-weight:900;margin-left:10px;font-size:0.6em;" onclick="event.stopPropagation();ui.deleteDriverFromStandings(${origIdx})" title="Usuń kierowcę">🗑</span>`
                 : '';
@@ -4482,6 +4578,8 @@ function renderStandings() {
     if (teamsList && sd.teams) {
         teamsList.innerHTML = sd.teams.map((r, i) => renderConstructorRow(r, i)).join('');
     }
+    runCountUps(driversList);
+    runCountUps(teamsList);
 }
 
 function getSplitPath(split) {
