@@ -1666,7 +1666,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div id="view-standings" class="page-view active">
         <div id="quick-standings-bar" class="quick-action-bar">
             <span class="qa-label">Szybka akcja</span>
-            <button class="btn-quick" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive(currentSplit)">🔄 PRZELICZ Z ARCHIWUM</button>
+            <button class="btn-quick" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive()">🔄 PRZELICZ Z ARCHIWUM</button>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; overflow-x: auto;">
             <div class="f1-card">
@@ -5304,7 +5304,7 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
             const db = window._fbDb;
             const snap = await new Promise(res => fbOnValue(fbRef(db, 'config'), res, { onlyOnce: true }));
             const cfg = snap.val() || {};
-            const title = `NEXT RACE: ${c.name.toUpperCase()}`;
+            const title = ` ${c.name.toUpperCase()}`;
             await fbSet(fbRef(db, 'config'), {
                 ...cfg,
                 heroTitleS1: title,
