@@ -3580,10 +3580,34 @@ if (filteredLabel) {
 ui.insertArmNick = function(nick, team) {
     const ta = document.getElementById('arm-race-raw');
     if (!ta) return;
-    const prefix = ta.value && !ta.value.endsWith('\n') ? '\n' : '';
-    ta.value += `${prefix}${nick} | ${team} | `;
+
+    const cursorPos = ta.selectionStart;
+    const text = ta.value;
+
+    // Znajdź granice aktualnej linii
+    const lineStart = text.lastIndexOf('\n', cursorPos - 1) + 1;
+    const lineEndRaw = text.indexOf('\n', cursorPos);
+    const lineEnd = lineEndRaw === -1 ? text.length : lineEndRaw;
+    const currentLine = text.substring(lineStart, lineEnd);
+
+    if (currentLine.includes('|')) {
+        // Zamień tylko nick (pierwsza część przed |), resztę zostaw
+        const parts = currentLine.split('|');
+        parts[0] = nick + ' ';
+        const newLine = parts.join('|');
+        ta.value = text.substring(0, lineStart) + newLine + text.substring(lineEnd);
+        // Ustaw kursor zaraz za nickiem i separatorem
+        const newPos = lineStart + nick.length + 3;
+        ta.selectionStart = ta.selectionEnd = Math.min(newPos, lineStart + newLine.length);
+    } else {
+        // Pusta linia — dopisz nową
+        const prefix = text && !text.endsWith('\n') && text.length > 0 ? '\n' : '';
+        ta.value = text + `${prefix}${nick} | ${team} | `;
+        ta.selectionStart = ta.selectionEnd = ta.value.length;
+    }
+
     ta.focus();
-    ta.selectionStart = ta.selectionEnd = ta.value.length;
+    ui.onArmRawInput(ta);
 };
 
 ui.submitAddRaceModal = async function() {
