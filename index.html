@@ -2086,7 +2086,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <div class="cdm-top-bar"></div>
         <div class="cdm-header">
             <span style="font-size:28px;">🎰</span>
-            <span class="cdm-header-title">Losowanie toru GP — Sezon 2025</span>
+            <span class="cdm-header-title">Losowanie toru GP </span>
             <button class="cdm-close" onclick="circuitDraw.close()">✕</button>
         </div>
         <div class="cdm-body">
@@ -2800,7 +2800,7 @@ toggleAuth(show) {
         img.style.opacity = url ? 1 : 0.2;
         if (url && !url.startsWith('[')) teamLogos[teamKey] = url;
     },
-    handleLogoUpload(teamKey, input) {
+   handleLogoUpload(teamKey, input) {
         const file = input.files[0]; if (!file) return;
         const reader = new FileReader();
         reader.onload = e => {
@@ -4665,10 +4665,23 @@ function subscribeStandings(splitNum) {
     if (splitSubscribed[splitNum].standings) return;
     splitSubscribed[splitNum].standings = true;
     const sp = splitNum === 1 ? 'split1' : 'split2';
+
+    // 1) Pokaż od razu to co mamy z poprzedniej wizyty (z localStorage)
+    try {
+        const cached = localStorage.getItem('f1_standings_' + sp);
+        if (cached) {
+            const d = JSON.parse(cached);
+            splitDataCache[splitNum].standings = d;
+            if (currentSplit === splitNum) renderStandings();
+        }
+    } catch (e) {}
+
+    // 2) Podłącz się do żywych danych z Firebase i nadpisz gdy przyjdą
     onValue(ref(db, sp + '/standings'), snap => {
         const d = snap.val();
         if (d) {
             splitDataCache[splitNum].standings = d;
+            try { localStorage.setItem('f1_standings_' + sp, JSON.stringify(d)); } catch (e) {}
             if (adminSplit === splitNum) {
                 const driversRaw = document.getElementById('adm-drivers-raw');
                 const teamsRaw = document.getElementById('adm-teams-raw');
@@ -4727,11 +4740,11 @@ function subscribeTeamsInfo(splitNum) {
     });
 }
 
-// Ładuj split 1 od razu
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
 subscribeArchive(1);
+
 
 // ── config listener ──────────────────────────────────────────────────────────
 onValue(ref(db, 'config'), snap => {
@@ -5017,7 +5030,17 @@ window.circuitDraw = {
     _spinning: false,
     _result: null,
     _usedNames: new Set(),
-	    _currentAnimation: null,
+    _currentAnimation: null,
+    _lastWinnerName: (function(){ try { return localStorage.getItem('f1_lastCircuitWinner') || null; } catch(e){ return null; } })(),
+
+    _shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    },
 
 _getUsedCircuits() {
     const used = new Set();
@@ -5087,12 +5110,16 @@ _getUsedCircuits() {
     const reel = document.getElementById('cdm-reel');
     if (!reel) return;
     
-    reel.getAnimations().forEach(a => a.cancel());
-        // ZMIANA: taśma w STAŁEJ kolejności (bez losowego tasowania) — kolejka zawsze zaczyna się od nowa, w tej samej kolejności
-        let pool = [];
+   let pool = [];
         if (available.length > 0) {
             const repeats = Math.max(4, Math.ceil(20 / available.length));
-            for (let i = 0; i < repeats; i++) pool.push(...available);
+            for (let i = 0; i < repeats; i++) {
+                let shuffled = this._shuffle(available);
+                if (pool.length > 0 && shuffled[0].name === pool[pool.length - 1].name && shuffled.length > 1) {
+                    [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+                }
+                pool.push(...shuffled);
+            }
         }
         reel.innerHTML = pool.map((c, i) => {
             return `<div class="cdm-card" data-name="${c.name}" data-idx="${i}">
@@ -5194,7 +5221,12 @@ document.getElementById('cdm-reel')?.getAnimations().forEach(a => a.cancel());
         document.getElementById('cdm-status').textContent = '🎰 Losowanie w toku...';
         document.querySelectorAll('.cdm-card').forEach(c => c.classList.remove('highlight','winner'));
 
-        const winner = available[Math.floor(Math.random() * available.length)];
+        let candidates = available;
+        if (this._lastWinnerName && available.length > 1) {
+            const filtered = available.filter(c => c.name !== this._lastWinnerName);
+            if (filtered.length > 0) candidates = filtered;
+        }
+        const winner = candidates[Math.floor(Math.random() * candidates.length)];
 
         const reel = document.getElementById('cdm-reel');
         const reelWrap = document.querySelector('.cdm-reel-wrap');
@@ -5242,11 +5274,25 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
         const AFTER_CARDS = 14;
 
         const cycle = [];
-        while (cycle.length < travelCards + AFTER_CARDS + available.length) cycle.push(...available);
+        while (cycle.length < travelCards + AFTER_CARDS + available.length) {
+            let shuffled = this._shuffle(available);
+            if (cycle.length > 0 && shuffled[0].name === cycle[cycle.length - 1].name && shuffled.length > 1) {
+                [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+            }
+            cycle.push(...shuffled);
+        }
         const winnerIdx = travelCards;
         const filler = cycle.slice(0, winnerIdx);
+        if (filler.length > 0 && filler[filler.length - 1].name === winner.name) {
+            filler.pop();
+            filler.push(cycle[winnerIdx] || available.find(c => c.name !== winner.name));
+        }
         filler.push(winner);
-        filler.push(...cycle.slice(winnerIdx, winnerIdx + AFTER_CARDS));
+        let afterCards = cycle.slice(winnerIdx, winnerIdx + AFTER_CARDS);
+        if (afterCards.length > 0 && afterCards[0].name === winner.name && afterCards.length > 1) {
+            [afterCards[0], afterCards[1]] = [afterCards[1], afterCards[0]];
+        }
+        filler.push(...afterCards);
 
         reel.innerHTML = filler.map((c, i) => {
             return `<div class="cdm-card" data-name="${c.name}" data-idx="${i}">
@@ -5306,6 +5352,8 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
 
             // Pokaż wynik
             this._result = winner;
+            this._lastWinnerName = winner.name;
+            try { localStorage.setItem('f1_lastCircuitWinner', winner.name); } catch(e) {}
             document.getElementById('cdm-result-flag').innerHTML = flagImgHtml(winner.flagCode, 78, 53);
             document.getElementById('cdm-result-name').textContent = winner.name;
             document.getElementById('cdm-result-country').textContent = winner.country;
