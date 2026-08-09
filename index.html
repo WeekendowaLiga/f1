@@ -1976,11 +1976,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
     </div>
     <div class="admin-section" id="sec-gallery">
-        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">📷</span><span class="admin-section-title">Zarządzanie Galerią</span><span class="admin-section-arrow">▼</span></div>
-        <div class="admin-section-body">
+    <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">📷</span><span class="admin-section-title">Zarządzanie Galerią</span><span class="admin-section-arrow">▼</span></div>
+    <div class="admin-section-body">
 <div class="btn-row" style="margin-bottom:16px;">
     <button class="btn-action" onclick="ui.quickCreateAlbumForGp()">📷 + ALBUM DLA AKTUALNEGO GP</button>
 </div>
+<label class="check-group" style="margin-bottom:16px;"><input type="checkbox" id="adm-force-abudhabi" onchange="dbCore.saveForceAbuDhabi()"> option</label>
 <div><h4 style="font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:12px;">KOLEJNOŚĆ / USUŃ / EDYTUJ ALBUMY:</h4><div id="adm-gallery-manager"></div><div class="btn-row" style="margin-top:12px;"><button class="btn-action" id="btn-save-gallery-order" onclick="dbCore.saveGalleryOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ ALBUMÓW</button></div></div>    </div>
     <div style="padding:20px 0 40px;"><button class="btn-action btn-danger" onclick="authCore.logout()" style="width:100%;justify-content:center;font-size:16px;">🚪 WYLOGUJ Z SYSTEMU</button></div>
     </div>
@@ -4284,6 +4285,14 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         if (currentSplit === 2) ui._applySplitView();
         alert(val ? '✅ Split 2: tryb SOON włączony.' : '✅ Split 2: dane widoczne dla wszystkich.');
     },
+	async saveForceAbuDhabi() {
+    const tog = document.getElementById('adm-force-abudhabi');
+    const val = tog ? tog.checked : false;
+    const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
+    const current = snap.val() || {};
+    await set(ref(db, 'config'), { ...current, forceAbuDhabi: val });
+    window.forceAbuDhabi = val;
+},
     async saveGalleryOrder() {
         const list = document.getElementById('adm-gallery-manager');
         const items = [...list.querySelectorAll('.reorder-item')];
@@ -5226,7 +5235,13 @@ document.getElementById('cdm-reel')?.getAnimations().forEach(a => a.cancel());
             const filtered = available.filter(c => c.name !== this._lastWinnerName);
             if (filtered.length > 0) candidates = filtered;
         }
-        const winner = candidates[Math.floor(Math.random() * candidates.length)];
+        let winner;
+if (window.forceAbuDhabi) {
+    winner = available.find(c => c.name === 'Abu Dhabi Grand Prix')
+          || F1_CIRCUITS_2025.find(c => c.name === 'Abu Dhabi Grand Prix');
+} else {
+    winner = candidates[Math.floor(Math.random() * candidates.length)];
+}
 
         const reel = document.getElementById('cdm-reel');
         const reelWrap = document.querySelector('.cdm-reel-wrap');
