@@ -470,7 +470,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .race-row-dragging { opacity: 0.35; background: rgba(225,6,0,0.08) !important; }
 .race-row-dragover { border-top: 3px solid var(--f1-red) !important; }
 
-/* ===================== TABS W WYŚCIGU (Last Race + Archive) ===================== */
+/* ===================== TABS W WYŚCIGU ===================== */
 .race-tabs { display: flex; border-bottom: 3px solid #eee; margin-bottom: 0; }
 .race-tab-btn {
     font-family: var(--font-display); font-size: 22px; font-weight: 900;
@@ -602,7 +602,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-footer { padding: 14px 44px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; background: rgba(0,0,0,0.15); }
 .tpc-num { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.5); line-height: 1; user-select: none; position: absolute; right: 36px; bottom: 10px; }
 
-/* ===================== PROFIL KIEROWCY — MODAL ===================== */
+/* ===================== PROFIL KIEROWCY MODAL ===================== */
 #driver-profile-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.88);
@@ -894,7 +894,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .split-btn.active { background: transparent; color: #fff; }
 .split-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: #fff; }
-/* ===================== SPLIT 2 SOON OVERLAY ===================== */
+/* ===================== S2 SOON OVERLAY ===================== */
 #split2-soon-overlay {
     display: none;
     position: fixed;
@@ -955,7 +955,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     text-transform: uppercase;
     text-align: center;
 }
-/* ===================== ADMIN SPLIT SELECTOR ===================== */
+/* ===================== ADM S SELECT ===================== */
 .admin-split-bar {
     display: flex;
     align-items: center;
@@ -1003,7 +1003,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .split-only-section { transition: opacity 0.2s; }
 
-/* ===================== QUICK ACTIONS (BEZ OTWIERANIA ADMINA) ===================== */
+/* ===================== QUICK ACTIONS ===================== */
 .quick-action-bar {
     display: none;
     align-items: center;
@@ -1271,7 +1271,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     input, textarea, select { font-size: 16px !important; }
     .f1-table td { font-size: 16px; }
 
-    /* Animacja przejścia split — mniejszy napis na telefonie */
+    /* Animacja przejścia split */
     #split-fx-content { gap: 16px; }
     #split-fx-logo { width: 130px; height: 98px; }
     #split-fx-label { font-size: 42px; letter-spacing: 6px; white-space: nowrap; }
@@ -1466,7 +1466,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .gm-btn-sec:hover { background: rgba(255,255,255,0.14); color: #fff; transform: translateY(-2px); }
 .gm-spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: f1Spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
 
-/* Przycisk dodawania wyników w last race / archive */
 .add-results-btn {
     display: none;
     align-items: center; gap: 10px;
@@ -1704,7 +1703,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         DODAJ WYNIKI
     </button>
 </div>
-            <!-- ZMIANA: struktura z tabsami dla wyścigu i kwalifikacji -->
+            <!-- struktura tabs wys kwal-->
             <div id="api-last-race-wrapper">
                 <div class="race-tabs" id="last-race-tabs" style="display:none;">
                     <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
@@ -1795,7 +1794,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <h2>⚙ CENTRALNY PANEL</h2>
         <button class="btn-action" onclick="ui.toggleAdmin(false)">✕ ZAMKNIJ</button>
     </div>
-    <!-- SPLIT SELECTOR W ADMINIE -->
+    <!-- SPLIT SELECTOR ADM -->
     <div class="admin-split-bar">
         <span class="admin-split-label">Split:</span>
         <button class="admin-split-btn active" id="adm-split1-btn" onclick="ui.adminSwitchSplit(1)">SPLIT 1</button>
@@ -2007,7 +2006,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <button class="arm-close" onclick="ui.closeAddRaceModal(null,true)">✕</button>
         </div>
         <div class="arm-body">
-            <!-- Kolumna lewa: tytuł + opcje -->
+       
             <div class="arm-section">
                 <div class="arm-section-title">Informacje</div>
                 <div class="arm-form-group">
@@ -2030,7 +2029,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                     <b>Bonusy:</b> ✅ Dojechał = +3 PKT &nbsp; ❌ DNF/DSQ/DNS = 0 &nbsp; 🤖 Boty = 0
                 </div>
             </div>
-            <!-- Kolumna prawa: nicki chips -->
+           
             <div class="arm-section">
                 <div class="arm-section-title">Szybkie wstawianie nicków</div>
                 <div class="arm-filtered-label" id="arm-filtered-label">🎯 Filtrując po zespole z wklejonego tekstu</div>
@@ -2050,7 +2049,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                     </details>
                 </div>
             </div>
-            <!-- Pełna szerokość: textarea wyniki -->
+         
             <div class="arm-section">
                 <div class="arm-section-title">Wyniki</div>
                 <label class="arm-label">Format: Nick | Zespół | P. startowa | Pit | Najl. okrążenie | Czas | PKT</label>
@@ -2212,7 +2211,7 @@ let splitDataCache = {
     1: { standings: null, lastRace: null, archive: {}, teamsInfo: {} },
     2: { standings: null, lastRace: null, archive: {}, teamsInfo: {} }
 };
-window.splitDataCache = splitDataCache; // realny cache, dostępny globalnie od razu
+window.splitDataCache = splitDataCache; 
 let splashTimerInterval = null;
 let cachedHeroConfig = { mode: 'countdown', date: '', title: '' };
 let teamLogos = {};
@@ -2559,7 +2558,7 @@ function initReorderList(listEl, onDrop) {
     });
 }
 
-// ===================== RENDER TABELI KWALIFIKACJI (nowa, prosta) =====================
+// ===================== RENDER TABELI KWALIFIKACJI  =====================
 const renderQualiTable = (results, raceId = null) => {
     if (!results || results.length === 0) return '<p style="padding:20px;color:#aaa;font-family:var(--font-data);font-size:22px;">Brak danych kwalifikacji.</p>';
     const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
@@ -2868,11 +2867,11 @@ toggleAuth(show) {
         if (btn) btn.classList.add('active');
     },
 
-    // ===================== SPLIT SWITCHER =====================
+    // ===================== SPLIT SELECTOR =====================
     switchSplit(n) {
         if (currentSplit === n) return;
 
-        // odpal flash przejścia
+        // animacja przejscia
         const fxLabel = document.getElementById('split-fx-label');
         if (fxLabel) fxLabel.textContent = 'SPLIT ' + n;
         const fxLogo = document.getElementById('split-fx-logo');
@@ -2892,12 +2891,12 @@ toggleAuth(show) {
             setTimeout(() => shakeTarget.classList.remove('split-shaking'), 300);
         }
 
-        // suwak + aktywne przyciski od razu (ma się ruszać razem z flashem)
+        // suwak 
         document.querySelector('.split-toggle-wrap')?.classList.toggle('split-2-active', n === 2);
         document.getElementById('nav-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('nav-split2-btn').classList.toggle('active', n === 2);
 
-        // przyciemnij/rozmyj treść na czas przelotu flasha
+        
         const mainContent = document.querySelector('.main-content');
         const hero = document.querySelector('.f1-hero');
         mainContent?.classList.add('split-fading');
@@ -2907,7 +2906,6 @@ toggleAuth(show) {
 		document.body.classList.toggle('split2-mode', n === 2);
             currentSplit = n;
             adminSplit = n;
-            // (timing dopasowany do nowej animacji — patrz setTimeout poniżej)
             document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
             document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
             // Subskrybuj dane nowego splitu
@@ -2972,7 +2970,7 @@ toggleAuth(show) {
     async openDriverProfile(nick) {
         if (!nick || nick === '—' || nick.trim() === '') return;
 
-        // Pokaż modal od razu z loading state
+        // Pokaż modal z loading state
         const overlay = document.getElementById('driver-profile-overlay');
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -2990,7 +2988,7 @@ toggleAuth(show) {
         });
         document.getElementById('dp-races-content').innerHTML = `<div style="text-align:center;padding:60px;font-family:var(--font-display);font-size:26px;color:var(--f1-red);letter-spacing:4px;text-transform:uppercase;animation:splashPulse 1.5s ease infinite;">Ładowanie...</div>`;
 
-        // Jeśli archiwum splitu NIE jest jeszcze zasubskrybowane — subskrybuj i POCZEKAJ na pierwsze dane
+        // ładowanie dancyh
         if (!splitSubscribed[currentSplit].archive) {
             await new Promise(resolve => {
                 const sp = currentSplit === 1 ? 'split1' : 'split2';
@@ -3006,11 +3004,11 @@ toggleAuth(show) {
                 });
             });
         } else {
-            // Dane już są w cache — upewnij się że alias jest aktualny
+            
             archiveDataCache = splitDataCache[currentSplit].archive;
         }
 
-        // Teraz oblicz statystyki z załadowanych danych
+        // Stats
         const arcEntries = Object.values(archiveDataCache)
             .filter(race => !race.isTraining && !race.isQualifying)
             .sort((a, b) => {
@@ -3065,7 +3063,7 @@ toggleAuth(show) {
         const teamDef = TEAM_DEFS.find(t => t.label.toLowerCase() === teamName.toLowerCase());
         const logoUrl = teamDef ? (teamLogos[teamDef.key] || '') : '';
 
-        // Ustaw kolory
+        // kolory
         document.getElementById('dp-top-bar').style.background = teamColor;
         document.getElementById('dp-left-accent').style.background = teamColor;
         document.getElementById('dp-team-dot').style.background = teamColor;
@@ -3476,7 +3474,7 @@ ui.onArmRawInput = function(textarea) {
         return;
     }
 
-    // Kursorowa pozycja: znajdź aktualną linię i jej zespół
+    //
     const cursorPos = textarea.selectionStart;
     const textBefore = textarea.value.substring(0, cursorPos);
     const currentLineText = textBefore.split('\n').pop() || '';
@@ -3484,7 +3482,7 @@ ui.onArmRawInput = function(textarea) {
     const currentTeamRaw = currentLineParts[1] || '';
     const currentTeam = currentTeamRaw ? normalizeTeamName(currentTeamRaw) : null;
 
-    // Zbierz graczy z teamsInfo i standings pasujących do zespołu z aktualnej linii
+    //
     const ti = splitDataCache[adminSplit].teamsInfo || {};
     const sd = splitDataCache[adminSplit].standings;
     const map = new Map(); // nick.lower → { nick, team }
@@ -3502,7 +3500,7 @@ ui.onArmRawInput = function(textarea) {
 
     const allPlayers = [...map.values()];
 
-    // Jeśli cursor jest na linii z określonym zespołem — filtruj po tym zespole
+    // 
     if (currentTeam) {
         const filtered = allPlayers.filter(p => normalizeTeamName(p.team) === currentTeam);
         if (filtered.length > 0) {
@@ -3512,7 +3510,7 @@ ui.onArmRawInput = function(textarea) {
         }
     }
 
-    // Fallback: pokaż wszystkich
+    // 
     ui._buildArmNickChips(null);
 };
 
@@ -3543,7 +3541,7 @@ if (filteredLabel) {
             ? allChips.map((c, i) => `<span style="animation:f1StaggerIn 0.3s ${i * 0.05}s both;">${c}</span>`).join('')
             : '<span style="font-family:var(--font-data);font-size:13px;color:rgba(255,255,255,0.3);">Brak graczy (tylko boty?) w wklejonych danych</span>';
     } else {
-        // Tryb domyślny: pokaż wszystkich graczy z klasyfikacji
+        // 
         if (filteredLabel) filteredLabel.classList.remove('visible');
         const sd = splitDataCache[adminSplit].standings;
         const ti = splitDataCache[adminSplit].teamsInfo || {};
