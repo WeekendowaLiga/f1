@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -418,10 +419,15 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .cteam-alpine td { color: #fff !important; }
 .cteam-williams { background: linear-gradient(90deg, #182cc4 0%, #1f38d4 100%); }
 .cteam-williams td { color: #fff !important; }
-.cteam-sauber   { background: linear-gradient(90deg, #1a7a1a 0%, #229922 100%); }
-.cteam-sauber td { color: #fff !important; }
+
 .cteam-haas     { background: linear-gradient(90deg, #4a4a4a 0%, #666 100%); }
 .cteam-haas td { color: #fff !important; }
+.cteam-audi     { background: linear-gradient(90deg, #3d3d3d 0%, #2a2a2a 100%); }
+.cteam-audi td { color: #fff !important; }
+.cteam-cadillac { background: linear-gradient(90deg, #1f1f1f 0%, #0f0f0f 100%); }
+.cteam-cadillac td { color: #fff !important; }
+.cteam-sauber { background: linear-gradient(90deg, #00e600 0%, #00b300 100%); }
+.cteam-sauber td { color: #111 !important; }
 .cteam-rb       { background: linear-gradient(90deg, #004cff 0%, #1060ff 100%); }
 .cteam-rb td { color: #fff !important; }
 .cteam-pts-cell { background: rgba(255,255,255,0.92) !important; color: var(--f1-black) !important; font-weight: 900 !important; border-radius: 4px; padding: 8px 20px !important; display: inline-block; min-width: 60px; text-align: center; }
@@ -434,7 +440,9 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .team-aston    { border-left: 15px solid #006f62; } .txt-aston    { color: #006f62; }
 .team-alpine   { border-left: 15px solid #6088d6; } .txt-alpine   { color: #6088d6; }
 .team-williams { border-left: 15px solid #182cc4; } .txt-williams { color: #182cc4; }
-.team-sauber   { border-left: 15px solid #52e252; } .txt-sauber   { color: #52e252; }
+.team-audi     { border-left: 15px solid #3d3d3d; } .txt-audi     { color: #3d3d3d; }
+.team-cadillac { border-left: 15px solid #1f1f1f; } .txt-cadillac { color: #1f1f1f; }
+.team-sauber { border-left: 15px solid #00e600; } .txt-sauber { color: #00e600; }
 .team-haas     { border-left: 15px solid #bdb3b3; } .txt-haas     { color: #bdb3b3; }
 .team-rb       { border-left: 15px solid #004cff; } .txt-rb       { color: #004cff; }
 .driver-cell { display: flex; align-items: center; gap: 18px; }
@@ -470,7 +478,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .race-row-dragging { opacity: 0.35; background: rgba(225,6,0,0.08) !important; }
 .race-row-dragover { border-top: 3px solid var(--f1-red) !important; }
 
-/* ===================== TABS W WYŚCIGU ===================== */
+/* ===================== TABS W WYŚCIGU (Last Race + Archive) ===================== */
 .race-tabs { display: flex; border-bottom: 3px solid #eee; margin-bottom: 0; }
 .race-tab-btn {
     font-family: var(--font-display); font-size: 22px; font-weight: 900;
@@ -557,9 +565,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .team-page-card.tc-aston    { background: linear-gradient(135deg, #006f62 0%, #008573 60%, #004d44 88%); }
 .team-page-card.tc-alpine   { background: linear-gradient(135deg, #6088d6 0%, #4a72c4 60%, #2d55a8 80%); }
 .team-page-card.tc-williams { background: linear-gradient(135deg, #182cc4 0%, #1f38d4 60%, #0e1e9c 80%); }
-.team-page-card.tc-sauber   { background: linear-gradient(135deg, #1a7a1a 0%, #229922 60%, #0f5a0f 87%); }
 .team-page-card.tc-haas     { background: linear-gradient(135deg, #4a4a4a 0%, #666666 60%, #2e2e2e 95%); }
 .team-page-card.tc-rb       { background: linear-gradient(135deg, #004cff 0%, #1060ff 60%, #0030cc 80%); }
+.team-page-card.tc-audi     { background: linear-gradient(135deg, #3d3d3d 0%, #2a2a2a 60%, #1a1a1a 88%); }
+.team-page-card.tc-cadillac { background: linear-gradient(135deg, #1f1f1f 0%, #141414 60%, #0a0a0a 88%); }
+.team-page-card.tc-sauber { background: linear-gradient(135deg, #00e600 0%, #00b300 60%, #007a00 88%); }
 .team-page-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: rgba(255,255,255,0.35); z-index: 1; }
 .tpc-side-sweep {
     position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
@@ -602,7 +612,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-footer { padding: 14px 44px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; background: rgba(0,0,0,0.15); }
 .tpc-num { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.5); line-height: 1; user-select: none; position: absolute; right: 36px; bottom: 10px; }
 
-/* ===================== PROFIL KIEROWCY MODAL ===================== */
+/* ===================== PROFIL KIEROWCY — MODAL ===================== */
 #driver-profile-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.88);
@@ -894,7 +904,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .split-btn.active { background: transparent; color: #fff; }
 .split-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: #fff; }
-/* ===================== S2 SOON OVERLAY ===================== */
+/* ===================== SPLIT 2 SOON OVERLAY ===================== */
 #split2-soon-overlay {
     display: none;
     position: fixed;
@@ -955,7 +965,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     text-transform: uppercase;
     text-align: center;
 }
-/* ===================== ADM S SELECT ===================== */
+/* ===================== ADMIN SPLIT SELECTOR ===================== */
 .admin-split-bar {
     display: flex;
     align-items: center;
@@ -1003,7 +1013,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .split-only-section { transition: opacity 0.2s; }
 
-/* ===================== QUICK ACTIONS ===================== */
+/* ===================== QUICK ACTIONS (BEZ OTWIERANIA ADMINA) ===================== */
 .quick-action-bar {
     display: none;
     align-items: center;
@@ -1271,11 +1281,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     input, textarea, select { font-size: 16px !important; }
     .f1-table td { font-size: 16px; }
 
-    /* Animacja przejścia split */
+    /* Animacja przejścia split — mniejszy napis na telefonie */
     #split-fx-content { gap: 16px; }
     #split-fx-logo { width: 130px; height: 98px; }
-    #split-fx-label { font-size: 42px; letter-spacing: 6px; white-space: nowrap; }
-}a (max-width: 480px) {
+        #split-fx-label { font-size: 42px; letter-spacing: 6px; white-space: nowrap; }
+}
+@media (max-width: 480px) {
 #view-standings .f1-card:first-child .f1-table th:nth-child(3),
 #view-standings .f1-card:first-child .f1-table td:nth-child(3) { display: none; }
     .f1-title { font-size: 26px; }
@@ -1466,6 +1477,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .gm-btn-sec:hover { background: rgba(255,255,255,0.14); color: #fff; transform: translateY(-2px); }
 .gm-spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: f1Spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
 
+/* Przycisk dodawania wyników w last race / archive */
 .add-results-btn {
     display: none;
     align-items: center; gap: 10px;
@@ -1662,7 +1674,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 </section>
 
 <main class="main-content">
-    <div id="view-standings" class="page-view active">
+        <div id="view-standings" class="page-view active">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+            <select class="season-split-select" onchange="ui.switchSeasonSplit(this.value,'standings')" style="font-family:var(--font-data);font-size:16px;font-weight:700;letter-spacing:1px;color:#333;background:transparent;border:2px solid #ccc;border-radius:6px;padding:8px 16px;cursor:pointer;">
+               <option value="1-1">Sezon 1 - Split 1</option>
+			   <option value="1-2">Sezon 1 - Split 2</option>
+			   <option value="2-1" selected>Sezon 2 - Split 1</option>
+            </select>
+        </div>
         <div id="quick-standings-bar" class="quick-action-bar">
             <span class="qa-label">Szybka akcja</span>
             <button class="btn-quick" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive()">🔄 PRZELICZ Z ARCHIWUM</button>
@@ -1703,7 +1722,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         DODAJ WYNIKI
     </button>
 </div>
-            <!-- struktura tabs wys kwal-->
+            <!-- ZMIANA: struktura z tabsami dla wyścigu i kwalifikacji -->
             <div id="api-last-race-wrapper">
                 <div class="race-tabs" id="last-race-tabs" style="display:none;">
                     <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
@@ -1714,7 +1733,15 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             </div>
         </div>
     </div>
-    <div id="view-archive" class="page-view">
+                <div id="view-archive" class="page-view">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+            <select class="season-split-select" onchange="ui.switchSeasonSplit(this.value,'archive')" style="font-family:var(--font-data);font-size:16px;font-weight:700;letter-spacing:1px;color:#333;background:transparent;border:2px solid #ccc;border-radius:6px;padding:8px 16px;cursor:pointer;">
+                <option value="1-1">Sezon 1 - Split 1</option>
+                <option value="1-2">Sezon 1 - Split 2</option>
+                <option value="2-1" selected>Sezon 2 - Split 1</option>
+               
+            </select>
+        </div>
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0;margin-bottom:30px;border-bottom:4px solid var(--f1-black);">
             <button id="arc-tab-races" onclick="ui.switchArchiveTab('races')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:var(--f1-black);color:#fff;border:none;cursor:pointer;border-bottom:4px solid var(--f1-red);margin-bottom:-4px;">🏁 WYŚCIGI</button>
             <button id="arc-tab-quali" onclick="ui.switchArchiveTab('quali')" style="font-family:var(--font-display);font-size:28px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:20px 50px;background:transparent;color:#888;border:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-4px;transition:all 0.2s;">⏱ KWALIFIKACJE</button>
@@ -1727,6 +1754,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <div id="api-quali-list" style="display:none;"></div>
     </div>
     <div id="view-gallery" class="page-view">
+        <        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+            <select id="gallery-season-select" class="season-split-select" onchange="ui.switchSeasonSplit(this.value,'gallery')" style="font-family:var(--font-data);font-size:16px;font-weight:700;letter-spacing:1px;color:#333;background:transparent;border:2px solid #ccc;border-radius:6px;padding:8px 16px;cursor:pointer;">
+                <option value="1-1">Sezon 1 - Split 1</option>
+                <option value="1-2">Sezon 1 - Split 2</option>
+                <option value="2-1" selected>Sezon 2 - Split 1</option>
+                
+            </select>
+        </div>
         <div id="gallery-albums" class="gallery-grid"></div>
         <div id="gallery-viewer" class="hidden">
             <div class="album-viewer-header">
@@ -1794,7 +1829,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <h2>⚙ CENTRALNY PANEL</h2>
         <button class="btn-action" onclick="ui.toggleAdmin(false)">✕ ZAMKNIJ</button>
     </div>
-    <!-- SPLIT SELECTOR ADM -->
+    <!-- SPLIT SELECTOR W ADMINIE -->
     <div class="admin-split-bar">
         <span class="admin-split-label">Split:</span>
         <button class="admin-split-btn active" id="adm-split1-btn" onclick="ui.adminSwitchSplit(1)">SPLIT 1</button>
@@ -1810,6 +1845,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <a href="#sec-news" onclick="ui.openAdminSection('sec-news')">📢 News</a>
         <a href="#sec-countdown" onclick="ui.openAdminSection('sec-countdown')">⏱ Odliczanie</a>
         <a class="split-only-toc" href="#sec-split2soon" onclick="ui.openAdminSection('sec-split2soon')" style="display:none;">🔒 Split 2 Status</a>
+        <a href="#sec-split-switcher" onclick="ui.openAdminSection('sec-split-switcher')">🔀 Przełącznik Splitów</a>
         <span style="width:2px;background:rgba(255,255,255,0.15);margin:4px 6px;"></span>
         <a href="#sec-logos" onclick="ui.openAdminSection('sec-logos')">🏎 Loga</a>
         <a class="split-only-toc" href="#sec-teamspanel" onclick="ui.openAdminSection('sec-teamspanel')">🚀 Zespoły</a>
@@ -1826,6 +1862,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             </div>
         </div>
      </div>
+	     <div class="admin-section" id="sec-split-switcher">
+        <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔀</span><span class="admin-section-title">Przełącznik Splitów</span><span class="admin-section-arrow">▼</span></div>
+        <div class="admin-section-body">
+            <p style="color:#555;font-size:13px;margin-top:0;line-height:1.6;">Ukryj przycisk SPLIT 1 / SPLIT 2 w górnym menu strony (przełączanie odbywa się wtedy tylko przez selektory sezonu przy klasyfikacjach/archiwum/galerii).</p>
+            <label class="check-group"><input type="checkbox" id="adm-hide-split-switcher"> UKRYJ PRZEŁĄCZNIK SPLITÓW NA STRONIE</label>
+            <div class="btn-row"><button class="btn-action" onclick="dbCore.saveSplitSwitcherVisibility()">💾 ZAPISZ</button></div>
+        </div>
+    </div>
     <div class="admin-section" id="sec-split2soon">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🔒</span><span class="admin-section-title">Status Split 2</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
@@ -1958,6 +2002,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <div class="btn-row">
                 <button class="btn-action" onclick="dbCore.saveStandings()">💾 ZAPISZ KLASYFIKACJE</button>
                 <button class="btn-action" style="background:#1a5c1a;border-color:#2d8a2d;" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive()" title="Przelicza PKT i wygrane na podstawie archiwum wyścigów">🔄 PRZELICZ Z ARCHIWUM</button>
+                <button class="btn-action btn-danger" onclick="if(confirm('🆕 NOWY SEZON: to wyzeruje PKT i WYGRANE wszystkim kierowcom i zespołom w tym splicie (lista nicków/zespołów zostaje). Kontynuować?')) dbCore.startNewSeason()">🆕 NOWY SEZON — WYZERUJ PUNKTY</button>
             </div>
             <p style="color:#666;font-size:11px;margin-top:6px;line-height:1.5;">💡 „Przelicz z archiwum" — sumuje PKT ze wszystkich wyścigów (bez treningów/kwalifikacji) i nadpisuje klasyfikację. Boty AI nie są wliczane do konstruktorów.</p>
         </div>
@@ -2006,7 +2051,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             <button class="arm-close" onclick="ui.closeAddRaceModal(null,true)">✕</button>
         </div>
         <div class="arm-body">
-       
+            <!-- Kolumna lewa: tytuł + opcje -->
             <div class="arm-section">
                 <div class="arm-section-title">Informacje</div>
                 <div class="arm-form-group">
@@ -2029,7 +2074,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                     <b>Bonusy:</b> ✅ Dojechał = +3 PKT &nbsp; ❌ DNF/DSQ/DNS = 0 &nbsp; 🤖 Boty = 0
                 </div>
             </div>
-           
+            <!-- Kolumna prawa: nicki chips -->
             <div class="arm-section">
                 <div class="arm-section-title">Szybkie wstawianie nicków</div>
                 <div class="arm-filtered-label" id="arm-filtered-label">🎯 Filtrując po zespole z wklejonego tekstu</div>
@@ -2049,7 +2094,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                     </details>
                 </div>
             </div>
-         
+            <!-- Pełna szerokość: textarea wyniki -->
             <div class="arm-section">
                 <div class="arm-section-title">Wyniki</div>
                 <label class="arm-label">Format: Nick | Zespół | P. startowa | Pit | Najl. okrążenie | Czas | PKT</label>
@@ -2206,12 +2251,13 @@ window._fbFirebase = { ref, onValue, set, update, push, remove };
 let isLoggedIn = false;
 let currentSplit = 1;
 let adminSplit = 1;
+let currentSeason = 2; // 1 = obecne dane (bez zmian), 2 = nowy sezon (namespace season2/)
 let split2SoonMode = true;
 let splitDataCache = {
     1: { standings: null, lastRace: null, archive: {}, teamsInfo: {} },
     2: { standings: null, lastRace: null, archive: {}, teamsInfo: {} }
 };
-window.splitDataCache = splitDataCache; 
+window.splitDataCache = splitDataCache; // realny cache, dostępny globalnie od razu
 let splashTimerInterval = null;
 let cachedHeroConfig = { mode: 'countdown', date: '', title: '' };
 let teamLogos = {};
@@ -2224,6 +2270,10 @@ const getArchiveDataCache = () => splitDataCache[currentSplit].archive;
 const getLastRaceDataCache = () => splitDataCache[currentSplit].lastRace;
 let archiveDataCache = {};
 let lastRaceDataCache = null;
+let splitSubscribed = {
+    1: { standings: false, lastRace: false, archive: false, teamsInfo: false },
+    2: { standings: false, lastRace: false, archive: false, teamsInfo: false }
+};
 
 const TEAM_DEFS = [
     { key: 'ferrari',  label: 'Ferrari',      color: '#ef1a2d', fullName: 'Scuderia Ferrari HP' },
@@ -2235,7 +2285,9 @@ const TEAM_DEFS = [
     { key: 'haas',     label: 'Haas',          color: '#888888', fullName: 'MoneyGram Haas F1 Team' },
     { key: 'williams', label: 'Williams',      color: '#182cc4', fullName: 'Williams Racing' },
     { key: 'rb',       label: 'Racing Bulls',  color: '#004cff', fullName: 'Visa Cash App RB F1 Team' },
-    { key: 'sauber',   label: 'Kick Sauber',   color: '#52e252', fullName: 'Stake F1 Team Kick Sauber' },
+    { key: 'audi',     label: 'Audi',          color: '#3d3d3d', fullName: 'Audi F1 Team' },
+    { key: 'cadillac', label: 'Cadillac',      color: '#1f1f1f', fullName: 'Cadillac F1 Team' },
+    { key: 'sauber',   label: 'Sauber',        color: '#00e600', fullName: 'Sauber F1 Team' },
 ];
 
 const TEAM_DEFAULTS = {
@@ -2248,6 +2300,8 @@ const TEAM_DEFAULTS = {
     haas:     { driver1: '', driver2: '', desc: '' },
     williams: { driver1: '', driver2: '', desc: '' },
     rb:       { driver1: '', driver2: '', desc: '' },
+    audi:     { driver1: '', driver2: '', desc: '' },
+    cadillac: { driver1: '', driver2: '', desc: '' },
     sauber:   { driver1: '', driver2: '', desc: '' },
 };
 
@@ -2264,10 +2318,12 @@ const getTeamColorByName = (teamName) => {
     if (n.includes('aston')) return '#006f62';
     if (n.includes('alpine')) return '#6088d6';
     if (n.includes('williams')) return '#182cc4';
-    if (n.includes('sauber') || n.includes('kick') || n.includes('stake')) return '#52e252';
     if (n.includes('haas') || n.includes('moneygram')) return '#888888';
     if (n.includes('racing bull') || n.includes('visa cash') || n.includes('vcarb') || n === 'rb' || n.startsWith('rb ') || n.endsWith(' rb')) return '#004cff';
-    return '#e10600';
+    if (n.includes('audi')) return '#3d3d3d';
+        if (n.includes('cadillac')) return '#1f1f1f';
+    if (n.includes('sauber') || n.includes('kick')) return '#00e600';
+    return '#e10600';    return '#e10600';
 };
 
 const findFastestLapIdx = (results) => {
@@ -2495,6 +2551,10 @@ function renderSplashCountdown(config) {
     splashTimerInterval = setInterval(tickSplash, 1000);
 }
 
+function applySplitSwitcherVisibility(val) {
+    const el = document.querySelector('.split-toggle-wrap');
+    if (el) el.style.display = val ? 'none' : '';
+}
 function applyHeroConfig(splitNum) {
     const cfg = splitNum === 2 ? (window.heroConfigS2 || {}) : (window.heroConfigS1 || {});
     const mode = cfg.mode || 'countdown';
@@ -2558,7 +2618,7 @@ function initReorderList(listEl, onDrop) {
     });
 }
 
-// ===================== RENDER TABELI KWALIFIKACJI  =====================
+// ===================== RENDER TABELI KWALIFIKACJI (nowa, prosta) =====================
 const renderQualiTable = (results, raceId = null) => {
     if (!results || results.length === 0) return '<p style="padding:20px;color:#aaa;font-family:var(--font-data);font-size:22px;">Brak danych kwalifikacji.</p>';
     const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
@@ -2598,11 +2658,14 @@ const renderQualiTable = (results, raceId = null) => {
 };
 
 window.ui = {
-    switchPage(pageId, navEl) {
+        switchPage(pageId, navEl) {
         document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.getElementById('view-' + pageId).classList.add('active');
         navEl.classList.add('active');
+        if (['standings','archive','gallery'].includes(pageId)) {
+            this.switchSeasonSplit('2-1', pageId);
+        }
         if (pageId === 'gallery') { this.closeAlbum(); subscribeGallery(); }
         if (pageId === 'archive') subscribeArchive(currentSplit);
         if (pageId === 'teams') renderTeamsPage();
@@ -2845,6 +2908,50 @@ toggleAuth(show) {
         document.getElementById('arc-tab-races').style.cssText = isRaces ? activeStyle : inactiveStyle;
         document.getElementById('arc-tab-quali').style.cssText = isRaces ? inactiveStyle : activeStyle;
     },
+    switchSeason(n, context) {
+        currentSeason = n;
+        if (context === 'archive') {
+            splitSubscribed[currentSplit].archive = false;
+            subscribeArchive(currentSplit);
+        } else if (context === 'gallery') {
+            gallerySubscribed = false;
+            window._currentAlbumId = null;
+            this.closeAlbum();
+            subscribeGallery();
+        } else if (context === 'standings') {
+            splitSubscribed[currentSplit].standings = false;
+            subscribeStandings(currentSplit);
+        }
+    },
+    switchSeasonSplit(value, context) {
+        const [s, sp] = value.split('-').map(Number);
+        currentSeason = s;
+        if (currentSplit !== sp) {
+            currentSplit = sp;
+            adminSplit = sp;
+            subscribeStandings(sp);
+            subscribeLastRace(sp);
+            subscribeTeamsInfo(sp);
+            document.getElementById('nav-split1-btn')?.classList.toggle('active', sp === 1);
+            document.getElementById('nav-split2-btn')?.classList.toggle('active', sp === 2);
+            document.querySelector('.split-toggle-wrap')?.classList.toggle('split-2-active', sp === 2);
+            applyHeroConfig(sp);
+            this._applySplitView();
+        }
+        if (context === 'archive') {
+            splitSubscribed[currentSplit].archive = false;
+            subscribeArchive(currentSplit);
+        } else if (context === 'gallery') {
+            gallerySubscribed = false;
+            window._currentAlbumId = null;
+            this.closeAlbum();
+            subscribeGallery();
+        } else if (context === 'standings') {
+            splitSubscribed[currentSplit].standings = false;
+            subscribeStandings(currentSplit);
+        }
+                document.querySelectorAll('.season-split-select').forEach(sel => { sel.value = value; });
+    },
 
     // ===================== PRZEŁĄCZANIE ZAKŁADEK W LAST RACE =====================
     switchRaceTab(context, tab, btn) {
@@ -2867,11 +2974,11 @@ toggleAuth(show) {
         if (btn) btn.classList.add('active');
     },
 
-    // ===================== SPLIT SELECTOR =====================
+    // ===================== SPLIT SWITCHER =====================
     switchSplit(n) {
         if (currentSplit === n) return;
 
-        // animacja przejscia
+        // odpal flash przejścia
         const fxLabel = document.getElementById('split-fx-label');
         if (fxLabel) fxLabel.textContent = 'SPLIT ' + n;
         const fxLogo = document.getElementById('split-fx-logo');
@@ -2891,12 +2998,12 @@ toggleAuth(show) {
             setTimeout(() => shakeTarget.classList.remove('split-shaking'), 300);
         }
 
-        // suwak 
+        // suwak + aktywne przyciski od razu (ma się ruszać razem z flashem)
         document.querySelector('.split-toggle-wrap')?.classList.toggle('split-2-active', n === 2);
         document.getElementById('nav-split1-btn').classList.toggle('active', n === 1);
         document.getElementById('nav-split2-btn').classList.toggle('active', n === 2);
 
-        
+        // przyciemnij/rozmyj treść na czas przelotu flasha
         const mainContent = document.querySelector('.main-content');
         const hero = document.querySelector('.f1-hero');
         mainContent?.classList.add('split-fading');
@@ -2906,6 +3013,7 @@ toggleAuth(show) {
 		document.body.classList.toggle('split2-mode', n === 2);
             currentSplit = n;
             adminSplit = n;
+            // (timing dopasowany do nowej animacji — patrz setTimeout poniżej)
             document.getElementById('adm-split1-btn')?.classList.toggle('active', n === 1);
             document.getElementById('adm-split2-btn')?.classList.toggle('active', n === 2);
             // Subskrybuj dane nowego splitu
@@ -2970,7 +3078,7 @@ toggleAuth(show) {
     async openDriverProfile(nick) {
         if (!nick || nick === '—' || nick.trim() === '') return;
 
-        // Pokaż modal z loading state
+        // Pokaż modal od razu z loading state
         const overlay = document.getElementById('driver-profile-overlay');
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -2988,7 +3096,7 @@ toggleAuth(show) {
         });
         document.getElementById('dp-races-content').innerHTML = `<div style="text-align:center;padding:60px;font-family:var(--font-display);font-size:26px;color:var(--f1-red);letter-spacing:4px;text-transform:uppercase;animation:splashPulse 1.5s ease infinite;">Ładowanie...</div>`;
 
-        // ładowanie dancyh
+        // Jeśli archiwum splitu NIE jest jeszcze zasubskrybowane — subskrybuj i POCZEKAJ na pierwsze dane
         if (!splitSubscribed[currentSplit].archive) {
             await new Promise(resolve => {
                 const sp = currentSplit === 1 ? 'split1' : 'split2';
@@ -3004,11 +3112,11 @@ toggleAuth(show) {
                 });
             });
         } else {
-            
+            // Dane już są w cache — upewnij się że alias jest aktualny
             archiveDataCache = splitDataCache[currentSplit].archive;
         }
 
-        // Stats
+        // Teraz oblicz statystyki z załadowanych danych
         const arcEntries = Object.values(archiveDataCache)
             .filter(race => !race.isTraining && !race.isQualifying)
             .sort((a, b) => {
@@ -3063,7 +3171,7 @@ toggleAuth(show) {
         const teamDef = TEAM_DEFS.find(t => t.label.toLowerCase() === teamName.toLowerCase());
         const logoUrl = teamDef ? (teamLogos[teamDef.key] || '') : '';
 
-        // kolory
+        // Ustaw kolory
         document.getElementById('dp-top-bar').style.background = teamColor;
         document.getElementById('dp-left-accent').style.background = teamColor;
         document.getElementById('dp-team-dot').style.background = teamColor;
@@ -3348,14 +3456,14 @@ toggleAuth(show) {
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
     },
-	async deleteDriverFromStandings(idx) {
+	    async deleteDriverFromStandings(idx) {
         if (!confirm('Usunąć tego kierowcę z klasyfikacji?')) return;
-        const sp = getSplitPathView();
-        const snap = await new Promise(res => onValue(ref(db, sp + '/standings'), res, { onlyOnce: true }));
+        const sp = seasonStandingsPath(currentSplit);
+        const snap = await new Promise(res => onValue(ref(db, sp), res, { onlyOnce: true }));
         const data = snap.val();
         if (!data || !Array.isArray(data.drivers)) return;
         data.drivers.splice(idx, 1);
-        await set(ref(db, sp + '/standings'), data);
+        await set(ref(db, sp), data);
     },
     async editArchiveName(id, currentName) {
         if (!isLoggedIn) return;
@@ -3474,7 +3582,7 @@ ui.onArmRawInput = function(textarea) {
         return;
     }
 
-    //
+    // Kursorowa pozycja: znajdź aktualną linię i jej zespół
     const cursorPos = textarea.selectionStart;
     const textBefore = textarea.value.substring(0, cursorPos);
     const currentLineText = textBefore.split('\n').pop() || '';
@@ -3482,7 +3590,7 @@ ui.onArmRawInput = function(textarea) {
     const currentTeamRaw = currentLineParts[1] || '';
     const currentTeam = currentTeamRaw ? normalizeTeamName(currentTeamRaw) : null;
 
-    //
+    // Zbierz graczy z teamsInfo i standings pasujących do zespołu z aktualnej linii
     const ti = splitDataCache[adminSplit].teamsInfo || {};
     const sd = splitDataCache[adminSplit].standings;
     const map = new Map(); // nick.lower → { nick, team }
@@ -3500,7 +3608,7 @@ ui.onArmRawInput = function(textarea) {
 
     const allPlayers = [...map.values()];
 
-    // 
+    // Jeśli cursor jest na linii z określonym zespołem — filtruj po tym zespole
     if (currentTeam) {
         const filtered = allPlayers.filter(p => normalizeTeamName(p.team) === currentTeam);
         if (filtered.length > 0) {
@@ -3510,7 +3618,7 @@ ui.onArmRawInput = function(textarea) {
         }
     }
 
-    // 
+    // Fallback: pokaż wszystkich
     ui._buildArmNickChips(null);
 };
 
@@ -3541,7 +3649,7 @@ if (filteredLabel) {
             ? allChips.map((c, i) => `<span style="animation:f1StaggerIn 0.3s ${i * 0.05}s both;">${c}</span>`).join('')
             : '<span style="font-family:var(--font-data);font-size:13px;color:rgba(255,255,255,0.3);">Brak graczy (tylko boty?) w wklejonych danych</span>';
     } else {
-        // 
+        // Tryb domyślny: pokaż wszystkich graczy z klasyfikacji
         if (filteredLabel) filteredLabel.classList.remove('visible');
         const sd = splitDataCache[adminSplit].standings;
         const ti = splitDataCache[adminSplit].teamsInfo || {};
@@ -4187,7 +4295,6 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         alert('✅ Regulamin zapisany!');
     },
     async saveStandings() {
-        const splitPath = getSplitPath(adminSplit);
         const dRaw = document.getElementById('adm-drivers-raw').value.split('\n').filter(l => l.trim());
         const tRaw = document.getElementById('adm-teams-raw').value.split('\n').filter(l => l.trim());
         const drivers = dRaw.map(l => {
@@ -4198,8 +4305,8 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             return { nick: cleanNick, team: normalizeTeamName(p[1] || ''), photo: p[2] || '', wins: p[3] || '0', pts: p[4] || '0', isBot };
         });
         const teams = tRaw.map(l => { const p = l.split('|').map(s => s.trim()); return { team: normalizeTeamName(p[0]), pts: p[1] }; });
-        await set(ref(db, splitPath + '/standings'), { drivers, teams });
-        alert(`Klasyfikacje zaktualizowane! (Split ${adminSplit})`);
+        await set(ref(db, seasonStandingsPath(adminSplit)), { drivers, teams });
+        alert(`Klasyfikacje zaktualizowane! (Split ${adminSplit}, Sezon ${currentSeason})`);
     },
     async saveTeamLogos() {
         const logos = {};
@@ -4354,7 +4461,27 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         const drivers = Object.values(driverMeta).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         await set(ref(db, splitPath + '/standings'), { drivers, teams });
-alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);    }
+alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);
+    },
+        async startNewSeason() {
+        if (!isLoggedIn) return;
+        const sp = seasonStandingsPath(adminSplit);
+        const snap = await new Promise(res => onValue(ref(db, sp), res, { onlyOnce: true }));
+        const current = snap.val() || { drivers: [], teams: [] };
+        const drivers = (current.drivers || []).map(d => ({ ...d, pts: 0, wins: 0 }));
+        const teams = (current.teams || []).map(t => ({ ...t, pts: 0 }));
+                await set(ref(db, sp), { drivers, teams });
+               alert(`✅ Zerowanie wykonane dla Split ${adminSplit}, Sezon ${currentSeason}!`);
+    },
+    async saveSplitSwitcherVisibility() {
+        const tog = document.getElementById('adm-hide-split-switcher');
+        const val = tog ? tog.checked : false;
+        const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
+        const current = snap.val() || {};
+        await set(ref(db, 'config'), { ...current, hideSplitSwitcher: val });
+        applySplitSwitcherVisibility(val);
+        alert(val ? '✅ Przełącznik splitów ukryty.' : '✅ Przełącznik splitów widoczny.');
+    }
 };
 
 // ===================== HELPERS =====================
@@ -4386,13 +4513,14 @@ const normalizeTeamName = (name) => {    if (!name) return name;
     if (n.includes('ferrari') || n.includes('scuderia')) return 'Scuderia Ferrari HP';
     if (n.includes('red bull') && !n.includes('racing bull') && !n.includes('visa')) return 'Red Bull';
     if (n.includes('mercedes')) return 'Mercedes-AMG Petronas';
-    if (n.includes('sauber') || n.includes('kick') || n.includes('stake')) return 'KICK Sauber';
+    
     if (n.includes('williams')) return 'Williams';
     if (n.includes('aston')) return 'Aston Martin';
     if (n.includes('haas') || n.includes('moneygram')) return 'Haas';
     if (n.includes('alpine') || n.includes('bwt')) return 'Alpine';
     if (n.includes('mclaren')) return 'McLaren';
     if (n.includes('racing bull') || n.includes('visa cash') || n.includes('vcarb') || n === 'rb' || n.startsWith('rb ') || n.match(/^racing bulls?$/)) return 'Visa Cash App RB';
+    if (n.includes('sauber') || n.includes('kick')) return 'Sauber';
     return name;
 };
 const getTeamClass = (teamName) => {
@@ -4404,9 +4532,12 @@ const getTeamClass = (teamName) => {
     if (name.includes("aston")) return "team-aston";
     if (name.includes("alpine")) return "team-alpine";
     if (name.includes("williams")) return "team-williams";
-    if (name.includes("sauber") || name.includes("kick") || name.includes("stake")) return "team-sauber";
+    
     if (name.includes("haas") || name.includes("moneygram")) return "team-haas";
-    if (name.includes("racing bull") || name.includes("visa cash") || name.includes("vcarb") || name === "rb" || name.startsWith("rb ") || name.endsWith(" rb")) return "team-rb";
+        if (name.includes("racing bull") || name.includes("visa cash") || name.includes("vcarb") || name === "rb" || name.startsWith("rb ") || name.endsWith(" rb")) return "team-rb";
+    if (name.includes("audi")) return "team-audi";
+    if (name.includes("cadillac")) return "team-cadillac";
+    if (name.includes("sauber") || name.includes("kick")) return "team-sauber";
     return "";
 };
 const getConstructorClass = (teamName) => {
@@ -4418,9 +4549,12 @@ const getConstructorClass = (teamName) => {
     if (name.includes("aston")) return "cteam-aston";
     if (name.includes("alpine")) return "cteam-alpine";
     if (name.includes("williams")) return "cteam-williams";
-    if (name.includes("sauber") || name.includes("kick")) return "cteam-sauber";
+    
     if (name.includes("haas")) return "cteam-haas";
-    if (name.includes("racing bull") || name.includes("visa cash") || name.includes("vcarb") || name === "rb" || name.startsWith("rb ") || name.endsWith(" rb")) return "cteam-rb";
+        if (name.includes("racing bull") || name.includes("visa cash") || name.includes("vcarb") || name === "rb" || name.startsWith("rb ") || name.endsWith(" rb")) return "cteam-rb";
+    if (name.includes("audi")) return "cteam-audi";
+    if (name.includes("cadillac")) return "cteam-cadillac";
+    if (name.includes("sauber") || name.includes("kick")) return "cteam-sauber";
     return "";
 };
 const getTeamKey = (teamName) => { const tc = getTeamClass(teamName); return tc ? tc.replace('team-', '') : ''; };
@@ -4603,7 +4737,17 @@ function renderStandings() {
     runCountUps(driversList);
     runCountUps(teamsList);
 }
-
+function seasonArchivePath(splitNum) {
+    const sp = splitNum === 1 ? 'split1' : 'split2';
+    return currentSeason === 1 ? sp + '/archive' : 'season2/' + sp + '/archive';
+}
+function seasonStandingsPath(splitNum) {
+    const sp = splitNum === 1 ? 'split1' : 'split2';
+    return currentSeason === 1 ? sp + '/standings' : 'season2/' + sp + '/standings';
+}
+function seasonGalleryPath() {
+    return currentSeason === 1 ? 'gallery' : 'season2/gallery';
+}
 function getSplitPath(split) {
     const s = split !== undefined ? split : (document.getElementById('adm-split1-btn')?.classList.contains('active') ? 1 : 2);
     return s === 1 ? 'split1' : 'split2';
@@ -4657,38 +4801,38 @@ function buildAdmArchiveManager() {
 }
 
 // ===================== FIREBASE SPLIT 1 & 2 LISTENERS =====================
-const splitSubscribed = { 1: { standings: false, lastRace: false, archive: false, teamsInfo: false }, 2: { standings: false, lastRace: false, archive: false, teamsInfo: false } };
-
 function subscribeStandings(splitNum) {
     if (splitSubscribed[splitNum].standings) return;
     splitSubscribed[splitNum].standings = true;
-    const sp = splitNum === 1 ? 'split1' : 'split2';
+    const sp = seasonStandingsPath(splitNum);
+    const cacheKey = 'f1_standings_' + sp.replace(/\//g, '_');
 
     // 1) Pokaż od razu to co mamy z poprzedniej wizyty (z localStorage)
     try {
-        const cached = localStorage.getItem('f1_standings_' + sp);
+        const cached = localStorage.getItem(cacheKey);
         if (cached) {
             const d = JSON.parse(cached);
             splitDataCache[splitNum].standings = d;
+            if (currentSplit === splitNum) renderStandings();
+        } else {
+            splitDataCache[splitNum].standings = { drivers: [], teams: [] };
             if (currentSplit === splitNum) renderStandings();
         }
     } catch (e) {}
 
     // 2) Podłącz się do żywych danych z Firebase i nadpisz gdy przyjdą
-    onValue(ref(db, sp + '/standings'), snap => {
-        const d = snap.val();
-        if (d) {
-            splitDataCache[splitNum].standings = d;
-            try { localStorage.setItem('f1_standings_' + sp, JSON.stringify(d)); } catch (e) {}
-            if (adminSplit === splitNum) {
-                const driversRaw = document.getElementById('adm-drivers-raw');
-                const teamsRaw = document.getElementById('adm-teams-raw');
-                if (driversRaw && d.drivers) driversRaw.value = d.drivers.map(dr => `${dr.isBot ? 'BOT:' : ''}${dr.nick} | ${dr.team} | ${dr.photo || ''} | ${dr.wins || 0} | ${dr.pts || 0}`).join('\n');
-                if (teamsRaw && d.teams) teamsRaw.value = d.teams.map(t => `${t.team} | ${t.pts}`).join('\n');
-                buildRaceNickChips();
-            }
-            if (currentSplit === splitNum) renderStandings();
+    onValue(ref(db, sp), snap => {
+        const d = snap.val() || { drivers: [], teams: [] };
+        splitDataCache[splitNum].standings = d;
+        try { localStorage.setItem(cacheKey, JSON.stringify(d)); } catch (e) {}
+        if (adminSplit === splitNum) {
+            const driversRaw = document.getElementById('adm-drivers-raw');
+            const teamsRaw = document.getElementById('adm-teams-raw');
+            if (driversRaw) driversRaw.value = (d.drivers || []).map(dr => `${dr.isBot ? 'BOT:' : ''}${dr.nick} | ${dr.team} | ${dr.photo || ''} | ${dr.wins || 0} | ${dr.pts || 0}`).join('\n');
+            if (teamsRaw) teamsRaw.value = (d.teams || []).map(t => `${t.team} | ${t.pts}`).join('\n');
+            buildRaceNickChips();
         }
+        if (currentSplit === splitNum) renderStandings();
     });
 }
 
@@ -4706,11 +4850,10 @@ function subscribeLastRace(splitNum) {
     });
 }
 
-function subscribeArchive(splitNum) {
-    if (splitSubscribed[splitNum].archive) return;
+function subscribeArchive(splitNum, season) {
+    const s = season || currentSeason;
     splitSubscribed[splitNum].archive = true;
-    const sp = splitNum === 1 ? 'split1' : 'split2';
-    onValue(ref(db, sp + '/archive'), snap => {
+    onValue(ref(db, seasonArchivePath(splitNum)), snap => {
         const d = snap.val();
         splitDataCache[splitNum].archive = d || {};
         if (currentSplit === splitNum) {
@@ -4753,7 +4896,11 @@ onValue(ref(db, 'config'), snap => {
     const tog = document.getElementById('adm-split2-soon-toggle');
     if (tog) tog.checked = !!split2SoonMode;
     if (currentSplit === 2) ui._applySplitView();
-
+    if (c.hideSplitSwitcher !== undefined) {
+        applySplitSwitcherVisibility(c.hideSplitSwitcher);
+        const togHide = document.getElementById('adm-hide-split-switcher');
+        if (togHide) togHide.checked = c.hideSplitSwitcher;
+    }
     if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
         socialConfig = c.socialIcons;
@@ -4836,7 +4983,7 @@ let gallerySubscribed = false;
 function subscribeGallery() {
     if (gallerySubscribed) return;
     gallerySubscribed = true;
-    onValue(ref(db, 'gallery'), snap => {
+onValue(ref(db, seasonGalleryPath()), snap => {
         const data = snap.val();
         const albumsGrid = document.getElementById('gallery-albums');
         const manager = document.getElementById('adm-gallery-manager');
@@ -5415,3 +5562,4 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+z
