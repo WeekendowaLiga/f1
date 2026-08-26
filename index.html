@@ -1154,12 +1154,37 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     .f1-auth-zone { width: auto; display: flex; align-items: right; gap: 8px; flex-shrink: 0; }
     #btn-open-login { font-size: 18px; padding: 8px 12px; border-width: 2px; }
     #btn-open-admin { font-size: 12px; padding: 10px 14px; letter-spacing: 1px; }
-    .f1-nav { overflow-x: unset; justify-content: stretch; display: grid; grid-template-columns: 1fr 1fr; }
-    .f1-nav .nav-item:nth-child(5) { grid-column: span 1; }
-    .f1-nav .nav-item:nth-child(6) { grid-column: span 1; }
+        .f1-nav { overflow-x: unset; justify-content: stretch; display: grid; grid-template-columns: 1fr; }
     .split-toggle-wrap { grid-column: 1 / -1; justify-content: center; margin: 6px 10px 2px; border-radius: 8px; }
     .split-btn { font-size: 18px; padding: 10px 24px; flex: 1; text-align: center; }
-    .nav-item { padding: 18px 10px; font-size: 22px; white-space: nowrap; text-align: center; border-bottom: 4px solid transparent; letter-spacing: 0.5px; }
+    .nav-item { display: none; padding: 18px 10px; font-size: 22px; white-space: nowrap; text-align: center; border-bottom: 4px solid transparent; letter-spacing: 0.5px; }
+    .nav-hamburger-btn {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 4px; grid-column: 1 / -1; width: 100%; height: 64px;
+        background: transparent; border: none; border-top: 2px solid rgba(255,255,255,0.08);
+        cursor: pointer; margin: 4px 0 0;
+    }
+    .nav-hamburger-lines { display: flex; flex-direction: column; gap: 5px; align-items: center; }
+    .nav-hamburger-lines span { display: block; width: 34px; height: 3px; background: #fff; border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
+    .nav-hamburger-arrow { color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 2px; transition: transform 0.3s ease; }
+    #f1-main-nav.mobile-open .nav-hamburger-arrow { transform: rotate(180deg); }
+    #f1-main-nav.mobile-open .nav-hamburger-lines span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    #f1-main-nav.mobile-open .nav-hamburger-lines span:nth-child(2) { opacity: 0; }
+    #f1-main-nav.mobile-open .nav-hamburger-lines span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    #f1-main-nav.mobile-open .nav-item {
+        display: block; grid-column: 1 / -1; width: 100%; box-sizing: border-box;
+        animation: navItemDropIn 0.35s cubic-bezier(0.19,1,0.22,1) both;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        background: #15151e;
+    }
+    #f1-main-nav.mobile-open .nav-item:nth-child(3) { animation-delay: 0.03s; }
+    #f1-main-nav.mobile-open .nav-item:nth-child(4) { animation-delay: 0.06s; }
+    #f1-main-nav.mobile-open .nav-item:nth-child(5) { animation-delay: 0.09s; }
+    #f1-main-nav.mobile-open .nav-item:nth-child(6) { animation-delay: 0.12s; }
+    #f1-main-nav.mobile-open .nav-item:nth-child(7) { animation-delay: 0.15s; }
+    #f1-main-nav.mobile-open .nav-item:nth-child(8) { animation-delay: 0.18s; }
+    #f1-main-nav.mobile-open .nav-item:nth-child(9) { animation-delay: 0.21s; }
+    @keyframes navItemDropIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .f1-hero { padding: 40px 20px; }
     .f1-hero h1 { font-size: 40px; margin-bottom: 30px; letter-spacing: 1px; }
     .timer-unit { min-width: 60px; padding: 12px 8px 10px; }
@@ -1343,6 +1368,49 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         width: 20px;
         height: 20px;
     }
+}
+
+.nav-hamburger-btn { display: none; }
+
+/* ===================== KALENDARZ ===================== */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 10px 0 20px;
+}
+.calendar-card {
+    position: relative;
+    height: 260px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1a1a22;
+    border: 2px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: transform 0.3s cubic-bezier(0.19,1,0.22,1), box-shadow 0.3s ease;
+}
+.calendar-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+.calendar-card.empty { align-items: center; justify-content: center; border: 2px dashed rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+.calendar-card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.55; }
+.calendar-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); }
+.calendar-round-badge { position: absolute; top: 14px; left: 14px; z-index: 2; background: var(--f1-red); color: #fff; font-family: var(--font-display); font-weight: 900; font-size: 14px; letter-spacing: 2px; padding: 6px 14px; border-radius: 4px; text-transform: uppercase; }
+.calendar-flag { position: absolute; top: 14px; right: 14px; z-index: 2; }
+.calendar-flag img { width: 40px; height: 27px; object-fit: cover; border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.calendar-card-info { position: relative; z-index: 2; padding: 18px 20px; }
+.calendar-gp-name { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 1px; line-height: 1.1; }
+.calendar-circuit-name { font-family: var(--font-data); font-size: 14px; color: rgba(255,255,255,0.55); letter-spacing: 1px; margin-top: 4px; }
+.calendar-empty-text { font-family: var(--font-display); font-size: 16px; color: rgba(255,255,255,0.25); letter-spacing: 3px; text-transform: uppercase; }
+.calendar-empty-round { font-family: var(--font-display); font-size: 40px; font-weight: 900; color: rgba(255,255,255,0.15); margin-bottom: 8px; }
+@media (max-width: 1024px) {
+    .calendar-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .calendar-card { height: 190px; }
+    .calendar-gp-name { font-size: 19px; }
+}
+@media (max-width: 600px) {
+    .calendar-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1620,14 +1688,19 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     </div>
 </header>
 
-<nav class="f1-nav">
+<nav class="f1-nav" id="f1-main-nav">
     <div class="split-toggle-wrap">
         <button class="split-btn active" id="nav-split1-btn" onclick="ui.switchSplit(1)">SPLIT 1</button>
         <button class="split-btn" id="nav-split2-btn" onclick="ui.switchSplit(2)">SPLIT 2</button>
     </div>
+    <button class="nav-hamburger-btn" id="nav-hamburger-btn" onclick="ui.toggleMobileNav()">
+        <span class="nav-hamburger-lines"><span></span><span></span><span></span></span>
+        <span class="nav-hamburger-arrow" id="nav-hamburger-arrow">▼</span>
+    </button>
     <div class="nav-item active" onclick="ui.switchPage('standings', this)">Klasyfikacje</div>
     <div class="nav-item" onclick="ui.switchPage('last-race', this)">Ostatni Wyścig</div>
     <div class="nav-item" onclick="ui.switchPage('archive', this)">Archiwum</div>
+    <div class="nav-item" onclick="ui.switchPage('calendar', this)">Kalendarz</div>
     <div class="nav-item" onclick="ui.switchPage('gallery', this)">Galeria</div>
     <div class="nav-item" onclick="ui.switchPage('teams', this)">Zespoły</div>
     <div class="nav-item" onclick="ui.switchPage('regulamin', this)">Regulamin</div>
@@ -1752,6 +1825,18 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
         <div id="api-archive-list"></div>
         <div id="api-quali-list" style="display:none;"></div>
+    </div>
+    <div id="view-calendar" class="page-view">
+        <div class="f1-card">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0;">
+                <div class="f1-card-title" style="flex:1;margin-bottom:0;">KALENDARZ SEZONU — 12 RUND</div>
+                <button class="add-results-btn logged-in" id="calendar-draw-btn" onclick="circuitDraw.open('calendar')" style="margin:12px 20px 12px 0;">
+                    <span class="add-results-btn-icon">🎰</span>
+                    LOSUJ DO KALENDARZA
+                </button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid"></div>
+        </div>
     </div>
     <div id="view-gallery" class="page-view">
         <        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
@@ -2270,6 +2355,8 @@ const getArchiveDataCache = () => splitDataCache[currentSplit].archive;
 const getLastRaceDataCache = () => splitDataCache[currentSplit].lastRace;
 let archiveDataCache = {};
 let lastRaceDataCache = null;
+let calendarData = {};
+let calendarSubscribed = false;
 let splitSubscribed = {
     1: { standings: false, lastRace: false, archive: false, teamsInfo: false },
     2: { standings: false, lastRace: false, archive: false, teamsInfo: false }
@@ -2662,11 +2749,13 @@ window.ui = {
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         document.getElementById('view-' + pageId).classList.add('active');
         navEl.classList.add('active');
+        document.getElementById('f1-main-nav')?.classList.remove('mobile-open');
         if (['standings','archive','gallery'].includes(pageId)) {
             this.switchSeasonSplit('2-1', pageId);
         }
         if (pageId === 'gallery') { this.closeAlbum(); subscribeGallery(); }
         if (pageId === 'archive') subscribeArchive(currentSplit);
+        if (pageId === 'calendar') subscribeCalendar();
         if (pageId === 'teams') renderTeamsPage();
         if (pageId === 'standings') runCountUps(document.getElementById('view-standings'));
         if (pageId === 'regulamin') {
@@ -2726,7 +2815,9 @@ toggleAuth(show) {
         if (suggestion) document.getElementById('adm-race-title').value = suggestion;
     },
     quickCreateAlbumForGp() {
-        const gpName = currentSplit === 2 ? window.gpNameS2 : window.gpNameS1;
+        const round = getNextRoundNumber(currentSplit);
+        const calEntry = (window.calendarData || {})[round];
+        const gpName = calEntry ? calEntry.name : (currentSplit === 2 ? window.gpNameS2 : window.gpNameS1);
         const suggested = gpName ? gpNameToShort(gpName) : '';
         ui.openGalleryModal('album', null, suggested);
     },
@@ -3477,6 +3568,15 @@ toggleAuth(show) {
     },
     replayStandingsCountUp() {
         runCountUps(document.getElementById('view-standings'));
+    },
+    async clearCalendarSlot(round) {
+        if (!isLoggedIn) return;
+        if (!confirm(`Usunąć tor z Rundy ${round}?`)) return;
+        await remove(ref(db, 'calendar/' + round));
+    },
+    toggleMobileNav() {
+        const nav = document.getElementById('f1-main-nav');
+        if (nav) nav.classList.toggle('mobile-open');
     }
 };
 
@@ -4502,9 +4602,10 @@ const getNextRoundNumber = (splitNum) => {
     return count + 1;
 };
 const buildRaceTitleSuggestion = (splitNum) => {
-    const gpName = (splitNum === 2 ? window.gpNameS2 : window.gpNameS1) || '';
-    if (!gpName.trim()) return '';
     const round = getNextRoundNumber(splitNum);
+    const calEntry = (window.calendarData || {})[round];
+    const gpName = calEntry ? calEntry.name : ((splitNum === 2 ? window.gpNameS2 : window.gpNameS1) || '');
+    if (!gpName.trim()) return '';
     return `ROUND ${round} ${gpName.trim().toUpperCase()}`;
 };
 const normalizeTeamName = (name) => {    if (!name) return name;
@@ -4761,6 +4862,7 @@ function refreshGpNamesDatalist() {
         const arc = splitDataCache[s].archive || {};
         Object.values(arc).forEach(r => { if (r.name) names.add(r.name); });
     });
+    Object.values(calendarData || {}).forEach(entry => { if (entry && entry.name) names.add(entry.name); });
     const dl = document.getElementById('gp-names-list');
     if (dl) dl.innerHTML = [...names].map(n => `<option value="${n}">`).join('');
 }
@@ -4880,10 +4982,50 @@ function subscribeTeamsInfo(splitNum) {
     });
 }
 
+function subscribeCalendar() {
+    if (calendarSubscribed) return;
+    calendarSubscribed = true;
+    onValue(ref(db, 'calendar'), snap => {
+        calendarData = snap.val() || {};
+        window.calendarData = calendarData;
+        renderCalendar();
+        refreshGpNamesDatalist();
+    });
+}
+
+function renderCalendar() {
+    const grid = document.getElementById('calendar-grid');
+    if (!grid) return;
+    let html = '';
+    for (let round = 1; round <= 12; round++) {
+        const entry = calendarData[round];
+        if (entry) {
+            html += `<div class="calendar-card">
+                <div class="calendar-card-bg" style="background-image:url('${entry.img || ''}')"></div>
+                <div class="calendar-card-overlay"></div>
+                <div class="calendar-round-badge">ROUND ${round}</div>
+                <div class="calendar-flag">${entry.flagCode ? flagImgHtml(entry.flagCode, 40, 27) : ''}</div>
+                <div class="calendar-card-info">
+                    <div class="calendar-gp-name">${entry.name || ''}</div>
+                    <div class="calendar-circuit-name">${entry.country || ''}</div>
+                </div>
+                ${isLoggedIn ? `<button class="album-edit-btn visible" style="top:auto;bottom:14px;right:14px;" onclick="event.stopPropagation();ui.clearCalendarSlot(${round})">🗑 WYCZYŚĆ</button>` : ''}
+            </div>`;
+        } else {
+            html += `<div class="calendar-card empty">
+                <div class="calendar-empty-round">${round}</div>
+                <div class="calendar-empty-text">Brak toru</div>
+            </div>`;
+        }
+    }
+    grid.innerHTML = html;
+}
+
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
 subscribeArchive(1);
+subscribeCalendar();
 
 
 // ── config listener ──────────────────────────────────────────────────────────
@@ -5035,7 +5177,9 @@ if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.i
 }
 ui.quickCreateAlbum = function() {
     if (!isLoggedIn) return;
-    const gpName = currentSplit === 2 ? window.gpNameS2 : window.gpNameS1;
+    const round = getNextRoundNumber(currentSplit);
+    const calEntry = (window.calendarData || {})[round];
+    const gpName = calEntry ? calEntry.name : (currentSplit === 2 ? window.gpNameS2 : window.gpNameS1);
     const suggested = gpName ? gpNameToShort(gpName) : '';
     ui.openGalleryModal('album', null, suggested);
 };
@@ -5175,6 +5319,7 @@ window.circuitDraw = {
     _result: null,
     _usedNames: new Set(),
     _currentAnimation: null,
+    _mode: 'soon',
     _lastWinnerName: (function(){ try { return localStorage.getItem('f1_lastCircuitWinner') || null; } catch(e){ return null; } })(),
 
     _shuffle(arr) {
@@ -5187,6 +5332,12 @@ window.circuitDraw = {
     },
 
 _getUsedCircuits() {
+    if (this._mode === 'calendar') {
+        const usedCal = new Set();
+        const cal = window.calendarData || {};
+        Object.values(cal).forEach(entry => { if (entry && entry.name) usedCal.add(entry.name); });
+        return usedCal;
+    }
     const used = new Set();
     const KEYWORD_MAP = [
         { keys: ['australian','australia','albert park'],                name: 'Australian Grand Prix' },
@@ -5279,11 +5430,14 @@ _getUsedCircuits() {
         reel.style.transition = 'none';
     },
 
-  open() {
+  open(mode) {
+    this._mode = mode === 'calendar' ? 'calendar' : 'soon';
     const overlay = document.getElementById('circuit-draw-overlay');
     if (!overlay) return;
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    const titleEl = document.querySelector('.cdm-header-title');
+    if (titleEl) titleEl.textContent = this._mode === 'calendar' ? 'Losowanie do Kalendarza' : 'Losowanie toru GP';
     this._result = null;
     this._spinning = false;
     document.getElementById('cdm-result-box').classList.remove('show');
@@ -5309,7 +5463,15 @@ _getUsedCircuits() {
         }
     };
 
-   
+    if (this._mode === 'calendar') {
+        fbOnValue(fbRef(db, 'calendar'), snap => {
+            window.calendarData = snap.val() || {};
+            calendarData = window.calendarData;
+            finishLoading();
+        }, (err) => { console.error('Błąd calendar:', err); finishLoading(); }, { onlyOnce: true });
+        return;
+    }
+
     let s1Ready = false, s2Ready = false;
     const maybeFinish = () => { if (s1Ready && s2Ready) finishLoading(); };
 
@@ -5514,6 +5676,52 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
     async accept() {
         if (!this._result) return;
         const c = this._result;
+
+        if (this._mode === 'calendar') {
+            try {
+                const { ref: fbRef, onValue: fbOnValue, set: fbSet } = window._fbFirebase;
+                const db = window._fbDb;
+                const snap = await new Promise(res => fbOnValue(fbRef(db, 'calendar'), res, { onlyOnce: true }));
+                const cal = snap.val() || {};
+                let nextRound = null;
+                for (let r = 1; r <= 12; r++) { if (!cal[r]) { nextRound = r; break; } }
+                if (!nextRound) {
+                    alert('Kalendarz jest już pełny (12/12 rund).');
+                    this.close();
+                    return;
+                }
+                await fbSet(fbRef(db, 'calendar/' + nextRound), {
+                    name: c.name, short: c.short, country: c.country,
+                    flagCode: c.flagCode, img: c.img,
+                });
+                cal[nextRound] = { name: c.name, short: c.short, country: c.country, flagCode: c.flagCode, img: c.img };
+                window.calendarData = cal;
+                calendarData = cal;
+                if (typeof renderCalendar === 'function') renderCalendar();
+
+                if (window.ui && window.ui.showToast) window.ui.showToast(`✅ Runda ${nextRound}: ${c.name} dodana do kalendarza!`);
+
+                if (nextRound >= 12) {
+                    alert('🏁 Kalendarz jest kompletny — wylosowano wszystkie 12 rund!');
+                    this.close();
+                    return;
+                }
+                this._result = null;
+                document.getElementById('cdm-result-box').classList.remove('show');
+                document.getElementById('cdm-btn-accept').style.display = 'none';
+                document.getElementById('cdm-btn-reject').style.display = 'none';
+                document.getElementById('cdm-btn-spin').style.display = '';
+                const available = this._getAvailable();
+                this._buildReel(available);
+                this._updateStatus(available);
+                document.getElementById('cdm-btn-spin').disabled = available.length === 0;
+            } catch(e) {
+                console.error(e);
+                alert('Błąd zapisu kalendarza: ' + e.message);
+            }
+            return;
+        }
+
         try {
             if (!window._fbDb) { alert('Błąd: brak połączenia z Firebase.'); return; }
             const { ref: fbRef, onValue: fbOnValue, set: fbSet } = window._fbFirebase;
