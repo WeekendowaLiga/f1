@@ -1446,7 +1446,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #add-race-modal-overlay.open { display: flex; }
 #add-race-modal {
     background: var(--f1-black);
-    width: 100%; max-width: 1400px;
+    width: 100%; max-width: min(96vw, 2200px);
     position: relative;
     border-radius: 6px;
     overflow: hidden;
@@ -2020,8 +2020,12 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 1):</label><input type="text" id="adm-hero-title-s1" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S1"></div>
                 <div class="form-group">
                     <label class="form-label">Nazwa GP (do podpowiedzi)<span class="form-hint">np. "Australian Grand Prix" — na tej podstawie podpowiemy nazwę wyników i albumu w galerii</span></label>
-                    <input type="text" id="adm-gp-name-s1" class="f1-input" placeholder="np. Australian Grand Prix" oninput="ui.updateGpPreview(1)">
-                    <div id="gp-preview-s1" style="margin-top:8px;font-size:12px;color:#666;line-height:1.6;"></div>
+                    <input type="text" id="adm-gp-name-s2" class="f1-input" placeholder="np. Australian Grand Prix" oninput="ui.updateGpPreview(2)">
+                    <div id="gp-name-suggestion-box-s2" style="margin-top:8px;display:none;background:#f0f9f0;border:1.5px solid #4caf50;border-radius:6px;padding:10px 14px;font-size:13px;color:#2a6e2a;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                        <span>📅 Z kalendarza: <strong id="gp-name-suggestion-text-s2"></strong></span>
+                        <button type="button" class="btn-action btn-sm" onclick="ui.useGpNameSuggestion(2)">✓ UŻYJ</button>
+                    </div>
+                    <div id="gp-preview-s2" style="margin-top:8px;font-size:12px;color:#666;line-height:1.6;"></div>
                 </div>
                 <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 1):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s1" value="countdown" id="hero-mode-countdown-s1" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s1" value="soon" id="hero-mode-soon-s1"> SOON</label></div></div>
                 <div id="hero-date-group-s1" class="form-group"><label class="form-label">Data licznika S1 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s1" class="f1-input" placeholder="2026-05-24 20:00"></div>
@@ -2031,10 +2035,16 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 <div style="font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:2px;color:#0078ff;margin-bottom:14px;">⏱ SPLIT 2</div>
                 <div class="form-group"><label class="form-label">Tytuł sekcji licznika (Split 2):</label><input type="text" id="adm-hero-title-s2" class="f1-input" list="gp-names-list" placeholder="np. NASTĘPNY WYŚCIG: GP BELGII S2"></div>
                 <div class="form-group">
+                <div class="form-group">
                     <label class="form-label">Nazwa GP (do podpowiedzi)<span class="form-hint">np. "Australian Grand Prix" — na tej podstawie podpowiemy nazwę wyników i albumu w galerii</span></label>
-                    <input type="text" id="adm-gp-name-s2" class="f1-input" placeholder="np. Australian Grand Prix" oninput="ui.updateGpPreview(2)">
-                    <div id="gp-preview-s2" style="margin-top:8px;font-size:12px;color:#666;line-height:1.6;"></div>
-                </div>                <div class="form-group"><label class="form-label">Tryb wyświetlania (Split 2):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s2" value="countdown" id="hero-mode-countdown-s2" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s2" value="soon" id="hero-mode-soon-s2"> SOON</label></div></div>
+                    <input type="text" id="adm-gp-name-s1" class="f1-input" placeholder="np. Australian Grand Prix" oninput="ui.updateGpPreview(1)">
+                    <div id="gp-name-suggestion-box-s1" style="margin-top:8px;display:none;background:#f0f9f0;border:1.5px solid #4caf50;border-radius:6px;padding:10px 14px;font-size:13px;color:#2a6e2a;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                        <span>📅 Z kalendarza: <strong id="gp-name-suggestion-text-s1"></strong></span>
+                        <button type="button" class="btn-action btn-sm" onclick="ui.useGpNameSuggestion(1)">✓ UŻYJ</button>
+                    </div>
+                    <div id="gp-preview-s1" style="margin-top:8px;font-size:12px;color:#666;line-height:1.6;"></div>
+                </div>            
+				<div class="form-group"><label class="form-label">Tryb wyświetlania (Split 2):</label><div style="display:flex;gap:30px;margin-top:8px;"><label class="check-group"><input type="radio" name="hero-mode-s2" value="countdown" id="hero-mode-countdown-s2" checked> ODLICZANIE</label><label class="check-group"><input type="radio" name="hero-mode-s2" value="soon" id="hero-mode-soon-s2"> SOON</label></div></div>
                 <div id="hero-date-group-s2" class="form-group"><label class="form-label">Data licznika S2 (YYYY-MM-DD HH:MM):</label><input type="text" id="adm-hero-date-s2" class="f1-input" placeholder="2026-05-24 20:00"></div>
                 <div class="btn-row"><button class="btn-action" onclick="dbCore.saveCountdownConfig(2)">💾 ZAPISZ ODLICZANIE SPLIT 2</button></div>
             </div>
@@ -2058,14 +2068,19 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 <textarea id="adm-race-raw" class="f1-textarea" rows="10" placeholder="NickGracza | Ferrari | Start: 1 | Pit: 2 | 1:32,456 | 1:45:23.123 | 25&#10;NickGracza2 | Mercedes | Start: 2 | Pit: 1 | 1:33,102 | +12.456 | 18"></textarea>
             </div>
             <div class="bonus-info-box"><b>System bonusowych punktów:</b><br>✅ Gracze którzy dojechali do mety: <b>+3 PKT</b><br>❌ DNF / DSQ / DNS / RET / NC: <b>0 bonus</b><br>🤖 Boty AI (kierowcy F1): <b>0 bonus</b> automatycznie<br>📋 Nicki z listy poniżej: <b>0 bonus</b></div>
-<details style="margin-top:16px;">
-                <summary style="cursor:pointer;font-weight:800;font-size:13px;text-transform:uppercase;color:#666;">⚙ Zaawansowane: wyklucz nicki z bonusu</summary>
-                <div class="form-group no-bonus-box" style="margin-top:10px;"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
-            </details>            <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
-			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
-			<label class="check-group"><input type="checkbox" id="pub-no-stats"> 📊 BEZ STATYSTYK (widoczne normalnie z PKT, ale nie liczy się do klasyfikacji)</label>
-			<!-- ZMIANA: kwalifikacje z nowym formatem i opcją dodania do last race -->
-            <label class="check-group"><input type="checkbox" id="pub-qualifying"> KWALIFIKACJE (Nick | Zespół | Czas | P startowa)</label>
+<div class="form-group no-bonus-box" style="margin-top:16px;"><label class="form-label">⚙ Nicki BEZ PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
+<div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:14px;">
+    <p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p>
+    <label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label>
+    <label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label>
+    <label class="check-group" style="margin-bottom:0;"><input type="checkbox" id="pub-qualifying"> KWALIFIKACJE (Nick | Zespół | Czas | P startowa)</label>
+ 
+</div>
+<div class="arm-form-group" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;">
+    <label class="arm-label" style="color:var(--f1-red);">Opcje punktacji</label>
+    <label class="arm-check-group"><input type="checkbox" id="pub-no-stats"> 🚫 Bez PKT (nie liczy się do klasyfikacji)</label>
+    <label class="arm-check-group"><input type="checkbox" id="pub-no-history"> 🗂 Bez historii w statystykach</label>
+</div>
             <label class="check-group" style="margin-left:28px;opacity:0.85;font-size:13px;"><input type="checkbox" id="pub-quali-to-last"> Pokaż też w zakładce "Ostatni Wyścig" (jako zakładka Kwalifikacje)</label>
             <div class="btn-row"><button class="btn-action" onclick="dbCore.publishRace()">📤 PUBLIKUJ WYNIKI</button></div>
         </div>
@@ -2074,7 +2089,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">📁</span><span class="admin-section-title">Zarządzaj Archiwum</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
             <div id="adm-archive-manager"></div>
-            <div class="btn-row" style="margin-top:20px;"><button class="btn-action" id="btn-save-archive-order" onclick="dbCore.saveArchiveOrder()" style="display:none;">💾 ZAPISZ KOLEJNOŚĆ</button><button class="btn-action btn-danger" onclick="dbCore.deleteNode('lastRace')">🗑 WYCZYŚĆ OSTATNI WYŚCIG</button></div>
+<button class="btn-action btn-danger" onclick="dbCore.deleteNode((adminSplit===1?'split1':'split2')+'/lastRace')">🗑 WYCZYŚĆ OSTATNI WYŚCIG</button>
         </div>
     </div>
     <div class="admin-section" id="sec-standings">
@@ -2089,7 +2104,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 <button class="btn-action" style="background:#1a5c1a;border-color:#2d8a2d;" onclick="if(confirm('Przelicz punkty wszystkich kierowców i konstruktorów na podstawie danych z archiwum? Nadpisze obecne punkty i wygrane.')) dbCore.recalcStandingsFromArchive()" title="Przelicza PKT i wygrane na podstawie archiwum wyścigów">🔄 PRZELICZ Z ARCHIWUM</button>
                 <button class="btn-action btn-danger" onclick="if(confirm('🆕 NOWY SEZON: to wyzeruje PKT i WYGRANE wszystkim kierowcom i zespołom w tym splicie (lista nicków/zespołów zostaje). Kontynuować?')) dbCore.startNewSeason()">🆕 NOWY SEZON — WYZERUJ PUNKTY</button>
             </div>
-            <p style="color:#666;font-size:11px;margin-top:6px;line-height:1.5;">💡 „Przelicz z archiwum" — sumuje PKT ze wszystkich wyścigów (bez treningów/kwalifikacji) i nadpisuje klasyfikację. Boty AI nie są wliczane do konstruktorów.</p>
+            <p style="color:#666;font-size:11px;margin-top:6px;line-height:1.5;">💡 „Przelicz z archiwum" — sumuje PKT ze wszystkich wyścigów (bez oznaczonych "Bez PKT"/kwalifikacji) i nadpisuje klasyfikację. Boty AI nie są wliczane do konstruktorów.</p>
         </div>
     </div>
     <div class="admin-section" id="sec-logos">
@@ -2151,11 +2166,15 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                     <label class="arm-label">Gdzie opublikować</label>
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-last" checked> 📺 Ostatni Wyścig</label>
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-archive" checked> 📁 Archiwum Wyścigów</label>
-                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-training"> 🔧 Trening (bez PKT)</label>
-                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-no-stats"> 📊 Bez statystyk (nie liczy się do klasyfikacji)</label>
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-qualifying"> ⏱ Kwalifikacje (Nick|Zespół|Czas|P.startowa)</label>
-                    <label class="arm-check-group" style="margin-left:28px;opacity:0.8;font-size:13px;"><input type="checkbox" id="arm-pub-quali-to-last"> → Pokaż też w Ostatni Wyścig</label>
+ 
                 </div>
+<div style="background:#fff5f5;border:1.5px solid #f0d0d0;padding:16px;border-radius:8px;margin-bottom:16px;">
+    <p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#a00;">Opcje punktacji</p>
+    <label class="check-group"><input type="checkbox" id="arm-pub-no-stats"> 🚫 BEZ PKT (nie liczy się do klasyfikacji)</label>
+    <label class="check-group" style="margin-bottom:0;"><input type="checkbox" id="arm-pub-no-history"> 🗂 BEZ HISTORII W STATYSTYKACH</label>
+    <label class="check-group" style="margin-bottom:0;"><input type="checkbox" id="pub-no-profile-stats"> 📊 NIE LICZ DO STATYSTYK PROFILU (Pole Position, śr. pozycja, podia itd. — wyścig zostanie widoczny w historii)</label>
+</div>
                 <div class="arm-bonus-info">
                     <b>Bonusy:</b> ✅ Dojechał = +3 PKT &nbsp; ❌ DNF/DSQ/DNS = 0 &nbsp; 🤖 Boty = 0
                 </div>
@@ -2169,22 +2188,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 </div>
                 <div class="arm-hint">Kliknij nick → wkleja go z nazwą zespołu do pola wyników</div>
                 <div class="arm-form-group" style="margin-top:20px;">
-                    <details>
-                        <summary style="cursor:pointer;font-family:var(--font-data);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);list-style:none;display:flex;align-items:center;gap:8px;">
-                            <span>⚙ ZAAWANSOWANE: wyklucz z bonusu</span>
-                        </summary>
-                        <div style="margin-top:12px;">
-                            <label class="arm-label">Nicki BEZ PKT za dojechanie</label>
-                            <textarea class="arm-textarea" id="arm-no-bonus-nicks" rows="3" placeholder="NickGracza1&#10;NickGracza2" style="min-height:80px;"></textarea>
-                        </div>
-                    </details>
+                    <label class="arm-label">⚙ Nicki BEZ PKT za dojechanie</label>
+                    <textarea class="arm-textarea" id="arm-no-bonus-nicks" rows="3" placeholder="NickGracza1&#10;NickGracza2" style="min-height:80px;"></textarea>
                 </div>
-            </div>
             <!-- Pełna szerokość: textarea wyniki -->
             <div class="arm-section">
                 <div class="arm-section-title">Wyniki</div>
                 <label class="arm-label">Format: Nick | Zespół | P. startowa | Pit | Najl. okrążenie | Czas | PKT</label>
-                <textarea id="arm-race-raw" class="arm-textarea" rows="10" oninput="ui.onArmRawInput(this)" onclick="ui.onArmRawInput(this)" onkeyup="ui.onArmRawInput(this)"></textarea>
+                <textarea id="arm-race-raw" class="arm-textarea" rows="14" wrap="off" style="white-space:pre;overflow-x:auto;font-size:14px;" oninput="ui.onArmRawInput(this)" onclick="ui.onArmRawInput(this)" onkeyup="ui.onArmRawInput(this)"></textarea>
             </div>
         </div>
         <div class="arm-footer">
@@ -2771,7 +2782,7 @@ window.ui = {
     toggleAdmin(show) {
         document.getElementById('admin-sidebar').classList.toggle('open', show);
         document.getElementById('admin-overlay').classList.toggle('open', show);
-        if (show) { buildLogosGrid(); buildTeamsAdminList(); buildRaceNickChips(); }
+        if (show) { buildLogosGrid(); buildTeamsAdminList(); buildRaceNickChips(); this.refreshGpNameSuggestion(1); this.refreshGpNameSuggestion(2); }
     },
 toggleAuth(show) { 
     const modal = document.getElementById('auth-modal');
@@ -2802,6 +2813,7 @@ toggleAuth(show) {
             }
         }
         if (adminSplit === splitNum) this.refreshRaceTitleSuggestion();
+        this.refreshGpNameSuggestion(splitNum);
     },
     refreshRaceTitleSuggestion() {
         const box = document.getElementById('race-title-suggestion-box');
@@ -2811,14 +2823,28 @@ toggleAuth(show) {
         if (suggestion) { textEl.textContent = suggestion; box.style.display = 'flex'; }
         else { box.style.display = 'none'; }
     },
+    refreshGpNameSuggestion(splitNum) {
+        const box = document.getElementById('gp-name-suggestion-box-s' + splitNum);
+        const textEl = document.getElementById('gp-name-suggestion-text-s' + splitNum);
+        if (!box || !textEl) return;
+        const suggestion = buildGpNameSuggestion(splitNum);
+        const currentVal = (document.getElementById('adm-gp-name-s' + splitNum)?.value || '').trim();
+        if (suggestion && suggestion !== currentVal) { textEl.textContent = suggestion; box.style.display = 'flex'; }
+        else { box.style.display = 'none'; }
+    },
+    useGpNameSuggestion(splitNum) {
+        const suggestion = buildGpNameSuggestion(splitNum);
+        if (!suggestion) return;
+        const input = document.getElementById('adm-gp-name-s' + splitNum);
+        if (input) { input.value = suggestion; ui.updateGpPreview(splitNum); }
+    },
     useRaceTitleSuggestion() {
         const suggestion = buildRaceTitleSuggestion(adminSplit);
         if (suggestion) document.getElementById('adm-race-title').value = suggestion;
     },
     quickCreateAlbumForGp() {
-        const round = getNextRoundNumber(currentSplit);
-        const calEntry = (window.calendarData || {})[round];
-        const gpName = calEntry ? calEntry.name : (currentSplit === 2 ? window.gpNameS2 : window.gpNameS1);
+        const nextCal = getNextCalendarEntry(currentSplit);
+        const gpName = nextCal ? nextCal.entry.name : (currentSplit === 2 ? window.gpNameS2 : window.gpNameS1);
         const suggested = gpName ? gpNameToShort(gpName) : '';
         ui.openGalleryModal('album', null, suggested);
     },
@@ -3209,7 +3235,7 @@ toggleAuth(show) {
 
         // Teraz oblicz statystyki z załadowanych danych
         const arcEntries = Object.values(archiveDataCache)
-            .filter(race => !race.isTraining && !race.isQualifying)
+            .filter(race => !race.isQualifying)
             .sort((a, b) => {
                 const ao = a.order, bo = b.order;
                 if (ao !== undefined && bo !== undefined) return ao - bo;
@@ -3219,20 +3245,21 @@ toggleAuth(show) {
 
         const arcEntriesReversed = [...arcEntries].reverse();
 
-        const allRaces = [];
-        arcEntriesReversed.forEach(race => {
-            if (race.results && !race.isTraining) {
-                const r = race.results.find(r => (r.nick || '').toLowerCase() === nick.toLowerCase());
-                if (r) allRaces.push({ raceName: race.name || 'Wyścig', ...r });
-            }
-        });
+const allRaces = [];
+arcEntriesReversed.forEach(race => {
+    if (race.isNoHistory || race.isNoStats) return;
+    if (race.results) {
+        const r = race.results.find(r => (r.nick || '').toLowerCase() === nick.toLowerCase());
+        if (r) allRaces.push({ raceName: race.name || 'Wyścig', _excludeFromCalc: !!race.isNoProfileStats, ...r });
+    }
+});
 
         let totalPts = 0, wins = 0, podiums = 0, bestPos = Infinity, posSum = 0, posCount = 0;
         let fastestLaps = 0, polePositions = 0;
 
-        const globalFastRaceIndices = new Set();
-        arcEntries.forEach(race => {
-            if (!race.results) return;
+const globalFastRaceIndices = new Set();
+arcEntries.forEach(race => {
+    if (!race.results || race.isNoHistory || race.isNoStats || race.isNoProfileStats) return;
             const fastInRace = findFastestLapIdx(race.results);
             if (fastInRace === -1) return;
             const fastNick = (race.results[fastInRace].nick || '').toLowerCase();
@@ -3242,20 +3269,22 @@ toggleAuth(show) {
             }
         });
 
-        allRaces.forEach((r, i) => {
-            totalPts += (parseInt(r.pts) || 0);
-            const pos = parseInt(r.pos);
-            if (!isNaN(pos) && pos > 0) {
-                if (pos === 1) wins++;
-                if (pos <= 3) podiums++;
-                if (pos < bestPos) bestPos = pos;
-                posSum += pos; posCount++;
-            }
-            if (globalFastRaceIndices.has(i)) fastestLaps++;
-            const startPos = parseInt((r.start || '').toString().replace(/^(Start:)?\s*/i, '').trim());
-            if (startPos === 1) polePositions++;
-        });
-        const avgPos = posCount > 0 ? (posSum / posCount).toFixed(1) : '—';
+allRaces.forEach((r, i) => {
+    if (r._excludeFromCalc) return; // ten wyścig nie ma liczyć się do statystyk profilu
+    totalPts += (parseInt(r.pts) || 0);
+    const pos = parseInt(r.pos);
+    if (!isNaN(pos) && pos > 0) {
+        if (pos === 1) wins++;
+        if (pos <= 3) podiums++;
+        if (pos < bestPos) bestPos = pos;
+        posSum += pos; posCount++;
+    }
+    if (globalFastRaceIndices.has(i)) fastestLaps++;
+    const startPos = parseInt((r.start || '').toString().replace(/^(Start:)?\s*/i, '').trim());
+    if (startPos === 1) polePositions++;
+});
+const avgPos = posCount > 0 ? (posSum / posCount).toFixed(1) : '—';
+const raceCountForStats = allRaces.filter(r => !r._excludeFromCalc).length;
 
         const teamName = getDriverCurrentTeam(nick);
         const teamColor = getTeamColorByName(teamName);
@@ -3279,7 +3308,7 @@ toggleAuth(show) {
             ? `<img class="dp-team-logo" src="${logoUrl}" alt="${teamName}" onerror="this.style.display='none'">`
             : '';
 
-        animateCountUp(document.getElementById('dp-stat-races'), allRaces.length, 800);
+animateCountUp(document.getElementById('dp-stat-races'), raceCountForStats, 800);
         animateCountUp(document.getElementById('dp-stat-pts'), totalPts, 900);
         animateCountUp(document.getElementById('dp-stat-wins'), wins, 700);
         animateCountUp(document.getElementById('dp-stat-podiums'), podiums, 750);
@@ -3289,7 +3318,8 @@ toggleAuth(show) {
         animateCountUp(document.getElementById('dp-stat-pp'), polePositions, 700);
 
         const content = document.getElementById('dp-races-content');
-        if (allRaces.length === 0) {
+        const visibleRaces = allRaces.map((r, i) => ({ r, i }));
+        if (visibleRaces.length === 0) {
             content.innerHTML = `<div class="dp-no-races"><span>🏁</span>Brak danych wyścigowych dla tego gracza</div>`;
         } else {
             const posC = (pos) => { const p=parseInt(pos); if(p===1)return 'pos-gold'; if(p===2)return 'pos-silver'; if(p===3)return 'pos-bronze'; return ''; };
@@ -3306,11 +3336,11 @@ toggleAuth(show) {
                     <th>Czas / Status</th>
                     <th style="text-align:right;padding-right:30px;">PKT</th>
                 </tr></thead>
-                <tbody>${allRaces.map((r, i) => {
+                <tbody>${visibleRaces.map(({ r, i }) => {
                     const isFast = globalFastRaceIndices.has(i);
                     const tColor = getTeamColorByName(r.team);
-                    return `<tr>
-                        <td class="dp-race-name-cell">${r.raceName}</td>
+return `<tr${r._excludeFromCalc ? ' style="opacity:0.55;"' : ''}>
+                        <td class="dp-race-name-cell">${r.raceName}${r._excludeFromCalc ? ' <span style="font-size:11px;color:#888;">[poza statystykami]</span>' : ''}</td>
                         <td class="dp-pos-cell ${posC(r.pos)}" style="text-align:center;">${r.pos || '—'}</td>
                         <td style="color:${tColor};font-weight:700;">${r.team || '—'}</td>
                         <td style="text-align:center;color:rgba(255,255,255,0.6);">${clean(r.start)}</td>
@@ -3358,7 +3388,7 @@ toggleAuth(show) {
 
     editArcCell(el, raceId, rowIdx, field) {
         if (!isLoggedIn) return;
-        const splitPath = getSplitPathView();
+        const arcPath = seasonArchivePath(currentSplit);
         const current = el.textContent.trim();
         const input = document.createElement('input');
         input.type = 'text'; input.value = current;
@@ -3372,11 +3402,11 @@ toggleAuth(show) {
             span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field);
             if (input.parentNode) input.replaceWith(span);
             try {
-                const s = await new Promise(res => onValue(ref(db, splitPath + '/archive/' + raceId), res, { onlyOnce: true }));
+                const s = await new Promise(res => onValue(ref(db, arcPath + '/' + raceId), res, { onlyOnce: true }));
                 const data = s.val();
                 if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
                     data.results[rowIdx][field] = newVal;
-                    await set(ref(db, splitPath + '/archive/' + raceId + '/results'), data.results);
+                    await set(ref(db, arcPath + '/' + raceId + '/results'), data.results);
                 }
             } catch(e) { console.error('Błąd zapisu arc:', e); }
         };
@@ -3669,12 +3699,11 @@ ui.useArmTitleSuggestion = function() {
 
 ui.onArmRawInput = function(textarea) {
     const lines = textarea.value.split('\n').filter(l => l.trim());
-    // Zbierz jakie zespoły są w wklejonych danych (tylko linie z botami/nieznanymi)
+    // Zbierz jakie zespoły są w wklejonych danych (format Nick|Team oraz "Poz","Nick","Team",...)
     const teamsInText = new Set();
     lines.forEach(line => {
-        const parts = line.split('|').map(s => s.trim());
-        const team = parts[1];
-        if (team) teamsInText.add(normalizeTeamName(team));
+        const parsed = parseArmLine(line);
+        if (parsed && parsed.team) teamsInText.add(normalizeTeamName(parsed.team));
     });
 
     if (teamsInText.size === 0) {
@@ -3686,8 +3715,8 @@ ui.onArmRawInput = function(textarea) {
     const cursorPos = textarea.selectionStart;
     const textBefore = textarea.value.substring(0, cursorPos);
     const currentLineText = textBefore.split('\n').pop() || '';
-    const currentLineParts = currentLineText.split('|').map(s => s.trim());
-    const currentTeamRaw = currentLineParts[1] || '';
+    const currentLineParsed = parseArmLine(currentLineText);
+    const currentTeamRaw = currentLineParsed ? currentLineParsed.team : '';
     const currentTeam = currentTeamRaw ? normalizeTeamName(currentTeamRaw) : null;
 
     // Zbierz graczy z teamsInfo i standings pasujących do zespołu z aktualnej linii
@@ -3795,8 +3824,17 @@ ui.insertArmNick = function(nick, team) {
     const lineEndRaw = text.indexOf('\n', cursorPos);
     const lineEnd = lineEndRaw === -1 ? text.length : lineEndRaw;
     const currentLine = text.substring(lineStart, lineEnd);
+    const trimmedLine = currentLine.trim();
 
-    if (currentLine.includes('|')) {
+    if (trimmedLine.startsWith('"') && trimmedLine.includes('","')) {
+        // Format CSV: "Poz","Nick","Zespół",... — podmień pole nicku (i duplikat na końcu)
+        const fields = csvSplit(trimmedLine);
+        if (fields.length > 1) fields[1] = nick;
+        if (fields.length > 8) fields[8] = nick;
+        const newLine = '"' + fields.join('","') + '"';
+        ta.value = text.substring(0, lineStart) + newLine + text.substring(lineEnd);
+        ta.selectionStart = ta.selectionEnd = lineStart + newLine.length;
+    } else if (currentLine.includes('|')) {
         // Zamień tylko nick (pierwsza część przed |), resztę zostaw
         const parts = currentLine.split('|');
         parts[0] = nick + ' ';
@@ -3833,10 +3871,9 @@ ui.submitAddRaceModal = async function() {
     copyField('arm-no-bonus-nicks', 'adm-no-bonus-nicks');
     copyCheck('arm-pub-last', 'pub-last');
     copyCheck('arm-pub-archive', 'pub-archive');
-    copyCheck('arm-pub-training', 'pub-training');
     copyCheck('arm-pub-no-stats', 'pub-no-stats');
+    copyCheck('arm-pub-no-history', 'pub-no-history');
     copyCheck('arm-pub-qualifying', 'pub-qualifying');
-    copyCheck('arm-pub-quali-to-last', 'pub-quali-to-last');
 
     ui.closeAddRaceModal(null, true);
     await dbCore.publishRace();
@@ -3847,10 +3884,9 @@ ui.submitAddRaceModal = async function() {
     document.getElementById('arm-no-bonus-nicks').value = '';
     document.getElementById('arm-pub-last').checked = true;
     document.getElementById('arm-pub-archive').checked = true;
-    document.getElementById('arm-pub-training').checked = false;
     document.getElementById('arm-pub-no-stats').checked = false;
+    document.getElementById('arm-pub-no-history').checked = false;
     document.getElementById('arm-pub-qualifying').checked = false;
-    document.getElementById('arm-pub-quali-to-last').checked = false;
     ui._buildArmNickChips(null);
 };
 
@@ -4005,7 +4041,7 @@ function rerenderLastRace() {
 
     // Renderuj wyniki wyścigu
     if (racePane) {
-        racePane.innerHTML = renderRaceTable(data.results, null, true, data.isTraining);
+        racePane.innerHTML = renderRaceTable(data.results, null, true, !!data.isNoStats);
         if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
     }
 
@@ -4052,8 +4088,6 @@ function rerenderArchive() {
         let tableHtml;
         if (isQuali) {
             tableHtml = renderQualiTable(race.results, id);
-        } else if (race.isTraining) {
-            tableHtml = renderRaceTable(race.results, id, false, true);
         } else {
             // Wyścig z potencjalnymi zakładkami kwalifikacji
             const hasQuali = race.qualiResults && race.qualiResults.length > 0;
@@ -4063,18 +4097,18 @@ function rerenderArchive() {
                         <button class="race-tab-btn active" onclick="ui.switchArcTab(this,'${id}','race')">🏁 WYŚCIG</button>
                         <button class="race-tab-btn" onclick="ui.switchArcTab(this,'${id}','quali')">⏱ KWALIFIKACJE</button>
                     </div>
-                    <div id="arc-tab-race-${id}" class="race-tab-pane active">${renderRaceTable(race.results, id, false, false)}</div>
+                    <div id="arc-tab-race-${id}" class="race-tab-pane active">${renderRaceTable(race.results, id, false, !!race.isNoStats)}</div>
                     <div id="arc-tab-quali-${id}" class="race-tab-pane">${renderQualiTable(race.qualiResults, id)}</div>
                 `;
             } else {
-                tableHtml = renderRaceTable(race.results, id, false, false);
+                tableHtml = renderRaceTable(race.results, id, false, !!race.isNoStats);
             }
         }
 
         return `<div class="archive-item">
             <button class="archive-header${isOpen ? ' open' : ''}" id="arc-btn-${id}" onclick="ui.toggleArc('${id}')">
                 <span ${editPart}>${race.name}</span>
-                ${race.isTraining ? `<span style="background:#333;color:#aaa;font-size:12px;padding:2px 10px;border-radius:3px;letter-spacing:2px;font-family:var(--font-data);font-weight:800;margin-left:12px;">TRENING</span>` : ''}
+ 
                 <span>WYNIKI <span class="arc-arrow">▼</span></span>
             </button>
             <div class="archive-body${isOpen ? ' open' : ''}" id="arc-body-${id}">
@@ -4272,15 +4306,14 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
     async publishRace() {
     const activeAdminSplit = document.getElementById('adm-split2-btn')?.classList.contains('active') ? 2 : 1;
     adminSplit = activeAdminSplit;
-    const splitPath = getSplitPath(activeAdminSplit);
         const title = document.getElementById('adm-race-title').value;
         const raw = document.getElementById('adm-race-raw').value;
         const noBonusRaw = document.getElementById('adm-no-bonus-nicks').value;
         const noBonusNicks = new Set(noBonusRaw.split('\n').map(s => s.trim().toLowerCase()).filter(Boolean));
         const lines = raw.split('\n').filter(l => l.trim());
 
+
         const isQualifying = document.getElementById('pub-qualifying').checked;
-        const qualiToLast = document.getElementById('pub-quali-to-last').checked;
 
         if (isQualifying) {
             // Format kwalifikacji: Nick | Zespół | Czas | P startowa
@@ -4295,21 +4328,10 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
                 };
             });
             const qualObj = { name: title, results: qualResults, timestamp: Date.now(), isQualifying: true };
-            // Zapisz do archiwum
-            await push(ref(db, splitPath + '/archive'), qualObj);
-            // Opcjonalnie: dodaj kwalifikacje do lastRace jako qualiResults
-            if (qualiToLast) {
-                const lrSnap = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
-                const lrData = lrSnap.val();
-                if (lrData) {
-                    await update(ref(db, splitPath + '/lastRace'), { qualiResults: qualResults });
-                } else {
-                    await set(ref(db, splitPath + '/lastRace'), { name: title, results: [], qualiResults: qualResults, timestamp: Date.now() });
-                }
-            }
-            alert(`✅ KWALIFIKACJE opublikowane! (Split ${adminSplit})${qualiToLast ? '\n+ Dodane do zakładki Ostatni Wyścig' : ''}`);
+            // Zapisz do archiwum (zgodnie z aktualnie wybranym sezonem)
+            await push(ref(db, seasonArchivePath(activeAdminSplit)), qualObj);
+            alert(`✅ KWALIFIKACJE opublikowane! (Split ${adminSplit})`);
             document.getElementById('pub-qualifying').checked = false;
-            document.getElementById('pub-quali-to-last').checked = false;
             return;
         }
 
@@ -4359,8 +4381,9 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             });
         }
 
-        const isTraining = document.getElementById('pub-training').checked;
-        const isNoStats = document.getElementById('pub-no-stats').checked;
+const isNoStats = document.getElementById('pub-no-stats').checked;
+const isNoHistory = document.getElementById('pub-no-history').checked;
+const isNoProfileStats = document.getElementById('pub-no-profile-stats').checked;
 
         const resultsWithBonus = results.map(r => {
             const nickKey = (r.nick || '').toLowerCase();
@@ -4370,16 +4393,16 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             const isManualExcluded = noBonusNicks.has(nickKey);
             const basePts = parseInt(r.pts) || 0;
             let bonusPts = 0;
-            if (!isBot && !isDnfDsq && !isManualExcluded && !isTraining && !isNoStats) bonusPts = 3;
+            if (!isBot && !isDnfDsq && !isManualExcluded && !isNoStats) bonusPts = 3;
             return { ...r, pts: String(basePts + bonusPts), hasBonus: bonusPts > 0 };
         });
 
-        const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isTraining && { isTraining: true }), ...(isNoStats && { isNoStats: true }) };
-        if (document.getElementById('pub-last').checked) await set(ref(db, splitPath + '/lastRace'), raceObj);
-        if (document.getElementById('pub-archive').checked) await push(ref(db, splitPath + '/archive'), raceObj);
+const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isNoStats && { isNoStats: true }), ...(isNoHistory && { isNoHistory: true }), ...(isNoProfileStats && { isNoProfileStats: true }) };
+        if (document.getElementById('pub-last').checked) await set(ref(db, getSplitPath(activeAdminSplit) + '/lastRace'), raceObj);
+        if (document.getElementById('pub-archive').checked) await push(ref(db, seasonArchivePath(activeAdminSplit)), raceObj);
 
-        if (!isTraining && !isNoStats) {
-            const standSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
+        if (!isNoStats) {
+            const standSnap = await new Promise(res => onValue(ref(db, seasonStandingsPath(activeAdminSplit)), res, { onlyOnce: true }));
             const currentStandings = standSnap.val() || { drivers: [], teams: [] };
             const driverMap = {}; const teamMap = {};
             (currentStandings.drivers || []).forEach(d => { driverMap[d.nick.toLowerCase()] = { ...d }; });
@@ -4408,19 +4431,18 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             });
             const drivers = Object.values(driverMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
             const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
-            await set(ref(db, splitPath + '/standings'), { drivers, teams });
+            await set(ref(db, seasonStandingsPath(activeAdminSplit)), { drivers, teams });
             let msg = `✅ Wyniki opublikowane! (Split ${adminSplit})\n\n  PKT otrzymało: ${bonusCount} graczy\n`;
             if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
             msg += `\n\n(Boty AI nie wliczane)`;
             alert(msg);
-        } else if (isTraining) {
-            alert(`✅ Wyniki treningu opublikowane! (Split ${adminSplit}, klasyfikacja niezmieniona)`);
         } else {
-            alert(`✅ Wyniki opublikowane bez wpływu na statystyki! (Split ${adminSplit}, klasyfikacja niezmieniona)`);
+            alert(`✅ Wyniki opublikowane bez PKT (klasyfikacja niezmieniona)! (Split ${adminSplit})`);
         }
-        document.getElementById('adm-no-bonus-nicks').value = '';
-        document.getElementById('pub-training').checked = false;
-        document.getElementById('pub-no-stats').checked = false;
+document.getElementById('adm-no-bonus-nicks').value = '';
+document.getElementById('pub-no-stats').checked = false;
+document.getElementById('pub-no-history').checked = false;
+document.getElementById('pub-no-profile-stats').checked = false;
     },
     async saveRegulamin() {
         const content = document.getElementById('regulamin-textarea').value;
@@ -4507,11 +4529,11 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         if (confirm("Czy na pewno chcesz to usunąć?")) { await remove(ref(db, path)); alert("Usunięto pomyślnie."); }
     },
     async saveArchiveOrder() {
-        const splitPath = getSplitPath(adminSplit);
+        const arcPath = seasonArchivePath(adminSplit);
         const list = document.getElementById('adm-archive-manager');
         const items = [...list.querySelectorAll('.reorder-item')];
         const updates = {};
-        items.forEach((item, i) => { updates[splitPath + '/archive/' + item.dataset.id + '/order'] = i; });
+        items.forEach((item, i) => { updates[arcPath + '/' + item.dataset.id + '/order'] = i; });
         await update(ref(db), updates);
         alert("Kolejność wyścigów zapisana!");
         document.getElementById('btn-save-archive-order').style.display = 'none';
@@ -4537,13 +4559,12 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
     },
     async recalcStandingsFromArchive(splitNum) {
         if (!isLoggedIn) return;
-        const targetSplit = splitNum || adminSplit;
-        const splitPath = getSplitPath(targetSplit);
-        const arcSnap = await new Promise(res => onValue(ref(db, splitPath + '/archive'), res, { onlyOnce: true }));
-        const archive = arcSnap.val();
-        if (!archive || Object.keys(archive).length === 0) { alert('Brak danych w archiwum dla tego splitu.'); return; }
+    const targetSplit = splitNum || adminSplit;
+    const arcSnap = await new Promise(res => onValue(ref(db, seasonArchivePath(targetSplit)), res, { onlyOnce: true }));
+    const archive = arcSnap.val();
+    if (!archive || Object.keys(archive).length === 0) { alert('Brak danych w archiwum dla tego splitu.'); return; }
 
-        const sdSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
+    const sdSnap = await new Promise(res => onValue(ref(db, seasonStandingsPath(targetSplit)), res, { onlyOnce: true }));
         const currentSd = sdSnap.val() || { drivers: [], teams: [] };
 
         const driverMeta = {};
@@ -4568,7 +4589,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
 
         let racesProcessed = 0;
         races.forEach(race => {
-            if (!race.results || race.isTraining || race.isQualifying || race.isNoStats) return;
+            if (!race.results || race.isQualifying || race.isNoStats) return;
             racesProcessed++;
             race.results.forEach(r => {
                 const pts = parseInt(r.pts) || 0;
@@ -4597,7 +4618,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
 
         const drivers = Object.values(driverMeta).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
-        await set(ref(db, splitPath + '/standings'), { drivers, teams });
+        await set(ref(db, seasonStandingsPath(targetSplit)), { drivers, teams });
 alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);
     },
         async startNewSeason() {
@@ -4636,16 +4657,70 @@ const gpNameToShort = (gpName) => {
 };
 const getNextRoundNumber = (splitNum) => {
     const arc = (splitDataCache[splitNum] && splitDataCache[splitNum].archive) || {};
-    const count = Object.values(arc).filter(r => !r.isTraining && !r.isQualifying).length;
+    const count = Object.values(arc).filter(r => !r.isQualifying).length;
     return count + 1;
 };
+
+// Szuka w kalendarzu pierwszej rundy, której nazwa GP jeszcze nie pojawiła się w archiwum tego splitu
+function getNextCalendarEntry(splitNum) {
+    const cal = window.calendarData || {};
+    const arc = (splitDataCache[splitNum] && splitDataCache[splitNum].archive) || {};
+    const usedNames = Object.values(arc)
+        .filter(r => !r.isQualifying && r.name)
+        .map(r => r.name.toLowerCase());
+
+    const rounds = Object.keys(cal).map(Number).sort((a, b) => a - b);
+    for (const round of rounds) {
+        const entry = cal[round];
+        if (!entry || !entry.name) continue;
+        const core = entry.name.toLowerCase().replace(/grand prix/i, '').trim();
+        const alreadyUsed = core && usedNames.some(n => n.includes(core));
+        if (!alreadyUsed) return { round, entry };
+    }
+    return null;
+}
 const buildRaceTitleSuggestion = (splitNum) => {
-    const round = getNextRoundNumber(splitNum);
-    const calEntry = (window.calendarData || {})[round];
-    const gpName = calEntry ? calEntry.name : ((splitNum === 2 ? window.gpNameS2 : window.gpNameS1) || '');
+    const round = getNextRoundNumber(splitNum); // numer rundy dalej liczony z ilości wpisów w archiwum
+    const nextCal = getNextCalendarEntry(splitNum); // ale nazwa GP wybierana po dopasowaniu nazw
+    const gpName = nextCal ? nextCal.entry.name : ((splitNum === 2 ? window.gpNameS2 : window.gpNameS1) || '');
     if (!gpName.trim()) return '';
     return `ROUND ${round} ${gpName.trim().toUpperCase()}`;
 };
+const buildGpNameSuggestion = (splitNum) => {
+    const nextCal = getNextCalendarEntry(splitNum);
+    return nextCal ? nextCal.entry.name : '';
+};
+function csvSplit(line) {
+    const out = [];
+    let cur = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+            if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
+            else inQuotes = !inQuotes;
+        } else if (ch === ',' && !inQuotes) {
+            out.push(cur); cur = '';
+        } else {
+            cur += ch;
+        }
+    }
+    out.push(cur);
+    return out.map(s => s.trim());
+}
+function parseArmLine(line) {
+    const trimmed = (line || '').trim();
+    if (!trimmed) return null;
+    if (trimmed.startsWith('"') && trimmed.includes('","')) {
+        const p = csvSplit(trimmed);
+        return { format: 'csv', nick: p[1] || '', team: p[2] || '', raw: p };
+    }
+    if (trimmed.includes('|')) {
+        const p = trimmed.split('|').map(s => s.trim());
+        return { format: 'pipe', nick: p[0] || '', team: p[1] || '', raw: p };
+    }
+    return null;
+}
 const normalizeTeamName = (name) => {    if (!name) return name;
     const n = name.toLowerCase().trim();
     if (n.includes('ferrari') || n.includes('scuderia')) return 'Scuderia Ferrari HP';
@@ -4659,6 +4734,8 @@ const normalizeTeamName = (name) => {    if (!name) return name;
     if (n.includes('mclaren')) return 'McLaren';
     if (n.includes('racing bull') || n.includes('visa cash') || n.includes('vcarb') || n === 'rb' || n.startsWith('rb ') || n.match(/^racing bulls?$/)) return 'Visa Cash App RB';
     if (n.includes('sauber') || n.includes('kick')) return 'Sauber';
+    if (n.includes('audi')) return 'Audi';
+    if (n.includes('cadillac')) return 'Cadillac';
     return name;
 };
 const getTeamClass = (teamName) => {
@@ -4699,7 +4776,7 @@ const getTeamKey = (teamName) => { const tc = getTeamClass(teamName); return tc 
 const findFastestLap = (results) => findFastestLapIdx(results);
 
 // ===================== RENDEROWANIE TABELI WYŚCIGU =====================
-const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining = false) => {
+const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = false) => {
     if (!results || results.length === 0) return '<p style="padding:40px;">Brak wyników.</p>';
     results = results.map(r => ({ ...r, team: normalizeTeamName(r.team) }));
     const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
@@ -4717,27 +4794,21 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, isTraining 
         <th class="col-pos" style="width:50px;">P</th>
         <th class="col-driver" style="width:22%;">Kierowca</th>
         <th style="width:18%;">Zespół</th>
-        ${isTraining
-            ? `<th style="width:auto;">Najl. okrążenie</th>`
-            : `<th style="text-align:center;width:50px;">Grid</th>
-               <th style="text-align:center;width:44px;">Pit</th>
-               <th style="width:150px;">Najl. okr.</th>
-               <th style="width:auto;">Czas</th>
-               <th class="col-pts" style="width:70px;">PKT</th>`
-        }
+        <th style="text-align:center;width:50px;">Grid</th>
+        <th style="text-align:center;width:44px;">Pit</th>
+        <th style="width:150px;">Najl. okr.</th>
+        <th style="width:auto;">Czas</th>
+        ${hidePts ? '' : '<th class="col-pts" style="width:70px;">PKT</th>'}
     </tr></thead><tbody>${results.map((r, i) => `
         <tr ${dragAttrs} class="${getTeamClass(r.team)}" data-row-idx="${i}" data-table-id="${tableId}">
             <td class="col-pos ${posClass(i)}">${cellEdit(r.pos, i, 'pos')}</td>
             <td class="col-driver">${nickSpan(r.nick, i, raceId, isLastRace)}</td>
             <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellEdit(r.team, i, 'team')}</td>
-            ${isTraining
-                ? `<td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>`
-                : `<td style="text-align:center;">${cellEdit(clean(r.start), i, 'start')}</td>
-                   <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
-                   <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
-                   <td>${cellEdit(r.time, i, 'time')}</td>
-                   <td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>`
-            }
+            <td style="text-align:center;">${cellEdit(clean(r.start), i, 'start')}</td>
+            <td style="text-align:center;">${cellEdit(clean(r.pit), i, 'pit')}</td>
+            <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
+            <td>${cellEdit(r.time, i, 'time')}</td>
+            ${hidePts ? '' : `<td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>`}
         </tr>`).join('')}</tbody></table>`;
 };
 
@@ -4923,14 +4994,14 @@ function buildAdmArchiveManager() {
         if (ao !== undefined) return -1; if (bo !== undefined) return 1;
         return (b[1].timestamp || 0) - (a[1].timestamp || 0);
     });
-    const splitPath = adminSplit === 1 ? 'split1' : 'split2';
+    const arcPath = seasonArchivePath(adminSplit);
     manager.innerHTML = `<div class="reorder-list" id="archive-reorder-list">` +
         entries.map(([id, race]) => `
         <div class="reorder-item" data-id="${id}">
             <span class="reorder-handle">⠿</span>
-            <span class="reorder-label">${race.name || id}${race.isTraining ? ' <span style="font-size:11px;color:#888;">[TRENING]</span>' : ''}${race.isQualifying ? ' <span style="font-size:11px;color:#6088d6;">[KWAL.]</span>' : ''}</span>
+            <span class="reorder-label">${race.name || id}${race.isNoStats ? ' <span style="font-size:11px;color:#888;">[BEZ PKT]</span>' : ''}${race.isQualifying ? ' <span style="font-size:11px;color:#6088d6;">[KWAL.]</span>' : ''}</span>
             <div class="reorder-actions">
-                <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('${splitPath}/archive/${id}')">🗑</button>
+                <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('${arcPath}/${id}')">🗑</button>
             </div>
         </div>`).join('') + `</div>`;
     const saveBtn = document.getElementById('btn-save-archive-order');
@@ -5000,6 +5071,7 @@ function subscribeArchive(splitNum, season) {
             rerenderArchive();
         }
         if (adminSplit === splitNum) buildAdmArchiveManager();
+        if (window.ui) ui.refreshGpNameSuggestion(splitNum);
     });
 }
 
@@ -5028,6 +5100,7 @@ function subscribeCalendar() {
         window.calendarData = calendarData;
         renderCalendar();
         refreshGpNamesDatalist();
+        if (window.ui) { ui.refreshGpNameSuggestion(1); ui.refreshGpNameSuggestion(2); }
     });
 }
 
@@ -5215,9 +5288,8 @@ if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.i
 }
 ui.quickCreateAlbum = function() {
     if (!isLoggedIn) return;
-    const round = getNextRoundNumber(currentSplit);
-    const calEntry = (window.calendarData || {})[round];
-    const gpName = calEntry ? calEntry.name : (currentSplit === 2 ? window.gpNameS2 : window.gpNameS1);
+    const nextCal = getNextCalendarEntry(currentSplit);
+    const gpName = nextCal ? nextCal.entry.name : (currentSplit === 2 ? window.gpNameS2 : window.gpNameS1);
     const suggested = gpName ? gpNameToShort(gpName) : '';
     ui.openGalleryModal('album', null, suggested);
 };
@@ -5420,7 +5492,7 @@ _getUsedCircuits() {
     [1, 2].forEach(s => {
         const arc = (cache[s] && cache[s].archive) ? cache[s].archive : {};
         Object.values(arc).forEach(r => {
-            if (!r.isTraining && !r.isQualifying && r.name) matchAndAdd(r.name);
+            if (!r.isQualifying && r.name) matchAndAdd(r.name);
         });
     });
 
