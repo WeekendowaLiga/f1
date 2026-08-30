@@ -2063,6 +2063,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                 <div class="form-group no-bonus-box" style="margin-top:10px;"><label class="form-label">Nicki BEZ   PKT za dojechanie (opcjonalne)<span class="form-hint">Jeden nick per linia.</span></label><textarea id="adm-no-bonus-nicks" class="f1-textarea" rows="3" placeholder="NickGracza1&#10;NickGracza2"></textarea></div>
             </details>            <div style="background:#f4f4f7;padding:16px;border-radius:8px;margin-top:16px;margin-bottom:16px;"><p style="font-weight:800;margin:0 0 10px;font-size:14px;letter-spacing:1px;text-transform:uppercase;">Gdzie opublikować?</p><label class="check-group"><input type="checkbox" id="pub-last" checked> OSTATNI WYŚCIG</label><label class="check-group"><input type="checkbox" id="pub-archive" checked> ARCHIWUM WYŚCIGÓW</label></div>
 			<label class="check-group"><input type="checkbox" id="pub-training">  TRENING (bez punktów, bez PKT w tabeli)</label>
+			<label class="check-group"><input type="checkbox" id="pub-no-stats"> 📊 BEZ STATYSTYK (widoczne normalnie z PKT, ale nie liczy się do klasyfikacji)</label>
 			<!-- ZMIANA: kwalifikacje z nowym formatem i opcją dodania do last race -->
             <label class="check-group"><input type="checkbox" id="pub-qualifying"> KWALIFIKACJE (Nick | Zespół | Czas | P startowa)</label>
             <label class="check-group" style="margin-left:28px;opacity:0.85;font-size:13px;"><input type="checkbox" id="pub-quali-to-last"> Pokaż też w zakładce "Ostatni Wyścig" (jako zakładka Kwalifikacje)</label>
@@ -2151,6 +2152,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-last" checked> 📺 Ostatni Wyścig</label>
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-archive" checked> 📁 Archiwum Wyścigów</label>
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-training"> 🔧 Trening (bez PKT)</label>
+                    <label class="arm-check-group"><input type="checkbox" id="arm-pub-no-stats"> 📊 Bez statystyk (nie liczy się do klasyfikacji)</label>
                     <label class="arm-check-group"><input type="checkbox" id="arm-pub-qualifying"> ⏱ Kwalifikacje (Nick|Zespół|Czas|P.startowa)</label>
                     <label class="arm-check-group" style="margin-left:28px;opacity:0.8;font-size:13px;"><input type="checkbox" id="arm-pub-quali-to-last"> → Pokaż też w Ostatni Wyścig</label>
                 </div>
@@ -3832,6 +3834,7 @@ ui.submitAddRaceModal = async function() {
     copyCheck('arm-pub-last', 'pub-last');
     copyCheck('arm-pub-archive', 'pub-archive');
     copyCheck('arm-pub-training', 'pub-training');
+    copyCheck('arm-pub-no-stats', 'pub-no-stats');
     copyCheck('arm-pub-qualifying', 'pub-qualifying');
     copyCheck('arm-pub-quali-to-last', 'pub-quali-to-last');
 
@@ -3845,6 +3848,7 @@ ui.submitAddRaceModal = async function() {
     document.getElementById('arm-pub-last').checked = true;
     document.getElementById('arm-pub-archive').checked = true;
     document.getElementById('arm-pub-training').checked = false;
+    document.getElementById('arm-pub-no-stats').checked = false;
     document.getElementById('arm-pub-qualifying').checked = false;
     document.getElementById('arm-pub-quali-to-last').checked = false;
     ui._buildArmNickChips(null);
@@ -4309,9 +4313,39 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             return;
         }
 
+        const isCsvFormat = lines.length > 0 && lines[0].trim().startsWith('"') && lines[0].includes('","');
         const isTabFormat = lines.length > 0 && lines[0].includes('\t') && !lines[0].includes('|');
+
+        // Parser CSV respektujący cudzysłowy (przecinki wewnątrz "..." nie dzielą pola,
+        // np. czas "45:12,889" zostaje w jednym polu)
+        const parseCsvLine = (line) => {
+            const out = [];
+            let cur = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (ch === '"') {
+                    if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
+                    else inQuotes = !inQuotes;
+                } else if (ch === ',' && !inQuotes) {
+                    out.push(cur); cur = '';
+                } else {
+                    cur += ch;
+                }
+            }
+            out.push(cur);
+            return out.map(s => s.trim());
+        };
+
         let results;
-        if (isTabFormat) {
+        if (isCsvFormat) {
+            // Format: "Poz.","Kierowca","Zespół","P. start.","Postoje","Naj. czas","Czas","Pkt.","typ kierowcy"
+            const dataLines = lines.filter(l => !l.trim().startsWith('"Poz'));
+            results = dataLines.map(line => {
+                const p = parseCsvLine(line);
+                return { pos: p[0], nick: p[1], team: normalizeTeamName(p[2]), start: p[3], pit: p[4], best: p[5], time: p[6] || '', pts: p[7] || '0' };
+            });
+        } else if (isTabFormat) {
             const dataLines = lines.filter(l => /^\d/.test(l.trim()));
             results = dataLines.map(line => {
                 const p = line.split('\t').map(s => s.trim());
@@ -4326,6 +4360,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         }
 
         const isTraining = document.getElementById('pub-training').checked;
+        const isNoStats = document.getElementById('pub-no-stats').checked;
 
         const resultsWithBonus = results.map(r => {
             const nickKey = (r.nick || '').toLowerCase();
@@ -4335,15 +4370,15 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             const isManualExcluded = noBonusNicks.has(nickKey);
             const basePts = parseInt(r.pts) || 0;
             let bonusPts = 0;
-            if (!isBot && !isDnfDsq && !isManualExcluded && !isTraining) bonusPts = 3;
+            if (!isBot && !isDnfDsq && !isManualExcluded && !isTraining && !isNoStats) bonusPts = 3;
             return { ...r, pts: String(basePts + bonusPts), hasBonus: bonusPts > 0 };
         });
 
-        const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isTraining && { isTraining: true }) };
+        const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isTraining && { isTraining: true }), ...(isNoStats && { isNoStats: true }) };
         if (document.getElementById('pub-last').checked) await set(ref(db, splitPath + '/lastRace'), raceObj);
         if (document.getElementById('pub-archive').checked) await push(ref(db, splitPath + '/archive'), raceObj);
 
-        if (!isTraining) {
+        if (!isTraining && !isNoStats) {
             const standSnap = await new Promise(res => onValue(ref(db, splitPath + '/standings'), res, { onlyOnce: true }));
             const currentStandings = standSnap.val() || { drivers: [], teams: [] };
             const driverMap = {}; const teamMap = {};
@@ -4378,11 +4413,14 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
             if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
             msg += `\n\n(Boty AI nie wliczane)`;
             alert(msg);
-        } else {
+        } else if (isTraining) {
             alert(`✅ Wyniki treningu opublikowane! (Split ${adminSplit}, klasyfikacja niezmieniona)`);
+        } else {
+            alert(`✅ Wyniki opublikowane bez wpływu na statystyki! (Split ${adminSplit}, klasyfikacja niezmieniona)`);
         }
         document.getElementById('adm-no-bonus-nicks').value = '';
         document.getElementById('pub-training').checked = false;
+        document.getElementById('pub-no-stats').checked = false;
     },
     async saveRegulamin() {
         const content = document.getElementById('regulamin-textarea').value;
@@ -4530,7 +4568,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
 
         let racesProcessed = 0;
         races.forEach(race => {
-            if (!race.results || race.isTraining || race.isQualifying) return;
+            if (!race.results || race.isTraining || race.isQualifying || race.isNoStats) return;
             racesProcessed++;
             race.results.forEach(r => {
                 const pts = parseInt(r.pts) || 0;
