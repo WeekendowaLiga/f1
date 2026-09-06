@@ -3501,7 +3501,7 @@ return `<tr${r._excludeFromCalc ? ' style="opacity:0.55;"' : ''}>
             } else {
                 mediaHtml = `<img src="${src}" alt="${entry.title || ''}" style="width:100%;height:100%;object-fit:cover;">`;
             }
-            const deleteBtn = isLoggedIn ? `<button class="btn-action btn-danger btn-sm" style="position:absolute;top:10px;right:10px;z-index:10;" onclick="dbCore.deleteNode('gallery/${id}/entries/${entryId}');ui.openAlbum('${id}')">✕</button>` : '';
+            const deleteBtn = isLoggedIn ? `<button class="btn-action btn-danger btn-sm" style="position:absolute;top:10px;right:10px;z-index:10;" onclick="dbCore.deleteNode('${seasonGalleryPath()}/${id}/entries/${entryId}');ui.openAlbum('${id}')">✕</button>` : '';
             const entryTitleHtml = isLoggedIn
                 ? `<div class="media-entry-title"><span class="arc-cell-editable" onclick="ui.editEntryTitle(this,'${id}','${entryId}')">${entry.title || 'Wpis'}</span></div>`
                 : (entry.title ? `<div class="media-entry-title">${entry.title}</div>` : '');
@@ -3517,7 +3517,7 @@ return `<tr${r._excludeFromCalc ? ' style="opacity:0.55;"' : ''}>
         const input = document.createElement('input'); input.type = 'text'; input.value = currentName;
         input.style.cssText = 'font-family:var(--font-display);font-size:44px;font-weight:900;letter-spacing:2px;color:var(--f1-black);background:transparent;border:none;border-bottom:3px solid var(--f1-red);outline:none;width:100%;text-transform:uppercase;';
         el.replaceWith(input); input.focus(); input.select();
-        const save = async () => { const nv = input.value.trim() || currentName; await update(ref(db, 'gallery/' + id), { name: nv }); if (window.galleryData && window.galleryData[id]) window.galleryData[id].name = nv; };
+        const save = async () => { const nv = input.value.trim() || currentName; await update(ref(db, seasonGalleryPath() + '/' + id), { name: nv }); if (window.galleryData && window.galleryData[id]) window.galleryData[id].name = nv; };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = currentName; input.blur(); } });
     },
@@ -3532,7 +3532,7 @@ return `<tr${r._excludeFromCalc ? ' style="opacity:0.55;"' : ''}>
             const span = document.createElement('span'); span.className = 'arc-cell-editable'; span.textContent = nv;
             span.onclick = () => ui.editEntryTitle(span, albumId, entryId);
             input.replaceWith(span);
-            await update(ref(db, `gallery/${albumId}/entries/${entryId}`), { title: nv });
+await update(ref(db, `${seasonGalleryPath()}/${albumId}/entries/${entryId}`), { title: nv });
         };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
@@ -3985,14 +3985,14 @@ ui.submitGalleryModal = async function() {
             const name = document.getElementById('gm-album-name')?.value?.trim();
             const cover = document.getElementById('gm-album-cover')?.value?.trim() || '';
             if (!name) { alert('Podaj nazwę albumu.'); return; }
-            await push(ref(db, 'gallery'), { name, cover, entries: {} });
+await push(ref(db, seasonGalleryPath()), { name, cover, entries: {} });
         } else if (_galleryModalMode === 'entry') {
             const title = document.getElementById('gm-entry-title')?.value?.trim() || '';
             const activeTypeBtn = document.querySelector('.gm-type-btn.active');
             const type = activeTypeBtn?.id?.replace('gm-type-', '') || 'youtube';
             const src = document.getElementById('gm-entry-src')?.value?.trim();
             if (!src) { alert('Podaj URL lub link.'); return; }
-            await push(ref(db, `gallery/${_galleryModalAlbumId}/entries`), { title, type, src });
+await push(ref(db, `${seasonGalleryPath()}/${_galleryModalAlbumId}/entries`), { title, type, src });
             ui.openAlbum(_galleryModalAlbumId);
         }
         ui.closeGalleryModal(null, true);
@@ -4496,7 +4496,7 @@ document.getElementById('pub-no-profile-stats').checked = false;
         const name = document.getElementById('adm-gal-name').value.trim();
         const cover = document.getElementById('adm-gal-cover').value.trim();
         if (!name) { alert("Podaj nazwę albumu."); return; }
-        await push(ref(db, 'gallery'), { name, cover, entries: {} });
+await push(ref(db, seasonGalleryPath()), { name, cover, entries: {} });
         document.getElementById('adm-gal-name').value = '';
         document.getElementById('adm-gal-cover').value = '';
         alert("Album utworzony!");
@@ -4517,8 +4517,8 @@ document.getElementById('pub-no-profile-stats').checked = false;
             entry.src = await new Promise((res, rej) => { const r = new FileReader(); r.onload = e => res(e.target.result); r.onerror = () => rej(new Error("Błąd odczytu")); r.readAsDataURL(file); });
             status.textContent = "Zapisywanie...";
         }
-        await push(ref(db, `gallery/${albumId}/entries`), entry);
-        status.textContent = "✓ Wpis dodany!";
+await push(ref(db, `${seasonGalleryPath()}/${albumId}/entries`), entry);
+status.textContent = "✓ Wpis dodany!";
         document.getElementById('adm-entry-title').value = '';
         document.getElementById('adm-entry-youtube').value = '';
         document.getElementById('adm-entry-url').value = '';
@@ -4552,7 +4552,7 @@ document.getElementById('pub-no-profile-stats').checked = false;
         const list = document.getElementById('adm-gallery-manager');
         const items = [...list.querySelectorAll('.reorder-item')];
         const updates = {};
-        items.forEach((item, i) => { updates['gallery/' + item.dataset.id + '/order'] = i; });
+items.forEach((item, i) => { updates[seasonGalleryPath() + '/' + item.dataset.id + '/order'] = i; });
         await update(ref(db), updates);
         alert("Kolejność albumów zapisana!");
         document.getElementById('btn-save-gallery-order').style.display = 'none';
@@ -5277,7 +5277,7 @@ if (!data) { albumsGrid.innerHTML = "<p>Brak albumów w galerii.</p>"; manager.i
                 <span class="reorder-label">${gal.name}</span>
                 <div class="reorder-actions">
                     <button class="btn-action btn-secondary btn-sm" onclick="ui.editAlbumCover('${id}','${(gal.cover||'').replace(/'/g,"\\'")}')">🖼</button>
-                    <button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('gallery/${id}')">🗑</button>
+<button class="btn-action btn-danger btn-sm" onclick="dbCore.deleteNode('${seasonGalleryPath()}/${id}')">🗑</button>
                 </div>
             </div>`).join('') + `</div>`;
         if (saveBtn) saveBtn.style.display = entries.length > 1 ? 'inline-flex' : 'none';
@@ -5294,21 +5294,21 @@ ui.quickCreateAlbum = function() {
     ui.openGalleryModal('album', null, suggested);
 };
 ui.togglePinAlbum = async function(id, isPinned) {
-    await update(ref(db, 'gallery/' + id), { pinned: !isPinned });
+await update(ref(db, seasonGalleryPath() + '/' + id), { pinned: !isPinned });
 };
 
 ui.editAlbumNameFromGrid = async function(id, currentName, btn) {
     if (!isLoggedIn) return;
     const newName = prompt('Nowa nazwa albumu:', currentName);
     if (newName && newName.trim() && newName.trim() !== currentName) {
-        await update(ref(db, 'gallery/' + id), { name: newName.trim() });
+await update(ref(db, seasonGalleryPath() + '/' + id), { name: newName.trim() });
         if (window.galleryData && window.galleryData[id]) window.galleryData[id].name = newName.trim();
     }
 };
 ui.editAlbumCover = async function(id, currentCover) {
     if (!isLoggedIn) return;
     const newCover = prompt('Nowy URL okładki:', currentCover);
-    if (newCover !== null && newCover.trim() !== currentCover) await update(ref(db, 'gallery/' + id), { cover: newCover.trim() });
+    if (newCover !== null && newCover.trim() !== currentCover) await update(ref(db, seasonGalleryPath() + '/' + id), { cover: newCover.trim() });
 };
 
 document.querySelectorAll('input[name="hero-mode-s1"]').forEach(r => {
