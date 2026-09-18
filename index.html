@@ -613,7 +613,15 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .team-page-card:hover .tpc-edit-hint { opacity: 1; }
 .tpc-footer { padding: 14px 44px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; background: rgba(0,0,0,0.15); }
 .tpc-num { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.5); line-height: 1; user-select: none; position: absolute; right: 36px; bottom: 10px; }
-
+.tpc-car-stage { position: relative; z-index: 2; height: 220px; display: flex; align-items: center; justify-content: center; padding: 0 30px; }
+.tpc-car-stage .tpc-num { position: absolute; left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -56%); font-size: 240px; color: rgba(255,255,255,0.22); z-index: 0; letter-spacing: -6px; }
+.tpc-car { position: relative; z-index: 1; max-width: 92%; max-height: 190px; object-fit: contain; filter: drop-shadow(0 16px 20px rgba(0,0,0,0.5)); transition: transform 0.5s cubic-bezier(0.19,1,0.22,1); }
+.team-page-card:hover .tpc-car { transform: translateX(16px) scale(1.05); }
+@media (max-width: 1024px) {
+    .tpc-car-stage { height: 100px; padding: 0 14px; }
+    .tpc-car-stage .tpc-num { font-size: 110px; }
+    .tpc-car { max-height: 84px; }
+}
 /* ===================== PROFIL KIEROWCY — MODAL ===================== */
 #driver-profile-overlay {
     position: fixed; inset: 0;
@@ -2536,6 +2544,10 @@ function renderTeamsPage() {
                 </div>
                 <div class="tpc-logo-wrap">${logoHtml}</div>
             </div>
+			            <div class="tpc-car-stage">
+                <div class="tpc-num">${String(idx + 1).padStart(2, '0')}</div>
+                <img class="tpc-car" src="cars/${t.key}.png" alt="${t.label}" onerror="this.style.display='none'">
+            </div>
             <div class="tpc-body">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                     ${makeDriverField('driver1', d1, '🏎 Kierowca 1')}
@@ -2546,7 +2558,7 @@ function renderTeamsPage() {
                     ${makeField('custom2', custom2, '')}
                 </div>` : ''}
             </div>
-            <div class="tpc-num">${String(idx + 1).padStart(2, '0')}</div>
+
         </div>`;
     }).join('');
 }
@@ -4424,7 +4436,8 @@ const isNoStats = document.getElementById('pub-no-stats').checked;
 const isNoHistory = document.getElementById('pub-no-history').checked;
 const isNoProfileStats = document.getElementById('pub-no-profile-stats').checked;
 
-        const resultsWithBonus = results.map(r => {
+        const fastestLapIdx = findFastestLap(results);
+        const resultsWithBonus = results.map((r, idx) => {
             const nickKey = (r.nick || '').toLowerCase();
             const isBot = isRealF1Driver(r.nick);
             const dnfTags = ['DNF', 'DSQ', 'DNS', 'RET', 'NC'];
@@ -4433,7 +4446,9 @@ const isNoProfileStats = document.getElementById('pub-no-profile-stats').checked
             const basePts = parseInt(r.pts) || 0;
             let bonusPts = 0;
             if (!isBot && !isDnfDsq && !isManualExcluded && !isNoStats) bonusPts = 3;
-            return { ...r, pts: String(basePts + bonusPts), hasBonus: bonusPts > 0 };
+            let flPts = 0;
+            if (!isBot && !isNoStats && idx === fastestLapIdx) flPts = 1;
+            return { ...r, pts: String(basePts + bonusPts + flPts), hasBonus: bonusPts > 0, hasFastestLapBonus: flPts > 0 };
         });
 
 const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isNoStats && { isNoStats: true }), ...(isNoHistory && { isNoHistory: true }), ...(isNoProfileStats && { isNoProfileStats: true }) };
@@ -4820,7 +4835,7 @@ const findFastestLap = (results) => findFastestLapIdx(results);
 const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = false) => {
     if (!results || results.length === 0) return '<p style="padding:40px;">Brak wyników.</p>';
     results = results.map(r => ({ ...r, team: normalizeTeamName(r.team) }));
-    const posClass = (i) => i===0?'pos-gold':i===1?'pos-silver':i===2?'pos-bronze':'';
+    const posClass = (posVal) => { const p = parseInt(posVal); if (p === 1) return 'pos-gold'; if (p === 2) return 'pos-silver'; if (p === 3) return 'pos-bronze'; return ''; };
     const clean = (val) => (val || '').toString().replace(/^(Start:|Pit:)\s*/i, '').trim();
     const fastestIdx = findFastestLap(results);
     const cellEdit = (val, rowIdx, field, extraClass='') => {
@@ -4842,7 +4857,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = f
         ${hidePts ? '' : '<th class="col-pts" style="width:70px;">PKT</th>'}
     </tr></thead><tbody>${results.map((r, i) => `
         <tr ${dragAttrs} class="${getTeamClass(r.team)}" data-row-idx="${i}" data-table-id="${tableId}">
-            <td class="col-pos ${posClass(i)}">${cellEdit(r.pos, i, 'pos')}</td>
+            <td class="col-pos ${posClass(r.pos)}">${cellEdit(r.pos, i, 'pos')}</td>
 <td class="col-driver">${nickSpan(r.nick, i, raceId, isLastRace, r.isReserve)}</td>
             <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellEdit(r.team, i, 'team')}</td>
             <td style="text-align:center;">${cellEdit(clean(r.start), i, 'start')}</td>
@@ -5390,14 +5405,14 @@ function initRaceRowDragDrop(tableId, raceId, isLastRace) {
             const rows = [...tbody.querySelectorAll('tr[data-row-idx]')];
             const splitPath = getSplitPathView();
             try {
-                if (raceId) {
-                    const cached = (splitDataCache[currentSplit].archive || {})[raceId];
-                    if (cached && Array.isArray(cached.results)) {
-                        const newResults = rows.map(r => cached.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
-                        rows.forEach((r, i) => r.dataset.rowIdx = i);
-                        await set(ref(db, splitPath + '/archive/' + raceId + '/results'), newResults);
-                    }
-                } else if (isLastRace) {
+if (raceId) {
+    const cached = (splitDataCache[currentSplit].archive || {})[raceId];
+    if (cached && Array.isArray(cached.results)) {
+        const newResults = rows.map(r => cached.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
+        rows.forEach((r, i) => r.dataset.rowIdx = i);
+        await set(ref(db, seasonArchivePath(currentSplit) + '/' + raceId + '/results'), newResults);
+    }
+} else if (isLastRace) {
                     const data = splitDataCache[currentSplit].lastRace;
                     if (data && Array.isArray(data.results)) {
                         const newResults = rows.map(r => data.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
