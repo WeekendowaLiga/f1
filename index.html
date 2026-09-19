@@ -180,22 +180,24 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
     width: 100%;
     position: relative;
     transform-origin: top left;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 @media (min-width: 1025px) {
-    #main-app { zoom: 0.57; }
+    #main-app { zoom: 0.57; min-height: calc(100vh / 0.57); }
 }
 
 @media (max-width: 1024px) {
-    #main-app { zoom: 0.85; }
+    #main-app { zoom: 0.85; min-height: calc(100vh / 0.85); }
 }
 
 @media (max-width: 480px) {
-    #main-app { zoom: 0.75; }
+    #main-app { zoom: 0.75; min-height: calc(100vh / 0.75); }
 }
 
 @media (max-width: 360px) {
-    #main-app { zoom: 0.65; }
+    #main-app { zoom: 0.65; min-height: calc(100vh / 0.65); }
 }
 
 /* ===================== SPLASH ===================== */
@@ -334,7 +336,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .f1-card { transition: box-shadow 0.4s ease, transform 0.35s cubic-bezier(0.19,1,0.22,1); }
 .f1-card:hover { transform: translateY(-5px) scale(1.002); }
 .team-page-card { transition: transform 0.4s cubic-bezier(0.19,1,0.22,1), box-shadow 0.4s ease; }
-.team-page-card:hover { transform: translateY(-10px) scale(1.02) skewX(-1deg) !important; }
+.team-page-card:hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-10px) scale(1.02) !important; transition: transform 0.12s ease-out, box-shadow 0.4s ease; }
 .album-card { transition: transform 0.45s cubic-bezier(0.19,1,0.22,1), box-shadow 0.45s ease; }
 .album-card:hover { transform: translateY(-8px) scale(1.025) !important; }
 .btn-action { transition: background 0.25s, transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s; }
@@ -365,7 +367,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .toast-notice { transition: opacity 0.35s cubic-bezier(0.19,1,0.22,1), transform 0.4s cubic-bezier(0.19,1,0.22,1); }
 
 /* ===================== MAIN CONTENT ===================== */
-.main-content { max-width: 2400px; margin: 0 auto; padding: 0 40px 200px; }
+.main-content { max-width: 2400px; margin: 0 auto; padding: 0 40px 200px; flex: 1 0 auto; width: 100%; box-sizing: border-box; }
 .page-view { display: none; }
 .page-view.active { display: block; animation: pageEnter 0.5s ease-out forwards; }
 @keyframes pageEnter { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
@@ -617,6 +619,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-car-stage .tpc-num { position: absolute; left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -68%); font-size: 240px; color: rgba(255,255,255,0.22); z-index: 0; letter-spacing: -6px; }
 .tpc-car { position: relative; z-index: 1; max-width: 92%; max-height: 190px; object-fit: contain; filter: drop-shadow(0 16px 20px rgba(0,0,0,0.5)); transition: transform 0.5s cubic-bezier(0.19,1,0.22,1); }
 .team-page-card:hover .tpc-car { transform: translateX(16px) scale(1.05); }
+.tpc-car-stage::after { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; background: linear-gradient(105deg, transparent 44%, rgba(255,255,255,0.32) 50%, transparent 56%); background-size: 250% 100%; background-repeat: no-repeat; background-position: 110% 0; }
+.team-page-card:hover .tpc-car-stage::after { opacity: 1; animation: carShine 0.9s ease-out forwards; }
+@keyframes carShine { from { background-position: 110% 0; } to { background-position: -10% 0; } }
 @media (max-width: 1024px) {
     .tpc-car-stage { height: 100px; padding: 0 14px; }
     .tpc-car-stage .tpc-num { font-size: 110px; }
@@ -675,7 +680,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     position: relative; overflow: hidden;
     display: flex; align-items: flex-end; gap: 40px;
 }
-.dp-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 0% 100%, rgba(225,6,0,0.10) 0%, transparent 60%); pointer-events: none; }
+.dp-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 0% 100%, rgba(255,255,255,0.06) 0%, transparent 60%); pointer-events: none; }
 .dp-header-grid-bg { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.018) 40px, rgba(255,255,255,0.018) 41px), repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.018) 60px, rgba(255,255,255,0.018) 61px); pointer-events: none; }
 .dp-left-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 7px; transition: background 0.4s ease; }
 .dp-header-content { position: relative; z-index: 1; flex: 1; }
@@ -1432,6 +1437,10 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     transition: transform 0.3s cubic-bezier(0.19,1,0.22,1), box-shadow 0.3s ease;
 }
 .calendar-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+.calendar-card.next { border: 2px solid var(--f1-red); box-shadow: 0 0 0 3px rgba(225,6,0,0.3), 0 0 40px rgba(225,6,0,0.45); }
+.calendar-card.next:hover { box-shadow: 0 0 0 3px rgba(225,6,0,0.45), 0 20px 50px rgba(225,6,0,0.5); }
+.calendar-next-badge { position: absolute; top: 52px; right: 14px; z-index: 2; background: #fff; color: var(--f1-red); font-family: var(--font-display); font-weight: 900; font-size: 14px; letter-spacing: 3px; padding: 6px 14px; border-radius: 4px; animation: nextPulse 1.6s ease-in-out infinite; }
+@keyframes nextPulse { 0%,100% { box-shadow: 0 0 0 rgba(225,6,0,0); } 50% { box-shadow: 0 0 18px rgba(225,6,0,0.8); } }
 .calendar-card.empty { align-items: center; justify-content: center; border: 2px dashed rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
 .calendar-card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.55; }
 .calendar-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); }
@@ -2332,7 +2341,7 @@ function hideSplash() {
     setTimeout(function() {
         splash.style.display = 'none';
         var app = document.getElementById('main-app');
-        if (app) app.style.display = 'block';
+        if (app) app.style.display = 'flex';
         if (window._resetInactivityTimer) window._resetInactivityTimer();
         if (window.ui && window.ui.replayStandingsCountUp) window.ui.replayStandingsCountUp();
     }, 500);
@@ -3271,6 +3280,7 @@ toggleAuth(show) {
         document.getElementById('dp-nick-display').textContent = nick;
         document.getElementById('dp-team-display').textContent = '…';
         document.getElementById('dp-top-bar').style.background = 'var(--f1-red)';
+        document.getElementById('driver-profile-modal').style.background = '';
         document.getElementById('dp-left-accent').style.background = 'var(--f1-red)';
         document.getElementById('dp-team-dot').style.background = 'var(--f1-red)';
         document.getElementById('dp-logo-wrap').innerHTML = '';
@@ -3360,6 +3370,7 @@ const raceCountForStats = allRaces.filter(r => !r._excludeFromCalc).length;
 
         // Ustaw kolory
         document.getElementById('dp-top-bar').style.background = teamColor;
+        document.getElementById('driver-profile-modal').style.background = 'linear-gradient(160deg, ' + teamColor + '66 0%, ' + teamColor + '1a 38%, transparent 72%), #15151e';
         document.getElementById('dp-left-accent').style.background = teamColor;
         document.getElementById('dp-team-dot').style.background = teamColor;
         document.getElementById('dp-team-badge').style.borderColor = teamColor + '44';
@@ -5180,6 +5191,7 @@ function subscribeArchive(splitNum, season) {
         }
         if (adminSplit === splitNum) buildAdmArchiveManager();
         if (window.ui) ui.refreshGpNameSuggestion(splitNum);
+        renderCalendar();
     });
 }
 
@@ -5216,13 +5228,17 @@ function renderCalendar() {
     const grid = document.getElementById('calendar-grid');
     if (!grid) return;
     let html = '';
+    const nextInfo = getNextCalendarEntry(currentSplit);
+    const nextRound = nextInfo ? nextInfo.round : null;
     for (let round = 1; round <= 12; round++) {
         const entry = calendarData[round];
         if (entry) {
-            html += `<div class="calendar-card">
+            const isNext = round === nextRound;
+            html += `<div class="calendar-card${isNext ? ' next' : ''}">
                 <div class="calendar-card-bg" style="background-image:url('${entry.img || ''}')"></div>
                 <div class="calendar-card-overlay"></div>
                 <div class="calendar-round-badge">ROUND ${round}</div>
+                ${isNext ? '<div class="calendar-next-badge">NEXT</div>' : ''}
                 <div class="calendar-flag">${entry.flagCode ? flagImgHtml(entry.flagCode, 40, 27) : ''}</div>
                 <div class="calendar-card-info">
                     <div class="calendar-gp-name">${entry.name || ''}</div>
@@ -5242,6 +5258,27 @@ function renderCalendar() {
 }
 
 preloadImages(TEAM_DEFS.map(t => 'cars/' + t.key + '.png'));
+
+(function() {
+    const grid = document.getElementById('teams-grid-container');
+    if (!grid) return;
+    const clamp = (v) => Math.max(-0.5, Math.min(0.5, v));
+    grid.addEventListener('mousemove', e => {
+        const card = e.target.closest('.team-page-card');
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        const x = clamp((e.clientX - r.left) / r.width - 0.5);
+        const y = clamp((e.clientY - r.top) / r.height - 0.5);
+        card.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
+        card.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg');
+    });
+    grid.addEventListener('mouseout', e => {
+        const card = e.target.closest('.team-page-card');
+        if (!card || card.contains(e.relatedTarget)) return;
+        card.style.removeProperty('--rx');
+        card.style.removeProperty('--ry');
+    });
+})();
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
