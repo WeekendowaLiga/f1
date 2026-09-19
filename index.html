@@ -614,7 +614,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-footer { padding: 14px 44px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; background: rgba(0,0,0,0.15); }
 .tpc-num { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.5); line-height: 1; user-select: none; position: absolute; right: 36px; bottom: 10px; }
 .tpc-car-stage { position: relative; z-index: 2; height: 220px; display: flex; align-items: center; justify-content: center; padding: 0 30px; }
-.tpc-car-stage .tpc-num { position: absolute; left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -56%); font-size: 240px; color: rgba(255,255,255,0.22); z-index: 0; letter-spacing: -6px; }
+.tpc-car-stage .tpc-num { position: absolute; left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -68%); font-size: 240px; color: rgba(255,255,255,0.22); z-index: 0; letter-spacing: -6px; }
 .tpc-car { position: relative; z-index: 1; max-width: 92%; max-height: 190px; object-fit: contain; filter: drop-shadow(0 16px 20px rgba(0,0,0,0.5)); transition: transform 0.5s cubic-bezier(0.19,1,0.22,1); }
 .team-page-card:hover .tpc-car { transform: translateX(16px) scale(1.05); }
 @media (max-width: 1024px) {
@@ -1148,6 +1148,36 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 }
 .toast-notice.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ===================== STOPKA ===================== */
+.site-footer {
+    background: transparent;
+    color: rgba(21,21,30,0.4);
+    text-align: left;
+    padding: 10px 24px 12px;
+    border-top: none;
+    font-family: var(--font-data);
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.site-footer strong { color: inherit; font-weight: 500; }
+.splash-copy {
+    position: fixed;
+    left: 20px;
+    bottom: 12px;
+    margin-top: 0;
+    font-family: var(--font-data);
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    text-align: left;
+}
+@media (max-width: 1024px) {
+    .site-footer { font-size: 7px; letter-spacing: 1.5px; padding: 8px 12px 10px; }
+    .splash-copy { font-size: 7px; letter-spacing: 1.5px; }
+}
+
 /* ===================== MOBILNE ===================== */
 @media (max-width: 1024px) {
 	.cteam-pts-cell { font-size: 20px !important; padding: 4px 10px !important; min-width: 60px; }
@@ -1668,7 +1698,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     <div id="splash-images-container" style="margin-top:25px;"></div>
     <div id="splash-image-area" class="splash-image-area" style="display:none;"></div>
     <div id="splash-custom-content" class="splash-content-area"></div>
-    <div class="splash-cta">KLIKNIJ ABY WEJŚĆ</div>
+<div class="splash-cta">KLIKNIJ ABY WEJŚĆ</div>
+
 </div>
 
 <div id="main-app" style="display:none;">
@@ -1880,6 +1911,11 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 <button class="btn-action" onclick="dbCore.saveRegulamin()">💾 ZAPISZ REGULAMIN</button>
     </div>
 </main>
+
+<footer class="site-footer">
+    © <span id="footer-year">2026</span> <strong>Weekendowa Liga F1</strong> — Wszelkie prawa zastrzeżone
+</footer>
+<script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
 
 <!-- ===================== PROFIL KIEROWCY — MODAL ===================== -->
 <div id="driver-profile-overlay" onclick="ui.closeDriverProfile(event)">
@@ -2396,7 +2432,7 @@ const TEAM_DEFS = [
     { key: 'mercedes', label: 'Mercedes',      color: '#00d2be', fullName: 'Mercedes-AMG Petronas F1 Team' },
     { key: 'aston',    label: 'Aston Martin',  color: '#006f62', fullName: 'Aston Martin Aramco F1 Team' },
     { key: 'alpine',   label: 'Alpine',        color: '#6088d6', fullName: 'BWT Alpine F1 Team' },
-    { key: 'haas',     label: 'Haas',          color: '#888888', fullName: 'TGR Haas F1 Team' },
+    { key: 'haas',     label: 'Haas',          color: '#888888', fullName: 'MoneyGram Haas F1 Team' },
     { key: 'williams', label: 'Williams',      color: '#182cc4', fullName: 'Williams Racing' },
     { key: 'rb',       label: 'Racing Bulls',  color: '#004cff', fullName: 'Visa Cash App RB F1 Team' },
     { key: 'audi',     label: 'Audi',          color: '#3d3d3d', fullName: 'Audi F1 Team' },
