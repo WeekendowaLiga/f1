@@ -2534,6 +2534,18 @@ const getDriverCurrentTeam = (nick) => {
     return '';
 };
 
+const _preloadKeep = [];
+function preloadImages(urls) {
+    (urls || []).forEach(u => {
+        if (!u || u.startsWith('data:') || _preloadKeep.some(i => i.dataset.src === u)) return;
+        const im = new Image();
+        im.dataset.src = u;
+        im.decoding = 'async';
+        im.src = u;
+        _preloadKeep.push(im);
+    });
+}
+
 function renderTeamsPage() {
     const container = document.getElementById('teams-grid-container');
     if (!container) return;
@@ -5226,8 +5238,10 @@ function renderCalendar() {
         }
     }
     grid.innerHTML = html;
+    preloadImages(Object.values(calendarData || {}).flatMap(e => e ? [e.img, e.flagCode ? `https://flagcdn.com/w80/${e.flagCode}.png` : ''] : []));
 }
 
+preloadImages(TEAM_DEFS.map(t => 'cars/' + t.key + '.png'));
 subscribeStandings(1);
 subscribeLastRace(1);
 subscribeTeamsInfo(1);
@@ -5249,7 +5263,7 @@ onValue(ref(db, 'config'), snap => {
         const togHide = document.getElementById('adm-hide-split-switcher');
         if (togHide) togHide.checked = c.hideSplitSwitcher;
     }
-    if (c.teamLogos) { teamLogos = c.teamLogos; buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
+    if (c.teamLogos) { teamLogos = c.teamLogos; preloadImages(Object.values(teamLogos)); buildLogosGrid(); renderStandings(); if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
     if (c.socialIcons) {
         socialConfig = c.socialIcons;
         ['discord', 'youtube', 'tiktok'].forEach(p => {
