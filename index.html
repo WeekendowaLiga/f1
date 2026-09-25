@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -337,7 +335,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .f1-card { transition: box-shadow 0.4s ease, transform 0.35s cubic-bezier(0.19,1,0.22,1); }
 .f1-card:hover { transform: translateY(-5px) scale(1.002); }
 .team-page-card { transition: transform 0.4s cubic-bezier(0.19,1,0.22,1), box-shadow 0.4s ease; }
-.team-page-card:hover { transform: translateY(-10px) scale(1.02) skewX(-1deg) !important; }
+.team-page-card:hover { transform: translateY(-10px) scale(1.02) skewX(-1deg) !important; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .album-card { transition: transform 0.45s cubic-bezier(0.19,1,0.22,1), box-shadow 0.45s ease; }
 .album-card:hover { transform: translateY(-8px) scale(1.025) !important; }
 .btn-action { transition: background 0.25s, transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s; }
@@ -405,6 +403,47 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .pos-bronze { color: #cd7f32 !important; font-weight: 900 !important; }
 .reserve-badge { display: inline-block; background: rgba(255,193,7,0.18); color: #ffc107; font-size: 0.45em; font-family: var(--font-data); font-weight: 800; letter-spacing: 2px; padding: 2px 7px; border-radius: 3px; vertical-align: middle; margin-left: 6px; border: 1px solid rgba(255,193,7,0.4); }
 .bot-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); font-size: 0.45em; font-family: var(--font-data); font-weight: 800; letter-spacing: 2px; padding: 2px 7px; border-radius: 3px; vertical-align: middle; margin-left: 6px; border: 1px solid rgba(255,255,255,0.2); }
+
+/* ===================== OSTATNI WYŚCIG: LAYOUT 2 KOLUMNY (podium/staty po lewej + tabela) ===================== */
+.last-race-layout { display: flex; align-items: flex-start; gap: 26px; }
+.last-race-main { flex: 1 1 auto; min-width: 0; margin-left: 6px; }
+.last-race-side { flex: 0 0 540px; width: 540px; padding: 28px 0 28px 28px; display: flex; flex-direction: column; gap: 22px; }
+@media (max-width: 1300px) {
+    .last-race-layout { flex-direction: column; gap: 0; }
+    .last-race-side { flex: 1 1 auto; width: auto; padding: 28px 28px 0; }
+    .last-race-main { margin-left: 0; }
+}
+
+/* ---- PODIUM (identyczny układ jak w !story na bocie: P2 | P1 | P3), powiększone ---- */
+.story-podium { background: linear-gradient(160deg,#1b212f,#0b0f17); border-radius: 20px; padding: 40px 26px 30px; box-shadow: 0 26px 55px rgba(0,0,0,0.3); }
+.story-podium-title { font-family: var(--font-display); color: #fff; font-size: 28px; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 28px 4px; opacity: 0.9; }
+.podium-row { display: flex; align-items: flex-end; gap: 16px; }
+.podium-slot { position: relative; flex: 1 1 0; min-width: 0; border-radius: 24px; padding: 66px 14px 22px; text-align: center; overflow: visible; box-shadow: 0 18px 36px rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.18); }
+.podium-slot.p2 { order: 1; flex-grow: 0.92; min-height: 320px; }
+.podium-slot.p1 { order: 2; flex-grow: 1.2; min-height: 400px; padding-top: 84px; z-index: 2; }
+.podium-slot.p3 { order: 3; flex-grow: 0.92; min-height: 290px; }
+.podium-slot .ps-num { position: absolute; top: 8px; left: 0; right: 0; font-family: var(--font-display); font-size: 92px; font-weight: 900; color: rgba(255,255,255,0.3); line-height: 1; -webkit-text-stroke: 1.5px rgba(255,255,255,0.4); }
+.podium-slot.p1 .ps-num { font-size: 128px; top: 6px; }
+.podium-slot .ps-car { width: 112%; max-width: 112%; height: auto; margin: 8px -6% 16px; filter: drop-shadow(0 14px 16px rgba(0,0,0,0.55)); position: relative; z-index: 1; }
+.podium-slot.p1 .ps-car { width: 124%; margin: 12px -12% 18px; }
+.podium-slot .ps-nick { display: block; font-family: var(--font-display); font-size: 22px; color: #fff; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.podium-slot.p1 .ps-nick { font-size: 30px; }
+.podium-slot .ps-team { display: block; font-family: var(--font-data); font-size: 13px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.podium-slot.p1 .ps-team { font-size: 15px; }
+.podium-slot .ps-pts { display: block; margin-top: 14px; font-family: var(--font-display); font-size: 25px; font-weight: 900; color: #fff; border-top: 1px solid rgba(255,255,255,0.28); padding-top: 12px; }
+.podium-slot.p1 .ps-pts { font-size: 32px; }
+
+/* ---- STATYSTYKI WYŚCIGU ---- */
+.story-stats { background: var(--f1-white); border: 1px solid var(--f1-light-grey); border-radius: 14px; overflow: hidden; box-shadow: 0 12px 26px rgba(0,0,0,0.06); }
+.story-stats-title { background: var(--f1-black); color: #fff; font-family: var(--font-display); font-size: 16px; letter-spacing: 3px; text-transform: uppercase; padding: 14px 18px; }
+.stat-row { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #eee; }
+.stat-row:last-child { border-bottom: none; }
+.stat-row .stat-icon { font-size: 20px; width: 26px; text-align: center; flex-shrink: 0; }
+.stat-row .stat-body { flex: 1; min-width: 0; }
+.stat-row .stat-label { display: block; font-family: var(--font-data); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; }
+.stat-row .stat-value { display: block; font-family: var(--font-display); font-size: 20px; color: var(--f1-black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-row .stat-value.stat-purple { color: #a855f7; }
+.stat-row .stat-extra { font-family: var(--font-data); font-size: 13px; color: #999; margin-left: 6px; }
 .reserve-badge { display: inline-block; background: rgba(255,193,7,0.18); color: #ffc107; font-size: 0.45em; font-family: var(--font-data); font-weight: 800; letter-spacing: 2px; padding: 2px 7px; border-radius: 3px; vertical-align: middle; margin-left: 6px; border: 1px solid rgba(255,193,7,0.4); }
 .bot-driver-name { opacity: 0.75; }
 .bot-row { opacity: 0.82; }
@@ -579,6 +618,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-side-sweep {
     position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
     overflow: hidden; z-index: 2; pointer-events: none;
+	.team-page-card { position: relative; border-radius: 6px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.25); transition: transform 0.35s cubic-bezier(0.19,1,0.22,1), box-shadow 0.35s ease; animation: slideInLeft 0.5s both; min-height: 380px; display: flex; flex-direction: column; will-change: transform; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(0); }
 }
 .tpc-side-sweep::before {
     content: '';
@@ -618,8 +658,8 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .tpc-num { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.5); line-height: 1; user-select: none; position: absolute; right: 36px; bottom: 10px; }
 .tpc-car-stage { position: relative; z-index: 2; height: 220px; display: flex; align-items: center; justify-content: center; padding: 0 30px; }
 .tpc-car-stage .tpc-num { position: absolute; left: 50%; top: 50%; right: auto; bottom: auto; transform: translate(-50%, -68%); font-size: 240px; color: rgba(255,255,255,0.22); z-index: 0; letter-spacing: -6px; }
-.tpc-car { position: relative; z-index: 1; max-width: 92%; max-height: 190px; object-fit: contain; filter: drop-shadow(0 16px 20px rgba(0,0,0,0.5)); transition: transform 0.5s cubic-bezier(0.19,1,0.22,1); }
-.team-page-card:hover .tpc-car { transform: perspective(700px) rotateX(calc(var(--rx, 0deg) * 1.6)) rotateY(calc(var(--ry, 0deg) * 1.6)) translateX(16px) scale(1.05); transition: transform 0.15s ease-out; }
+.tpc-car { position: relative; z-index: 1; max-width: 92%; max-height: 190px; object-fit: contain; filter: drop-shadow(0 16px 20px rgba(0,0,0,0.5)); transition: transform 0.5s cubic-bezier(0.19,1,0.22,1); backface-visibility: hidden; -webkit-backface-visibility: hidden; will-change: transform; image-rendering: -webkit-optimize-contrast; }
+.team-page-card:hover .tpc-car { transform: perspective(700px) rotateX(calc(var(--rx, 0deg) * 1.6)) rotateY(calc(var(--ry, 0deg) * 1.6)) translateX(16px) scale(1.05) translateZ(0); transition: transform 0.15s ease-out; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .tpc-car-stage::after { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; background: linear-gradient(105deg, transparent 44%, rgba(255,255,255,0.32) 50%, transparent 56%); background-size: 250% 100%; background-repeat: no-repeat; background-position: 110% 0; }
 .team-page-card:hover .tpc-car-stage::after { opacity: 1; animation: carShine 0.9s ease-out forwards; }
 @keyframes carShine { from { background-position: 110% 0; } to { background-position: -10% 0; } }
@@ -1845,14 +1885,20 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         DODAJ WYNIKI
     </button>
 </div>
-            <!-- ZMIANA: struktura z tabsami dla wyścigu i kwalifikacji -->
-            <div id="api-last-race-wrapper">
-                <div class="race-tabs" id="last-race-tabs" style="display:none;">
-                    <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
-                    <button class="race-tab-btn" id="last-tab-quali-btn" onclick="ui.switchRaceTab('last','quali',this)">⏱ KWALIFIKACJE</button>
+            <!-- ZMIANA: PODIUM (styl !story) + staty po lewej, tabela pełna (od P1) po prawej -->
+            <div class="last-race-layout">
+                <div class="last-race-side" id="last-race-side">
+                    <div id="last-race-podium" class="story-podium"></div>
+                    <div id="last-race-stats" class="story-stats"></div>
                 </div>
-                <div id="last-race-tab-race" class="race-tab-pane active" style="overflow-x:auto;"></div>
-                <div id="last-race-tab-quali" class="race-tab-pane" style="overflow-x:auto;"></div>
+                <div id="api-last-race-wrapper" class="last-race-main">
+                    <div class="race-tabs" id="last-race-tabs" style="display:none;">
+                        <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
+                        <button class="race-tab-btn" id="last-tab-quali-btn" onclick="ui.switchRaceTab('last','quali',this)">⏱ KWALIFIKACJE</button>
+                    </div>
+                    <div id="last-race-tab-race" class="race-tab-pane active" style="overflow-x:auto;"></div>
+                    <div id="last-race-tab-quali" class="race-tab-pane" style="overflow-x:auto;"></div>
+            </div>
             </div>
         </div>
     </div>
@@ -1917,8 +1963,6 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
             </div>
         </div>
         <button class="regulamin-edit-btn" id="regulamin-edit-btn" onclick="ui.openRegulaminEditor()">✎ EDYTUJ REGULAMIN</button>
-		<button class="btn-action btn-secondary" onclick="closeRegulaminEditor()">ANULUJ</button>
-<button class="btn-action" onclick="dbCore.saveRegulamin()">💾 ZAPISZ REGULAMIN</button>
     </div>
 </main>
 
@@ -2793,6 +2837,17 @@ function initReorderList(listEl, onDrop) {
     });
 }
 
+
+function updateRegulaminButtons() {
+    const isOnRegulamin = document.getElementById('view-regulamin')?.classList.contains('active');
+    const show = isLoggedIn && isOnRegulamin;
+    const editBtn = document.getElementById('regulamin-edit-btn');
+    const cancelBtn = document.getElementById('regulamin-cancel-btn');
+    const saveBtn = document.getElementById('regulamin-save-btn');
+    if (editBtn) editBtn.style.display = show ? 'block' : 'none';
+    if (cancelBtn) cancelBtn.style.display = show ? 'inline-flex' : 'none';
+    if (saveBtn) saveBtn.style.display = show ? 'inline-flex' : 'none';
+}
 // ===================== RENDER TABELI KWALIFIKACJI (nowa, prosta) =====================
 const renderQualiTable = (results, raceId = null) => {
     if (!results || results.length === 0) return '<p style="padding:20px;color:#aaa;font-family:var(--font-data);font-size:22px;">Brak danych kwalifikacji.</p>';
@@ -2847,13 +2902,7 @@ window.ui = {
         if (pageId === 'calendar') subscribeCalendar();
         if (pageId === 'teams') renderTeamsPage();
         if (pageId === 'standings') runCountUps(document.getElementById('view-standings'));
-        if (pageId === 'regulamin') {
-            const editBtn = document.getElementById('regulamin-edit-btn');
-            if (editBtn) editBtn.style.display = isLoggedIn ? 'block' : 'none';
-        } else {
-            const editBtn = document.getElementById('regulamin-edit-btn');
-            if (editBtn) editBtn.style.display = 'none';
-        }
+        updateRegulaminButtons();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     toggleAdmin(show) {
@@ -2953,15 +3002,23 @@ toggleAuth(show) {
         reader.readAsDataURL(file);
     },
     openRegulaminEditor() {
+        if (!isLoggedIn) return;
         const overlay = document.getElementById('regulamin-editor-overlay');
-        if (!overlay) return;
-        overlay.classList.add('open');
+        if (!overlay) { console.error('Brak elementu #regulamin-editor-overlay w DOM'); return; }
+        overlay.classList.add('open');;
+        overlay.style.display = 'flex';
+        overlay.style.position = 'fixed';
+        overlay.style.inset = '0';
+        overlay.style.zIndex = '99999';
         document.body.style.overflow = 'hidden';
+        const ta = document.getElementById('regulamin-textarea');
+        if (ta) setTimeout(() => ta.focus(), 50);
     },
     closeRegulaminEditor() {
         const overlay = document.getElementById('regulamin-editor-overlay');
         if (!overlay) return;
         overlay.classList.remove('open');
+        overlay.style.display = 'none';
         document.body.style.overflow = '';
     },
     addSplashImageRow(imgData) {
@@ -4136,6 +4193,7 @@ function rerenderLastRace() {
         if (racePane) racePane.innerHTML = '<p style="padding:40px;color:#aaa;">Brak danych dla tego splitu.</p>';
         if (titleEl) titleEl.textContent = 'WYNIKI: OSTATNI WYŚCIG';
         if (tabsBar) tabsBar.style.display = 'none';
+        updateLastRaceSidebar(null);
         return;
     }
 
@@ -4150,6 +4208,7 @@ function rerenderLastRace() {
         racePane.innerHTML = renderRaceTable(data.results, null, true, !!data.isNoStats);
         if (isLoggedIn) setTimeout(() => initRaceRowDragDrop('race-tbl-last', null, true), 50);
     }
+    updateLastRaceSidebar(data.results);
 
     // Sprawdź czy są kwalifikacje powiązane z tym wyścigiem
     const qualiData = data.qualiResults || null;
@@ -4323,6 +4382,7 @@ ui.saveQuickCountdownDate = async function() {
 
 onAuthStateChanged(auth, user => {
     isLoggedIn = !!user;
+    if (!isLoggedIn) ui.closeRegulaminEditor();
     document.getElementById('btn-open-login').classList.toggle('hidden', !!user);
     document.getElementById('btn-open-admin').classList.toggle('hidden', !user);
     document.getElementById('quick-standings-bar')?.classList.toggle('visible', isLoggedIn);
@@ -4334,7 +4394,10 @@ onAuthStateChanged(auth, user => {
     const qualiTab = document.getElementById('arc-tab-quali');
     if (qualiTab) qualiTab.style.display = '';
     document.querySelectorAll('.album-edit-btn').forEach(btn => btn.classList.toggle('visible', !!user));
-    if (currentSplit === 2) ui._applySplitView();
+    const regEditBtn = document.getElementById('regulamin-edit-btn');
+    if (regEditBtn) regEditBtn.style.display = (isLoggedIn && document.getElementById('view-regulamin').classList.contains('active')) ? 'block' : 'none';
+        updateRegulaminButtons();
+	if (currentSplit === 2) ui._applySplitView();
     if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
     rerenderLastRace();
     rerenderArchive();
@@ -4892,7 +4955,7 @@ const getTeamKey = (teamName) => { const tc = getTeamClass(teamName); return tc 
 const findFastestLap = (results) => findFastestLapIdx(results);
 
 // ===================== RENDEROWANIE TABELI WYŚCIGU =====================
-const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = false) => {
+const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = false, skipRows = 0) => {
     if (!results || results.length === 0) return '<p style="padding:40px;">Brak wyników.</p>';
     results = results.map(r => ({ ...r, team: normalizeTeamName(r.team) }));
     const posClass = (posVal) => { const p = parseInt(posVal); if (p === 1) return 'pos-gold'; if (p === 2) return 'pos-silver'; if (p === 3) return 'pos-bronze'; return ''; };
@@ -4905,7 +4968,7 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = f
         return `<span class="${extraClass}">${val||'-'}</span>`;
     };
     const tableId = raceId ? `race-tbl-${raceId}` : (isLastRace ? 'race-tbl-last' : 'race-tbl-tmp');
-    const dragAttrs = isLoggedIn ? `draggable="true" style="cursor:grab;"` : '';
+    const dragAttrs = isLoggedIn ? `draggable="true"` : '';
     return `<table class="f1-table" id="${tableId}"><thead><tr>
         <th class="col-pos" style="width:50px;">P</th>
         <th class="col-driver" style="width:22%;">Kierowca</th>
@@ -4915,8 +4978,10 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = f
         <th style="width:150px;">Najl. okr.</th>
         <th style="width:auto;">Czas</th>
         ${hidePts ? '' : '<th class="col-pts" style="width:70px;">PKT</th>'}
-    </tr></thead><tbody>${results.map((r, i) => `
-        <tr ${dragAttrs} class="${getTeamClass(r.team)}" data-row-idx="${i}" data-table-id="${tableId}">
+    </tr></thead><tbody>${results.map((r, i) => {
+        const rowStyle = `${i < skipRows ? 'display:none;' : ''}${isLoggedIn ? 'cursor:grab;' : ''}`;
+        return `
+        <tr ${dragAttrs} style="${rowStyle}" class="${getTeamClass(r.team)}" data-row-idx="${i}" data-table-id="${tableId}">
             <td class="col-pos ${posClass(r.pos)}">${cellEdit(r.pos, i, 'pos')}</td>
 <td class="col-driver">${nickSpan(r.nick, i, raceId, isLastRace, r.isReserve)}</td>
             <td class="${getTeamClass(r.team).replace('team-', 'txt-')}">${cellEdit(r.team, i, 'team')}</td>
@@ -4925,7 +4990,8 @@ const renderRaceTable = (results, raceId = null, isLastRace = false, hidePts = f
             <td class="${i === fastestIdx ? 'fastest-lap' : 'col-best-lap'}">${cellEdit(r.best, i, 'best', i === fastestIdx ? 'fastest-lap' : '')}</td>
             <td>${cellEdit(r.time, i, 'time')}</td>
             ${hidePts ? '' : `<td class="col-pts">${cellEdit(r.pts, i, 'pts')}</td>`}
-        </tr>`).join('')}</tbody></table>`;
+        </tr>`;
+    }).join('')}</tbody></table>`;
 };
 
 const nickSpan = (nick, rowIdx, raceId, isLastRace, isReserve) => {
@@ -4938,6 +5004,145 @@ const nickSpan = (nick, rowIdx, raceId, isLastRace, isReserve) => {
     if (isLastRace) return `<span class="arc-cell-editable" onclick="ui.editLastRaceCell(this,${rowIdx},'nick')">${nick || '—'}</span>${badge} <span style="opacity:0.4;font-size:0.7em;cursor:pointer;" onclick="event.stopPropagation();ui.openDriverProfile('${safeNick}')" title="Profil">👤</span>${reserveToggle}`;
     return profileBtn;
 };
+// ===================== PODIUM ("!story") + STATYSTYKI OSTATNIEGO WYŚCIGU =====================
+function hexToRgba(hex, alpha) {
+    const h = (hex || '#666666').replace('#', '');
+    const full = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+    const bigint = parseInt(full, 16);
+    const r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function renderLastRacePodium(results) {
+    const top3 = (results || []).slice(0, 3);
+    if (top3.length < 3) return '';
+    const slot = (r, idx) => {
+        const team = normalizeTeamName(r.team);
+        const key = getTeamKey(team) || 'default';
+        const color = getTeamColorByName(team);
+        const teamDef = TEAM_DEFS.find(t => t.key === key);
+        const teamLabel = teamDef ? teamDef.label : team;
+        return `<div class="podium-slot p${idx + 1}" style="background:linear-gradient(160deg, ${hexToRgba(color, 0.95)}, ${hexToRgba(color, 0.55)});">
+            <span class="ps-num">${idx + 1}</span>
+            <img class="ps-car" src="cars/${key}.png" alt="${teamLabel}" onerror="this.style.display='none'">
+            <span class="ps-nick">${r.nick || '—'}</span>
+            <span class="ps-team">${teamLabel}</span>
+            <span class="ps-pts">${r.pts || 0} PKT</span>
+        </div>`;
+    };
+    return `<div class="story-podium-title">🏆 Podium</div>
+        <div class="podium-row">${slot(top3[0], 0)}${slot(top3[1], 1)}${slot(top3[2], 2)}</div>`;
+}
+
+function renderLastRaceStats(results) {
+    if (!results || results.length === 0) return '';
+    const clean = (v) => (v || '').toString().replace(/^(Start:|Pit:)\s*/i, '').trim();
+    const fastestIdx = findFastestLap(results);
+    const poleRow = results.find(r => parseInt(clean(r.start)) === 1) || null;
+    const winner = results[0] || null;
+    const runnerUp = results[1] || null;
+    const lastPlace = results[results.length - 1] || null;
+
+    let gainedBest = null, lostWorst = null;
+    results.forEach((r, i) => {
+        const grid = parseInt(clean(r.start));
+        const finish = parseInt(r.pos) || (i + 1);
+        if (!grid || isNaN(grid)) return;
+        const diff = grid - finish; // dodatnie = awans pozycji
+        if (gainedBest === null || diff > gainedBest.diff) gainedBest = { r, diff };
+        if (lostWorst === null || diff < lostWorst.diff) lostWorst = { r, diff };
+    });
+
+    let mostPits = null;
+    results.forEach(r => {
+        const n = parseInt(clean(r.pit));
+        if (!isNaN(n) && (mostPits === null || n > mostPits.n)) mostPits = { r, n };
+    });
+
+    let rows = `<div class="stat-row">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-body">
+                <span class="stat-label">Najszybsze okrążenie</span>
+                <span class="stat-value stat-purple">${fastestIdx >= 0 ? (results[fastestIdx].nick || '—') : '—'}<span class="stat-extra">${fastestIdx >= 0 ? (results[fastestIdx].best || '') : ''}</span></span>
+            </div>
+        </div>
+        <div class="stat-row">
+            <div class="stat-icon">🏁</div>
+            <div class="stat-body">
+                <span class="stat-label">Pole Position</span>
+                <span class="stat-value">${poleRow ? (poleRow.nick || '—') : '—'}</span>
+            </div>
+        </div>`;
+    if (gainedBest && gainedBest.diff > 0) {
+        rows += `<div class="stat-row">
+            <div class="stat-icon">📈</div>
+            <div class="stat-body">
+                <span class="stat-label">Najwięcej zyskanych pozycji</span>
+                <span class="stat-value">${gainedBest.r.nick || '—'}<span class="stat-extra">+${gainedBest.diff}</span></span>
+            </div>
+        </div>`;
+    }
+    if (lostWorst && lostWorst.diff < 0) {
+        rows += `<div class="stat-row">
+            <div class="stat-icon">📉</div>
+            <div class="stat-body">
+                <span class="stat-label">Najwięcej straconych pozycji</span>
+                <span class="stat-value">${lostWorst.r.nick || '—'}<span class="stat-extra">${lostWorst.diff}</span></span>
+            </div>
+        </div>`;
+    }
+    if (runnerUp && clean(runnerUp.time)) {
+        rows += `<div class="stat-row">
+            <div class="stat-icon">🥇</div>
+            <div class="stat-body">
+                <span class="stat-label">Przewaga zwycięzcy nad P2</span>
+                <span class="stat-value">${winner.nick || '—'}<span class="stat-extra">${clean(runnerUp.time)}</span></span>
+            </div>
+        </div>`;
+    }
+    if (lastPlace && lastPlace !== winner && clean(lastPlace.time)) {
+        rows += `<div class="stat-row">
+            <div class="stat-icon">🔻</div>
+            <div class="stat-body">
+                <span class="stat-label">Strata ostatniego miejsca</span>
+                <span class="stat-value">${lastPlace.nick || '—'}<span class="stat-extra">${clean(lastPlace.time)}</span></span>
+            </div>
+        </div>`;
+    }
+    if (winner && clean(winner.pit) && !isNaN(parseInt(clean(winner.pit)))) {
+        rows += `<div class="stat-row">
+            <div class="stat-icon">🔧</div>
+            <div class="stat-body">
+                <span class="stat-label">Pit-stopy zwycięzcy</span>
+                <span class="stat-value">${clean(winner.pit)}</span>
+            </div>
+        </div>`;
+    }
+    if (mostPits && mostPits.n > 0) {
+        rows += `<div class="stat-row">
+            <div class="stat-icon">🛞</div>
+            <div class="stat-body">
+                <span class="stat-label">Najwięcej pit-stopów</span>
+                <span class="stat-value">${mostPits.r.nick || '—'}<span class="stat-extra">${mostPits.n}</span></span>
+            </div>
+        </div>`;
+    }
+    return `<div class="story-stats-title">Statystyki wyścigu</div>${rows}`;
+}
+
+function updateLastRaceSidebar(results) {
+    const podiumEl = document.getElementById('last-race-podium');
+    const statsEl = document.getElementById('last-race-stats');
+    if (!podiumEl || !statsEl) return;
+    if (!results || results.length === 0) {
+        podiumEl.innerHTML = '';
+        statsEl.innerHTML = '';
+        return;
+    }
+    podiumEl.innerHTML = renderLastRacePodium(results);
+    statsEl.innerHTML = renderLastRaceStats(results);
+}
+
 // Stara funkcja renderQualifyingTable — dla archiwum zakładka Treningi
 const renderQualifyingTable = (results, raceId = null) => {
     if (!results || results.length === 0) return '<p style="padding:20px;">Brak wyników.</p>';
@@ -5366,7 +5571,8 @@ if (c.heroModeS2) { const r = document.querySelector(`input[name="hero-mode-s2"]
         const display = document.getElementById('regulamin-content-display');
         const textarea = document.getElementById('regulamin-textarea');
         if (display) display.innerHTML = c.regulaminContent || '<div class="regulamin-empty"><span>📋</span>Regulamin zostanie dodany wkrótce.</div>';
-        if (textarea) textarea.value = c.regulaminContent || '';
+        const editorOverlay = document.getElementById('regulamin-editor-overlay');
+        if (textarea && !(editorOverlay && editorOverlay.classList.contains('open'))) textarea.value = c.regulaminContent || '';
     }
     const preLoader = document.getElementById('pre-loader');
     const splash = document.getElementById('splash-screen');
@@ -5535,7 +5741,7 @@ if (raceId) {
 // ===================== FIX: modalne okna otwierają się na środku strony =====================
 // Upewnij się że overlay'e są dziećmi body, nie admina
 document.addEventListener('DOMContentLoaded', () => {
-    const overlays = ['add-race-modal-overlay', 'gallery-modal-overlay', 'circuit-draw-overlay'];
+    const overlays = ['add-race-modal-overlay', 'gallery-modal-overlay', 'circuit-draw-overlay', 'regulamin-editor-overlay', 'auth-modal'];
     overlays.forEach(id => {
         const el = document.getElementById(id);
         if (el && el.parentNode !== document.body) document.body.appendChild(el);
