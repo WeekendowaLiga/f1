@@ -23,6 +23,24 @@
     --ls-heading: 1px;
     --ls-data: 1.5px;
     --ls-label: 6px;
+
+    /* Skala z-index — jedna drabinka dla wszystkich globalnych warstw strony.
+       Lokalne z-index wewnątrz komponentów (0/1/2/3/5/10/20 na kartach, podium,
+       tabelach) zostają bez zmian — to osobne, wewnętrzne konteksty. */
+    --z-split2-soon: 500;
+    --z-fab: 500;
+    --z-nav: 1000;
+    --z-admin-scrim: 2000;
+    --z-admin-panel: 2010;
+    --z-modal-regulamin: 3000;
+    --z-modal-profile: 3100;
+    --z-modal-form: 3200;
+    --z-modal-draw: 3300;
+    --z-transition-fx: 9000;
+    --z-toast: 9010;
+    --z-splash: 9020;
+    --z-splash-icons: 9030;
+    --z-top: 9999;
 }
 html { background: var(--f1-black); margin: 0; padding: 0; }
 html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--font-body); letter-spacing: var(--ls-data); overflow-x: clip; min-height: 100vh; scrollbar-width: none !important; }body {
@@ -34,7 +52,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 }
 #split-transition-fx {
     position: fixed; inset: 0;
-    z-index: 99998;
+    z-index: var(--z-transition-fx);
     pointer-events: none;
     --fx-c1: #ff3b30;
     --fx-c2: #8b0000;
@@ -201,7 +219,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 /* ===================== SPLASH ===================== */
 #splash-screen {
     opacity: 0;  
-    position: fixed; inset: 0; background: var(--f1-black); z-index: 99999;
+    position: fixed; inset: 0; background: var(--f1-black); z-index: var(--z-splash);
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     padding-top: 60px; padding-bottom: 60px; cursor: pointer;
     overflow-y: auto; overflow-x: hidden;
@@ -216,7 +234,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 }
 #splash-screen > * { position: relative; z-index: 1; }
 #splash-screen.hiding { opacity: 0; transform: scale(1.05); pointer-events: none; }
-#splash-social-icons { position: absolute !important; top: 5px; right: 100px; z-index: 100001; display: flex; gap: 10px; align-items: right; }
+#splash-social-icons { position: absolute !important; top: 5px; right: 100px; z-index: var(--z-splash-icons); display: flex; gap: 10px; align-items: right; }
 .splash-social-btn { width: 72px; height: 72px; border-radius: 16px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: background 0.25s, border-color 0.25s, transform 0.2s; overflow: hidden; }
 .splash-social-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
 .splash-social-btn img { width: 44px; height: 44px; object-fit: contain; }
@@ -269,7 +287,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .header-social-btn svg { width: 64px; height: 64px; }
 
 /* ===================== NAV ===================== */
-.f1-nav { background: var(--f1-black); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); background-image: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px), linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%); }
+.f1-nav { background: var(--f1-black); position: sticky; top: 0; z-index: var(--z-nav); display: flex; justify-content: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); background-image: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px), linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%); }
 .nav-hamburger-btn { display: none; }
 .nav-item { padding: 35px 70px; color: #888; text-decoration: none; font-family: var(--font-data); font-size: 45px; text-transform: uppercase; cursor: pointer; border-bottom: 8px solid transparent; position: relative; transition: color 0.3s, background 0.3s; letter-spacing: var(--ls-nav); }
 .nav-item::after { content: ''; position: absolute; bottom: 0; left: 100%; right: 0; height: 8px; background: var(--f1-red); transition: left 0.35s cubic-bezier(0.19,1,0.22,1); }
@@ -477,6 +495,7 @@ html, body { margin: 0; padding: 0; color: var(--f1-black); font-family: var(--f
 .cteam-pts-cell { background: rgba(255,255,255,0.92) !important; color: var(--f1-black) !important; font-weight: 900 !important; border-radius: 4px; padding: 8px 20px !important; display: inline-block; min-width: 60px; text-align: center; }
 .constructor-logo-main { width: 200px; height: 150px; object-fit: contain; object-position: center center; flex-shrink: 0; display: block; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)); }
 .constructor-name-cell { display: flex; align-items: center; gap: 24px; }
+.team-other { border-left: 15px solid #9a9a9a; } .txt-other { color: #6a6a6a; }
 .team-ferrari { border-left: 15px solid var(--f1-red); } .txt-ferrari  { color: var(--f1-red); }
 .team-mercedes { border-left: 15px solid #00d2be; } .txt-mercedes { color: #00d2be; }
 .team-redbull  { border-left: 15px solid #131b45; } .txt-redbull  { color: #131b45; }
@@ -672,7 +691,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #driver-profile-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.88);
-    z-index: 20000;
+    z-index: var(--z-modal-profile);
     display: none;
     align-items: flex-start;
     justify-content: center;
@@ -756,9 +775,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .dp-no-races span { display: block; font-size: 60px; margin-bottom: 16px; }
 
 /* ===================== PANEL ADMINA ===================== */
-#admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: 9998; pointer-events: none; transition: background 0.5s ease; }
+#admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: var(--z-admin-scrim); pointer-events: none; transition: background 0.5s ease; }
 #admin-overlay.open { background: rgba(0,0,0,0.6); pointer-events: all; backdrop-filter: blur(3px); }
-#admin-sidebar { position: fixed; top: 0; right: 0; width: 1200px; height: 100vh; background: #f4f4f7; z-index: 9999; box-shadow: -50px 0 120px rgba(0,0,0,0.5); transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; transform: translateX(110%); display: flex; flex-direction: column; }
+#admin-sidebar { position: fixed; top: 0; right: 0; width: 1200px; height: 100vh; background: #f4f4f7; z-index: var(--z-admin-panel); box-shadow: -50px 0 120px rgba(0,0,0,0.5); transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; transform: translateX(110%); display: flex; flex-direction: column; }
 #admin-sidebar.open { transform: translateX(0); }
 .admin-header-bar { background: var(--f1-black); padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 20px rgba(0,0,0,0.4); flex-shrink: 0; }
 .admin-header-bar h2 { font-family: var(--font-display); font-size: 36px; margin: 0; letter-spacing: 3px; color: var(--f1-white); }
@@ -857,7 +876,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .social-icon-upload-label:hover { background: var(--f1-red); }
 .auth-overlay { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.95); z-index: 999999 !important; 
+    background: rgba(0,0,0,0.95); z-index: var(--z-top) !important; 
     display: none; align-items: center; justify-content: center; 
     backdrop-filter: blur(10px); 
 }
@@ -898,9 +917,9 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 .regulamin-content table tr:nth-child(even) td { background: #f8f8f9; }
 .regulamin-empty { text-align: center; padding: 120px 40px; font-family: var(--font-display); font-size: 30px; color: #bbb; letter-spacing: 4px; text-transform: uppercase; }
 .regulamin-empty span { display: block; font-size: 70px; margin-bottom: 20px; }
-.regulamin-edit-btn { position: fixed; bottom: 40px; right: 40px; z-index: 500; background: var(--f1-red); color: #fff; border: none; padding: 22px 36px; font-family: var(--font-display); font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 6px; box-shadow: 0 10px 30px rgba(225,6,0,0.4); transition: transform 0.2s, box-shadow 0.2s; display: none; }
+.regulamin-edit-btn { position: fixed; bottom: 40px; right: 40px; z-index: var(--z-fab); background: var(--f1-red); color: #fff; border: none; padding: 22px 36px; font-family: var(--font-display); font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 6px; box-shadow: 0 10px 30px rgba(225,6,0,0.4); transition: transform 0.2s, box-shadow 0.2s; display: none; }
 .regulamin-edit-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(225,6,0,0.5); }
-#regulamin-editor-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 15000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 30px; box-sizing: border-box; }
+#regulamin-editor-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: var(--z-modal-regulamin); display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 30px; box-sizing: border-box; }
 #regulamin-editor-overlay.open { display: flex; }
 #regulamin-editor-modal { background: #fff; width: 100%; max-width: 1400px; max-height: 90vh; display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
 .reg-editor-header { background: var(--f1-black); padding: 24px 36px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -966,7 +985,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     position: fixed;
     inset: 0;
     background: var(--f1-black);
-    z-index: 500;
+    z-index: var(--z-split2-soon);
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -1187,9 +1206,13 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     font-size: 15px;
     letter-spacing: 1.5px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    z-index: 99999;
+    z-index: var(--z-toast);
     opacity: 0;
     pointer-events: none;
+    white-space: pre-line;
+    max-width: min(90vw, 560px);
+    text-align: left;
+    line-height: 1.5;
     transition: opacity 0.35s ease, transform 0.35s ease;
 }
 .toast-notice.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -1332,7 +1355,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
     padding: 0;
     margin: 0;
     order: 0;
-    z-index: 100001;
+    z-index: var(--z-splash-icons);
 }
 .regulamin-content {
     padding: 20px 16px;
@@ -1505,7 +1528,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 </head>
 <body style="background:#15151e">
 <div id="pre-loader" style="
-    position:fixed;inset:0;background:#15151e;z-index:999999;
+    position:fixed;inset:0;background:#15151e;z-index:var(--z-top);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
     transition:opacity 0.6s ease;
 ">
@@ -1525,7 +1548,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #add-race-modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.92);
-    z-index: 25000;
+    z-index: var(--z-modal-form);
     display: none;
     align-items: flex-start;
     justify-content: center;
@@ -1595,7 +1618,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #gallery-modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.92);
-    z-index: 25000;
+    z-index: var(--z-modal-form);
     display: none;
     align-items: center;
     justify-content: center;
@@ -1670,7 +1693,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
 #circuit-draw-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.96);
-    z-index: 30000;
+    z-index: var(--z-modal-draw);
     display: none;
     align-items: center;
     justify-content: center;
@@ -1884,21 +1907,14 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         <span class="add-results-btn-icon">➕</span>
         DODAJ WYNIKI
     </button>
-</div>
-            <!-- ZMIANA: PODIUM (styl !story) + staty po lewej, tabela pełna (od P1) po prawej -->
-            <div class="last-race-layout">
-                <div class="last-race-side" id="last-race-side">
-                    <div id="last-race-podium" class="story-podium"></div>
-                    <div id="last-race-stats" class="story-stats"></div>
-                </div>
-                <div id="api-last-race-wrapper" class="last-race-main">
-                    <div class="race-tabs" id="last-race-tabs" style="display:none;">
-                        <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
-                        <button class="race-tab-btn" id="last-tab-quali-btn" onclick="ui.switchRaceTab('last','quali',this)">⏱ KWALIFIKACJE</button>
-                    </div>
-                    <div id="last-race-tab-race" class="race-tab-pane active" style="overflow-x:auto;"></div>
-                    <div id="last-race-tab-quali" class="race-tab-pane" style="overflow-x:auto;"></div>
             </div>
+            <div id="api-last-race-wrapper">
+                <div class="race-tabs" id="last-race-tabs" style="display:none;">
+                    <button class="race-tab-btn active" id="last-tab-race-btn" onclick="ui.switchRaceTab('last','race',this)">🏁 WYŚCIG</button>
+                    <button class="race-tab-btn" id="last-tab-quali-btn" onclick="ui.switchRaceTab('last','quali',this)">⏱ KWALIFIKACJE</button>
+                </div>
+                <div id="last-race-tab-race" class="race-tab-pane active" style="overflow-x:auto;"></div>
+                <div id="last-race-tab-quali" class="race-tab-pane" style="overflow-x:auto;"></div>
             </div>
         </div>
     </div>
@@ -1935,7 +1951,7 @@ td.col-best-lap { color: #222 !important; font-weight: 500; }
         </div>
     </div>
     <div id="view-gallery" class="page-view">
-        <        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
             <select id="gallery-season-select" class="season-split-select" onchange="ui.switchSeasonSplit(this.value,'gallery')" style="font-family:var(--font-data);font-size:16px;font-weight:700;letter-spacing:1px;color:#333;background:transparent;border:2px solid #ccc;border-radius:6px;padding:8px 16px;cursor:pointer;">
                 <option value="1-1">Sezon 1 - Split 1</option>
                 <option value="1-2">Sezon 1 - Split 2</option>
@@ -2920,7 +2936,7 @@ toggleAuth(show) {
         modal.style.justifyContent = 'center';
         modal.style.position = 'fixed';
         modal.style.inset = '0';
-        modal.style.zIndex = '999999';
+        modal.style.zIndex = 'var(--z-top)';
     } else {
         modal.style.display = 'none';
     }
@@ -3009,7 +3025,7 @@ toggleAuth(show) {
         overlay.style.display = 'flex';
         overlay.style.position = 'fixed';
         overlay.style.inset = '0';
-        overlay.style.zIndex = '99999';
+        overlay.style.zIndex = 'var(--z-modal-regulamin)';
         document.body.style.overflow = 'hidden';
         const ta = document.getElementById('regulamin-textarea');
         if (ta) setTimeout(() => ta.focus(), 50);
@@ -3024,7 +3040,7 @@ toggleAuth(show) {
     addSplashImageRow(imgData) {
         const list = document.getElementById('adm-splash-images-list');
         const count = list.querySelectorAll('.splash-img-entry').length;
-        if (count >= 10) { alert('Maksymalnie 10 zdjęć.'); return; }
+        if (count >= 10) { ui.showToast('Maksymalnie 10 zdjęć.', 'warn'); return; }
         const url = imgData ? imgData.url : '';
         const width = imgData ? (imgData.width || '80%') : '80%';
         const align = imgData ? (imgData.align || 'center') : 'center';
@@ -3732,12 +3748,12 @@ await update(ref(db, `${seasonGalleryPath()}/${albumId}/entries/${entryId}`), { 
 },
     async editArchiveName(id, currentName) {
         if (!isLoggedIn) return;
-        const splitPath = getSplitPathView();
+        const arcPath = seasonArchivePath(currentSplit);
         const nameEl = document.getElementById('arc-name-' + id); if (!nameEl) return;
         const input = document.createElement('input'); input.type = 'text'; input.value = currentName;
         input.style.cssText = 'font-family:var(--font-data);font-size:46px;font-weight:700;letter-spacing:1px;color:var(--f1-black);background:transparent;border:none;border-bottom:3px solid var(--f1-red);outline:none;flex:1;text-transform:uppercase;';
         nameEl.replaceWith(input); input.focus(); input.select();
-        const save = async () => { const nv=input.value.trim(); await update(ref(db, splitPath + '/archive/'+id),{name:nv}); };
+        const save = async () => { const nv=input.value.trim(); await update(ref(db, arcPath + '/'+id),{name:nv}); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); if (e.key==='Escape'){input.value=currentName;input.blur();} });
     },
@@ -4147,14 +4163,14 @@ ui.submitGalleryModal = async function() {
         if (_galleryModalMode === 'album') {
             const name = document.getElementById('gm-album-name')?.value?.trim();
             const cover = document.getElementById('gm-album-cover')?.value?.trim() || '';
-            if (!name) { alert('Podaj nazwę albumu.'); return; }
+            if (!name) { ui.showToast('Podaj nazwę albumu.', 'error'); return; }
 await push(ref(db, seasonGalleryPath()), { name, cover, entries: {} });
         } else if (_galleryModalMode === 'entry') {
             const title = document.getElementById('gm-entry-title')?.value?.trim() || '';
             const activeTypeBtn = document.querySelector('.gm-type-btn.active');
             const type = activeTypeBtn?.id?.replace('gm-type-', '') || 'youtube';
             const src = document.getElementById('gm-entry-src')?.value?.trim();
-            if (!src) { alert('Podaj URL lub link.'); return; }
+            if (!src) { ui.showToast('Podaj URL lub link.', 'error'); return; }
 await push(ref(db, `${seasonGalleryPath()}/${_galleryModalAlbumId}/entries`), { title, type, src });
             ui.openAlbum(_galleryModalAlbumId);
         }
@@ -4174,7 +4190,7 @@ window.authCore = {
         const pass  = document.getElementById('field-pass').value;
         signInWithEmailAndPassword(auth, email, pass)
             .then(() => ui.toggleAuth(false))
-            .catch(err => alert("Błąd logowania: " + err.message));
+            .catch(err => ui.showToast("Błąd logowania: " + err.message, 'error'));
     },
     logout() { signOut(auth).then(() => location.reload()); }
 };
@@ -4318,13 +4334,17 @@ ui.switchArcTab = function(btn, id, tab) {
 };
 
 // ===================== TOAST / NICK CHIPS / SZYBKIE ODLICZANIE =====================
-ui.showToast = function(message) {
+ui.showToast = function(message, type) {
     const toast = document.getElementById('toast-notice');
     if (!toast) return;
+    const borderColors = { success: '#4caf50', error: '#e10600', warn: '#ffc107' };
+    toast.style.borderLeftColor = borderColors[type] || borderColors.success;
     toast.textContent = message;
     toast.classList.add('show');
     clearTimeout(toast._hideTimer);
-    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+    // dłuższe komunikaty (np. podsumowania publikacji wyników) zostają widoczne dłużej
+    const duration = message.length > 60 ? 5500 : 3000;
+    toast._hideTimer = setTimeout(() => toast.classList.remove('show'), duration);
 };
 
 function buildRaceNickChips() {
@@ -4423,7 +4443,7 @@ window.dbCore = {
             if (url) images.push({ url, align, width, scale });
         });
 await set(ref(db, 'config'), { ...current, splashContent: document.getElementById('adm-splash-content').value, splashImages: images, splashImage: images.length === 1 ? images[0].url : (current.splashImage || '') });
-        alert("Strona startowa zapisana!");
+        ui.showToast('Strona startowa zapisana!', 'success');
         document.getElementById('splash-custom-content').innerHTML = document.getElementById('adm-splash-content').value;
         renderSplashImages(images);
     },
@@ -4441,13 +4461,13 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
         });
         await set(ref(db, 'config'), { ...current, socialIcons: social });
         socialConfig = social; renderSocialIcons();
-        alert("Ikonki social zapisane!");
+        ui.showToast('Ikonki social zapisane!', 'success');
     },
     async saveNewsConfig() {
         const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
         const current = snap.val() || {};
         await set(ref(db, 'config'), { ...current, showNews: document.getElementById('adm-show-news').checked, newsContent: document.getElementById('adm-news-content').value });
-        alert("News zapisany!");
+        ui.showToast('News zapisany!', 'success');
     },
   async saveCountdownConfig(splitNum) {
         const snap = await new Promise(res => onValue(ref(db, 'config'), res, { onlyOnce: true }));
@@ -4460,7 +4480,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
                 heroModeS1:  mode,
                 gpNameS1: document.getElementById('adm-gp-name-s1').value
             });
-            alert("Odliczanie Split 1 zapisane!");
+            ui.showToast('Odliczanie Split 1 zapisane!', 'success');
         } else {
             const mode = document.querySelector('input[name="hero-mode-s2"]:checked').value;
             await set(ref(db, 'config'), { ...current,
@@ -4469,7 +4489,7 @@ await set(ref(db, 'config'), { ...current, splashContent: document.getElementByI
                 heroModeS2:  mode,
                 gpNameS2: document.getElementById('adm-gp-name-s2').value
             });
-            alert("Odliczanie Split 2 zapisane!");
+            ui.showToast('Odliczanie Split 2 zapisane!', 'success');
         }
     },
     async publishRace() {
@@ -4501,7 +4521,7 @@ const lines = raw.split('\n').filter(l => l.trim());
             const qualObj = { name: title, results: qualResults, timestamp: Date.now(), isQualifying: true };
             // Zapisz do archiwum (zgodnie z aktualnie wybranym sezonem)
             await push(ref(db, seasonArchivePath(activeAdminSplit)), qualObj);
-            alert(`✅ KWALIFIKACJE opublikowane! (Split ${adminSplit})`);
+            ui.showToast(`Kwalifikacje opublikowane! (Split ${adminSplit})`, 'success');
             document.getElementById('pub-qualifying').checked = false;
             return;
         }
@@ -4612,9 +4632,9 @@ const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(),
             let msg = `✅ Wyniki opublikowane! (Split ${adminSplit})\n\n  PKT otrzymało: ${bonusCount} graczy\n`;
             if (noBonusReasons.length > 0) msg += `\n❌ Bez bonusu (${noBonusCount}):\n` + noBonusReasons.map(r => `  • ${r}`).join('\n');
             msg += `\n\n(Boty AI nie wliczane)`;
-            alert(msg);
+            ui.showToast(msg, 'success');
         } else {
-            alert(`✅ Wyniki opublikowane bez PKT (klasyfikacja niezmieniona)! (Split ${adminSplit})`);
+            ui.showToast(`Wyniki opublikowane bez PKT (klasyfikacja niezmieniona)! (Split ${adminSplit})`, 'success');
         }
 document.getElementById('adm-no-bonus-nicks').value = '';
 document.getElementById('pub-no-stats').checked = false;
@@ -4628,7 +4648,7 @@ document.getElementById('pub-no-history').checked = false;
         await set(ref(db, 'config'), { ...current, regulaminContent: content });
         document.getElementById('regulamin-content-display').innerHTML = content || '<div class="regulamin-empty"><span>📋</span>Regulamin zostanie dodany wkrótce.</div>';
         ui.closeRegulaminEditor();
-        alert('✅ Regulamin zapisany!');
+        ui.showToast('Regulamin zapisany!', 'success');
     },
 async saveStandings() {
     const dRaw = document.getElementById('adm-drivers-raw').value.split('\n').filter(l => l.trim());
@@ -4644,7 +4664,7 @@ async saveStandings() {
     });
         const teams = tRaw.map(l => { const p = l.split('|').map(s => s.trim()); return { team: normalizeTeamName(p[0]), pts: p[1] }; });
         await set(ref(db, seasonStandingsPath(adminSplit)), { drivers, teams });
-        alert(`Klasyfikacje zaktualizowane! (Split ${adminSplit}, Sezon ${currentSeason})`);
+        ui.showToast(`Klasyfikacje zaktualizowane! (Split ${adminSplit}, Sezon ${currentSeason})`, 'success');
     },
     async saveTeamLogos() {
         const logos = {};
@@ -4657,7 +4677,7 @@ async saveStandings() {
         await set(ref(db, 'config'), { ...current, teamLogos: logos });
         teamLogos = logos;
         if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage();
-        alert("Loga zapisane!");
+        ui.showToast('Loga zapisane!', 'success');
     },
     async saveTeamsInfo() {
         const splitPath = getSplitPath(adminSplit);
@@ -4669,29 +4689,29 @@ async saveStandings() {
         await set(ref(db, splitPath + '/teamsInfo'), updates);
         splitDataCache[adminSplit].teamsInfo = updates;
         if (currentSplit === adminSplit) { teamsInfoData = updates; if (document.getElementById('view-teams').classList.contains('active')) renderTeamsPage(); }
-        alert(`Dane zespołów zapisane! (Split ${adminSplit})`);
+        ui.showToast(`Dane zespołów zapisane! (Split ${adminSplit})`, 'success');
     },
     async createAlbum() {
         const name = document.getElementById('adm-gal-name').value.trim();
         const cover = document.getElementById('adm-gal-cover').value.trim();
-        if (!name) { alert("Podaj nazwę albumu."); return; }
+        if (!name) { ui.showToast('Podaj nazwę albumu.', 'error'); return; }
 await push(ref(db, seasonGalleryPath()), { name, cover, entries: {} });
         document.getElementById('adm-gal-name').value = '';
         document.getElementById('adm-gal-cover').value = '';
-        alert("Album utworzony!");
+        ui.showToast('Album utworzony!', 'success');
     },
     async addEntry() {
         const albumId = document.getElementById('adm-entry-album').value;
         const title = document.getElementById('adm-entry-title').value.trim();
         const mediaType = document.querySelector('input[name="media-type"]:checked').value;
         const status = document.getElementById('adm-entry-status');
-        if (!albumId) { alert("Wybierz album."); return; }
+        if (!albumId) { ui.showToast('Wybierz album.', 'error'); return; }
         let entry = { title, type: mediaType };
-        if (mediaType === 'youtube') { const url = document.getElementById('adm-entry-youtube').value.trim(); if (!url) { alert("Podaj link YouTube."); return; } entry.src = url; }
-        else if (mediaType === 'url') { const url = document.getElementById('adm-entry-url').value.trim(); if (!url) { alert("Podaj URL."); return; } entry.src = url; }
+        if (mediaType === 'youtube') { const url = document.getElementById('adm-entry-youtube').value.trim(); if (!url) { ui.showToast("Podaj link YouTube.", 'error'); return; } entry.src = url; }
+        else if (mediaType === 'url') { const url = document.getElementById('adm-entry-url').value.trim(); if (!url) { ui.showToast("Podaj URL.", 'error'); return; } entry.src = url; }
         else if (mediaType === 'upload') {
             const file = document.getElementById('adm-entry-file').files[0];
-            if (!file) { alert("Wybierz plik."); return; }
+            if (!file) { ui.showToast('Wybierz plik.', 'error'); return; }
             status.textContent = "Kodowanie pliku...";
             entry.src = await new Promise((res, rej) => { const r = new FileReader(); r.onload = e => res(e.target.result); r.onerror = () => rej(new Error("Błąd odczytu")); r.readAsDataURL(file); });
             status.textContent = "Zapisywanie...";
@@ -4705,7 +4725,7 @@ status.textContent = "✓ Wpis dodany!";
         setTimeout(() => status.textContent = '', 3000);
     },
     async deleteNode(path) {
-        if (confirm("Czy na pewno chcesz to usunąć?")) { await remove(ref(db, path)); alert("Usunięto pomyślnie."); }
+        if (confirm("Czy na pewno chcesz to usunąć?")) { await remove(ref(db, path)); ui.showToast("Usunięto pomyślnie.", 'success'); }
     },
     async saveArchiveOrder() {
         const arcPath = seasonArchivePath(adminSplit);
@@ -4714,7 +4734,7 @@ status.textContent = "✓ Wpis dodany!";
         const updates = {};
         items.forEach((item, i) => { updates[arcPath + '/' + item.dataset.id + '/order'] = i; });
         await update(ref(db), updates);
-        alert("Kolejność wyścigów zapisana!");
+        ui.showToast('Kolejność wyścigów zapisana!', 'success');
         document.getElementById('btn-save-archive-order').style.display = 'none';
     },
     async saveSplit2SoonMode() {
@@ -4725,7 +4745,7 @@ status.textContent = "✓ Wpis dodany!";
         await set(ref(db, 'config'), { ...current, split2SoonMode: val });
         split2SoonMode = val;
         if (currentSplit === 2) ui._applySplitView();
-        alert(val ? '✅ Split 2: tryb SOON włączony.' : '✅ Split 2: dane widoczne dla wszystkich.');
+        ui.showToast(val ? 'Split 2: tryb SOON włączony.' : 'Split 2: dane widoczne dla wszystkich.', 'success');
     },
     async saveGalleryOrder() {
         const list = document.getElementById('adm-gallery-manager');
@@ -4733,7 +4753,7 @@ status.textContent = "✓ Wpis dodany!";
         const updates = {};
 items.forEach((item, i) => { updates[seasonGalleryPath() + '/' + item.dataset.id + '/order'] = i; });
         await update(ref(db), updates);
-        alert("Kolejność albumów zapisana!");
+        ui.showToast('Kolejność albumów zapisana!', 'success');
         document.getElementById('btn-save-gallery-order').style.display = 'none';
     },
     async recalcStandingsFromArchive(splitNum) {
@@ -4741,7 +4761,7 @@ items.forEach((item, i) => { updates[seasonGalleryPath() + '/' + item.dataset.id
     const targetSplit = splitNum || adminSplit;
     const arcSnap = await new Promise(res => onValue(ref(db, seasonArchivePath(targetSplit)), res, { onlyOnce: true }));
     const archive = arcSnap.val();
-    if (!archive || Object.keys(archive).length === 0) { alert('Brak danych w archiwum dla tego splitu.'); return; }
+    if (!archive || Object.keys(archive).length === 0) { ui.showToast('Brak danych w archiwum dla tego splitu.', 'error'); return; }
 
     const sdSnap = await new Promise(res => onValue(ref(db, seasonStandingsPath(targetSplit)), res, { onlyOnce: true }));
         const currentSd = sdSnap.val() || { drivers: [], teams: [] };
@@ -4798,7 +4818,7 @@ items.forEach((item, i) => { updates[seasonGalleryPath() + '/' + item.dataset.id
         const drivers = Object.values(driverMeta).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         const teams = Object.values(teamMap).sort((a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0));
         await set(ref(db, seasonStandingsPath(targetSplit)), { drivers, teams });
-alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`);
+ui.showToast(`Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanalizowanych wyścigów: ${racesProcessed}\nKierowców: ${drivers.length}, Konstruktorów: ${teams.length}`, 'success');
     },
         async startNewSeason() {
         if (!isLoggedIn) return;
@@ -4808,7 +4828,7 @@ alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanal
         const drivers = (current.drivers || []).map(d => ({ ...d, pts: 0, wins: 0 }));
         const teams = (current.teams || []).map(t => ({ ...t, pts: 0 }));
                 await set(ref(db, sp), { drivers, teams });
-               alert(`✅ Zerowanie wykonane dla Split ${adminSplit}, Sezon ${currentSeason}!`);
+               ui.showToast(`Zerowanie wykonane dla Split ${adminSplit}, Sezon ${currentSeason}!`, 'success');
     },
     async saveSplitSwitcherVisibility() {
         const tog = document.getElementById('adm-hide-split-switcher');
@@ -4817,7 +4837,7 @@ alert(`✅ Klasyfikacja przeliczona z archiwum (Split ${targetSplit})!\nPrzeanal
         const current = snap.val() || {};
         await set(ref(db, 'config'), { ...current, hideSplitSwitcher: val });
         applySplitSwitcherVisibility(val);
-        alert(val ? '✅ Przełącznik splitów ukryty.' : '✅ Przełącznik splitów widoczny.');
+        ui.showToast(val ? 'Przełącznik splitów ukryty.' : 'Przełącznik splitów widoczny.', 'success');
     }
 };
 
@@ -4932,7 +4952,7 @@ const getTeamClass = (teamName) => {
     if (name.includes("audi")) return "team-audi";
     if (name.includes("cadillac")) return "team-cadillac";
     if (name.includes("sauber") || name.includes("kick")) return "team-sauber";
-    return "";
+    return "team-other";
 };
 const getConstructorClass = (teamName) => {
     const name = (teamName || "").toLowerCase().trim();
@@ -4951,6 +4971,8 @@ const getConstructorClass = (teamName) => {
     if (name.includes("sauber") || name.includes("kick")) return "cteam-sauber";
     return "";
 };
+// uwaga: puste "" celowo zostaje dla wierszy klasyfikacji konstruktorów bez rozpoznanej barwy —
+// tabela klasyfikacji ma jednolite tło, więc brak dopasowania nie tworzy pustego "paska"
 const getTeamKey = (teamName) => { const tc = getTeamClass(teamName); return tc ? tc.replace('team-', '') : ''; };
 const findFastestLap = (results) => findFastestLapIdx(results);
 
@@ -5972,7 +5994,7 @@ _getUsedCircuits() {
     spin() {
         if (this._spinning) return;
         const available = this._getAvailable();
-        if (available.length === 0) { alert('Wszystkie tory zostały już użyte w archiwum!'); return; }
+        if (available.length === 0) { ui.showToast('Wszystkie tory zostały już użyte w archiwum!', 'warn'); return; }
 
 if (this._currentAnimation) {
     this._currentAnimation.cancel();
@@ -6150,7 +6172,7 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
                 let nextRound = null;
                 for (let r = 1; r <= 12; r++) { if (!cal[r]) { nextRound = r; break; } }
                 if (!nextRound) {
-                    alert('Kalendarz jest już pełny (12/12 rund).');
+                    ui.showToast('Kalendarz jest już pełny (12/12 rund).', 'warn');
                     this.close();
                     return;
                 }
@@ -6163,10 +6185,10 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
                 calendarData = cal;
                 if (typeof renderCalendar === 'function') renderCalendar();
 
-                if (window.ui && window.ui.showToast) window.ui.showToast(`✅ Runda ${nextRound}: ${c.name} dodana do kalendarza!`);
+                ui.showToast(`Runda ${nextRound}: ${c.name} dodana do kalendarza!`, 'success');
 
                 if (nextRound >= 12) {
-                    alert('🏁 Kalendarz jest kompletny — wylosowano wszystkie 12 rund!');
+                    ui.showToast('Kalendarz jest kompletny — wylosowano wszystkie 12 rund!', 'success');
                     this.close();
                     return;
                 }
@@ -6181,13 +6203,13 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
                 document.getElementById('cdm-btn-spin').disabled = available.length === 0;
             } catch(e) {
                 console.error(e);
-                alert('Błąd zapisu kalendarza: ' + e.message);
+                ui.showToast('Błąd zapisu kalendarza: ' + e.message, 'error');
             }
             return;
         }
 
         try {
-            if (!window._fbDb) { alert('Błąd: brak połączenia z Firebase.'); return; }
+            if (!window._fbDb) { ui.showToast('Błąd: brak połączenia z Firebase.', 'error'); return; }
             const { ref: fbRef, onValue: fbOnValue, set: fbSet } = window._fbFirebase;
             const db = window._fbDb;
             const snap = await new Promise(res => fbOnValue(fbRef(db, 'config'), res, { onlyOnce: true }));
@@ -6203,11 +6225,10 @@ const mainDecayMs = Math.round(4200 + Math.random() * 1600);// DŁUŻEJ: łagodn
                 gpNameS2: c.name,
             });
             this.close();
-            if (window.ui && window.ui.showToast) window.ui.showToast(`✅ Zaakceptowano: ${c.name} — odliczanie ustawione na SOON`);
-            else alert(`✅ Zaakceptowano: ${c.name}\nOdliczanie ustawione na SOON dla obu splitów.`);
+            ui.showToast(`Zaakceptowano: ${c.name} — odliczanie ustawione na SOON`, 'success');
         } catch(e) {
             console.error(e);
-            alert('Błąd zapisu do Firebase: ' + e.message);
+            ui.showToast('Błąd zapisu do Firebase: ' + e.message, 'error');
         }
     },
 
@@ -6233,4 +6254,3 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
-z
