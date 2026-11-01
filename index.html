@@ -3743,7 +3743,7 @@ html,body { background-color:#d3d5d9!important; }
 
 /* WLF1: splash portretowy — wierne przeniesienie desktopowej kompozycji.
    Fotografia / ukosny czerwony podzial / panel informacyjny; bez dodatkowego naglowka. */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1100px) and (orientation:portrait) {
   #splash-screen {
     --portrait-photo-h: clamp(300px, 46svh, 460px);
     --portrait-cut: 76%;
@@ -4099,7 +4099,7 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
   100% {clip-path:polygon(0 0,0 0,0 100%,0 100%);}
 }
 /* W pionie skos przesuwa się z dołu do góry, zachowując pochyloną krawędź. */
-@media screen and (orientation:portrait) and (max-width:767px) {
+@media screen and (orientation:portrait) and (max-width:1100px) {
   #splash-transition-curtain {
     -webkit-clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);
     clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);
@@ -4178,7 +4178,7 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
     transform:none !important;
 }
 
-@media screen and (max-width:767px) and (orientation:portrait) {
+@media screen and (max-width:1100px) and (orientation:portrait) {
   /* Pionowy odpowiednik komputera: przeciwny, ostrzejszy skos.
      Zdjęcie po lewej dochodzi do dołu, a po prawej kończy się wyżej. */
   #splash-screen {
@@ -4299,7 +4299,7 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
   #main-app .site-footer #btn-open-login {font-size:11px!important;padding:8px 12px!important;}
 }
 /* Telefon poziomo: nie ucinamy napisów mimo braku przewijania splasha. */
-@media screen and (min-width:568px) and (max-width:1050px) and (orientation:landscape) {
+@media screen and (max-width:1100px) and (orientation:landscape) {
   #splash-screen {
     display:flex!important;flex-direction:row!important;
     align-items:stretch!important;justify-content:flex-end!important;
@@ -4344,6 +4344,28 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
   #splash-screen .splash-cta {font-size:10px!important;letter-spacing:1.3px!important;}
   #splash-screen #splash-social-icons {top:8px!important;right:10px!important;left:auto!important;bottom:auto!important;}
   #splash-screen #splash-social-icons .splash-social-btn {width:30px!important;height:30px!important;}
+}
+
+
+/* SPLASH: jednoznaczny ukośny podział na każdej szerokości telefonu.
+   Poprzednia granica 767px zostawiała poziomą linię przy 768–1050px. */
+@media screen and (orientation:portrait) and (max-width:1100px) {
+  #splash-screen .splash-media-panel {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 var(--portrait-opposite-cut,74%)) !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 var(--portrait-opposite-cut,74%)) !important;
+  }
+  #splash-screen .splash-diagonal {
+    position:absolute !important;
+    inset: 0 auto auto 0 !important;
+    display:block !important;
+    width:100% !important;
+    height:var(--portrait-photo-h) !important;
+    min-height:0 !important;
+    max-height:none !important;
+    flex:none !important;
+    -webkit-clip-path: polygon(0 calc(var(--portrait-opposite-cut,74%) - 1.1%), 100% 98.9%, 100% 100%, 0 var(--portrait-opposite-cut,74%)) !important;
+    clip-path: polygon(0 calc(var(--portrait-opposite-cut,74%) - 1.1%), 100% 98.9%, 100% 100%, 0 var(--portrait-opposite-cut,74%)) !important;
+  }
 }
 
 
@@ -9279,5 +9301,3 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
-
-  
