@@ -4050,9 +4050,264 @@ html,body { background-color:#d3d5d9!important; }
   #splash-screen {--portrait-photo-h:clamp(205px,38svh,290px);}
 }
 
+
+/* === SPLASH 2026 — korekta przekątnej, brak scrolla, sociale i kinowe przejście === */
+html:has(body.splash-locked), body.splash-locked {
+    overflow:hidden !important;
+    overscroll-behavior:none;
+}
+body.splash-locked {height:100dvh; max-height:100dvh;}
+#splash-screen {
+    overflow:hidden !important;
+    overscroll-behavior:none !important;
+    touch-action:manipulation;
+}
+#splash-screen.splash-cinematic-exit {
+    opacity:1 !important;
+    transform:none !important;
+    pointer-events:none !important;
+    will-change:clip-path;
+    animation:f1SplashSweepOut .68s cubic-bezier(.75,.01,.2,1) both, f1SplashBlurOut .68s ease-in both !important;
+}
+#splash-screen.splash-returning {
+    opacity:1 !important;
+    transform:none !important;
+    will-change:clip-path;
+    animation:f1SplashSweepIn .58s cubic-bezier(.2,.8,.25,1) both, f1SplashBlurIn .58s ease-out both !important;
+}
+@keyframes f1SplashSweepOut {
+    0% {clip-path:polygon(0 0,110% 0,100% 100%,0 100%);}
+    55% {clip-path:polygon(0 0,53% 0,43% 100%,0 100%);}
+    100% {clip-path:polygon(0 0,-12% 0,-22% 100%,0 100%);}
+}
+@keyframes f1SplashSweepIn {
+    0% {clip-path:polygon(0 0,0 0,0 100%,0 100%);}
+    100% {clip-path:polygon(0 0,110% 0,100% 100%,0 100%);}
+}
+/* Delikatne rozmycie krawędzi i zawartości w czasie przejścia (poniżej 0,8 s). */
+@keyframes f1SplashBlurOut {
+    0%, 22% {filter:blur(0);}
+    62% {filter:blur(3px);}
+    100% {filter:blur(8px);}
+}
+@keyframes f1SplashBlurIn {
+    0% {filter:blur(7px);}
+    65% {filter:blur(2px);}
+    100% {filter:blur(0);}
+}
+#main-app.f1-app-opening {
+    animation:f1PageUnveil .68s ease-out both;
+    transform-origin:center top;
+}
+@keyframes f1PageUnveil {
+    from {opacity:.72; filter:brightness(.6) blur(5px); transform:translateY(12px);}
+    to {opacity:1;filter:brightness(1) blur(0);transform:translateY(0);}
+}
+/* Logowanie w stopce, w pobliżu informacji o prawach autorskich. */
+#main-app .site-footer {
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    flex-wrap:wrap;
+    gap:12px 28px;
+}
+#main-app .site-footer-copyright {display:inline-block;max-width:100%;}
+#main-app .site-footer #btn-open-login {
+    font:600 12px/1.2 var(--font-data) !important;
+    letter-spacing:1.4px !important;
+    color:#c8cbd3 !important;
+    background:transparent !important;
+    border:1px solid rgba(255,255,255,.24) !important;
+    border-radius:5px !important;
+    padding:9px 14px !important;
+    box-shadow:none !important;
+    transition:background .2s,border-color .2s,color .2s !important;
+}
+#main-app .site-footer #btn-open-login:hover,
+#main-app .site-footer #btn-open-login:focus-visible {
+    background:rgba(225,6,0,.12) !important;
+    border-color:#e10600 !important;
+    color:#fff !important;
+    transform:none !important;
+}
+
+@media screen and (max-width:767px) and (orientation:portrait) {
+  /* Pionowy odpowiednik komputera: przeciwny, ostrzejszy skos.
+     Zdjęcie po lewej dochodzi do dołu, a po prawej kończy się wyżej. */
+  #splash-screen {
+    --portrait-photo-h:clamp(260px,43svh,405px);
+    --portrait-opposite-cut:74%;
+    --mobile-detail-top:clamp(12px,1.8svh,19px);
+    --mobile-logo-h:clamp(51px,7.3svh,64px);
+    --mobile-social-h:34px;
+    display:flex !important;
+    flex-direction:column !important;
+    overflow:hidden !important;
+    height:100dvh !important;
+    min-height:0 !important;
+    max-height:100dvh !important;
+  }
+  #splash-screen .splash-media-panel {
+    height:var(--portrait-photo-h) !important;
+    flex:0 0 var(--portrait-photo-h) !important;
+    -webkit-clip-path:polygon(0 0,100% 0,100% 100%,0 var(--portrait-opposite-cut)) !important;
+    clip-path:polygon(0 0,100% 0,100% 100%,0 var(--portrait-opposite-cut)) !important;
+  }
+  #splash-screen .splash-diagonal {
+    height:var(--portrait-photo-h) !important;
+    -webkit-clip-path:polygon(0 calc(var(--portrait-opposite-cut) - 1.1%),100% 98.9%,100% 100%,0 var(--portrait-opposite-cut)) !important;
+    clip-path:polygon(0 calc(var(--portrait-opposite-cut) - 1.1%),100% 98.9%,100% 100%,0 var(--portrait-opposite-cut)) !important;
+    background:linear-gradient(100deg,#fe2828,#e10600 65%,#ac1017)!important;
+  }
+  #splash-screen .splash-detail-panel {
+    padding:var(--mobile-detail-top) clamp(14px,5.4vw,23px) 12px !important;
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    display:flex !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+  }
+  #splash-screen .splash-detail-inner {max-width:none!important;width:100%;}
+  /* Logo i sociale w pierwszym rzędzie, nazwa ligi poniżej; nic nie nachodzi. */
+  #splash-screen .splash-brand-row {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:auto auto;
+    align-items:center;
+    gap:7px 10px !important;
+    margin-bottom:clamp(12px,2.1svh,19px) !important;
+  }
+  #splash-screen .splash-logo-wrap {
+    grid-column:1;
+    grid-row:1;
+    justify-self:start;
+  }
+  #splash-screen .splash-logo-box {
+    width:clamp(64px,19vw,79px) !important;
+    height:var(--mobile-logo-h) !important;
+  }
+  #splash-screen .splash-brand-heading {
+    grid-column:1 / -1;
+    grid-row:2;
+  }
+  #splash-screen .splash-title {
+    font-size:clamp(28px,7.9vw,41px) !important;
+    line-height:.88 !important;
+  }
+  #splash-screen .splash-subtitle {
+    margin-top:6px !important;
+    font-size:clamp(10px,2.7vw,12px) !important;
+  }
+  #splash-screen #splash-social-icons {
+    position:absolute !important;
+    top:calc(var(--portrait-photo-h) + var(--mobile-detail-top) + (var(--mobile-logo-h) - var(--mobile-social-h))/2) !important;
+    right:max(10px, env(safe-area-inset-right)) !important;
+    bottom:auto !important; left:auto !important;
+    width:auto !important; max-width:none !important;
+    display:flex !important;flex-direction:row !important;
+    align-items:center !important;justify-content:flex-end !important;
+    gap:6px !important;
+    padding:0 !important;
+  }
+  #splash-screen #splash-social-icons .splash-social-btn {
+    width:var(--mobile-social-h) !important;
+    height:var(--mobile-social-h) !important;
+    flex:0 0 var(--mobile-social-h) !important;
+    border-radius:7px !important;
+  }
+  #splash-screen #splash-social-icons .splash-social-btn :is(svg,img) {
+    width:18px !important;
+    height:18px !important;
+  }
+  #splash-screen .splash-race-area {
+    margin-bottom:clamp(13px,2svh,20px) !important;
+  }
+  #splash-screen #splash-gp-name {
+    font-size:clamp(28px,8vw,40px) !important;
+    line-height:1 !important;
+  }
+  #splash-screen .splash-countdown-card {
+    margin:0 0 clamp(12px,2svh,20px) !important;
+  }
+  #splash-screen .splash-timer-unit {padding:8px 2px 7px !important;}
+  #splash-screen .splash-timer-val {font-size:clamp(23px,7vw,33px) !important;}
+  #splash-screen .splash-timer-label {margin-top:5px!important;}
+  #splash-screen .splash-timer-heading {margin-bottom:8px!important;}
+  #splash-screen .splash-bottom-line {
+    margin-top:0!important;
+    padding-top:11px !important;
+  }
+  #splash-screen .splash-cta {font-size:clamp(10px,2.7vw,12px)!important;}
+}
+@media screen and (max-width:360px) and (orientation:portrait) {
+  #splash-screen {--portrait-photo-h:clamp(235px,41svh,320px);--mobile-detail-top:11px;--mobile-logo-h:50px;--mobile-social-h:31px;}
+  #splash-screen .splash-brand-row {gap:6px!important;margin-bottom:11px!important;}
+  #splash-screen .splash-title {font-size:clamp(26px,8vw,30px)!important;}
+  #splash-screen .splash-race-area {margin-bottom:12px!important;}
+  #splash-screen #splash-gp-name {font-size:clamp(27px,8.8vw,32px)!important;}
+  #splash-screen .splash-countdown-card {margin-bottom:10px!important;}
+}
+@media screen and (max-width:767px) {
+  #main-app .site-footer {justify-content:center !important;text-align:center!important;gap:9px!important;}
+  #main-app .site-footer #btn-open-login {font-size:11px!important;padding:8px 12px!important;}
+}
+/* Telefon poziomo: nie ucinamy napisów mimo braku przewijania splasha. */
+@media screen and (min-width:568px) and (max-width:1050px) and (orientation:landscape) {
+  #splash-screen {
+    display:flex!important;flex-direction:row!important;
+    align-items:stretch!important;justify-content:flex-end!important;
+    height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;
+    overflow:hidden!important;
+  }
+  #splash-screen .splash-media-panel {
+    position:absolute!important;inset:0 auto 0 0!important;
+    width:66%!important;height:100%!important;
+    min-height:0!important;max-height:none!important;
+    flex:none!important;
+    clip-path:polygon(0 0,95% 0,72% 100%,0 100%)!important;
+  }
+  #splash-screen .splash-diagonal {
+    position:absolute!important;inset:0!important;
+    height:100%!important;width:100%!important;
+    min-height:0!important;max-height:none!important;
+    flex:none!important;
+    background:linear-gradient(180deg,#ff2a2a,#e10600 60%,#a80914)!important;
+    clip-path:polygon(62.7% 0,63.2% 0,47.5% 100%,47% 100%)!important;
+  }
+  #splash-screen .splash-detail-panel {
+    position:relative!important;display:flex!important;
+    align-items:center!important;justify-content:center!important;
+    width:48%!important;height:100%!important;min-height:0!important;
+    max-width:none!important;margin:0 0 0 auto!important;
+    padding:45px 16px 14px 4vw!important;
+    box-sizing:border-box!important;overflow:hidden;
+  }
+  #splash-screen .splash-detail-inner {width:100%;max-width:none;}
+  #splash-screen .splash-brand-row {gap:8px!important;margin-bottom:12px!important;}
+  #splash-screen .splash-logo-box {width:58px!important;height:48px!important;}
+  #splash-screen .splash-title {font-size:clamp(24px,3.4vw,34px)!important;}
+  #splash-screen .splash-subtitle {margin-top:5px!important;font-size:10px!important;}
+  #splash-screen .splash-race-area {margin-bottom:13px!important;}
+  #splash-screen #splash-gp-name {font-size:clamp(23px,3.2vw,30px)!important;}
+  #splash-screen .splash-countdown-card {padding:10px 8px!important;margin-bottom:0!important;}
+  #splash-screen .splash-timer-heading {margin-bottom:7px!important;font-size:9px!important;}
+  #splash-screen .splash-timer-val {font-size:24px!important;}
+  #splash-screen .splash-timer-label {margin-top:5px!important;font-size:8px!important;}
+  #splash-screen .splash-bottom-line {margin-top:12px!important;padding-top:10px!important;}
+  #splash-screen .splash-cta {font-size:10px!important;letter-spacing:1.3px!important;}
+  #splash-screen #splash-social-icons {top:8px!important;right:10px!important;left:auto!important;bottom:auto!important;}
+  #splash-screen #splash-social-icons .splash-social-btn {width:30px!important;height:30px!important;}
+}
+
+@media (prefers-reduced-motion:reduce) {
+  #splash-screen.splash-cinematic-exit {animation-duration:.15s!important;}
+  #splash-screen.splash-returning {animation-duration:.15s!important;}
+  #main-app.f1-app-opening {animation-duration:.15s!important;}
+}
+
 </style>
 </head>
-<body style="background:#eef0f4">
+<body class="splash-locked" style="background:#eef0f4">
 <div id="pre-loader" style="
     position:fixed;inset:0;background:#15151e;z-index:var(--z-top);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
@@ -4342,7 +4597,7 @@ html,body { background-color:#d3d5d9!important; }
     <div class="header-right">
         <div class="header-social-icons" id="header-social-icons"></div>
         <div class="f1-auth-zone" style="display:flex;align-items:center;gap:12px;">
-            <button class="btn-action hidden" id="btn-open-login" onclick="ui.toggleAuth(true)" title="Logowanie">🔒</button>
+
             <button class="btn-action hidden" id="btn-open-admin" onclick="ui.toggleAdmin(true)">⚙ PANEL ADMINA</button>
         </div>
     </div>
@@ -4530,7 +4785,8 @@ html,body { background-color:#d3d5d9!important; }
 </main>
 
 <footer class="site-footer">
-    © <span id="footer-year">2026</span> <strong>Weekendowa Liga F1</strong> — Wszelkie prawa zastrzeżone
+    <span class="site-footer-copyright">© <span id="footer-year">2026</span> <strong>Weekendowa Liga F1</strong> — Wszelkie prawa zastrzeżone</span>
+    <button type="button" class="btn-action hidden footer-login-button" id="btn-open-login" onclick="ui.toggleAuth(true)" title="Zaloguj się do panelu">ZALOGUJ SIĘ</button>
 </footer>
 <script>document.getElementById('footer-year').textContent = new Date().getFullYear();
 </script>
@@ -4941,30 +5197,54 @@ html,body { background-color:#d3d5d9!important; }
     </div>
 </div>
 
-<script>function hideSplash() {
-    var splash = document.getElementById('splash-screen');
-    if (!splash) return;
-	document.body.style.background = '';
-    splash.classList.add('hiding');
-    splash.style.opacity = '0';
-    splash.style.transform = 'scale(1.05)';
-    setTimeout(function() {
+<script>
+let _splashTransitionBusy = false;
+let _splashTransitionTimer = null;
+function hideSplash() {
+    const splash = document.getElementById('splash-screen');
+    const app = document.getElementById('main-app');
+    if (!splash || !app || _splashTransitionBusy || splash.style.display === 'none') return;
+    _splashTransitionBusy = true;
+    clearTimeout(_splashTransitionTimer);
+    app.style.display = 'flex';
+    app.classList.remove('f1-app-opening');
+    void app.offsetWidth;
+    app.classList.add('f1-app-opening');
+    splash.classList.remove('splash-returning', 'hiding', 'splash-cinematic-exit');
+    splash.style.opacity = '1';
+    splash.style.transform = 'none';
+    splash.classList.add('splash-cinematic-exit');
+    // Blokada przewijania obowiązuje, dopóki ekran startowy nie zniknie.
+    _splashTransitionTimer = setTimeout(function() {
         splash.style.display = 'none';
-        var app = document.getElementById('main-app');
-        if (app) app.style.display = 'flex';
+        splash.classList.remove('splash-cinematic-exit');
+        document.body.classList.remove('splash-locked');
+        document.body.style.background = '';
+        app.classList.remove('f1-app-opening');
+        _splashTransitionBusy = false;
         if (window._resetInactivityTimer) window._resetInactivityTimer();
         if (window.ui && window.ui.replayStandingsCountUp) window.ui.replayStandingsCountUp();
-    }, 500);
+    }, 700);
 }
 function showSplash() {
-    var app = document.getElementById('main-app');
-    if (app) app.style.display = 'none';
-    var splash = document.getElementById('splash-screen');
-    if (!splash) return;
+    const app = document.getElementById('main-app');
+    const splash = document.getElementById('splash-screen');
+    if (!app || !splash || _splashTransitionBusy) return;
+    _splashTransitionBusy = true;
+    clearTimeout(_splashTransitionTimer);
+    document.body.classList.add('splash-locked');
+    window.scrollTo(0, 0);
     splash.style.display = 'flex';
     splash.style.opacity = '1';
-    splash.style.transform = '';
-    splash.classList.remove('hiding');
+    splash.style.transform = 'none';
+    splash.classList.remove('hiding', 'splash-cinematic-exit', 'splash-returning');
+    void splash.offsetWidth;
+    splash.classList.add('splash-returning');
+    _splashTransitionTimer = setTimeout(function() {
+        app.style.display = 'none';
+        splash.classList.remove('splash-returning');
+        _splashTransitionBusy = false;
+    }, 600);
 }
 
 (function() {
