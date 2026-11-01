@@ -4051,57 +4051,104 @@ html,body { background-color:#d3d5d9!important; }
 }
 
 
-/* === SPLASH 2026 — korekta przekątnej, brak scrolla, sociale i kinowe przejście === */
+/* === Kinowe, ukośne przejście — osobne układy desktop i pionowego telefonu === */
 html:has(body.splash-locked), body.splash-locked {
-    overflow:hidden !important;
-    overscroll-behavior:none;
+  overflow:hidden !important;
+  overscroll-behavior:none;
 }
-body.splash-locked {height:100dvh; max-height:100dvh;}
-#splash-screen {
-    overflow:hidden !important;
-    overscroll-behavior:none !important;
-    touch-action:manipulation;
+body.splash-locked {height:100dvh;max-height:100dvh;}
+#splash-screen {overflow:hidden!important;overscroll-behavior:none!important;touch-action:manipulation;}
+
+/* Ciemna zasłona o ukośnej krawędzi: pod nią przełączany jest ekran.
+   Dzięki temu nawet podczas animacji nie widać obydwu ekranów jednocześnie. */
+#splash-transition-curtain {
+  position:fixed;
+  inset:0;
+  width:100%;height:100dvh;
+  z-index:9500;
+  pointer-events:auto;
+  background:linear-gradient(130deg,#19141e 0%,#111119 55%,#100e16 100%);
+  -webkit-clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);
+  clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);
+  will-change:clip-path;
+  backface-visibility:hidden;
 }
-#splash-screen.splash-cinematic-exit {
-    opacity:1 !important;
-    transform:none !important;
-    pointer-events:none !important;
-    will-change:clip-path;
-    animation:f1SplashSweepOut .68s cubic-bezier(.75,.01,.2,1) both, f1SplashBlurOut .68s ease-in both !important;
+/* Delikatny czerwony połysk podkreśla przesunięcie przekątnej. */
+#splash-transition-curtain::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(118deg,transparent 20%,rgba(225,6,0,.04) 52%,rgba(225,6,0,.13) 80%,transparent 100%);
 }
-#splash-screen.splash-returning {
-    opacity:1 !important;
-    transform:none !important;
-    will-change:clip-path;
-    animation:f1SplashSweepIn .58s cubic-bezier(.2,.8,.25,1) both, f1SplashBlurIn .58s ease-out both !important;
+#splash-transition-curtain.is-covering {
+  animation:splashDiagonalCover .32s cubic-bezier(.64,.06,.32,.97) both;
 }
-@keyframes f1SplashSweepOut {
-    0% {clip-path:polygon(0 0,110% 0,100% 100%,0 100%);}
-    55% {clip-path:polygon(0 0,53% 0,43% 100%,0 100%);}
-    100% {clip-path:polygon(0 0,-12% 0,-22% 100%,0 100%);}
+#splash-transition-curtain.is-revealing {
+  animation:splashDiagonalReveal .36s cubic-bezier(.24,.02,.19,1) both;
 }
-@keyframes f1SplashSweepIn {
-    0% {clip-path:polygon(0 0,0 0,0 100%,0 100%);}
-    100% {clip-path:polygon(0 0,110% 0,100% 100%,0 100%);}
+/* Na desktopie skos przemieszcza się w bok — jak w oryginalnej animacji. */
+@keyframes splashDiagonalCover {
+  0%   {clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);}
+  40%  {clip-path:polygon(74% 0,100% 0,100% 100%,54% 100%);}
+  100% {clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}
 }
-/* Delikatne rozmycie krawędzi i zawartości w czasie przejścia (poniżej 0,8 s). */
-@keyframes f1SplashBlurOut {
-    0%, 22% {filter:blur(0);}
-    62% {filter:blur(3px);}
-    100% {filter:blur(8px);}
+@keyframes splashDiagonalReveal {
+  0%   {clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}
+  52%  {clip-path:polygon(0 0,72% 0,52% 100%,0 100%);}
+  100% {clip-path:polygon(0 0,0 0,0 100%,0 100%);}
 }
-@keyframes f1SplashBlurIn {
-    0% {filter:blur(7px);}
-    65% {filter:blur(2px);}
-    100% {filter:blur(0);}
+/* W pionie skos przesuwa się z dołu do góry, zachowując pochyloną krawędź. */
+@media screen and (orientation:portrait) and (max-width:767px) {
+  #splash-transition-curtain {
+    -webkit-clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);
+    clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);
+  }
+  #splash-transition-curtain.is-covering {animation-name:splashDiagonalCoverPortrait;}
+  #splash-transition-curtain.is-revealing {animation-name:splashDiagonalRevealPortrait;}
+  @keyframes splashDiagonalCoverPortrait {
+    0%   {clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);}
+    45%  {clip-path:polygon(0 38%,100% 58%,100% 100%,0 100%);}
+    100% {clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}
+  }
+  @keyframes splashDiagonalRevealPortrait {
+    0%   {clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}
+    50%  {clip-path:polygon(0 0,100% 0,100% 62%,0 42%);}
+    100% {clip-path:polygon(0 0,100% 0,100% 0,0 0);}
+  }
 }
-#main-app.f1-app-opening {
-    animation:f1PageUnveil .68s ease-out both;
-    transform-origin:center top;
+#splash-screen.splash-stage-exit {
+  animation:splashStageBlurOut .31s ease-in both!important;
+  pointer-events:none!important;
 }
-@keyframes f1PageUnveil {
-    from {opacity:.72; filter:brightness(.6) blur(5px); transform:translateY(12px);}
-    to {opacity:1;filter:brightness(1) blur(0);transform:translateY(0);}
+#splash-screen.splash-stage-enter {
+  animation:splashStageBlurIn .35s ease-out both!important;
+  pointer-events:none!important;
+}
+#main-app.splash-stage-enter {
+  animation:splashAppBlurIn .35s ease-out both!important;
+}
+#main-app.splash-stage-exit {
+  animation:splashStageBlurOut .31s ease-in both!important;
+  pointer-events:none!important;
+}
+@keyframes splashStageBlurOut {
+  from {filter:blur(0);opacity:1;}
+  to   {filter:blur(5px);opacity:.68;}
+}
+@keyframes splashStageBlurIn {
+  from {filter:blur(5px);opacity:.80;}
+  to   {filter:blur(0);opacity:1;}
+}
+@keyframes splashAppBlurIn {
+  from {filter:blur(5px);opacity:.80;transform:translateY(7px);}
+  to   {filter:blur(0);opacity:1;transform:none;}
+}
+@media (prefers-reduced-motion:reduce) {
+  #splash-transition-curtain.is-covering {animation-duration:.08s!important;}
+  #splash-transition-curtain.is-revealing {animation-duration:.10s!important;}
+  #splash-screen.splash-stage-exit,#splash-screen.splash-stage-enter,
+  #main-app.splash-stage-exit,#main-app.splash-stage-enter {animation-duration:.1s!important;}
 }
 /* Logowanie w stopce, w pobliżu informacji o prawach autorskich. */
 #main-app .site-footer {
@@ -4299,11 +4346,6 @@ body.splash-locked {height:100dvh; max-height:100dvh;}
   #splash-screen #splash-social-icons .splash-social-btn {width:30px!important;height:30px!important;}
 }
 
-@media (prefers-reduced-motion:reduce) {
-  #splash-screen.splash-cinematic-exit {animation-duration:.15s!important;}
-  #splash-screen.splash-returning {animation-duration:.15s!important;}
-  #main-app.f1-app-opening {animation-duration:.15s!important;}
-}
 
 </style>
 </head>
@@ -5200,52 +5242,80 @@ body.splash-locked {height:100dvh; max-height:100dvh;}
 <script>
 let _splashTransitionBusy = false;
 let _splashTransitionTimer = null;
-function hideSplash() {
-    const splash = document.getElementById('splash-screen');
-    const app = document.getElementById('main-app');
-    if (!splash || !app || _splashTransitionBusy || splash.style.display === 'none') return;
-    _splashTransitionBusy = true;
-    clearTimeout(_splashTransitionTimer);
-    app.style.display = 'flex';
-    app.classList.remove('f1-app-opening');
-    void app.offsetWidth;
-    app.classList.add('f1-app-opening');
-    splash.classList.remove('splash-returning', 'hiding', 'splash-cinematic-exit');
-    splash.style.opacity = '1';
-    splash.style.transform = 'none';
-    splash.classList.add('splash-cinematic-exit');
-    // Blokada przewijania obowiązuje, dopóki ekran startowy nie zniknie.
-    _splashTransitionTimer = setTimeout(function() {
-        splash.style.display = 'none';
-        splash.classList.remove('splash-cinematic-exit');
-        document.body.classList.remove('splash-locked');
-        document.body.style.background = '';
-        app.classList.remove('f1-app-opening');
-        _splashTransitionBusy = false;
-        if (window._resetInactivityTimer) window._resetInactivityTimer();
-        if (window.ui && window.ui.replayStandingsCountUp) window.ui.replayStandingsCountUp();
-    }, 700);
+
+// Jeden element przejściowy, współdzielony przez wejście i powrót na splash.
+function _splashCurtain() {
+    let curtain = document.getElementById('splash-transition-curtain');
+    if (!curtain) {
+        curtain = document.createElement('div');
+        curtain.id = 'splash-transition-curtain';
+        curtain.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(curtain);
+    }
+    return curtain;
 }
-function showSplash() {
-    const app = document.getElementById('main-app');
+function _splashDoTransition(target) {
     const splash = document.getElementById('splash-screen');
-    if (!app || !splash || _splashTransitionBusy) return;
+    const app = document.getElementById('main-app');
+    if (!splash || !app || _splashTransitionBusy) return;
+    if (target === 'app' && splash.style.display === 'none') return;
+    if (target === 'splash' && splash.style.display !== 'none') return;
+
     _splashTransitionBusy = true;
     clearTimeout(_splashTransitionTimer);
+    const curtain = _splashCurtain();
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coverMs = reduced ? 90 : 325;
+    const revealMs = reduced ? 120 : 370;
+    const leaving = target === 'app' ? splash : app;
+    const arriving = target === 'app' ? app : splash;
+
+    // WAŻNE: aplikacja jest nadal display:none podczas całego znikania splasha.
     document.body.classList.add('splash-locked');
-    window.scrollTo(0, 0);
-    splash.style.display = 'flex';
-    splash.style.opacity = '1';
-    splash.style.transform = 'none';
-    splash.classList.remove('hiding', 'splash-cinematic-exit', 'splash-returning');
-    void splash.offsetWidth;
-    splash.classList.add('splash-returning');
+    leaving.classList.remove('splash-stage-enter', 'splash-stage-exit', 'splash-cinematic-exit', 'splash-returning', 'hiding', 'f1-app-opening');
+    arriving.classList.remove('splash-stage-enter', 'splash-stage-exit', 'f1-app-opening');
+    leaving.style.opacity = '1';
+    leaving.style.transform = 'none';
+    leaving.classList.add('splash-stage-exit');
+    curtain.classList.remove('is-revealing', 'is-covering');
+    // Wymusza odtworzenie animacji także po powrocie na splash.
+    void curtain.offsetWidth;
+    curtain.classList.add('is-covering');
+
     _splashTransitionTimer = setTimeout(function() {
-        app.style.display = 'none';
-        splash.classList.remove('splash-returning');
-        _splashTransitionBusy = false;
-    }, 600);
+        // Cały ekran jest teraz zakryty. Nie ma ani jednej klatki z dwoma ekranami.
+        // Na mobile CSS wymusza display:flex!important na splashu; inline też musi mieć !important.
+        leaving.style.setProperty('display', 'none', 'important');
+        leaving.classList.remove('splash-stage-exit');
+        leaving.style.opacity = '';
+        leaving.style.transform = '';
+        if (target === 'splash') window.scrollTo(0, 0);
+        arriving.style.setProperty('display', 'flex', 'important');
+        arriving.style.opacity = '1';
+        arriving.style.transform = 'none';
+        arriving.classList.add('splash-stage-enter');
+        curtain.classList.remove('is-covering');
+        void curtain.offsetWidth;
+        curtain.classList.add('is-revealing');
+
+        _splashTransitionTimer = setTimeout(function() {
+            arriving.classList.remove('splash-stage-enter');
+            // Splash ma domyślnie opacity:0 w starej bazie CSS, więc po powrocie musi zostać 1.
+            arriving.style.opacity = target === 'splash' ? '1' : '';
+            arriving.style.transform = '';
+            curtain.remove();
+            if (target === 'app') {
+                document.body.classList.remove('splash-locked');
+                document.body.style.background = '';
+                if (window._resetInactivityTimer) window._resetInactivityTimer();
+                if (window.ui && window.ui.replayStandingsCountUp) window.ui.replayStandingsCountUp();
+            }
+            _splashTransitionBusy = false;
+        }, revealMs);
+    }, coverMs);
 }
+function hideSplash() { _splashDoTransition('app'); }
+function showSplash() { _splashDoTransition('splash'); }
 
 (function() {
     var INACTIVITY_MS = 10 * 60 * 1000;
@@ -9209,3 +9279,5 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+
+  
