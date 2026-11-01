@@ -3634,6 +3634,112 @@ html,body { background-color:#d3d5d9!important; }
   }
 }
 
+
+/* Responsive splash and navigation */
+#splash-screen .splash-media-panel { cursor:pointer; }
+#main-app .f1-header, #main-app > .f1-header .f1-brand, #main-app > .f1-header .header-right { min-width:0; }
+#main-app > .f1-header .f1-title { overflow-wrap:normal; }
+#driver-profile-modal .dp-stats-row {
+    background:linear-gradient(112deg,
+        color-mix(in srgb,var(--stats-team-accent,#e10600) 37%,#0b1019) 0%,
+        color-mix(in srgb,var(--stats-team-accent,#e10600) 16%,#0b1019) 48%,
+        #0b1019 100%) !important;
+}
+#driver-profile-modal .dp-stats-row > .dp-stat {background:transparent !important;}
+#driver-profile-modal .dp-stats-row > .dp-stat:hover {background:rgba(255,255,255,.05) !important;}
+#main-app .story-stats {
+    background:linear-gradient(128deg,
+        color-mix(in srgb,var(--stats-team-accent,#e10600) 27%,#141922) 0%,
+        #141922 77%) !important;
+}
+#main-app .story-stats .stat-row {background:transparent !important;}
+#main-app .story-stats .stat-row:hover {background:rgba(255,255,255,.04) !important;}
+@media (max-width: 1050px) {
+  #splash-screen {
+    display:flex; flex-direction:column; align-items:stretch;
+    justify-content:flex-start; overflow-x:hidden; overflow-y:auto;
+    height:100dvh; min-height:100dvh;
+  }
+  #splash-screen .splash-media-panel {
+    position:relative !important; inset:auto !important; display:block;
+    flex:0 0 auto; width:100% !important;
+    height:clamp(220px,35svh,370px) !important;
+    min-height:0 !important; max-height:none !important;
+    clip-path:none !important; overflow:hidden;
+    background:#191922;
+  }
+  #splash-screen .splash-featured-image img,
+  #splash-screen #splash-image-area img {
+    object-fit:cover !important; object-position:center 54%;
+  }
+  #splash-screen .splash-diagonal {
+    position:relative !important; inset:auto !important; display:block;
+    height:4px !important; min-height:4px !important; max-height:4px !important;
+    flex:0 0 4px; width:100%; clip-path:none !important;
+    background:#e10600;
+  }
+  #splash-screen .splash-detail-panel {
+    position:relative !important; width:100% !important;
+    max-width:none !important; min-height:0 !important;
+    height:auto !important; margin:0 !important;
+    padding:clamp(26px,4vh,44px) 24px 36px !important;
+    display:block; box-sizing:border-box; flex:0 0 auto;
+  }
+  #splash-screen .splash-detail-inner {max-width:none;width:100%;}
+  #splash-screen .splash-brand-row {gap:14px;margin-bottom:30px;align-items:center;}
+  #splash-screen .splash-title {font-size:clamp(33px,9vw,46px);line-height:.94;}
+  #splash-screen #splash-gp-name {font-size:clamp(28px,8.5vw,46px);line-height:1.03;}
+  #splash-screen .splash-race-area {margin-bottom:28px;}
+  #splash-screen .splash-countdown-card {margin-bottom:26px;}
+  #splash-screen .splash-bottom-line {margin-top:22px;padding-top:18px;}
+  #splash-screen #splash-social-icons {
+    position:absolute !important;top:12px !important;right:12px !important;
+    left:auto !important;bottom:auto !important;
+    z-index:7;display:flex;flex-direction:row !important;gap:7px;
+    width:auto !important;max-width:calc(100% - 24px);
+  }
+  #main-app > .f1-header {
+    display:flex !important;flex-direction:column !important;
+    align-items:stretch !important;gap:12px !important;
+    padding:16px 18px !important;min-height:0 !important;
+  }
+  #main-app > .f1-header .f1-brand {
+    width:100%; display:flex; align-items:center; gap:14px !important;
+  }
+  #main-app > .f1-header .f1-logo {width:84px !important;height:66px !important;flex:0 0 84px;}
+  #main-app > .f1-header .f1-title {
+    flex:1; min-width:0; margin:0 !important;
+    font-size:clamp(22px,6.4vw,33px) !important;
+    line-height:.98;letter-spacing:1px !important;
+    white-space:normal; overflow-wrap:break-word;
+  }
+  #main-app > .f1-header .header-right {
+    width:100%;display:flex !important;align-items:center;
+    justify-content:space-between;gap:8px !important;
+    flex-wrap:wrap;
+  }
+  #main-app > .f1-header .header-social-icons {display:flex;gap:7px;flex:0 0 auto;max-width:100%;}
+  #main-app > .f1-header .header-social-btn {width:42px!important;height:42px!important;flex:0 0 42px;}
+  #main-app > .f1-header .header-social-btn :is(img,svg) {width:25px!important;height:25px!important;}
+  #main-app > .f1-header .f1-auth-zone { flex:0 1 auto; min-width:0; flex-wrap:wrap; gap:6px!important; }
+  #main-app > .f1-header #btn-open-admin,
+  #main-app > .f1-header #btn-open-login,
+  #main-app > .f1-header .btn-admin-open {
+    max-width:100%;min-width:0;white-space:nowrap;
+    font-size:clamp(11px,2.5vw,15px)!important;
+  }
+  #main-app .f1-nav {width:100%;box-sizing:border-box;overflow:visible;}
+  #main-app .nav-hamburger-btn {min-height:46px;box-sizing:border-box;}
+}
+@media (max-width:420px) {
+  #splash-screen .splash-detail-panel {padding-left:18px!important;padding-right:18px!important;}
+  #splash-screen .splash-logo-box {width:77px!important;height:64px!important;}
+  #splash-screen .splash-brand-row {gap:12px;}
+  #splash-screen .splash-title {font-size:clamp(32px,8.9vw,40px);}
+  #splash-screen #splash-gp-name {font-size:clamp(28px,8vw,36px);}
+  #main-app > .f1-header {padding:14px 14px!important;}
+}
+
 </style>
 </head>
 <body style="background:#eef0f4">
@@ -3871,7 +3977,7 @@ html,body { background-color:#d3d5d9!important; }
 </div>
 <div id="splash-screen" onclick="hideSplash()">
     
-    <div class="splash-media-panel">
+    <div class="splash-media-panel" onclick="event.stopPropagation(); hideSplash();" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();hideSplash();}" role="button" tabindex="0" aria-label="Wejdź na stronę">
         <div class="splash-media-backdrop"></div>
         <div id="splash-images-container"></div>
         <div id="splash-image-area" class="splash-image-area" style="display:none;"></div>
@@ -5663,6 +5769,7 @@ const raceCountForStats = allRaces.filter(r => !r._excludeFromCalc).length;
         const logoUrl = teamDef ? (teamLogos[teamDef.key] || '') : '';
 
          
+        document.getElementById('driver-profile-modal').style.setProperty('--stats-team-accent', teamColor);
         document.getElementById('dp-top-bar').style.background = teamColor;
         document.getElementById('driver-profile-modal').style.background = 'linear-gradient(160deg, ' + teamColor + '66 0%, ' + teamColor + '1a 38%, transparent 72%), #15151e';
         document.getElementById('dp-left-accent').style.background = teamColor;
@@ -5774,12 +5881,10 @@ return `<tr${r._excludeFromCalc ? ' style="opacity:0.55;"' : ''}>
             span.onclick = () => ui.editArcCell(span, raceId, rowIdx, field);
             if (input.parentNode) input.replaceWith(span);
             try {
-                const s = await new Promise(res => onValue(ref(db, arcPath + '/' + raceId), res, { onlyOnce: true }));
-                const data = s.val();
-                if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
-                    data.results[rowIdx][field] = newVal;
-                    await set(ref(db, arcPath + '/' + raceId + '/results'), data.results);
-                }
+                await editLinkedRace(currentSplit, raceId, data => {
+                    const target = isQualiCell && Array.isArray(data.qualiResults) ? data.qualiResults : data.results;
+                    if (Array.isArray(target) && target[rowIdx]) target[rowIdx][field] = newVal;
+                });
             } catch(e) { console.error('Błąd zapisu arc:', e); }
         };
         input.addEventListener('keydown', e => {
@@ -5805,12 +5910,9 @@ return `<tr${r._excludeFromCalc ? ' style="opacity:0.55;"' : ''}>
             span.onclick = () => ui.editLastRaceCell(span, rowIdx, field);
             if (input.parentNode) input.replaceWith(span);
             try {
-                const s = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
-                const data = s.val();
-                if (data && Array.isArray(data.results) && data.results[rowIdx] !== undefined) {
-                    data.results[rowIdx][field] = newVal;
-                    await set(ref(db, splitPath + '/lastRace/results'), data.results);
-                }
+                await editLinkedRace(currentSplit, null, data => {
+                    if (Array.isArray(data.results) && data.results[rowIdx]) data.results[rowIdx][field] = newVal;
+                });
             } catch(e) { console.error('Błąd zapisu lastRace:', e); }
         };
         input.addEventListener('blur', save);
@@ -5936,8 +6038,7 @@ await update(ref(db, `${seasonGalleryPath()}/${albumId}/entries/${entryId}`), { 
         if (!isLoggedIn) return;
         const splitPath = getSplitPathView();
         const titleEl = document.getElementById('display-last-race-name');
-        const snap = await new Promise(res => onValue(ref(db, splitPath + '/lastRace'), res, { onlyOnce: true }));
-        const data = snap.val(); if (!data) return;
+        const data = visibleLatestRace(currentSplit); if (!data) return;
         const current = data.name || '';
         const input = document.createElement('input'); input.type = 'text'; input.value = current;
         input.style.cssText = 'font-family:var(--font-display);font-size:34px;font-weight:900;letter-spacing:1px;color:var(--f1-black);background:transparent;border:none;border-bottom:3px solid var(--f1-red);outline:none;width:100%;';
@@ -5945,7 +6046,7 @@ await update(ref(db, `${seasonGalleryPath()}/${albumId}/entries/${entryId}`), { 
         if (existingSpan) existingSpan.replaceWith(input);
         else { titleEl.textContent = 'WYNIKI: '; titleEl.appendChild(input); }
         input.focus(); input.select();
-        const save = async () => { const newVal = input.value.trim(); await update(ref(db, splitPath + '/lastRace'), { name: newVal }); };
+        const save = async () => { const newVal = input.value.trim(); await editLinkedRace(currentSplit, null, race => { race.name = newVal; }); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = current; input.blur(); } });
     },
@@ -5973,7 +6074,7 @@ await update(ref(db, `${seasonGalleryPath()}/${albumId}/entries/${entryId}`), { 
         const input = document.createElement('input'); input.type = 'text'; input.value = currentName;
         input.style.cssText = 'font-family:var(--font-data);font-size:46px;font-weight:700;letter-spacing:1px;color:var(--f1-black);background:transparent;border:none;border-bottom:3px solid var(--f1-red);outline:none;flex:1;text-transform:uppercase;';
         nameEl.replaceWith(input); input.focus(); input.select();
-        const save = async () => { const nv=input.value.trim(); await update(ref(db, arcPath + '/'+id),{name:nv}); };
+        const save = async () => { const nv=input.value.trim(); await editLinkedRace(currentSplit, id, race => { race.name = nv; }); };
         input.addEventListener('blur', save);
         input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); if (e.key==='Escape'){input.value=currentName;input.blur();} });
     },
@@ -5993,11 +6094,11 @@ await update(ref(db, `${seasonGalleryPath()}/${albumId}/entries/${entryId}`), { 
         if (!isLoggedIn) return;
         const splitPath = getSplitPathView();
         const path = raceId ? (seasonArchivePath(currentSplit) + '/' + raceId) : (splitPath + '/lastRace');
-        const snap = await new Promise(res => onValue(ref(db, path), res, { onlyOnce: true }));
-        const data = snap.val();
-        if (!data || !Array.isArray(data.results) || !data.results[rowIdx]) return;
-        data.results[rowIdx].isReserve = !data.results[rowIdx].isReserve;
-        await set(ref(db, path + '/results'), data.results);
+        await editLinkedRace(currentSplit, raceId || null, data => {
+            if (Array.isArray(data.results) && data.results[rowIdx]) {
+                data.results[rowIdx].isReserve = !data.results[rowIdx].isReserve;
+            }
+        });
         if (raceId) rerenderArchive(); else rerenderLastRace();
     }
 };
@@ -6417,7 +6518,7 @@ window.authCore = {
 
  
 function rerenderLastRace() {
-    const data = splitDataCache[currentSplit].lastRace;
+    const data = visibleLatestRace(currentSplit);
     lastRaceDataCache = data;
     const titleEl = document.getElementById('display-last-race-name');
     const racePane = document.getElementById('last-race-tab-race');
@@ -6823,8 +6924,15 @@ const isNoProfileStats = document.getElementById('pub-no-profile-stats').checked
         });
 
 const raceObj = { name: title, results: resultsWithBonus, timestamp: Date.now(), ...(isNoStats && { isNoStats: true }), ...(isNoHistory && { isNoHistory: true }), ...(isNoProfileStats && { isNoProfileStats: true }) };
-        if (document.getElementById('pub-last').checked) await set(ref(db, getSplitPath(activeAdminSplit) + '/lastRace'), raceObj);
-        if (document.getElementById('pub-archive').checked) await push(ref(db, seasonArchivePath(activeAdminSplit)), raceObj);
+        if (document.getElementById('pub-last').checked || document.getElementById('pub-archive').checked) {
+            const archiveRoot = seasonArchivePath(activeAdminSplit);
+            const newId = push(ref(db, archiveRoot)).key;
+            const lastRoot = getSplitPath(activeAdminSplit) + '/lastRace';
+            await update(ref(db), {
+                [archiveRoot + '/' + newId]: raceObj,
+                [lastRoot]: { ...raceObj, archiveId: newId }
+            });
+        }
 
         if (!isNoStats) {
             const standSnap = await new Promise(res => onValue(ref(db, seasonStandingsPath(activeAdminSplit)), res, { onlyOnce: true }));
@@ -7390,6 +7498,7 @@ function updateLastRaceSidebar(results) {
         return;
     }
     podiumEl.innerHTML = renderLastRacePodium(results);
+    statsEl.style.setProperty('--stats-team-accent', getTeamColorByName(results[0]?.team || ''));
     statsEl.innerHTML = renderLastRaceStats(results);
 }
 
@@ -7521,6 +7630,52 @@ const reserveBtn = isLoggedIn
     runCountUps(driversList);
     runCountUps(teamsList);
 }
+function latestArchivedRace(archive) {
+    if (!archive || typeof archive !== 'object') return null;
+    const records = Object.entries(archive)
+        .filter(([, race]) => race && typeof race === 'object' && !race.isQualifying && Array.isArray(race.results));
+    if (!records.length) return null;
+    records.sort((a, b) => (Number(b[1].timestamp) || 0) - (Number(a[1].timestamp) || 0) || b[0].localeCompare(a[0]));
+    return { id: records[0][0], race: records[0][1] };
+}
+
+function visibleLatestRace(splitNum) {
+    const state = splitDataCache[splitNum];
+    const latest = latestArchivedRace(state.archive);
+    const legacy = state.lastRace;
+    if (!latest) return legacy || null;
+    if (legacy && Number(legacy.timestamp) > Number(latest.race.timestamp || 0)) return legacy;
+    return latest.race;
+}
+
+async function editLinkedRace(splitNum, raceId, change) {
+    const archiveRoot = seasonArchivePath(splitNum);
+    const lastRoot = (splitNum === 1 ? 'split1' : 'split2') + '/lastRace';
+    const snapshot = await new Promise(resolve => onValue(ref(db, archiveRoot), resolve, { onlyOnce:true }));
+    const archive = snapshot.val() || {};
+    const latest = latestArchivedRace(archive);
+    const legacySnap = await new Promise(resolve => onValue(ref(db, lastRoot), resolve, { onlyOnce:true }));
+    const legacy = legacySnap.val();
+    const legacyIsNewer = !!(legacy && (!latest || Number(legacy.timestamp || 0) > Number(latest.race.timestamp || 0)));
+    const isLatest = raceId == null || (!legacyIsNewer && latest && raceId === latest.id);
+    const targetId = raceId || (!legacyIsNewer && latest && latest.id) || push(ref(db, archiveRoot)).key;
+    const sourcePath = raceId ? archiveRoot + '/' + raceId : (legacyIsNewer ? lastRoot : (latest ? archiveRoot + '/' + latest.id : lastRoot));
+    const raceSnap = await new Promise(resolve => onValue(ref(db, sourcePath), resolve, { onlyOnce:true }));
+    const source = raceSnap.val();
+    if (!source || typeof source !== 'object') return;
+    const next = JSON.parse(JSON.stringify(source));
+    change(next);
+    if (isLatest && !next.isQualifying) {
+        const { archiveId: _link, ...archiveRace } = next;
+        await update(ref(db), {
+            [archiveRoot + '/' + targetId]: archiveRace,
+            [lastRoot]: { ...archiveRace, archiveId: targetId }
+        });
+    } else {
+        await set(ref(db, archiveRoot + '/' + targetId), next);
+    }
+}
+
 function seasonArchivePath(splitNum) {
     const sp = splitNum === 1 ? 'split1' : 'split2';
     return currentSeason === 1 ? sp + '/archive' : 'season2/' + sp + '/archive';
@@ -7644,6 +7799,7 @@ function subscribeArchive(splitNum, season) {
         if (currentSplit === splitNum) {
             archiveDataCache = d || {};
             rerenderArchive();
+            rerenderLastRace();
         }
         if (adminSplit === splitNum) buildAdmArchiveManager();
         if (window.ui) ui.refreshGpNameSuggestion(splitNum);
@@ -7935,14 +8091,14 @@ if (raceId) {
     if (cached && Array.isArray(cached.results)) {
         const newResults = rows.map(r => cached.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
         rows.forEach((r, i) => r.dataset.rowIdx = i);
-        await set(ref(db, seasonArchivePath(currentSplit) + '/' + raceId + '/results'), newResults);
+        await editLinkedRace(currentSplit, raceId, data => { data.results = newResults; });
     }
 } else if (isLastRace) {
                     const data = splitDataCache[currentSplit].lastRace;
                     if (data && Array.isArray(data.results)) {
                         const newResults = rows.map(r => data.results[parseInt(r.dataset.rowIdx)]).filter(Boolean);
                         rows.forEach((r, i) => r.dataset.rowIdx = i);
-                        await set(ref(db, splitPath + '/lastRace/results'), newResults);
+                        await editLinkedRace(currentSplit, null, data => { data.results = newResults; });
                     }
                 }
             } catch(e) { console.error('Błąd zapisu kolejności:', e); }
