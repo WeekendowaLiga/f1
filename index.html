@@ -4369,6 +4369,93 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 }
 
 
+
+/* WLF1 — adaptacyjny splash telefonu (również przy włączonej "wersji komputerowej"
+   w przeglądarce mobilnej, gdzie CSS viewport ma nawet ~980px szerokości).
+   Nie ograniczamy wielkości zdjęcia i fontów stałymi maksimami px, bo cała witryna
+   bywa wtedy pomniejszana i zostaje pusta dolna połowa ekranu. */
+@media screen and (orientation: portrait) and (max-width: 1100px) {
+  #splash-screen {
+    --portrait-photo-h: 43dvh;
+    --portrait-opposite-cut: 77%;
+    --mobile-logo-h: clamp(51px, 15vw, 175px);
+    --mobile-social-h: clamp(30px, 8vw, 88px);
+    --mobile-detail-top: clamp(11px, 1.8svh, 32px);
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+  #splash-screen .splash-media-panel,
+  #splash-screen .splash-diagonal {
+    height: var(--portrait-photo-h) !important;
+  }
+  #splash-screen .splash-media-panel {
+    flex: 0 0 var(--portrait-photo-h) !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 var(--portrait-opposite-cut)) !important;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 var(--portrait-opposite-cut)) !important;
+  }
+  #splash-screen .splash-diagonal {
+    clip-path: polygon(0 calc(var(--portrait-opposite-cut) - 1.1%), 100% 98.9%, 100% 100%, 0 var(--portrait-opposite-cut)) !important;
+    -webkit-clip-path: polygon(0 calc(var(--portrait-opposite-cut) - 1.1%), 100% 98.9%, 100% 100%, 0 var(--portrait-opposite-cut)) !important;
+  }
+  #splash-screen .splash-detail-panel {
+    padding: var(--mobile-detail-top) 5vw max(12px, env(safe-area-inset-bottom)) !important;
+  }
+  #splash-screen .splash-brand-row {
+    gap: clamp(6px, 1.5vw, 17px) !important;
+    margin-bottom: clamp(12px, 2svh, 38px) !important;
+  }
+  #splash-screen .splash-logo-box {
+    width: clamp(60px, 18vw, 200px) !important;
+    height: var(--mobile-logo-h) !important;
+  }
+  #splash-screen .splash-title {
+    font-size: clamp(27px, 8.2vw, 94px) !important;
+    line-height: .9 !important;
+  }
+  #splash-screen .splash-subtitle {
+    font-size: clamp(10px, 2.5vw, 28px) !important;
+    letter-spacing: clamp(2px, .6vw, 7px) !important;
+  }
+  #splash-screen .splash-race-area {
+    margin-bottom: clamp(12px, 1.9svh, 35px) !important;
+  }
+  #splash-screen #splash-gp-name {
+    font-size: clamp(27px, 7.35vw, 86px) !important;
+  }
+  #splash-screen .splash-countdown-card {
+    margin-bottom: clamp(10px, 2svh, 38px) !important;
+  }
+  #splash-screen #splash-countdown-section .splash-soon {
+    font-size: clamp(47px, 13vw, 146px) !important;
+    line-height: .95 !important;
+  }
+  #splash-screen .splash-timer-unit {padding: clamp(7px, 1.8vw, 20px) 2px !important;}
+  #splash-screen .splash-timer-val {font-size: clamp(23px, 7vw, 80px) !important;}
+  #splash-screen .splash-timer-label {font-size: clamp(8px, 1.8vw, 21px) !important;}
+  #splash-screen .splash-bottom-line {padding-top:clamp(9px, 1.4svh, 26px) !important;}
+  #splash-screen .splash-cta {
+    font-size: clamp(10px, 2.6vw, 30px) !important;
+    letter-spacing: clamp(1.5px, .45vw, 5px) !important;
+  }
+  #splash-screen #splash-social-icons {
+    top:calc(var(--portrait-photo-h) + var(--mobile-detail-top) + (var(--mobile-logo-h) - var(--mobile-social-h))/2) !important;
+    right:max(10px, 2.6vw, env(safe-area-inset-right)) !important;
+  }
+  #splash-screen #splash-social-icons .splash-social-btn :is(img, svg) {
+    width: 53% !important;
+    height: 53% !important;
+  }
+}
+/* Bardzo niski ekran: wszystkie elementy mają się zmieścić bez scrolla. */
+@media screen and (orientation: portrait) and (max-width: 1100px) and (max-height: 610px) {
+  #splash-screen {--portrait-photo-h:39dvh;--mobile-detail-top:9px;}
+  #splash-screen .splash-brand-row {margin-bottom:9px !important;}
+  #splash-screen .splash-race-area {margin-bottom:10px !important;}
+  #splash-screen .splash-countdown-card {margin-bottom:10px !important;}
+}
+
 </style>
 </head>
 <body class="splash-locked" style="background:#eef0f4">
