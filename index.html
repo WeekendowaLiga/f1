@@ -4459,6 +4459,408 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 }
 
 </style>
+<style>
+/* WLF1 — plotki padokowe. Style ograniczone wyłącznie do komponentu. */
+#paddock-rumors[hidden],#paddock-modal[hidden],#pd-confirm[hidden]{display:none!important}
+#splash-screen #paddock-rumors{position:absolute!important;z-index:30!important;left:clamp(12px,2.2vw,32px)!important;right:auto!important;bottom:clamp(12px,2.4vh,27px)!important;top:auto!important;width:min(700px,calc(47vw - 18px))!important;max-width:calc(100vw - 24px);font-family:var(--font-body,Arial,sans-serif);font-size:14px;letter-spacing:normal;color:#fff;text-align:left;cursor:default;filter:drop-shadow(0 12px 24px rgba(0,0,0,.3));}
+#paddock-rumors *,#paddock-modal *,#pd-confirm *{box-sizing:border-box}
+#paddock-rumors .pd-shell{position:relative;isolation:isolate;border:1px solid rgba(255,255,255,.15);border-radius:7px;overflow:hidden;background:rgba(11,14,20,.92);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+#paddock-rumors .pd-top{height:31px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:rgba(0,0,0,.15);font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:2px}
+#pd-count{font:500 10px var(--font-data,Arial,sans-serif);letter-spacing:1.3px;color:#969ba5}
+#paddock-rumors .pd-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.1fr) minmax(0,1fr);gap:7px;align-items:center;padding:10px 10px 5px;height:clamp(175px,17.2vw,265px);overflow:hidden}
+#paddock-rumors .pd-stage--solo{grid-template-columns:minmax(0,1fr)}
+#paddock-rumors .pd-stage--duo{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+#paddock-rumors .pd-card{height:100%;width:100%;min-width:0;border:1px solid rgba(255,255,255,.14);background:#141822;color:#fff;border-radius:3px;padding:0;position:relative;display:block;text-align:left;overflow:hidden;cursor:pointer;transition:transform .32s ease,opacity .32s ease,border-color .2s ease}
+#paddock-rumors .pd-card:hover{border-color:rgba(255,255,255,.52)}
+#paddock-rumors .pd-card--side{height:81%;opacity:.83}
+#paddock-rumors .pd-card--side:hover{opacity:1;transform:scale(1.02)}
+#paddock-rumors .pd-card--main{z-index:2;box-shadow:0 5px 22px rgba(0,0,0,.3)}
+#paddock-rumors .pd-stage--solo .pd-card--side,#paddock-rumors .pd-stage--duo #pd-left{display:none}
+#paddock-rumors .pd-stage--duo .pd-card--side{height:92%}
+#paddock-rumors .pd-cover{position:absolute;inset:0;background:linear-gradient(135deg,#1c2735,#12131a);display:flex;align-items:center;justify-content:center;overflow:hidden}
+#paddock-rumors .pd-cover::after{content:"";position:absolute;inset:25% 0 0;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.54) 48%,rgba(5,7,11,.96) 100%);pointer-events:none}
+#paddock-rumors .pd-cover img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:none!important;opacity:1}
+#paddock-rumors .pd-cover.pd-no-image::before{content:"F1";font:900 54px var(--font-display,Arial,sans-serif);color:rgba(255,255,255,.08)}
+#paddock-rumors .pd-card-copy{position:absolute;left:0;bottom:0;right:0;display:flex;flex-direction:column;gap:5px;padding:8px 11px 10px;z-index:2;min-width:0;pointer-events:none}
+#paddock-rumors .pd-card-copy strong{font:800 clamp(14px,1.35vw,20px)/1.12 var(--font-display,Arial,sans-serif);letter-spacing:.2px;color:#fff;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+#paddock-rumors .pd-card--side .pd-card-copy strong{font-size:clamp(12px,1vw,16px)}
+#paddock-rumors .pd-excerpt{font:500 clamp(10px,.9vw,12px)/1.35 var(--font-body,Arial,sans-serif);color:#e0e0e3;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;white-space:normal}
+#paddock-rumors .pd-card--side .pd-excerpt{display:none}
+#paddock-rumors .pd-author{font:600 9px var(--font-data,Arial,sans-serif);color:#c0c1c7;letter-spacing:.35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#paddock-rumors .pd-bottom{height:33px;display:flex;align-items:center;justify-content:center;gap:10px}
+#paddock-rumors .pd-arrow{font:400 23px/1 Arial,sans-serif;border:0;background:transparent;color:#d3d3da;cursor:pointer;width:26px;height:27px;border-radius:3px}
+#paddock-rumors .pd-arrow:disabled{opacity:.25;cursor:default}
+#paddock-rumors .pd-arrow:not(:disabled):hover{color:#fff;background:rgba(255,255,255,.09)}
+#paddock-rumors .pd-dots{display:flex;align-items:center;justify-content:center;gap:6px;min-height:20px}
+#paddock-rumors .pd-dot{width:5px;height:5px;padding:0;border:0;background:#555864;border-radius:5px;cursor:pointer;transition:width .2s ease,background .2s ease}
+#paddock-rumors .pd-dot[aria-current="true"]{width:18px;background:#e10600}
+#paddock-rumors .pd-more{display:block;margin:0 auto 8px;border:0;background:transparent;color:#efeff3;font:700 10px var(--font-data,Arial,sans-serif);letter-spacing:1.2px;cursor:pointer;padding:3px 14px}
+#paddock-rumors .pd-more span{color:#e10600;font-size:15px;margin-left:5px}
+#paddock-rumors .pd-more:hover{color:#fff;text-decoration:underline;text-decoration-color:#e10600;text-underline-offset:4px}
+#paddock-rumors button:focus-visible,#paddock-modal button:focus-visible,#pd-confirm button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#paddock-modal{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(4,6,10,.85);color:#f6f7f9;font-family:var(--font-body,Arial,sans-serif);letter-spacing:normal;cursor:default}
+#paddock-modal .pd-dialog{width:min(1150px,100%);height:min(790px,calc(100dvh - 32px));display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:6px;background:#101319;box-shadow:0 28px 90px rgba(0,0,0,.58)}
+#paddock-modal .pd-dialog-top{height:52px;min-height:52px;border-bottom:1px solid rgba(255,255,255,.1);padding:0 19px;display:flex;align-items:center;justify-content:space-between;font:800 12px var(--font-data,Arial,sans-serif);letter-spacing:2px}
+#paddock-modal .pd-actions{display:flex;align-items:center;gap:12px}
+#pd-close{border:0;background:transparent;color:#ddd;font:400 28px/1 Arial,sans-serif;width:30px;height:32px;cursor:pointer}
+#pd-history-toggle{display:none;border:1px solid rgba(255,255,255,.2);background:transparent;color:#eee;border-radius:3px;padding:9px 11px;font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:.5px;cursor:pointer}
+#paddock-modal .pd-dialog-grid{display:grid;grid-template-columns:minmax(230px,25%) minmax(0,1fr);flex:1;min-height:0}
+#paddock-modal .pd-sidebar{min-height:0;display:flex;flex-direction:column;background:#141821;border-right:1px solid rgba(255,255,255,.09)}
+#paddock-modal .pd-side-heading{padding:15px 12px 12px;display:flex;gap:8px;justify-content:space-between;color:#adb0bb;font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:.7px}
+#paddock-modal .pd-history-list{overflow-y:auto;overscroll-behavior:contain;padding:0 8px 12px;flex:1;scrollbar-width:thin;scrollbar-color:#595d6a #141821}
+#paddock-modal .pd-history-item{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:transparent;border:1px solid transparent;border-radius:3px;color:#e6e8ee;padding:8px;cursor:pointer}
+#paddock-modal .pd-history-item:hover{background:rgba(255,255,255,.06)}
+#paddock-modal .pd-history-item.is-active{border-color:rgba(225,6,0,.44);background:rgba(225,6,0,.09)}
+#paddock-modal .pd-history-thumb{width:76px;height:54px;flex-shrink:0;background:#252a34;overflow:hidden;border-radius:2px;display:flex;align-items:center;justify-content:center}
+#paddock-modal .pd-history-thumb img{width:100%;height:100%;object-fit:cover}
+#paddock-modal .pd-history-title{display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:750 13px/1.2 var(--font-data,Arial,sans-serif);overflow-wrap:anywhere}
+#paddock-modal .pd-history-meta{display:block;margin-top:5px;color:#9ea1ab;font:500 10px var(--font-data,Arial,sans-serif)}
+#paddock-modal .pd-history-info{display:block;min-width:0}
+#paddock-modal .pd-article{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#595d6a #101319;min-width:0}
+#paddock-modal .pd-hero{width:100%;max-height:480px;min-height:180px;background:#06080c;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#paddock-modal .pd-hero img{display:block;width:100%;max-height:460px;object-fit:contain}
+#paddock-modal .pd-hero img[hidden],#paddock-modal #pd-modal-fallback[hidden]{display:none}
+#paddock-modal #pd-modal-fallback{display:block;text-align:center;width:100%;padding:85px 15px;color:rgba(255,255,255,.12);font:900 clamp(27px,5vw,60px) var(--font-display,Arial,sans-serif);background:radial-gradient(ellipse,#333842,#0d0e13)}
+#paddock-modal .pd-article-copy{padding:28px clamp(18px,3vw,40px) 40px}
+#paddock-modal .pd-tag{color:#eb3838;font:750 11px var(--font-data,Arial,sans-serif);letter-spacing:1.7px}
+#paddock-modal #pd-modal-title{font:850 clamp(29px,3.3vw,52px)/1.1 var(--font-display,Arial,sans-serif);margin:12px 0;color:#fff;overflow-wrap:anywhere}
+#paddock-modal #pd-modal-author{font:650 12px var(--font-data,Arial,sans-serif);color:#9da0a9;margin-bottom:22px}
+#paddock-modal #pd-modal-text{font:450 clamp(14px,1.2vw,16px)/1.75 var(--font-body,Arial,sans-serif);white-space:pre-wrap;color:#e4e5e8;overflow-wrap:anywhere}
+#paddock-modal .pd-article-footer{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:35px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07)}
+#pd-delete{font:750 11px var(--font-data,Arial,sans-serif);padding:9px 13px;border:1px solid rgba(225,6,0,.5);border-radius:3px;color:#ffb3b1;background:rgba(225,6,0,.07);cursor:pointer}
+#pd-delete[hidden]{display:none!important}
+#pd-delete-status{font:500 12px var(--font-body,Arial,sans-serif);color:#a6adb8}
+#pd-confirm{position:fixed;inset:0;z-index:10060;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:18px;color:#fff;font-family:var(--font-body,Arial,sans-serif)}
+#pd-confirm .pd-confirm-box{width:min(415px,100%);padding:26px;border-radius:5px;background:#171b23;border:1px solid rgba(255,255,255,.15);box-shadow:0 20px 45px #0009}
+#pd-confirm h3{font:850 24px var(--font-display,Arial,sans-serif);margin:0 0 10px}
+#pd-confirm p{font:450 14px/1.5 var(--font-body,Arial,sans-serif);color:#c3c6cb;margin:0 0 20px}
+#pd-confirm .pd-confirm-actions{display:flex;justify-content:flex-end;gap:8px}
+#pd-confirm button{border:1px solid rgba(255,255,255,.18);padding:10px 18px;border-radius:3px;color:#fff;background:#282e38;font:750 12px var(--font-data,Arial,sans-serif);cursor:pointer}
+#pd-confirm #pd-confirm-delete{background:#bb120e;border-color:#d52a24}
+@media(max-width:820px){
+ #splash-screen .splash-detail-panel{flex:0 0 auto!important;min-height:max-content!important;height:auto!important;overflow:visible!important}
+ #splash-screen #paddock-rumors{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;width:min(480px,calc(100vw - 26px))!important;max-width:none!important;flex:0 0 auto;align-self:center;margin:8px auto 12px!important;z-index:35!important;order:2!important}
+ #paddock-rumors .pd-stage{grid-template-columns:minmax(0,1fr)!important;height:clamp(170px,38svh,240px);padding:7px 8px 3px}
+ #paddock-rumors .pd-card--side{display:none!important}
+ #paddock-rumors .pd-card-copy strong{font-size:20px}
+ #paddock-rumors .pd-excerpt{font-size:12px}
+ #paddock-modal{padding:0}
+ #paddock-modal .pd-dialog{width:100%;height:100dvh;max-height:100dvh;border-radius:0;border:0}
+ #paddock-modal .pd-dialog-grid{position:relative;display:block;overflow:hidden}
+ #paddock-modal .pd-article{height:100%}
+ #paddock-modal .pd-sidebar{position:absolute;z-index:4;inset:0 8% 0 0;box-shadow:12px 0 35px #0009;transform:translateX(-110%);transition:transform .25s ease;border-right:1px solid #4f5560}
+ #paddock-modal .pd-dialog-grid.pd-show-list .pd-sidebar{transform:translateX(0)}
+ #pd-history-toggle{display:block}
+ #paddock-modal .pd-hero{min-height:150px}
+ #paddock-modal .pd-hero img{max-height:40dvh}
+}
+@media(max-width:520px){
+ #paddock-rumors .pd-top{height:29px}
+ #paddock-rumors .pd-stage{height:clamp(162px,29svh,213px)}
+ #paddock-modal .pd-dialog-top{height:49px;min-height:49px;padding:0 12px}
+ #paddock-modal .pd-dialog-top>span{font-size:10px;letter-spacing:1px}
+ #pd-history-toggle{font-size:10px;padding:7px 9px}
+ #paddock-modal .pd-history-thumb{width:70px}
+}
+@media(prefers-reduced-motion:reduce){#paddock-rumors *,#paddock-modal *,#pd-confirm *{transition:none!important;animation:none!important}}
+
+#paddock-rumors .pd-card[hidden]{display:none!important}
+
+/* === WLF1 PLOTKI: pełne zdjęcia + subtelne kafelki i animacje === */
+#splash-screen #paddock-rumors { filter:none!important; width:min(790px,calc(54vw - 8px))!important; }
+#paddock-rumors .pd-shell{
+  background:linear-gradient(180deg,rgba(8,12,19,.84),rgba(7,10,16,.82))!important;
+  backdrop-filter:blur(5px)!important;-webkit-backdrop-filter:blur(5px)!important;
+  border:1px solid rgba(255,255,255,.08)!important;border-radius:10px!important;overflow:hidden!important;
+  box-shadow:0 16px 36px rgba(0,0,0,.24)!important;
+}
+#paddock-rumors .pd-top{
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0))!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;padding:0 12px!important;
+  color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.65);
+}
+#paddock-rumors #pd-count{color:#dbdde5;text-shadow:0 2px 9px #000}
+#paddock-rumors .pd-stage{
+  grid-template-columns:minmax(0,1fr) minmax(0,1.75fr) minmax(0,1fr);
+  gap:clamp(8px,1.2vw,16px);height:clamp(205px,17vw,260px);
+  padding:10px 12px 6px!important;overflow:hidden!important;
+}
+#paddock-rumors .pd-stage.pd-stage--solo{grid-template-columns:minmax(0,1fr)}
+#paddock-rumors .pd-stage.pd-stage--duo{grid-template-columns:repeat(2,minmax(0,1fr))}
+#paddock-rumors .pd-card{
+  width:100%;height:100%;min-width:0;min-height:0;
+  border:1px solid rgba(255,255,255,.10)!important;border-radius:10px!important;
+  box-shadow:0 12px 26px rgba(0,0,0,.20)!important;
+  background:rgba(255,255,255,.02)!important;overflow:hidden!important;
+  display:flex;align-items:center;justify-content:center;
+  text-align:left;opacity:1;outline-offset:3px;position:relative;
+  transform-origin:center center;
+  transition:transform .48s cubic-bezier(.18,.76,.24,1),opacity .35s ease,border-color .25s ease,box-shadow .25s ease!important;
+}
+#paddock-rumors .pd-card--side{height:82%;opacity:.92}
+#paddock-rumors .pd-card--main{height:100%;z-index:2}
+#paddock-rumors .pd-card--side:hover,#paddock-rumors .pd-card--main:hover{
+  opacity:1;transform:translateY(-4px) scale(1.03);border-color:rgba(255,255,255,.18)!important;
+  box-shadow:0 18px 36px rgba(0,0,0,.28)!important;
+}
+#paddock-rumors .pd-card:active{transform:scale(.985)}
+#paddock-rumors .pd-cover{
+  position:absolute!important;inset:0!important;
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  overflow:hidden!important;background:radial-gradient(circle at center,rgba(17,20,28,.08) 0%,rgba(6,8,11,.42) 100%)!important;
+}
+#paddock-rumors .pd-cover::after{
+  display:block!important;content:""!important;position:absolute;left:0;right:0;bottom:0;height:58%;
+  background:linear-gradient(180deg,rgba(7,10,14,0) 0%,rgba(7,10,14,.12) 20%,rgba(7,10,14,.68) 72%,rgba(7,10,14,.90) 100%);
+  pointer-events:none;
+}
+#paddock-rumors .pd-cover img{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center!important;
+  filter:none!important;opacity:1;background:transparent!important;
+  border:0!important;border-radius:0!important;
+  box-shadow:none!important;transition:transform .45s ease,opacity .35s ease;
+}
+#paddock-rumors .pd-cover img.pd-photo-pending{opacity:0!important}
+#paddock-rumors .pd-card:hover .pd-cover img{transform:scale(1.02)}
+#paddock-rumors .pd-card-copy{
+  display:flex!important;position:absolute!important;left:8px!important;right:8px!important;bottom:8px!important;
+  padding:8px 10px 9px!important;gap:3px!important;z-index:2;
+  background:rgba(8,12,18,.42)!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:8px!important;
+  backdrop-filter:blur(7px)!important;-webkit-backdrop-filter:blur(7px)!important;
+  box-shadow:0 10px 20px rgba(0,0,0,.18)!important;
+}
+#paddock-rumors .pd-card-copy strong{font-size:clamp(13px,1.12vw,18px)!important;line-height:1.06!important}
+#paddock-rumors .pd-card--side .pd-card-copy strong{font-size:clamp(11px,.92vw,14px)!important}
+#paddock-rumors .pd-excerpt{display:-webkit-box!important;-webkit-line-clamp:2!important;line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important;font-size:clamp(10px,.82vw,11px)!important;color:#e8e9ee!important}
+#paddock-rumors .pd-card--side .pd-excerpt{-webkit-line-clamp:1!important;line-clamp:1!important}
+#paddock-rumors .pd-author{font-size:9px!important;color:#d2d4de!important}
+#paddock-rumors .pd-cover.pd-no-image::before{
+  content:attr(data-title)!important;font:750 clamp(12px,1.2vw,18px)/1.2 var(--font-data,Arial,sans-serif);
+  max-width:100%;padding:14px;color:#fff;border-left:2px solid var(--f1-red,#e10600);
+  background:rgba(0,0,0,.48);text-shadow:0 1px 7px #000;overflow-wrap:anywhere;
+}
+#paddock-rumors .pd-bottom{gap:13px}
+#paddock-rumors .pd-arrow{
+  border:0!important;background:transparent!important;
+  color:#f0f1f4;width:30px;height:30px;
+  text-shadow:0 1px 9px #000;transition:transform .24s ease,color .24s ease,opacity .24s ease;
+}
+#paddock-rumors .pd-arrow:not(:disabled):hover{color:#fff;transform:scale(1.18)}
+#paddock-rumors #pd-prev:not(:disabled):hover{transform:translateX(-4px) scale(1.08)}
+#paddock-rumors #pd-next:not(:disabled):hover{transform:translateX(4px) scale(1.08)}
+#paddock-rumors .pd-dot{transition:width .35s cubic-bezier(.2,.8,.2,1),transform .2s ease,background .2s ease;box-shadow:0 1px 5px #0006}
+#paddock-rumors .pd-dot:hover{background:#fff;transform:scale(1.4)}
+#paddock-rumors .pd-dot[aria-current="true"]{box-shadow:0 0 0 3px rgba(225,6,0,.12)}
+#paddock-rumors .pd-more{
+  color:#fff;text-shadow:0 2px 9px #000;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),letter-spacing .25s ease,opacity .25s ease;
+}
+#paddock-rumors .pd-more:hover{transform:translateY(-2px);letter-spacing:1.8px;text-decoration:none!important}
+#paddock-rumors .pd-more span{display:inline-block;transition:transform .26s ease}
+#paddock-rumors .pd-more:hover span{transform:translateX(4px)}
+#paddock-modal .pd-discord-emoji,#paddock-rumors .pd-discord-emoji{width:1.2em;height:1.2em;object-fit:contain;display:inline-block;vertical-align:-0.22em}
+/* Naturalne proporcje dla zdjęć w archiwum i w artykule. */
+#paddock-modal .pd-history-thumb{background:transparent}
+#paddock-modal .pd-history-thumb img{object-fit:contain!important}
+#paddock-modal .pd-hero img{object-fit:contain!important;width:auto!important;height:auto!important;max-width:100%!important;max-height:min(55dvh,480px)!important}
+#paddock-modal .pd-hero{max-height:min(57dvh,500px);min-height:130px}
+/* Ruch: wszystkie przejścia karuzeli, otwieranie, archiwum i przyciski. */
+@keyframes pdPhotoArrival{
+  from{opacity:0;transform:translate3d(var(--pd-fly,0px),12px,0) scale(.92)}
+  to{opacity:var(--pd-target-opacity,1);transform:translate3d(0,0,0) scale(1)}
+}
+#paddock-rumors .pd-card.pd-enter{animation:pdPhotoArrival .65s cubic-bezier(.16,1,.3,1) both}
+#paddock-rumors .pd-card.pd-card--side{--pd-target-opacity:.91}
+@keyframes pdModalBackdrop{from{opacity:0}to{opacity:1}}
+@keyframes pdModalArrive{from{opacity:0;transform:translateY(20px) scale(.973)}to{opacity:1;transform:translateY(0) scale(1)}}
+#paddock-modal:not([hidden]){animation:pdModalBackdrop .32s ease-out both}
+#paddock-modal:not([hidden]) .pd-dialog{animation:pdModalArrive .52s cubic-bezier(.18,.8,.18,1) both}
+#paddock-modal.pd-leaving{animation:pdModalBackdrop .2s ease-in reverse both}
+#paddock-modal.pd-leaving .pd-dialog{animation:pdModalArrive .2s ease-in reverse both}
+@keyframes pdArticleSwap{from{opacity:.22;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+#paddock-modal .pd-article.pd-reader-enter .pd-hero{animation:pdArticleSwap .42s cubic-bezier(.19,1,.25,1) both}
+#paddock-modal .pd-article.pd-reader-enter .pd-article-copy{animation:pdArticleSwap .45s .07s cubic-bezier(.19,1,.25,1) both}
+#paddock-modal .pd-history-item{
+  transition:background .24s ease,transform .27s cubic-bezier(.18,.83,.3,1),border-color .24s ease,box-shadow .24s ease;
+}
+#paddock-modal .pd-history-item:hover{transform:translateX(4px)}
+#paddock-modal .pd-history-item:active{transform:translateX(2px) scale(.985)}
+#paddock-modal .pd-history-item.is-active{box-shadow:inset 3px 0 0 var(--f1-red,#e10600)}
+#paddock-modal .pd-sidebar{transition:transform .38s cubic-bezier(.16,1,.3,1)}
+#paddock-modal #pd-close,#paddock-modal #pd-history-toggle,#paddock-modal #pd-delete,#pd-confirm button{
+  transition:transform .24s ease,background .24s ease,color .24s ease,border-color .24s ease;
+}
+#paddock-modal #pd-close:hover{color:#fff;transform:rotate(90deg) scale(1.12)}
+#paddock-modal #pd-history-toggle:hover,#paddock-modal #pd-delete:hover,#pd-confirm button:hover{transform:translateY(-2px);background:rgba(255,255,255,.10)}
+#paddock-modal #pd-delete:hover{background:rgba(225,6,0,.17)}
+#pd-confirm:not([hidden]){animation:pdModalBackdrop .2s ease-out both}
+#pd-confirm:not([hidden]) .pd-confirm-box{animation:pdModalArrive .35s cubic-bezier(.18,.8,.18,1) both}
+@media(max-width:820px){
+  #paddock-rumors .pd-stage{grid-template-columns:minmax(0,1fr)!important;height:clamp(185px,33svh,245px)!important}
+  #paddock-rumors .pd-card--side{display:none!important}
+  #paddock-rumors .pd-card--main{height:100%}
+}
+@media(max-width:520px){
+  #paddock-rumors .pd-stage{height:clamp(178px,30svh,225px)!important}
+  #paddock-rumors .pd-top{padding:0 3px!important}
+  #paddock-rumors .pd-more{margin-bottom:3px}
+}
+@media(prefers-reduced-motion:reduce){
+  #paddock-rumors .pd-card.pd-enter,#paddock-modal:not([hidden]),#paddock-modal:not([hidden]) .pd-dialog,
+  #paddock-modal.pd-leaving,#paddock-modal.pd-leaving .pd-dialog,
+  #paddock-modal .pd-article.pd-reader-enter .pd-hero,#paddock-modal .pd-article.pd-reader-enter .pd-article-copy,
+  #pd-confirm:not([hidden]),#pd-confirm:not([hidden]) .pd-confirm-box{animation:none!important}
+}
+
+
+
+/* WLF1: delikatne, fotograficzne tlo i lżejszy kontener — wyłącznie Ostatnie Wiadomości */
+#splash-screen #paddock-rumors { filter:none!important; }
+#paddock-rumors .pd-shell {
+    background:rgba(7,10,15,.22)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    border:1px solid rgba(255,255,255,.045)!important;
+    border-radius:6px!important;
+    box-shadow:0 5px 22px rgba(0,0,0,.10)!important;
+}
+#paddock-rumors .pd-top {
+    background:transparent!important;
+    border-bottom:none!important;
+    color:rgba(255,255,255,.86)!important;
+    text-shadow:0 1px 7px rgba(0,0,0,.65);
+}
+#paddock-rumors .pd-card {
+    border:1px solid rgba(255,255,255,.055)!important;
+    border-radius:4px!important;
+    box-shadow:none!important;
+    background:rgba(10,12,17,.18)!important;
+}
+#paddock-rumors .pd-card:hover {
+    border-color:rgba(255,255,255,.16)!important;
+    box-shadow:0 4px 18px rgba(0,0,0,.12)!important;
+}
+#paddock-rumors .pd-cover {
+    border-radius:3px!important;
+    background:rgba(8,10,13,.30)!important;
+    overflow:hidden!important;
+    isolation:isolate;
+}
+/* Kopia obrazu na całej szerokości, tylko w tle i zawsze rozmyta. */
+#paddock-rumors .pd-cover img.pd-bg-blur {
+    position:absolute!important;
+    inset:-20px!important;
+    width:calc(100% + 40px)!important;
+    height:calc(100% + 40px)!important;
+    max-width:none!important;
+    max-height:none!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    filter:blur(19px) brightness(.78) saturate(.88)!important;
+    transform:scale(1.04)!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+    z-index:0!important;
+    transition:opacity .3s ease!important;
+}
+#paddock-rumors .pd-cover img.pd-bg-blur.pd-bg-ready {opacity:.75!important;}
+/* Prawdziwe zdjęcie pozostaje ostre w całości, bez cropowania. */
+#paddock-rumors .pd-cover > img:not(.pd-bg-blur) {
+    position:relative!important;
+    z-index:1!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    border-radius:0!important;
+}
+#paddock-rumors .pd-cover::after {
+    display:none!important;
+    content:none!important;
+}
+/* Redakcyjna typografia bez szklanej ramki i dodatkowej poświaty. */
+#paddock-rumors .pd-card-copy {
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    padding:26px 12px 10px!important;
+    background:linear-gradient(to top,rgba(6,9,15,.85),rgba(6,9,15,.40) 50%,transparent 100%)!important;
+    border:none!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+}
+#paddock-rumors .pd-card-copy strong {
+    font-weight:750!important;
+    text-shadow:0 1px 5px rgba(0,0,0,.35);
+}
+#paddock-rumors .pd-bottom, #paddock-rumors .pd-more {
+    background:transparent!important;
+}
+@media(max-width:820px) {
+    #paddock-rumors .pd-card-copy{padding:28px 12px 10px!important;}
+}
+
+
+/* WLF1 - niewidoczne przejście między fotografią a rozmytym tłem */
+#paddock-rumors .pd-shell {
+  background: rgba(7, 10, 15, .13) !important;
+  border-color: rgba(255, 255, 255, .025) !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,.10) !important;
+  backdrop-filter: blur(7px) saturate(108%) !important;
+  -webkit-backdrop-filter: blur(7px) saturate(108%) !important;
+}
+#paddock-rumors .pd-cover {
+  background: rgba(10, 13, 19, .12) !important;
+}
+/* Rozmyte tło powstaje z tego samego zdjęcia - jaśniejsze i mniej wyprane. */
+#paddock-rumors .pd-cover img.pd-bg-blur {
+  filter: blur(25px) brightness(.91) saturate(1.04) !important;
+  transform: scale(1.11) !important;
+  transition: opacity .45s ease !important;
+}
+#paddock-rumors .pd-cover img.pd-bg-blur.pd-bg-ready {
+  opacity: .90 !important;
+}
+/* Widoczny rozmiar zdjęcia = realne proporcje; miękki fade działa na krawędziach zdjęcia,
+   a nie na całej, szerokiej ramce. Obraz nie jest przycinany. */
+#paddock-rumors .pd-cover > img:not(.pd-bg-blur) {
+  position: absolute !important;
+  inset: auto !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  transform: translate(-50%, -50%) !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%),
+                      linear-gradient(to bottom, transparent 0%, black 9%, black 91%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%),
+              linear-gradient(to bottom, transparent 0%, black 9%, black 91%, transparent 100%);
+  mask-composite: intersect;
+  transition: opacity .35s ease, transform .45s ease !important;
+}
+#paddock-rumors .pd-card:hover .pd-cover > img:not(.pd-bg-blur) {
+  transform: translate(-50%, -50%) scale(1.012) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #paddock-rumors .pd-cover > img:not(.pd-bg-blur) {
+    transition: none !important;
+  }
+}
+
+</style>
 </head>
 <body class="splash-locked" style="background:#eef0f4">
 <div id="pre-loader" style="
@@ -4729,6 +5131,42 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
         </div>
     </div>
     <div id="splash-social-icons"></div>
+<!-- WLF1 PADDOCK — odrębny, dostępny komponent, nie przechwytuje kliknięć splasha -->
+<section id="paddock-rumors" hidden aria-label="Ostatnie wiadomości" onclick="event.stopPropagation()">
+  <div class="pd-shell">
+    <div class="pd-top"><span>OSTATNIE WIADOMOŚCI</span><span id="pd-count" aria-live="polite"></span></div>
+    <div class="pd-stage pd-stage--solo" id="pd-stage">
+      <button type="button" class="pd-card pd-card--side" id="pd-left" aria-label="Otwórz poprzednią plotkę"><span class="pd-cover" id="pd-cover-left"><img id="pd-image-left" alt="" loading="lazy"></span><span class="pd-card-copy"><strong id="pd-title-left"></strong><span id="pd-excerpt-left" class="pd-excerpt"></span></span></button>
+      <button type="button" class="pd-card pd-card--main" id="pd-slide" aria-label="Otwórz pełną plotkę"><span class="pd-cover" id="pd-cover"><img id="pd-image" alt="Zdjęcie plotki" loading="eager"></span><span class="pd-card-copy"><strong id="pd-title"></strong><span id="pd-excerpt" class="pd-excerpt"></span><span id="pd-author" class="pd-author"></span></span></button>
+      <button type="button" class="pd-card pd-card--side" id="pd-right" aria-label="Otwórz następną plotkę"><span class="pd-cover" id="pd-cover-right"><img id="pd-image-right" alt="" loading="lazy"></span><span class="pd-card-copy"><strong id="pd-title-right"></strong><span id="pd-excerpt-right" class="pd-excerpt"></span></span></button>
+    </div>
+    <div class="pd-bottom"><button type="button" id="pd-prev" class="pd-arrow" aria-label="Poprzednia plotka">&#8249;</button><div id="pd-dots" class="pd-dots" role="group" aria-label="Wybierz plotkę"></div><button type="button" id="pd-next" class="pd-arrow" aria-label="Następna plotka">&#8250;</button></div>
+    <button type="button" id="pd-open" class="pd-more">CZYTAJ WIĘCEJ <span aria-hidden="true">+</span></button>
+  </div>
+</section>
+</div>
+<div id="paddock-modal" hidden role="dialog" aria-modal="true" aria-labelledby="pd-modal-title" onclick="event.stopPropagation()">
+  <div class="pd-dialog">
+    <div class="pd-dialog-top"><span>OSTATNIE WIADOMOŚCI</span><div class="pd-actions"><button type="button" id="pd-history-toggle" aria-controls="pd-sidebar" aria-expanded="false">WSZYSTKIE WIADOMOŚCI</button><button type="button" id="pd-close" aria-label="Zamknij okno">×</button></div></div>
+    <div class="pd-dialog-grid">
+      <aside class="pd-sidebar" id="pd-sidebar" aria-label="Lista wszystkich plotek">
+        <div class="pd-side-heading"><span>WSZYSTKIE WIADOMOŚCI</span><span id="pd-total"></span></div>
+        <div id="pd-history-list" class="pd-history-list"></div>
+      </aside>
+      <article class="pd-article" id="pd-article" tabindex="-1">
+        <div id="pd-hero" class="pd-hero"><img id="pd-modal-image" alt="Zdjęcie do plotki" loading="lazy"><div id="pd-modal-fallback">WEEKENDOWA LIGA F1</div></div>
+        <div class="pd-article-copy">
+          <div class="pd-tag">WEEKENDOWA LIGA F1 / OSTATNIE WIADOMOŚCI</div>
+          <h2 id="pd-modal-title"></h2><div id="pd-modal-author"></div>
+          <div id="pd-modal-text"></div>
+          <div class="pd-article-footer"><button type="button" id="pd-delete" hidden>USUŃ PLOTKĘ</button><span id="pd-delete-status" role="status" aria-live="polite"></span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+<div id="pd-confirm" hidden role="alertdialog" aria-modal="true" aria-labelledby="pd-confirm-title">
+  <div class="pd-confirm-box"><h3 id="pd-confirm-title">Usunąć tę plotkę?</h3><p>Bot spróbuje usunąć ją również na Discordzie. Tej operacji nie można cofnąć.</p><div class="pd-confirm-actions"><button type="button" id="pd-cancel-delete">ANULUJ</button><button type="button" id="pd-confirm-delete">USUŃ</button></div></div>
 </div>
 
 <div id="main-app" style="display:none;">
@@ -5456,7 +5894,7 @@ function showSplash() { _splashDoTransition('splash'); }
 })();
 setTimeout(function() {
     var splash = document.getElementById('splash-screen');
-    if (splash && splash.style.display !== 'none') {
+    if (splash && splash.style.display !== 'none' && !window.paddockRumors?.hasEntries?.() && !window.paddockRumors?.isModalOpen?.()) {
         hideSplash();
     }
 }, 30000);
@@ -5464,7 +5902,7 @@ setTimeout(function() {
 
 <script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, remove, update, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 try {
 
@@ -5478,6 +5916,343 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
+// WLF1 PADDOCK v3 — Firebase jest źródłem prawdy, 6 na splashu i pełne archiwum w czytniku.
+(function initPaddockNews() {
+  const el = id => document.getElementById(id);
+  const shell = el('paddock-rumors'), modal = el('paddock-modal');
+  if (!shell || !modal) return;
+  const state = { all:[], visible:[], position:0, currentId:null, open:false,
+    timer:0, images:new Map(), photoEpoch:0, modalEpoch:0, admin:false, uid:null,
+    adminOff:null, requestOff:null, lastError:null, touchX:null, restoreOverflow:'', historyStamp:'', sidebarLimit:0, closeTimer:0, slideDirection:1 };
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const slots = [
+    {card:el('pd-left'),cover:el('pd-cover-left'),img:el('pd-image-left'),title:el('pd-title-left'),excerpt:el('pd-excerpt-left')},
+    {card:el('pd-slide'),cover:el('pd-cover'),img:el('pd-image'),title:el('pd-title'),excerpt:el('pd-excerpt')},
+    {card:el('pd-right'),cover:el('pd-cover-right'),img:el('pd-image-right'),title:el('pd-title-right'),excerpt:el('pd-excerpt-right')}
+  ];
+  window.paddockRumors = { hasEntries:()=>!!state.all.length,isModalOpen:()=>state.open,
+    debug:()=>({all:state.all.length,carousel:state.visible.length,error:state.lastError}) };
+  function dateText(value) {
+    const t=Number(value);return t>0&&Number.isFinite(t)?new Date(t).toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'}):'';
+  }
+  function readImage(post) {
+    if (!post || !post.hasImage) return Promise.resolve(null);
+    if (state.images.has(post.id)) return state.images.get(post.id);
+    const request = get(ref(db,'paddockRumorsImages/'+post.id)).then(s => {
+      const data=s.val();
+      if (typeof data==='string' && /^data:image\/(?:jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(data)) return data;
+      // Historyczne embedy mogą odwoływać się do istniejącego obrazu HTTPS.
+      if (typeof post.imageUrl==='string' && /^https:\/\/[^\s"'<>]+$/i.test(post.imageUrl)) return post.imageUrl;
+      return null;
+    }).catch(()=>typeof post.imageUrl==='string' && /^https:\/\//.test(post.imageUrl)?post.imageUrl:null);
+    state.images.set(post.id,request);return request;
+  }
+  function plainifyDiscordText(raw){
+    return String(raw||'')
+      .replace(/<a?:([A-Za-z0-9_~]+):\d+>/g, ':$1:')
+      .replace(/<@!?\d+>/g,'@użytkownik')
+      .replace(/<@&\d+>/g,'@rola')
+      .replace(/<#\d+>/g,'#kanał')
+      .replace(/\r/g,'')
+      .replace(/[\t ]+\n/g,'\n')
+      .trim();
+  }
+  function excerptText(raw,max=150){
+    const text=plainifyDiscordText(raw).replace(/\n+/g,' ').replace(/\s{2,}/g,' ').trim();
+    return text.length>max?text.slice(0,max-3).trimEnd()+'...':text;
+  }
+  function createDiscordEmojiNode(name,id,animated){
+    const img=document.createElement('img');
+    img.className='pd-discord-emoji';
+    img.alt=':'+name+':';
+    img.title=':'+name+':';
+    img.loading='lazy';
+    img.decoding='async';
+    img.src='https://cdn.discordapp.com/emojis/'+id+'.'+(animated?'gif':'png')+'?size=64&quality=lossless';
+    return img;
+  }
+  function ensureBlurBackground(slot){
+    if(slot.blur) return slot.blur;
+    const bg=document.createElement('img');
+    bg.className='pd-bg-blur';
+    bg.alt='';
+    bg.setAttribute('aria-hidden','true');
+    bg.decoding='async';
+    slot.cover.insertBefore(bg,slot.img);
+    slot.blur=bg;
+    return bg;
+  }
+  function fillCard(slot,post,epoch) {
+    const bg=ensureBlurBackground(slot);
+    bg.onload=null;
+    bg.onerror=null;
+    bg.classList.remove('pd-bg-ready');
+    bg.removeAttribute('src');
+    slot.card.hidden=!post;
+    if (!post) return;
+    slot.card.dataset.id=post.id;
+    const cardTitle=plainifyDiscordText(post.title)||'Wiadomość';
+    slot.card.title=cardTitle; // po najechaniu użytkownik pozna tytuł zdjęcia
+    slot.card.setAttribute('aria-label','Otwórz wiadomość: '+cardTitle);
+    slot.title.textContent=cardTitle;
+    slot.excerpt.textContent=excerptText(post.body||'', slot.card.classList.contains('pd-card--side') ? 72 : 150);
+    slot.img.alt=cardTitle;
+    slot.cover.dataset.title=cardTitle;
+    slot.cover.classList.toggle('pd-no-image',!post.hasImage);
+    slot.img.onload=null;
+    slot.img.classList.add('pd-photo-pending');
+    slot.img.removeAttribute('src');
+    if (!post.hasImage) return;
+    void readImage(post).then(src=>{
+      if (epoch!==state.photoEpoch || slot.card.dataset.id!==post.id || !slot.img.isConnected) return;
+      if (src) {
+        slot.img.onload=()=>slot.img.classList.remove('pd-photo-pending');
+        slot.img.onerror=()=>{slot.cover.classList.add('pd-no-image');slot.img.classList.add('pd-photo-pending');};
+        slot.img.src=src;
+        bg.onload=()=>{if(epoch===state.photoEpoch && slot.card.dataset.id===post.id)bg.classList.add('pd-bg-ready');};
+        bg.onerror=()=>bg.classList.remove('pd-bg-ready');
+        bg.src=src;
+        if(bg.complete && bg.naturalWidth)bg.classList.add('pd-bg-ready');
+        if(slot.img.complete && slot.img.naturalWidth)slot.img.classList.remove('pd-photo-pending');
+        slot.cover.classList.remove('pd-no-image');
+      } else slot.cover.classList.add('pd-no-image');
+    });
+  }
+  function stopAuto(){clearTimeout(state.timer);state.timer=0;}
+  function auto(){
+    stopAuto();
+    if(state.visible.length<2||state.open||document.hidden||reduced.matches||shell.matches(':hover'))return;
+    state.timer=window.setTimeout(()=>advance(1),5000);
+  }
+  function renderDots(){
+    const area=el('pd-dots');area.replaceChildren();
+    state.visible.forEach((p,i)=>{
+      const btn=document.createElement('button');btn.type='button';btn.className='pd-dot';
+      btn.setAttribute('aria-label','Pokaż plotkę '+(i+1));btn.setAttribute('aria-current',String(i===state.position));
+      btn.addEventListener('click',()=>{state.slideDirection=i>=state.position?1:-1;state.position=i;renderCarousel();});area.appendChild(btn);
+    });
+  }
+  function renderCarousel(){
+    const posts=state.visible,len=posts.length;
+    shell.hidden=len===0;
+    if(!len){stopAuto();return;}
+    state.position=(state.position+len)%len;
+    const center=posts[state.position];
+    const left=len>=3?posts[(state.position-1+len)%len]:null;
+    const right=len>=2?posts[(state.position+1)%len]:null;
+    const epoch=++state.photoEpoch;
+    fillCard(slots[0],left,epoch);fillCard(slots[1],center,epoch);fillCard(slots[2],right,epoch);
+    const stage=el('pd-stage');stage.classList.toggle('pd-stage--solo',len===1);stage.classList.toggle('pd-stage--duo',len===2);
+    el('pd-author').textContent=[center.author,dateText(center.createdAt||center.publishedAt)].filter(Boolean).join(' · ');
+    el('pd-count').textContent=String(state.position+1).padStart(2,'0')+' / '+String(len).padStart(2,'0');
+    el('pd-prev').disabled=el('pd-next').disabled=len<2;
+    renderDots();
+    // Każda zmiana slajdu ponawia subtelną animację, bez zasłaniania fotografii.
+    slots.forEach((slot,i)=>{
+      slot.card.classList.remove('pd-enter');
+      slot.card.style.setProperty('--pd-fly',(state.slideDirection||1)*(i===1?18:24)+'px');
+    });
+    if(!reduced.matches){
+      void stage.offsetWidth;
+      slots.forEach(slot=>{if(!slot.card.hidden)slot.card.classList.add('pd-enter');});
+    }
+    auto();
+  }
+  function advance(d){if(!state.visible.length)return;state.slideDirection=d;state.position=(state.position+d+state.visible.length)%state.visible.length;renderCarousel();}
+  function showPost(id){
+    if(!state.all.some(p=>p.id===id))return;
+    state.currentId=id;
+    const opened=state.open;
+    if(!opened){
+      if(state.closeTimer){clearTimeout(state.closeTimer);state.closeTimer=null;}
+      modal.classList.remove('pd-leaving');
+      state.open=true;state.restoreOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
+      modal.hidden=false;stopAuto();
+    }
+    drawReader();
+    if(!opened)el('pd-close').focus({preventScroll:true});
+  }
+  function selected(){return state.all.find(p=>p.id===state.currentId)||null;}
+  function renderSidebar(){
+    const list=el('pd-history-list');
+    const signature=state.all.map(p=>p.id+'@'+(p.updatedAt||0)).join('|');
+    if(signature!==state.historyStamp){
+      state.historyStamp=signature;
+      state.sidebarLimit=0;
+      list.replaceChildren();
+      list.scrollTop=0;
+    }
+    el('pd-total').textContent=String(state.all.length);
+    const active=state.currentId;
+    list.querySelectorAll('.pd-history-item.is-active').forEach(item=>{
+      item.classList.remove('is-active');item.setAttribute('aria-current','false');
+    });
+    const current=list.querySelector('.pd-history-item[data-active="'+active+'"]');
+    if(current){current.classList.add('is-active');current.setAttribute('aria-current','true');}
+    if(state.sidebarLimit===0)appendSidebarBatch();
+  }
+  function appendSidebarBatch(){
+    const list=el('pd-history-list');
+    const end=Math.min(state.sidebarLimit+50,state.all.length);
+    const frag=document.createDocumentFragment();
+    for(let i=state.sidebarLimit;i<end;i++){
+      const post=state.all[i];
+      const item=document.createElement('button');item.type='button';
+      item.className='pd-history-item'+(post.id===state.currentId?' is-active':'');
+      item.dataset.active=post.id;
+      item.setAttribute('aria-current',String(post.id===state.currentId));
+      const thumb=document.createElement('span');thumb.className='pd-history-thumb';
+      if(post.hasImage){const img=document.createElement('img');img.alt='';img.loading='lazy';thumb.appendChild(img);
+        void readImage(post).then(src=>{if(src&&img.isConnected)img.src=src;});}
+      const info=document.createElement('span');info.className='pd-history-info';
+      const title=document.createElement('span');title.className='pd-history-title';title.textContent=plainifyDiscordText(post.title)||'Wiadomość';
+      const meta=document.createElement('span');meta.className='pd-history-meta';meta.textContent=dateText(post.createdAt||post.publishedAt);
+      info.append(title,meta);item.append(thumb,info);
+      item.addEventListener('click',()=>{state.currentId=post.id;drawReader();hideSideOnMobile();});frag.appendChild(item);
+    }
+    list.appendChild(frag);state.sidebarLimit=end;
+  }
+  el('pd-history-list').addEventListener('scroll',()=>{
+    const list=el('pd-history-list');
+    if(list.scrollTop+list.clientHeight>=list.scrollHeight-230 && state.sidebarLimit<state.all.length)appendSidebarBatch();
+  },{passive:true});
+  function renderDiscordFormatting(target,raw){
+    target.replaceChildren();
+    // Discord Markdown + niestandardowe emotki: tylko bezpiecznie renderowane elementy.
+    const text=String(raw||'Brak dodatkowej treści.').replace(/\r/g,'');
+    const parts=text.split(/(<a?:[A-Za-z0-9_~]+:\d+>|\*\*[^*\n]+\*\*|\*[^*\n]+\*|`[^`\n]+`|https:\/\/[^\s<>"']+|\n)/g);
+    for(const part of parts){
+      if(!part)continue;
+      let node=null;
+      const emoji=part.match(/^<(a?):([A-Za-z0-9_~]+):(\d+)>$/);
+      if(emoji){
+        node=createDiscordEmojiNode(emoji[2],emoji[3],emoji[1]==='a');
+      } else if(part==='\n') {
+        node=document.createElement('br');
+      } else if(/^\*\*[^*\n]+\*\*$/.test(part)){
+        node=document.createElement('strong');node.textContent=part.slice(2,-2);
+      } else if(/^\*[^*\n]+\*$/.test(part)){
+        node=document.createElement('em');node.textContent=part.slice(1,-1);
+      } else if(/^`[^`\n]+`$/.test(part)){
+        node=document.createElement('code');node.textContent=part.slice(1,-1);
+      } else if(/^https:\/\//.test(part)){
+        try{const url=new URL(part);if(url.protocol==='https:'){
+          node=document.createElement('a');node.href=url.href;node.rel='noopener noreferrer nofollow';node.target='_blank';node.textContent=part;
+        }}catch(_){}
+      }
+      target.append(node||document.createTextNode(part));
+    }
+  }
+  function drawReader(){
+    if(!state.open)return;
+    const post=selected();
+    if(!post){closeReader();return;}
+    const epoch=++state.modalEpoch;
+    el('pd-modal-title').textContent=plainifyDiscordText(post.title)||'Wiadomość';
+    el('pd-modal-author').textContent=[post.author||'Nieznany autor',dateText(post.createdAt||post.publishedAt)].filter(Boolean).join(' · ');
+    renderDiscordFormatting(el('pd-modal-text'),post.body);
+    const img=el('pd-modal-image');img.removeAttribute('src');img.hidden=true;
+    el('pd-modal-fallback').hidden=!!post.hasImage;
+    el('pd-delete').hidden=!state.admin;
+    el('pd-delete-status').textContent='';
+    renderSidebar();
+    const article=el('pd-article');
+    article.scrollTop=0;
+    article.classList.remove('pd-reader-enter');
+    if(!reduced.matches){void article.offsetWidth;article.classList.add('pd-reader-enter');}
+    if(post.hasImage)void readImage(post).then(url=>{
+      if(!state.open||epoch!==state.modalEpoch||selected()?.id!==post.id)return;
+      if(url){img.src=url;img.hidden=false;el('pd-modal-fallback').hidden=true;}
+      else el('pd-modal-fallback').hidden=false;
+    });
+  }
+  function hideSideOnMobile(){el('pd-sidebar').parentElement.classList.remove('pd-show-list');el('pd-history-toggle').setAttribute('aria-expanded','false');}
+  function closeReader(){
+    if(!state.open)return;state.open=false;state.modalEpoch++;
+    el('pd-confirm').hidden=true;hideSideOnMobile();
+    document.body.style.overflow=state.restoreOverflow;auto();
+    if(reduced.matches){modal.hidden=true;return;}
+    modal.classList.add('pd-leaving');
+    if(state.closeTimer)clearTimeout(state.closeTimer);
+    state.closeTimer=setTimeout(()=>{
+      if(state.open)return;
+      modal.hidden=true;modal.classList.remove('pd-leaving');state.closeTimer=null;
+    },200);
+  }
+  function closeConfirm(){el('pd-confirm').hidden=true;el('pd-delete').focus({preventScroll:true});}
+  function openDelete(){if(!state.admin||!selected())return;el('pd-confirm').hidden=false;el('pd-cancel-delete').focus();}
+  function submitDelete(){
+    const post=selected();if(!state.uid||!state.admin||!post)return;
+    el('pd-confirm').hidden=true;
+    const button=el('pd-delete');button.disabled=true;
+    const status=el('pd-delete-status');status.textContent='Wysyłanie żądania do bota…';
+    const requestRef=ref(db,'paddockRumorsDeleteRequests/'+post.id);
+    void set(requestRef,{status:'pending',requestedBy:state.uid,requestedAt:Date.now(),title:post.title}).then(()=>{
+      status.textContent='Zlecono usunięcie. Oczekiwanie na Discorda…';
+      if(state.requestOff)state.requestOff();
+      state.requestOff=onValue(requestRef,snap=>{
+        const val=snap.val();if(!val)return;
+        if(val.status==='error'){status.textContent='Błąd: '+String(val.error||'nie udało się usunąć na Discordzie').slice(0,180);button.disabled=false;}
+        if(val.status==='done'){status.textContent='Usunięto';button.disabled=false;}
+      },()=>{status.textContent='Nie można odczytać statusu. Sprawdź Firebase.';button.disabled=false;});
+    }).catch(error=>{button.disabled=false;status.textContent='Brak uprawnień do usunięcia: '+error.message;});
+  }
+  slots[0].card.addEventListener('click',()=>showPost(slots[0].card.dataset.id));
+  slots[1].card.addEventListener('click',()=>showPost(slots[1].card.dataset.id));
+  slots[2].card.addEventListener('click',()=>showPost(slots[2].card.dataset.id));
+  el('pd-open').addEventListener('click',()=>showPost(state.visible[state.position]?.id));
+  el('pd-prev').addEventListener('click',()=>advance(-1));el('pd-next').addEventListener('click',()=>advance(1));
+  el('pd-close').addEventListener('click',closeReader);
+  el('pd-history-toggle').addEventListener('click',()=>{
+    const grid=el('pd-sidebar').parentElement,open=grid.classList.toggle('pd-show-list');el('pd-history-toggle').setAttribute('aria-expanded',String(open));
+  });
+  el('pd-delete').addEventListener('click',openDelete);
+  el('pd-cancel-delete').addEventListener('click',closeConfirm);
+  el('pd-confirm-delete').addEventListener('click',submitDelete);
+  el('pd-confirm').addEventListener('click',e=>{if(e.target===el('pd-confirm'))closeConfirm();});
+  modal.addEventListener('click',e=>{if(e.target===modal)closeReader();});
+  shell.addEventListener('click',e=>e.stopPropagation());
+  shell.addEventListener('mouseenter',stopAuto);shell.addEventListener('mouseleave',auto);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){if(!el('pd-confirm').hidden)closeConfirm();else if(state.open)closeReader();}
+    if(!state.open && (e.key==='ArrowRight'||e.key==='ArrowLeft') && document.activeElement?.closest('#paddock-rumors')) advance(e.key==='ArrowRight'?1:-1);
+  });
+  el('pd-stage').addEventListener('touchstart',e=>{state.touchX=e.changedTouches[0]?.screenX;},{passive:true});
+  el('pd-stage').addEventListener('touchend',e=>{const x=e.changedTouches[0]?.screenX;if(state.touchX!=null && x!=null && Math.abs(state.touchX-x)>45)advance(state.touchX>x?1:-1);state.touchX=null;},{passive:true});
+  document.addEventListener('visibilitychange',()=>document.hidden?stopAuto():auto());
+  // Nie pokazujemy prawa do usuwania tylko na podstawie samego faktu zalogowania.
+  onAuthStateChanged(auth,user=>{
+    state.uid=user?.uid||null;state.admin=false;
+    if(state.adminOff){state.adminOff();state.adminOff=null;}
+    el('pd-delete').hidden=true;
+    if(!user)return;
+    state.adminOff=onValue(ref(db,'paddockRumorsAdmins/'+user.uid),snap=>{
+      state.admin=snap.val()===true;el('pd-delete').hidden=!state.admin;
+    },()=>{state.admin=false;el('pd-delete').hidden=true;});
+  });
+  onValue(ref(db,'paddockRumorsPublished'),snapshot=>{
+    state.lastError=null;
+    const oldCarouselId=state.visible[state.position]?.id;
+    const oldCurrent=state.currentId;
+    const raw=snapshot.val()||{};
+    state.all=Object.entries(raw).map(([id,entry])=>({
+      id,title:String(entry?.title||'').slice(0,160),body:String(entry?.body||'').slice(0,12000),
+      author:String(entry?.author||'').slice(0,95),createdAt:Number(entry?.createdAt||0),
+      publishedAt:Number(entry?.publishedAt||0),hasImage:!!entry?.hasImage||!!entry?.imageUrl,
+      imageUrl:typeof entry?.imageUrl==='string'?entry.imageUrl:'',updatedAt:Number(entry?.updatedAt||0)
+    })).filter(p=>p.title).sort((a,b)=>(b.publishedAt||b.createdAt)-(a.publishedAt||a.createdAt));
+    const ids=new Set(state.all.map(p=>p.id));for(const key of state.images.keys())if(!ids.has(key))state.images.delete(key);
+    state.visible=state.all.slice(0,6);
+    const ci=state.visible.findIndex(p=>p.id===oldCarouselId);state.position=ci>=0?ci:0;
+    renderCarousel();
+    if(state.open){
+      if(!ids.has(oldCurrent)){state.currentId=state.all[0]?.id||null;if(!state.currentId){closeReader();return;}}
+      drawReader();
+    }
+  },error=>{state.lastError=error.message;console.error('[Paddock]',error);shell.hidden=true;});
+})();
+
+
  
 window._fbDb = db;
 window._fbFirebase = { ref, onValue, set, update, push, remove };
