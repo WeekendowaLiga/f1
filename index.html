@@ -5121,6 +5121,349 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 @media(max-width:650px){#sec-championship .champ-fields{grid-template-columns:1fr}#sec-championship .champ-driver{grid-template-columns:23px minmax(75px,1fr) 56px 80px;gap:5px;padding:10px 7px}#sec-championship .champ-state{font-size:8px}}
 
 </style>
+<style id="wlf-team-profiles-css">
+/* WEEKENDOWA LIGA F1 — statystyki zespołu */
+#team-profile-overlay{position:fixed;inset:0;z-index:10000008;background:rgba(3,5,10,.87);display:none;justify-content:center;align-items:flex-start;overflow-y:auto;overscroll-behavior:contain;padding:clamp(12px,3.5vh,42px) 16px;box-sizing:border-box;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+#team-profile-overlay.open{display:flex;animation:tspCurtain .26s ease both}
+@keyframes tspCurtain{from{opacity:0}to{opacity:1}}
+@keyframes tspSlide{from{transform:translateY(28px) scale(.987);opacity:.65}to{transform:translateY(0) scale(1);opacity:1}}
+#tsp-modal{--tsp-accent:#e10600;--tsp-glow:rgba(225,6,0,.11);width:min(1160px,100%);background:#101219;color:#f5f6fa;border:1px solid rgba(255,255,255,.1);border-radius:12px;position:relative;overflow:hidden;box-shadow:0 35px 95px rgba(0,0,0,.52);animation:tspSlide .4s cubic-bezier(.2,.85,.2,1) both;font-family:var(--font-body,Arial,sans-serif)}
+#tsp-modal *{box-sizing:border-box}
+#tsp-modal .tsp-top-rule{height:4px;background:var(--tsp-accent)}
+#tsp-modal .tsp-head{position:relative;padding:39px clamp(22px,5vw,62px) 0;overflow:hidden;background:radial-gradient(ellipse at 78% 8%,var(--tsp-glow),transparent 58%),linear-gradient(135deg,#171a21,#101219 65%);}
+#tsp-modal .tsp-head::before{content:"";position:absolute;inset:0;opacity:.35;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0,transparent 99px,rgba(255,255,255,.035) 100px)}
+#tsp-modal .tsp-topline{display:flex;align-items:center;gap:13px;position:relative;z-index:1;padding-right:50px}
+#tsp-modal .tsp-topline .tsp-kicker{font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:2px;color:#9da5b4;text-transform:uppercase}
+#tsp-modal .tsp-separator{width:24px;height:1px;background:var(--tsp-accent);display:inline-block}
+#tsp-modal .tsp-titleline{display:flex;gap:24px;align-items:center;justify-content:space-between;position:relative;z-index:1;margin-top:8px}
+#tsp-modal .tsp-heading{font:800 clamp(34px,5.4vw,72px)/1 var(--font-display,var(--font-data,Arial,sans-serif));letter-spacing:.6px;text-transform:uppercase;margin:0;overflow-wrap:anywhere}
+#tsp-modal .tsp-subtitle{color:#aeb5c3;font-size:13px;line-height:1.6;margin:11px 0 0}
+#tsp-modal #tsp-team-logo{width:clamp(74px,10vw,135px);height:clamp(54px,7vw,96px);object-fit:contain;flex-shrink:0;filter:drop-shadow(0 7px 12px rgba(0,0,0,.35))}
+#tsp-modal #tsp-team-logo[hidden]{display:none}
+#tsp-modal .tsp-car-wrap{position:relative;display:flex;justify-content:center;align-items:center;height:clamp(185px,25vw,305px);margin:0 auto;padding:14px 14px 0;max-width:920px}
+#tsp-modal .tsp-car-wrap::after{content:"";position:absolute;bottom:0;left:13%;right:13%;height:1px;background:linear-gradient(90deg,transparent,var(--tsp-accent),transparent);opacity:.5}
+#tsp-modal .tsp-car-halo{position:absolute;bottom:9%;left:14%;right:14%;height:55%;background:radial-gradient(ellipse,var(--tsp-glow),transparent 72%);pointer-events:none}
+#tsp-modal #tsp-team-car{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 20px 14px rgba(0,0,0,.52));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#tsp-modal .tsp-car-wrap:hover #tsp-team-car{transform:translateY(-4px) scale(1.02)}
+#tsp-modal #tsp-team-car[hidden]{display:none}
+#tsp-modal .tsp-car-empty{color:#9ea5b2;font-size:14px;text-align:center}
+#tsp-modal .tsp-current-title{margin:0 0 12px;color:#8e99aa;font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:2px;text-transform:uppercase}
+#tsp-modal .tsp-drivers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 0 28px;position:relative;z-index:1}
+#tsp-modal .tsp-driver{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.085);display:flex;align-items:center;gap:16px;padding:16px 18px;text-align:left;color:#f6f7f9;border-radius:8px;min-width:0;transition:background .2s,border-color .2s,transform .2s}
+#tsp-modal button.tsp-driver{cursor:pointer}
+#tsp-modal button.tsp-driver:hover{background:rgba(255,255,255,.075);border-color:var(--tsp-accent);transform:translateY(-2px)}
+#tsp-modal .tsp-driver-slot{font:800 28px var(--font-display,Arial,sans-serif);color:var(--tsp-accent);opacity:.8;flex-shrink:0}
+#tsp-modal .tsp-driver-detail{min-width:0;flex:1}
+#tsp-modal .tsp-driver-name{font:700 clamp(16px,2vw,23px)/1.2 var(--font-data,Arial,sans-serif);display:block;overflow-wrap:anywhere}
+#tsp-modal .tsp-driver-meta{font:500 11px var(--font-data,Arial,sans-serif);color:#aab2bf;margin-top:6px;letter-spacing:.2px;display:block}
+#tsp-modal .tsp-driver-arrow{font-size:20px;color:#a8b1c0;flex-shrink:0}
+#tsp-modal .tsp-close{position:absolute;right:20px;top:19px;z-index:6;background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.1);color:#fff;width:39px;height:39px;border-radius:7px;cursor:pointer;font-size:20px;display:grid;place-items:center;transition:background .2s,transform .2s}
+#tsp-modal .tsp-close:hover{background:#e10600;transform:rotate(90deg)}
+#tsp-modal .tsp-content{padding:32px clamp(22px,5vw,62px) 45px}
+#tsp-modal .tsp-section{margin-top:40px}
+#tsp-modal .tsp-section:first-of-type{margin-top:0}
+#tsp-modal .tsp-section-heading{display:flex;align-items:center;gap:12px;margin:0 0 18px;text-transform:uppercase;font:800 clamp(17px,2.1vw,25px)/1.15 var(--font-display,Arial,sans-serif);letter-spacing:.4px}
+#tsp-modal .tsp-section-heading::before{content:"";width:4px;height:24px;background:var(--tsp-accent);border-radius:2px}
+#tsp-modal .tsp-muted{color:#98a2af;font-size:13px;line-height:1.5}
+#tsp-modal .tsp-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+#tsp-modal .tsp-metric{border:1px solid rgba(255,255,255,.085);background:#191c25;border-radius:8px;padding:18px 18px 16px;min-width:0;position:relative;overflow:hidden;transition:border-color .22s,background .22s}
+#tsp-modal .tsp-metric:hover{border-color:rgba(255,255,255,.24);background:#20242e}
+#tsp-modal .tsp-metric-label{color:#9aa5b3;font:700 11px/1.5 var(--font-data,Arial,sans-serif);letter-spacing:.8px;text-transform:uppercase;display:block;min-height:30px}
+#tsp-modal .tsp-metric-value{display:block;margin-top:8px;color:#fff;font:800 clamp(26px,3vw,41px)/1 var(--font-display,Arial,sans-serif);font-variant-numeric:tabular-nums}
+#tsp-modal .tsp-metric-value.tsp-emphasis{color:var(--tsp-accent)}
+#tsp-modal .tsp-metric-note{font-size:11px;color:#8f9baa;margin-top:9px;line-height:1.5;display:block}
+#tsp-modal .tsp-comparison{border:1px solid rgba(255,255,255,.085);border-radius:9px;background:#171a23;overflow:hidden}
+#tsp-modal .tsp-compare-header{display:grid;grid-template-columns:minmax(0,1fr) 85px minmax(0,1fr);gap:6px;align-items:center;padding:20px 20px;background:#20242e}
+#tsp-modal .tsp-compare-name{font:700 clamp(13px,1.65vw,20px) var(--font-data,Arial,sans-serif);overflow-wrap:anywhere}
+#tsp-modal .tsp-compare-name:last-child{text-align:right}
+#tsp-modal .tsp-compare-vs{color:#8e9aab;font:700 11px var(--font-data,Arial,sans-serif);text-align:center;letter-spacing:2px}
+#tsp-modal .tsp-compare-row{display:grid;grid-template-columns:minmax(0,1fr) 148px minmax(0,1fr);gap:14px;align-items:center;border-top:1px solid rgba(255,255,255,.07);padding:17px 20px}
+#tsp-modal .tsp-compare-side{display:flex;gap:10px;align-items:center;min-width:0}
+#tsp-modal .tsp-compare-side:last-child{justify-content:flex-end}
+#tsp-modal .tsp-compare-number{font:800 24px var(--font-data,Arial,sans-serif);font-variant-numeric:tabular-nums}
+#tsp-modal .tsp-compare-number.tsp-winning{color:#fff}
+#tsp-modal .tsp-compare-number:not(.tsp-winning){color:#8e98a8}
+#tsp-modal .tsp-compare-bar{height:7px;background:#343944;flex:1;min-width:7px;border-radius:3px;overflow:hidden}
+#tsp-modal .tsp-compare-bar>i{height:100%;display:block;background:var(--tsp-accent);border-radius:3px}
+#tsp-modal .tsp-compare-bar.tsp-right>i{background:#f0f1f5;margin-left:auto}
+#tsp-modal .tsp-compare-label{text-align:center;font:700 11px/1.35 var(--font-data,Arial,sans-serif);color:#abb4c2;letter-spacing:.6px;text-transform:uppercase}
+#tsp-modal .tsp-best-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#tsp-modal .tsp-best-card{padding:24px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.09);border-radius:8px}
+#tsp-modal .tsp-best-top{color:#a3adbc;font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:1.2px;text-transform:uppercase}
+#tsp-modal .tsp-best-name{font:800 clamp(19px,2.6vw,28px)/1.18 var(--font-display,Arial,sans-serif);margin-top:10px;overflow-wrap:anywhere}
+#tsp-modal .tsp-best-value{font:800 25px var(--font-data,Arial,sans-serif);color:var(--tsp-accent);margin-top:9px}
+#tsp-modal .tsp-best-meta{color:#adb4c2;font-size:12px;line-height:1.5;margin-top:8px}
+#tsp-modal .tsp-history{border-left:1px solid rgba(255,255,255,.16);margin-left:8px;padding-left:24px}
+#tsp-modal .tsp-event{position:relative;padding:0 0 23px}
+#tsp-modal .tsp-event:last-child{padding-bottom:0}
+#tsp-modal .tsp-event::before{content:"";position:absolute;left:-30px;top:5px;width:10px;height:10px;border:2px solid var(--tsp-accent);border-radius:50%;background:#101219}
+#tsp-modal .tsp-event-when{color:#99a4b3;font:700 11px var(--font-data,Arial,sans-serif);text-transform:uppercase;letter-spacing:1px}
+#tsp-modal .tsp-event-title{font:750 16px var(--font-data,Arial,sans-serif);margin-top:5px}
+#tsp-modal .tsp-event-desc{color:#b6bfcb;font-size:13px;line-height:1.7;margin-top:5px}
+#tsp-modal .tsp-empty{padding:24px;border:1px dashed rgba(255,255,255,.15);border-radius:8px;color:#adb5c1;font-size:13px;line-height:1.65}
+#tsp-modal .tsp-load{padding:110px 26px;text-align:center;color:#aeb8c5}
+#tsp-modal .tsp-load strong{display:block;font:800 26px var(--font-display,Arial,sans-serif);color:#fff;margin-bottom:9px}
+/* WLF1: profil zespołu – aktywne kliknięcia w kartach */
+.team-page-card[data-team-profile]{cursor:pointer!important}
+.team-page-card .tpc-num,.team-page-card .tpc-car,.team-page-card .tpc-logo{pointer-events:none}
+/* Otwieranie profilu przez nazwę zespołu również w tabelach i historii wyścigów */
+.team-page-card[data-team-profile]{cursor:pointer}
+.team-page-card[data-team-profile]:focus-visible{outline:3px solid var(--f1-red);outline-offset:3px}
+.tpc-open-prompt{display:inline-flex;align-items:center;gap:8px;position:relative;z-index:2;color:rgba(255,255,255,.8);font:750 12px var(--font-data,Arial,sans-serif);text-transform:uppercase;letter-spacing:.8px;padding:0 44px 20px;transition:color .2s}
+.team-page-card:hover .tpc-open-prompt{color:#fff}
+[class*="txt-"][data-team-profile],.team-profile-link{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:5px;transition:text-decoration-color .18s,opacity .18s}
+[class*="txt-"][data-team-profile]:hover,.team-profile-link:hover{text-decoration-color:currentColor;opacity:.84}
+@media(max-width:800px){#team-profile-overlay{padding:0}#tsp-modal{border-radius:0;min-height:100dvh;width:100%;border:0}#tsp-modal .tsp-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}#tsp-modal .tsp-head{padding-top:34px}#tsp-modal .tsp-content{padding-top:25px}#tsp-modal .tsp-car-wrap{height:clamp(180px,43vw,260px)}#tsp-modal .tsp-drivers{gap:8px}}
+@media(max-width:500px){#tsp-modal .tsp-titleline{align-items:flex-start}#tsp-modal .tsp-heading{font-size:38px}#tsp-modal .tsp-subtitle{font-size:12px}#tsp-modal .tsp-topline{gap:8px}#tsp-modal .tsp-drivers{grid-template-columns:1fr;padding-bottom:21px}#tsp-modal .tsp-driver{padding:12px 14px}#tsp-modal .tsp-driver-slot{font-size:21px}#tsp-modal .tsp-driver-name{font-size:17px}#tsp-modal .tsp-car-wrap{height:190px;margin-top:4px}#tsp-modal .tsp-metric{padding:14px}#tsp-modal .tsp-metric-value{font-size:29px}#tsp-modal .tsp-metric-label{font-size:10px}#tsp-modal .tsp-best-grid{grid-template-columns:1fr}#tsp-modal .tsp-compare-header{grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);padding:14px 10px}#tsp-modal .tsp-compare-row{grid-template-columns:minmax(0,1fr) 96px minmax(0,1fr);gap:5px;padding:13px 10px}#tsp-modal .tsp-compare-number{font-size:19px}#tsp-modal .tsp-compare-label{font-size:10px}#tsp-modal .tsp-compare-bar{display:none}#tsp-modal .tsp-close{top:12px;right:12px}#tsp-modal .tsp-event-desc{font-size:12px}}
+@media(prefers-reduced-motion:reduce){#team-profile-overlay.open,#tsp-modal{animation:none!important}#tsp-modal *{transition:none!important}}
+
+
+/* WLF1 · profil zespołu – uproszczone statystyki / kontrast / przebieg sezonu */
+#tsp-modal .tsp-metric{padding:19px 18px 17px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}
+#tsp-modal .tsp-metric-note{display:none!important}
+#tsp-modal .tsp-metric-label{min-height:0;color:#bac5d2;letter-spacing:.35px}
+#tsp-modal .tsp-metric-value.tsp-emphasis{color:var(--tsp-accent)}
+#tsp-modal .tsp-driver-slot{color:var(--tsp-accent);opacity:1}
+#tsp-modal .tsp-top-rule{background:linear-gradient(90deg,var(--tsp-accent),var(--tsp-accent-original),transparent)}
+#tsp-modal .tsp-section-heading::before{background:var(--tsp-accent);box-shadow:0 0 12px var(--tsp-glow)}
+#tsp-modal .tsp-best-unified{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:8px;overflow:hidden;background:linear-gradient(110deg,#1c202a,#141821);border:1px solid rgba(255,255,255,.10)}
+#tsp-modal .tsp-best-unified-col{padding:22px 24px;min-width:0}
+#tsp-modal .tsp-best-unified-col+.tsp-best-unified-col{border-left:1px solid rgba(255,255,255,.10)}
+#tsp-modal .tsp-best-name{font-size:clamp(18px,2.1vw,25px);line-height:1.25;margin-top:9px}
+#tsp-modal .tsp-best-value{color:var(--tsp-accent);margin-top:12px}
+#tsp-modal .tsp-chart-card{background:linear-gradient(140deg,#1b2029,#11151c);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:clamp(14px,2.5vw,27px);overflow:hidden}
+#tsp-modal .tsp-chart-intro{display:flex;align-items:center;justify-content:space-between;gap:20px}
+#tsp-modal .tsp-chart-intro h4{font:750 clamp(17px,2vw,23px)/1.25 var(--font-data,Arial,sans-serif);margin:0;color:#fff}
+#tsp-modal .tsp-chart-intro p{color:#a9b6c6;margin:7px 0 0;font-size:12px}
+#tsp-modal .tsp-chart-lead{text-align:right;white-space:nowrap}
+#tsp-modal .tsp-chart-lead strong{font:800 14px var(--font-data,Arial,sans-serif);color:#f8fbff;display:block}
+#tsp-modal .tsp-chart-lead span{color:#b4c0cc;font-size:12px;display:block;margin-top:4px}
+#tsp-modal .tsp-chart-legend{display:flex;flex-wrap:wrap;gap:10px 26px;margin:25px 0 6px}
+#tsp-modal .tsp-chart-legend>span{display:flex;align-items:center;gap:9px;font:650 13px var(--font-data,Arial,sans-serif);color:#e5ebf5}
+#tsp-modal .tsp-chart-legend>span i{display:block;width:20px;height:4px;border-radius:4px}
+#tsp-modal .tsp-chart-legend b{font-size:12px;color:#fff}
+#tsp-modal .tsp-chart-scroll{overflow-x:auto;overflow-y:hidden;max-width:100%;scrollbar-width:thin;scrollbar-color:#4c535f transparent}
+#tsp-modal .tsp-progress-svg{display:block;width:100%;min-width:610px;height:auto;overflow:visible}
+#tsp-modal .tsp-axis{fill:#aebacc;font:13px var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-plot-dot{stroke:#131720;stroke-width:1.5;transition:r .2s ease;cursor:help}
+#tsp-modal .tsp-plot-dot:hover{r:6.5}
+#tsp-modal .tsp-chart-caption{font:11px/1.5 var(--font-body,Arial,sans-serif);color:#8e9aa9;margin:0}
+@media(max-width:620px){
+  #tsp-modal .tsp-best-unified{grid-template-columns:1fr}
+  #tsp-modal .tsp-best-unified-col{padding:20px}
+  #tsp-modal .tsp-best-unified-col+.tsp-best-unified-col{border-left:0;border-top:1px solid rgba(255,255,255,.1)}
+  #tsp-modal .tsp-chart-intro{align-items:flex-start;flex-direction:column;gap:9px}
+  #tsp-modal .tsp-chart-lead{text-align:left}
+  #tsp-modal .tsp-chart-legend{margin-top:16px}
+  #tsp-modal .tsp-metric{min-height:100px;padding:14px}
+  #tsp-modal .tsp-metric-label{font-size:10px}
+}
+/* Ostatnie wiadomości: łagodniejsze, mniej rozmyte tło i dłuższe przejście */
+#paddock-rumors .pd-cover img.pd-bg-blur{
+  filter:blur(13px) brightness(.97) saturate(1.03)!important;
+  transform:scale(1.055)!important;
+  transition:opacity .55s ease!important;
+}
+#paddock-rumors .pd-cover img.pd-bg-blur.pd-bg-ready{opacity:.97!important}
+#paddock-rumors .pd-cover > img:not(.pd-bg-blur){
+  -webkit-mask-image:radial-gradient(ellipse 84% 88% at 50% 50%,#000 0%,#000 56%,rgba(0,0,0,.98) 68%,rgba(0,0,0,.75) 84%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 84% 88% at 50% 50%,#000 0%,#000 56%,rgba(0,0,0,.98) 68%,rgba(0,0,0,.75) 84%,transparent 100%)!important;
+  -webkit-mask-composite:source-over!important;
+  mask-composite:add!important;
+}
+
+</style>
+<style id="wlf-refinements-nov7">
+/* subtelne foto, ciągła tonalna głębia po bokach */
+#paddock-rumors .pd-cover img.pd-bg-blur{filter:blur(10px) saturate(1.06) brightness(.99)!important;transform:scale(1.10)!important;opacity:.98!important}
+#paddock-rumors .pd-cover img.pd-bg-blur.pd-bg-ready{opacity:.98!important}
+#paddock-rumors .pd-cover>img:not(.pd-bg-blur){transition:opacity .5s ease,filter .5s ease!important}
+#paddock-rumors .pd-cover{background:#12151c!important}
+/* wykres: grafika i interaktywne punkty */
+#tsp-modal .tsp-chart-card{position:relative;padding:clamp(14px,2.5vw,23px)}
+#tsp-modal .tsp-chart-intro{display:flex;align-items:center;justify-content:space-between;gap:14px}
+#tsp-modal .tsp-chart-intro h4{font:850 clamp(16px,2.1vw,23px)/1.1 var(--font-display,Arial,sans-serif);letter-spacing:.45px;text-transform:uppercase}
+#tsp-modal .tsp-chart-gap{font:800 13px var(--font-data,Arial,sans-serif);padding:9px 12px;background:color-mix(in srgb,var(--tsp-accent) 15%,#151a23);color:var(--tsp-accent);border-radius:5px;border:1px solid color-mix(in srgb,var(--tsp-accent) 40%,transparent)}
+#tsp-modal .tsp-chart-legend{margin:20px 0 10px;gap:8px 11px}
+#tsp-modal .tsp-chart-legend>span{padding:8px 11px;border:1px solid rgba(255,255,255,.09);border-radius:5px;background:rgba(255,255,255,.035);gap:9px}
+#tsp-modal .tsp-chart-legend>span b{color:#d8e0ee;font-size:12px;margin-left:9px}
+#tsp-modal .tsp-chart-legend>span strong{max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tsp-modal .tsp-progress-svg{min-width:450px}
+#tsp-modal .tsp-hit-point{cursor:crosshair;outline:none}
+#tsp-modal .tsp-hit-point:focus{stroke:var(--tsp-accent);stroke-width:2}
+#tsp-modal .tsp-point-tooltip{position:absolute;z-index:20;transform:translate(-50%,-100%);pointer-events:none;width:max-content;min-width:175px;max-width:min(280px,85%);background:#0b111b;border:1px solid rgba(255,255,255,.17);border-radius:8px;padding:11px 13px;box-shadow:0 17px 36px rgba(0,0,0,.5);color:#fff;display:flex;flex-direction:column;gap:6px;text-align:left}
+#tsp-modal .tsp-point-tooltip[hidden]{display:none}
+#tsp-modal .tsp-tip-race{font:700 9px var(--font-data,Arial,sans-serif);letter-spacing:.65px;color:#9eabbc;text-transform:uppercase;max-width:245px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tsp-modal .tsp-point-tooltip>strong{font:800 15px var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-tip-values{display:flex;gap:20px;justify-content:space-between;font:800 19px var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-tip-values span{white-space:nowrap}
+#tsp-modal .tsp-tip-values small{display:block;font-size:9px;font-weight:700;color:#aebacb}
+/* Najlepszy wyścig: jeden kafelek */
+#tsp-modal .tsp-best-race{border:1px solid rgba(255,255,255,.10);background:linear-gradient(135deg,#1d222c,#141820);border-radius:8px;padding:clamp(15px,2.5vw,25px)}
+#tsp-modal .tsp-best-race-head{display:flex;gap:12px;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.09)}
+#tsp-modal .tsp-best-race-title{font:850 clamp(21px,2.6vw,30px)/1.2 var(--font-display,Arial,sans-serif);overflow-wrap:anywhere}
+#tsp-modal .tsp-best-race-total{white-space:nowrap;color:var(--tsp-accent);font:900 clamp(21px,2.7vw,31px) var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-best-race-total small{font:750 9px var(--font-data,Arial,sans-serif);color:#aeb9ca;display:block;text-align:right}
+#tsp-modal .tsp-best-race-drivers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+#tsp-modal .tsp-best-driver{display:flex;align-items:center;gap:12px;min-width:0;padding:13px;border-radius:6px;background:rgba(255,255,255,.035)}
+#tsp-modal .tsp-best-position{font:900 23px var(--font-display,Arial,sans-serif);color:var(--tsp-accent);min-width:45px}
+#tsp-modal .tsp-best-driver strong{flex:1;min-width:0;overflow-wrap:anywhere;font:800 15px var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-best-points{font:850 19px var(--font-data,Arial,sans-serif);white-space:nowrap}
+#tsp-modal .tsp-best-points small{font-size:10px;color:#aeb9ca}
+@media(max-width:600px){#tsp-modal .tsp-best-race-head{align-items:flex-start;flex-direction:column}#tsp-modal .tsp-best-race-total small{text-align:left}#tsp-modal .tsp-best-race-drivers{grid-template-columns:1fr}#tsp-modal .tsp-progress-svg{min-width:520px}}
+</style>
+
+<style id="wlf-polish-point-calendar-blur">
+/* Tooltip ma własne współrzędne ekranowe: nie jest ucinany przez SVG/scroll. */
+#tsp-global-tooltip {
+  position:fixed!important;
+  z-index:10000045!important;
+  left:0;top:0;
+  display:flex;flex-direction:column;gap:6px;
+  box-sizing:border-box;
+  width:max-content;min-width:178px;max-width:min(285px,calc(100vw - 24px));
+  padding:11px 14px;
+  color:#f8fafc;
+  background:rgba(11,16,24,.96);
+  border:1px solid rgba(255,255,255,.19);
+  box-shadow:0 12px 30px rgba(0,0,0,.36);
+  border-radius:7px;pointer-events:none;
+  font:600 13px var(--font-data,Arial,sans-serif);
+  transform:none!important;
+}
+#tsp-global-tooltip[hidden]{display:none!important}
+#tsp-global-tooltip .tsp-tip-race{display:block;font:700 10px var(--font-data,Arial,sans-serif);letter-spacing:.45px;color:#b5c1d1;white-space:normal;overflow-wrap:anywhere}
+#tsp-global-tooltip>strong{font:800 15px var(--font-data,Arial,sans-serif);overflow-wrap:anywhere}
+#tsp-global-tooltip .tsp-tip-values{display:flex;justify-content:space-between;gap:22px;font:850 20px var(--font-data,Arial,sans-serif)}
+#tsp-global-tooltip .tsp-tip-values small{display:block;font-size:10px;font-weight:600;color:#a5b0bf}
+#tsp-global-tooltip .tsp-tip-values span{white-space:nowrap}
+/* Tło plotki znika łagodnie, zamiast urywać się na granicy kafelka. */
+#paddock-rumors .pd-cover{background:rgba(10,13,19,.18)!important}
+#paddock-rumors .pd-cover img.pd-bg-blur{
+  filter:blur(12px) saturate(1.04) brightness(.94)!important;
+  transform:scale(1.12)!important;
+  -webkit-mask-image:radial-gradient(ellipse 82% 82% at center,#000 0%,#000 52%,rgba(0,0,0,.9) 67%,rgba(0,0,0,.65) 81%,rgba(0,0,0,.25) 94%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 82% 82% at center,#000 0%,#000 52%,rgba(0,0,0,.9) 67%,rgba(0,0,0,.65) 81%,rgba(0,0,0,.25) 94%,transparent 100%)!important;
+}
+#paddock-rumors .pd-cover img.pd-bg-blur.pd-bg-ready{opacity:.93!important}
+
+
+
+/* Rozmycie panelu zanika stopniowo na wszystkich jego krawędziach. */
+#splash-screen #paddock-rumors{position:relative;isolation:isolate}
+#splash-screen #paddock-rumors::before{
+  content:"";position:absolute;inset:-12px;z-index:0;pointer-events:none;
+  -webkit-backdrop-filter:blur(8px) saturate(105%);
+  backdrop-filter:blur(8px) saturate(105%);
+  background:rgba(8,12,18,.055);
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 0%,#000 48%,rgba(0,0,0,.88) 65%,rgba(0,0,0,.48) 82%,rgba(0,0,0,.14) 95%,transparent 100%);
+  mask-image:radial-gradient(ellipse at center,#000 0%,#000 48%,rgba(0,0,0,.88) 65%,rgba(0,0,0,.48) 82%,rgba(0,0,0,.14) 95%,transparent 100%);
+}
+#splash-screen #paddock-rumors .pd-shell{
+  position:relative;z-index:1;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  background:rgba(8,12,18,.055)!important;
+  border-color:rgba(255,255,255,.018)!important;
+  box-shadow:none!important;
+}
+</style>
+
+<style id="wlf-ostre-zdjecie-nad-blurem">
+/* Tylko Ostatnie wiadomości — nigdy nie rozmywaj oryginalnego zdjęcia. */
+#paddock-rumors .pd-cover {
+  isolation:isolate!important;
+  overflow:hidden!important;
+}
+/* Rozmyta kopia jest osobną, najniższą warstwą. */
+#paddock-rumors .pd-cover > img.pd-bg-blur {
+  position:absolute!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  user-select:none!important;
+}
+/* Oryginał jest w 100% widoczny i ostry, bez radialnych maskujących przejść.
+   Ostrość nie zależy od szerokości/formatu źródłowego obrazu. */
+#paddock-rumors .pd-cover > img:not(.pd-bg-blur) {
+  position:absolute!important;
+  z-index:2!important;
+  opacity:1;
+  filter:none!important;
+  -webkit-filter:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  -webkit-mask-composite:source-over!important;
+  mask-composite:add!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:none!important;
+}
+#paddock-rumors .pd-cover > img:not(.pd-bg-blur).pd-photo-pending { opacity:0!important; }
+/* Tekst istnieje niezależnie nad obiema warstwami zdjęć. */
+#paddock-rumors .pd-card-copy { z-index:3!important; }
+</style>
+
+<style id="wlf-team-improvements-20261107">
+/* Profil konstruktora — czytelniejszy tekst i wyniki blisko nazwy */
+#tsp-modal .tsp-heading-column{min-width:0;flex:1}
+#tsp-modal .tsp-header-score{display:flex;align-items:stretch;flex-wrap:wrap;gap:9px;margin-top:17px}
+#tsp-modal .tsp-score-pill{display:flex;gap:10px;align-items:baseline;min-width:118px;padding:10px 14px;color:#fff;border-radius:6px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07)}
+#tsp-modal .tsp-score-pill small{font:750 12px var(--font-data,Arial,sans-serif);color:#c1ccd8;letter-spacing:.5px}
+#tsp-modal .tsp-score-pill strong{font:850 clamp(21px,2.4vw,30px) var(--font-display,Arial,sans-serif);font-variant-numeric:tabular-nums}
+#tsp-modal .tsp-score-points strong{color:var(--tsp-accent)}
+#tsp-modal .tsp-metric-label{font-size:clamp(13px,1.15vw,16px)!important;letter-spacing:0!important;line-height:1.35!important;min-height:0!important}
+#tsp-modal .tsp-metric-value{font-size:clamp(30px,3.4vw,47px)!important}
+#tsp-modal .tsp-metric{min-height:130px!important}
+#tsp-modal .tsp-current-title{font-size:13px!important}
+#tsp-modal .tsp-driver-meta{font-size:13px!important}
+#tsp-modal .tsp-compare-name{font-size:clamp(16px,1.6vw,22px)!important}
+#tsp-modal .tsp-compare-label{font-size:clamp(13px,1.2vw,16px)!important;letter-spacing:0!important}
+#tsp-modal .tsp-compare-number{font-size:clamp(23px,2.3vw,30px)!important}
+#tsp-modal .tsp-chart-intro h4{font-size:clamp(20px,2vw,27px)!important}
+#tsp-modal .tsp-chart-gap{font-size:16px!important}
+#tsp-modal .tsp-chart-legend>span{font-size:15px!important;padding:10px 13px}
+#tsp-modal .tsp-chart-legend b{font-size:14px!important}
+#tsp-modal .tsp-axis{font-size:21px!important;fill:#c0cad9!important}
+#tsp-modal .tsp-progress-svg{min-width:650px!important}
+#tsp-modal .tsp-round-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid rgba(255,255,255,.12);background:#171b24;border-radius:9px;scrollbar-color:#596473 transparent;scrollbar-width:thin}
+#tsp-modal .tsp-round-table{width:max-content;min-width:100%;border-spacing:0;border-collapse:separate;text-align:center;font-variant-numeric:tabular-nums}
+#tsp-modal .tsp-round-table th{color:#bfcbd9;font:750 14px var(--font-data,Arial,sans-serif);padding:14px 10px;background:#242a36;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.1)}
+#tsp-modal .tsp-round-table td{padding:8px 4px;border-bottom:1px solid rgba(255,255,255,.06);min-width:77px}
+#tsp-modal .tsp-round-table tbody tr:last-child td,#tsp-modal .tsp-round-table tbody tr:last-child th{border-bottom:none}
+#tsp-modal .tsp-round-table thead th:first-child,#tsp-modal .tsp-round-table tbody th{position:sticky;left:0;z-index:3;text-align:left;min-width:165px;max-width:230px;padding:11px 14px;box-shadow:2px 0 8px rgba(0,0,0,.25)}
+#tsp-modal .tsp-round-table thead th:first-child{z-index:4}
+#tsp-modal .tsp-round-table tbody th{color:#fff;background:#1d2330;font:750 15px var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-round-driver-name{display:block;max-width:195px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tsp-modal .tsp-race-cell{display:flex;flex-direction:column;justify-content:center;gap:3px;padding:9px 7px;min-height:59px;min-width:68px;border-radius:5px;background:#293140;color:#d3dbea}
+#tsp-modal .tsp-race-cell b{font:850 19px var(--font-display,Arial,sans-serif)}
+#tsp-modal .tsp-race-cell small{font:650 10px var(--font-data,Arial,sans-serif)}
+#tsp-modal .tsp-race-better{outline:2px solid rgba(255,255,255,.4);outline-offset:-2px}
+#tsp-modal .tsp-race-p1{background:#e6bf42;color:#1d1805}
+#tsp-modal .tsp-race-p2{background:#b9c2d0;color:#151c29}
+#tsp-modal .tsp-race-p3{background:#c4864f;color:#211307}
+#tsp-modal .tsp-race-p46{background:#246a81;color:#f1fcff}
+#tsp-modal .tsp-race-p710{background:#344a92;color:#fff}
+#tsp-modal .tsp-race-pother{background:#3b3458;color:#eee8ff}
+#tsp-modal .tsp-race-dnf{background:#9b2946;color:#fff}
+#tsp-modal .tsp-race-dsq{background:#7c2c78;color:#fff}
+#tsp-modal .tsp-race-dns{background:#3c354e;color:#fff}
+#tsp-modal .tsp-race-none{background:#252b35;color:#748196}
+#tsp-modal .tsp-extremes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+#tsp-modal .tsp-race-extreme{border:1px solid rgba(255,255,255,.11);border-radius:9px;padding:clamp(17px,2vw,24px);background:linear-gradient(130deg,#202630,#151921);min-width:0}
+#tsp-modal .tsp-extreme-label{font:800 14px var(--font-data,Arial,sans-serif);color:#c5cfdb;letter-spacing:.8px}
+#tsp-modal .tsp-extreme-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:13px 0 18px}
+#tsp-modal .tsp-extreme-head h4{margin:0;color:#fff;font:850 clamp(21px,2vw,29px)/1.18 var(--font-display,Arial,sans-serif);overflow-wrap:anywhere}
+#tsp-modal .tsp-extreme-head>b{flex-shrink:0;font:900 27px var(--font-data,Arial,sans-serif);color:var(--tsp-accent);white-space:nowrap}
+#tsp-modal .tsp-extreme-head>b small{font-size:12px;color:#bfc8d4}
+#tsp-modal .tsp-extreme-drivers{display:grid;gap:8px}
+#tsp-modal .tsp-extreme-driver{display:flex;align-items:center;gap:9px;padding:11px 12px;background:rgba(255,255,255,.045);border-radius:5px;min-width:0}
+#tsp-modal .tsp-extreme-pos{font:900 19px var(--font-display,Arial,sans-serif);color:var(--tsp-accent);min-width:42px}
+#tsp-modal .tsp-extreme-driver strong{font:750 15px var(--font-data,Arial,sans-serif);overflow-wrap:anywhere;min-width:0;flex:1}
+#tsp-modal .tsp-extreme-points{font:900 18px var(--font-data,Arial,sans-serif);white-space:nowrap}
+#tsp-modal .tsp-extreme-points small{font-size:10px;color:#bcc7d5}
+@media(max-width:740px){#tsp-modal .tsp-extremes{grid-template-columns:1fr}#tsp-modal .tsp-metric-label{font-size:13px!important}#tsp-modal .tsp-metric{min-height:113px!important}#tsp-modal .tsp-round-table thead th:first-child,#tsp-modal .tsp-round-table tbody th{min-width:140px;max-width:160px}}
+@media(max-width:500px){#tsp-modal .tsp-score-pill{min-width:0}#tsp-modal .tsp-compare-row{grid-template-columns:minmax(0,1fr) 105px minmax(0,1fr)}#tsp-modal .tsp-compare-label{font-size:12px!important}#tsp-modal .tsp-extreme-head{align-items:flex-start;flex-direction:column}#tsp-modal .tsp-metric-value{font-size:30px!important}}
+</style>
+
 </head>
 <body class="splash-locked" style="background:#eef0f4">
 <div id="pre-loader" style="
@@ -5649,6 +5992,24 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 <script>document.getElementById('footer-year').textContent = new Date().getFullYear();
 </script>
 
+
+<div id="team-profile-overlay" role="dialog" aria-modal="true" aria-label="Statystyki zespołu" aria-hidden="true">
+  <section id="tsp-modal" aria-labelledby="tsp-team-title" tabindex="-1">
+    <div class="tsp-top-rule"></div>
+    <button type="button" class="tsp-close" aria-label="Zamknij statystyki zespołu">×</button>
+    <header class="tsp-head">
+      <div class="tsp-topline"><span class="tsp-kicker">Weekendowa Liga F1</span><span class="tsp-separator"></span><span class="tsp-kicker" id="tsp-season">SEZON · SPLIT</span></div>
+      <div class="tsp-titleline">
+        <div class="tsp-heading-column"><h2 class="tsp-heading" id="tsp-team-title">Zespół</h2><p class="tsp-subtitle" id="tsp-team-subtitle">Statystyki sezonu</p><div class="tsp-header-score" id="tsp-header-score" aria-live="polite"></div></div>
+        <img id="tsp-team-logo" alt="Logo zespołu" hidden>
+      </div>
+      <div class="tsp-car-wrap"><div class="tsp-car-halo"></div><img id="tsp-team-car" alt="Bolid zespołu" hidden><span class="tsp-car-empty" id="tsp-car-empty" hidden>Grafika bolidu niedostępna</span></div>
+      <h3 class="tsp-current-title">Obecni kierowcy</h3>
+      <div class="tsp-drivers" id="tsp-current-drivers"></div>
+    </header>
+    <main class="tsp-content" id="tsp-content"><div class="tsp-load"><strong>Ładowanie statystyk…</strong>Odczytywanie wyników z archiwum ligi.</div></main>
+  </section>
+</div>
 
 <div id="driver-profile-overlay" onclick="ui.closeDriverProfile(event)">
     <div id="driver-profile-modal">
@@ -6274,6 +6635,17 @@ const db = getDatabase(app);
     slot.blur=bg;
     return bg;
   }
+  // Ostre zdjęcie nigdy nie jest rozmywane ani wycinane maską.
+  // Rozmyta kopia pozostaje wyłącznie POD zdjęciem i wypełnia wolne pasy.
+  function updateImageFeather(slot){
+    const img=slot?.img;
+    if (!img) return;
+    img.style.removeProperty('mask-image');
+    img.style.removeProperty('-webkit-mask-image');
+    img.style.removeProperty('mask-composite');
+    img.style.removeProperty('-webkit-mask-composite');
+  }
+  window.addEventListener('resize',()=>slots.forEach(updateImageFeather),{passive:true});
   function fillCard(slot,post,epoch) {
     const bg=ensureBlurBackground(slot);
     bg.onload=null;
@@ -6298,14 +6670,14 @@ const db = getDatabase(app);
     void readImage(post).then(src=>{
       if (epoch!==state.photoEpoch || slot.card.dataset.id!==post.id || !slot.img.isConnected) return;
       if (src) {
-        slot.img.onload=()=>slot.img.classList.remove('pd-photo-pending');
+        slot.img.onload=()=>{slot.img.classList.remove('pd-photo-pending');requestAnimationFrame(()=>updateImageFeather(slot));};
         slot.img.onerror=()=>{slot.cover.classList.add('pd-no-image');slot.img.classList.add('pd-photo-pending');};
         slot.img.src=src;
         bg.onload=()=>{if(epoch===state.photoEpoch && slot.card.dataset.id===post.id)bg.classList.add('pd-bg-ready');};
         bg.onerror=()=>bg.classList.remove('pd-bg-ready');
         bg.src=src;
         if(bg.complete && bg.naturalWidth)bg.classList.add('pd-bg-ready');
-        if(slot.img.complete && slot.img.naturalWidth)slot.img.classList.remove('pd-photo-pending');
+        if(slot.img.complete && slot.img.naturalWidth){slot.img.classList.remove('pd-photo-pending');requestAnimationFrame(()=>updateImageFeather(slot));}
         slot.cover.classList.remove('pd-no-image');
       } else slot.cover.classList.add('pd-no-image');
     });
@@ -6775,7 +7147,7 @@ function renderTeamsPage() {
             return `<div class="tpc-field"><div class="tpc-field-label">${label}</div><div class="tpc-field-value">${inner}</div></div>`;
         };
 
-        return `<div class="team-page-card tc-${t.key}" style="animation-delay:${idx * 0.06}s">
+        return `<div class="team-page-card tc-${t.key}" data-team-profile="${t.key}" role="button" tabindex="0" aria-label="Statystyki zespołu ${t.label}" style="animation-delay:${idx * 0.06}s">
             ${editHint}
             <div class="tpc-header">
                 <div>
@@ -6798,7 +7170,7 @@ function renderTeamsPage() {
                     ${makeField('custom2', custom2, '')}
                 </div>` : ''}
             </div>
-
+            <span class="tpc-open-prompt" aria-hidden="true">ZOBACZ STATYSTYKI ZESPOŁU <span>↗</span></span>
         </div>`;
     }).join('');
 }
@@ -9376,7 +9748,7 @@ function renderLastRacePodium(results) {
             <span class="ps-num">${idx + 1}</span>
             <img class="ps-car" src="${CAR_ASSETS[key] || ''}" alt="${teamLabel}" onerror="this.style.display='none'">
             <span class="ps-nick">${r.nick || '—'}</span>
-            <span class="ps-team">${teamLabel}</span>
+            <span class="ps-team team-profile-link" data-team-profile="${key}" title="Otwórz statystyki zespołu">${teamLabel}</span>
             <span class="ps-pts">${r.pts || 0} PKT</span>
         </div>`;
     };
@@ -9542,7 +9914,7 @@ function renderConstructorRow(r, i) {
     return `<tr class="constructor-row ${cClass}">
         <td class="col-pos" style="font-weight:900;"><span class="${posClass}">${r.pos||i+1}</span></td>
         <td style="font-weight:700;font-size:18px;letter-spacing:1px;white-space:normal;">
-            <div class="constructor-name-cell">${leftDecor}<span class="${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span></div>
+            <div class="constructor-name-cell">${leftDecor}<span data-team-profile="${key}" title="Otwórz statystyki zespołu" class="team-profile-link ${getTeamClass(r.team).replace('team-', 'txt-')}" style="filter:brightness(0) invert(1);">${r.team}</span></div>
         </td>
         <td class="col-pts" style="padding-right:10px;">
             <span class="cteam-pts-cell">${isLoggedIn ? `<span class="editable-cell" data-countup="${r.pts||0}" onclick="ui.editCell(this,'standings','teams',${i},'pts')">0</span>` : `<span data-countup="${r.pts||0}">0</span>`}</span>
@@ -9606,7 +9978,7 @@ const reserveBtn = isLoggedIn
             return `<tr class="${tc}${isBot ? ' bot-row' : ''}">
                 <td class="col-pos">${posHtml}</td>
 <td class="col-driver"><div class="driver-cell">${nickHtml}${reserveBtn}${deleteBtn}</div></td>
-                <td class="${tc.replace('team-','txt-')}" style="font-size:28px;">${d.team||''}</td>
+                <td class="${tc.replace('team-','txt-')} team-profile-link" data-team-profile="${getTeamKey(d.team)}" title="Otwórz statystyki zespołu" style="font-size:28px;">${d.team||''}</td>
                 <td style="text-align:center;">${winsHtml}</td>
                 <td class="col-pts">${ptsHtml}</td>
             </tr>`;
@@ -10154,6 +10526,487 @@ if (raceId) {
     });
 }
 
+
+// ─── WEEKENDOWA LIGA F1: STATYSTYKI KONSTRUKTORÓW ───────────────────────────
+// Odczyt wyłącznie: istniejące klasyfikacje, składy oraz archiwum aktualnego splitu/sezonu.
+const wlfTeamProfile = (() => {
+  const $ = id => document.getElementById(id);
+  const html = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const arr = obj => Array.isArray(obj) ? obj.filter(Boolean) : Object.values(obj || {}).filter(Boolean);
+  const nickKey = n => String(n || '').trim().normalize('NFKC').toLocaleLowerCase('pl-PL');
+  const num = v => Number.isFinite(Number(v)) ? Number(v) : 0;
+  const rank = v => {const m=String(v??'').match(/^\s*(?:P|POS\.?\s*)?(\d+)/i);return m?Number(m[1]):null};
+  const teamKeys = new Set(TEAM_DEFS.map(d=>d.key));
+  const state={teamKey:null,split:1,token:0,returnFocus:null,oldOverflow:'',lastSnapshot:null};
+  function teamKey(value){
+    const raw = String(value || '').trim();
+    if (!raw) return null;
+    if (teamKeys.has(raw)) return raw;
+    const key = getTeamKey(raw);
+    if (teamKeys.has(key)) return key;
+    return null;
+  }
+  function teamDef(value){return TEAM_DEFS.find(t=>t.key===teamKey(value))||null}
+  function teamMatch(value,key){return teamKey(value)===key}
+  const isTrue=v=>v===true||v===1||v==='true'||v==='1';
+  function isReserveResult(r){
+    return isTrue(r?.isReserve)||isTrue(r?.reserve)||isTrue(r?.isSubstitute)||
+       /^(reserve|rezerwa|rezerwowy|substitute)$/i.test(String(r?.driverRole||r?.role||'').trim());
+  }
+  function validRace(r){return r && !r.isQualifying && !r.isNoHistory && !r.isNoStats && !r.isNoProfileStats && arr(r.results).length>0;}
+  function archivedRaces(raw){
+    return Object.entries(raw||{}).filter(([,r])=>validRace(r)).sort((a,b)=>{
+      const ao=Number(a[1].order),bo=Number(b[1].order);
+      const hasA=a[1].order!==undefined&&Number.isFinite(ao);
+      const hasB=b[1].order!==undefined&&Number.isFinite(bo);
+      if(hasA&&hasB&&ao!==bo)return ao-bo;
+      const at=Number(a[1].timestamp||0),bt=Number(b[1].timestamp||0);
+      return at-bt || a[0].localeCompare(b[0]);
+    }).map(([id,r],i)=>({...r,_id:id,_index:i}));
+  }
+  function raceName(r){return String(r?.name||r?.raceName||`Runda ${Number(r?._index||0)+1}`)}
+  function raceDate(r){
+    const v=r?.date||r?.timestamp;
+    if(!v)return '';
+    const date=typeof v==='number'?new Date(v<1e12?v*1000:v):new Date(v);
+    return Number.isFinite(date.getTime())?date.toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'}):'';
+  }
+  function finishPosition(r){
+    const p=rank(r?.pos??r?.position);
+    const status=[r?.status,r?.time,r?.pos].filter(v=>typeof v==='string').join(' ').toUpperCase();
+    return p&&p>0&&!/\b(?:DNF|DSQ|DNS|DQ|RET|NC)\b/.test(status)?p:null;
+  }
+  function teamResults(r,key){return arr(r.results).filter(x=>teamMatch(x?.team,key));}
+  function startingPosition(raw){
+    const cleaned=String(raw??'').replace(/^\s*(?:start|grid|pole|pozycja|qualification|qualifying)\s*[:=-]?\s*/i,'');
+    return rank(cleaned);
+  }
+  function bestLapIndex(results){
+    const list=arr(results);
+    const i=findFastestLapIdx(list);
+    return Number.isInteger(i)&&i>=0&&i<list.length?i:-1;
+  }
+  function startedRace(r){
+    if(/^DNS$/i.test(String(r?.pos||r?.status||'')))return false;
+    return true;
+  }
+  function summary(key,standing,archive,teamInfo){
+    const races=archivedRaces(archive);
+    const constructorRows=arr(standing?.teams);
+    const teamRowIndex=constructorRows.findIndex(x=>teamMatch(x.team,key));
+    const teamStanding=teamRowIndex>=0?constructorRows[teamRowIndex]:null;
+    const drivers=arr(standing?.drivers);
+    const known=teamInfo?.[key]||{};
+    let current=[known.driver1,known.driver2].map(n=>String(n||'').trim()).filter(n=>n&&n!=='—'&&n!=='-');
+    if(current.length<2){
+      const historic=[...races].reverse().map(r=>teamResults(r,key).filter(x=>!isReserveResult(x)));
+      const latest=historic.find(a=>a.length>=2)||historic.find(a=>a.length>0)||[];
+      for(const p of latest){if(current.length>=2)break;if(!current.some(n=>nickKey(n)===nickKey(p.nick)))current.push(String(p.nick||''));}
+    }
+    current=[...new Map(current.filter(Boolean).map(n=>[nickKey(n),n])).values()].slice(0,2);
+    const records=[];let wins=0,podiums=0,pp=0,fastLaps=0,finishes=0,starts=0,archivePoints=0;
+    const qualifyingPositions=[];
+    const finishPositions=[];
+    let racesWithPoints=0;
+    const pointTotals=new Map(current.map(n=>[nickKey(n),0]));
+    const raceProgress=[];
+    let bestPointsRace=null,bestDouble=null;
+    const individual=new Map(current.map(n=>[nickKey(n),{nick:n,points:0,positions:[],wins:0,podiums:0,starts:0}]));
+    for(const race of races){
+      const people=teamResults(race,key);
+      if(!people.length){
+        raceProgress.push({name:raceName(race),date:raceDate(race),round:raceProgress.length+1,totals:current.map(n=>pointTotals.get(nickKey(n))||0),gained:current.map(()=>0), placements:current.map(()=>null)});
+        continue;
+      }
+      const resultData=arr(race.results);
+      const flIdx=bestLapIndex(resultData);
+      if(flIdx>=0&&teamMatch(resultData[flIdx].team,key))fastLaps++;
+      const localPts=people.reduce((sum,r)=>sum+num(r.pts),0);
+      archivePoints+=localPts;
+      if(localPts>0)racesWithPoints++;
+      const positionRows=[];
+      const qualiCandidates=arr(race.qualiResults||race.qualifyingResults||race.qualificationResults);
+      const byQualiNick=new Map(qualiCandidates.map(q=>[nickKey(q.nick),q]));
+      for(const r of people){
+        // Średnia pozycja kwalifikacyjna - dane Q albo miejsce na starcie jako zastępstwo.
+        const q=byQualiNick.get(nickKey(r.nick));
+        const gridRank=q?startingPosition(q.pos??q.position??q.place??q.grid):startingPosition(r.start??r.grid??r.startPos);
+        if(gridRank!==null&&gridRank>0&&!isReserveResult(r))qualifyingPositions.push(gridRank);
+        const p=finishPosition(r);
+        if(startedRace(r))starts++;
+        if(p!==null){finishes++;finishPositions.push(p);positionRows.push({nick:r.nick,pos:p});if(p===1)wins++;if(p<=3)podiums++;}
+        if(/^(1|P1)$/i.test(String(r.start||'').replace(/^(?:start|grid)\s*:\s*/i,'').trim()))pp++;
+        const ind=individual.get(nickKey(r.nick));
+        if(ind){
+          ind.points+=num(r.pts);ind.starts++;
+          pointTotals.set(nickKey(r.nick),(pointTotals.get(nickKey(r.nick))||0)+num(r.pts));
+          if(p!==null){ind.positions.push(p);if(p===1)ind.wins++;if(p<=3)ind.podiums++;}
+        }
+      }
+      // Pole position: jeśli w archiwum jest tabela kwalifikacji, ma pierwszeństwo przed wpisem startowym.
+      const quali=arr(race.qualiResults);
+      if(quali.length){
+        const pole=quali.find(r=>rank(r?.pos||r?.startPos||r?.grid)===1)||quali[0];
+        const countedFromGrid=people.some(r=>/^(1|P1)$/i.test(String(r.start||'').replace(/^(?:start|grid)\s*:\s*/i,'').trim()));
+        if(teamMatch(pole?.team,key)&&!countedFromGrid)pp++;
+        if(!teamMatch(pole?.team,key)&&countedFromGrid)pp--;
+      }
+      positionRows.sort((a,b)=>a.pos-b.pos);
+      const raceInfo={name:raceName(race),date:raceDate(race),points:localPts,places:positionRows,people:people.map(r=>r.nick),race};
+      if(!bestPointsRace||localPts>bestPointsRace.points||localPts===bestPointsRace.points&&positionRows.reduce((s,p)=>s+p.pos,0)<bestPointsRace.places.reduce((s,p)=>s+p.pos,0))bestPointsRace=raceInfo;
+      if(positionRows.length>=2){
+        const pair=positionRows.slice(0,2);
+        const total=pair[0].pos+pair[1].pos;
+        if(!bestDouble||total<bestDouble.total||total===bestDouble.total&&localPts>bestDouble.points)bestDouble={...raceInfo,total,pair};
+      }
+      records.push(raceInfo);
+      raceProgress.push({
+        name:raceName(race),date:raceDate(race),round:raceProgress.length+1,
+        totals:current.map(n=>pointTotals.get(nickKey(n))||0),
+        gained:current.map(n=>people.filter(p=>nickKey(p.nick)===nickKey(n)).reduce((z,p)=>z+num(p.pts),0)),
+        placements:current.map(n=>{
+          const row=people.find(p=>nickKey(p.nick)===nickKey(n));
+          if(!row)return null;
+          const result=finishPosition(row);
+          if(result!==null)return `P${result}`;
+          const status=[row.status,row.pos,row.time].filter(v=>typeof v==='string').join(' ').toUpperCase();
+          return (/\b(?:DNF|DSQ|DNS|RET|DQ|NC)\b/.exec(status)||[])[0]||'—';
+        })
+      });
+    }
+    // Zmiany składu tylko na podstawie kolejnych rund, bez oznaczonych rezerwowych.
+    const events=[];
+    let prev=new Set(),hasFullLineup=false;
+    for(const race of races){
+      const people=teamResults(race,key).filter(r=>!isReserveResult(r));
+      const present=[...new Map(people.map(r=>[nickKey(r.nick),String(r.nick||'').trim()])).values()].filter(Boolean);
+      if(!present.length)continue;
+      const keys=new Set(present.map(nickKey));
+      const when=raceName(race);
+      if(!events.length){
+        events.push({type:'initial',name:'Pierwszy odnotowany skład',when,persons:present,desc:`${present.join(' · ')}`});
+        prev=keys;hasFullLineup=keys.size>=2;continue;
+      }
+      const joined=present.filter(n=>!prev.has(nickKey(n)));
+      const left=[...prev].filter(n=>!keys.has(n));
+      const complete=keys.size>=2;
+      if(joined.length||(complete&&hasFullLineup&&left.length)){
+        const gained=joined.length?`Dołączyli: ${joined.join(', ')}.`:'';
+        const departed=complete&&hasFullLineup&&left.length?`Zastąpieni: ${left.map(k=>[...records.flatMap(record=>record.people),...current].find(n=>nickKey(n)===k)||k).join(', ')}.`:'';
+        events.push({type:'change',name:'Zmiana składu zespołu',when,persons:present,desc:[gained,departed].filter(Boolean).join(' ')||`Skład: ${present.join(' · ')}`});
+      }
+      if(complete){prev=keys;hasFullLineup=true;}
+      else for(const k of keys)prev.add(k); // jeden kierowca ≠ dowód odejścia drugiego
+    }
+    const worstPointsRace=records.slice().sort((a,b)=>{
+      if(a.points!==b.points)return a.points-b.points;
+      const penalty=x=>x.places.length ? x.places.reduce((s,p)=>s+p.pos,0) / x.places.length : 999;
+      return penalty(b)-penalty(a);
+    })[0]||null;
+    const compare=current.map(n=>individual.get(nickKey(n))||{nick:n,points:0,positions:[],wins:0,podiums:0,starts:0});
+    return {teamStanding,teamRowIndex,position:rank(teamStanding?.pos)|| (teamRowIndex>=0?teamRowIndex+1:null),
+      points:teamStanding?num(teamStanding.pts):archivePoints,archivePoints,wins,podiums,pp,fastLaps,
+      starts,finishes,finishRate:starts>0?Math.round(100*finishes/starts):null,teamRaces:records.length,
+      avgQuali:qualifyingPositions.length?qualifyingPositions.reduce((a,b)=>a+b,0)/qualifyingPositions.length:null,
+      avgRace:finishPositions.length?finishPositions.reduce((a,b)=>a+b,0)/finishPositions.length:null,
+      pointsRaceRate:records.length?100*racesWithPoints/records.length:null,
+      current,compare,bestPointsRace,worstPointsRace,bestDouble,events,raceProgress};
+  }
+  function metric(label,value,note,accent=false){
+    return `<div class="tsp-metric"><span class="tsp-metric-label">${html(label)}</span><strong class="tsp-metric-value${accent?' tsp-emphasis':''}">${html(value)}</strong></div>`;
+  }
+  function bestCard(label,name,value,meta){
+    if(!name)return `<div class="tsp-best-card"><div class="tsp-best-top">${html(label)}</div><p class="tsp-muted">Brak dwóch wyników z archiwum potrzebnych do porównania.</p></div>`;
+    return `<div class="tsp-best-card"><div class="tsp-best-top">${html(label)}</div><div class="tsp-best-name">${html(name)}</div><div class="tsp-best-value">${html(value)}</div><div class="tsp-best-meta">${html(meta||'')}</div></div>`;
+  }
+  function compareRow(label,a,b,prop,avg=false){
+    const get = x => avg?(x.positions.length?x.positions.reduce((s,v)=>s+v,0)/x.positions.length:null):x[prop];
+    const aa=get(a),bb=get(b);
+    const aVal=aa===null?'—':avg?aa.toFixed(1):String(aa);
+    const bVal=bb===null?'—':avg?bb.toFixed(1):String(bb);
+    const goodA=aa!==null&&bb!==null&&(avg?aa<bb:aa>bb);
+    const goodB=aa!==null&&bb!==null&&(avg?bb<aa:bb>aa);
+    const full=Math.max(1,aa||0,bb||0);
+    return `<div class="tsp-compare-row">
+      <div class="tsp-compare-side"><span class="tsp-compare-number${goodA?' tsp-winning':''}">${html(aVal)}</span><span class="tsp-compare-bar"><i style="width:${aa===null?0:Math.round(100*aa/full)}%"></i></span></div>
+      <span class="tsp-compare-label">${html(label)}</span>
+      <div class="tsp-compare-side"><span class="tsp-compare-bar tsp-right"><i style="width:${bb===null?0:Math.round(100*bb/full)}%"></i></span><span class="tsp-compare-number${goodB?' tsp-winning':''}">${html(bVal)}</span></div>
+    </div>`;
+  }
+  function drawHeader(def,s,info){
+    const modal=$('tsp-modal');
+    const rgb=def.color.match(/^#([a-f0-9]{6})$/i);
+    const h=rgb?rgb[1]:'e10600';
+    const original=[0,2,4].map(i=>parseInt(h.slice(i,i+2),16));
+    const luminance=original.map(v=>{const x=v/255;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4)});
+    const brightness=.2126*luminance[0]+.7152*luminance[1]+.0722*luminance[2];
+    // Przy bardzo ciemnym lakierze zachowujemy barwę zespołu, ale rozjaśniamy akcenty tekstowe.
+    const norm=original.map(v=>v/255);
+    const mx=Math.max(...norm),mn=Math.min(...norm),delta=mx-mn,light=(mx+mn)/2;
+    const saturation=delta===0?0:delta/(1-Math.abs(2*light-1));
+    let hue=0;
+    if(delta>0){
+      if(mx===norm[0])hue=((norm[1]-norm[2])/delta)%6;
+      else if(mx===norm[1])hue=(norm[2]-norm[0])/delta+2;
+      else hue=(norm[0]-norm[1])/delta+4;
+      hue=(hue*60+360)%360;
+    }
+    // Jasny, nasycony akcent o tym samym odcieniu – bez wypłowiałych szarości.
+    const safeColor=brightness<.17?(saturation>.1?`hsl(${Math.round(hue)} ${Math.round(Math.max(.64,saturation)*100)}% 67%)`:'#c8d1dd'):def.color;
+    modal.style.setProperty('--tsp-accent',safeColor);
+    modal.style.setProperty('--tsp-accent-original',def.color);
+    modal.style.setProperty('--tsp-glow',`rgba(${original.join(',')},.20)`);
+    modal.style.setProperty('--tsp-accent-contrast',brightness>.48?'#0e141b':'#ffffff');
+    modal.style.setProperty('--tsp-chart-alt',(/(?:ferrari|haas|mclaren|cadillac)/.test(def.key)?'#58D6FF':'#FFB866'));
+    $('tsp-team-title').textContent=def.label;
+    $('tsp-team-subtitle').textContent=def.fullName;
+    const rankText=info.position ? `P${info.position}` : '—';
+    const pointsText=info.points == null ? '—' : String(info.points);
+    $('tsp-header-score').innerHTML=`<span class="tsp-score-pill"><small>MIEJSCE</small><strong>${html(rankText)}</strong></span><span class="tsp-score-pill tsp-score-points"><small>PUNKTY</small><strong>${html(pointsText)}</strong></span>`;
+    $('tsp-season').textContent=`SEZON ${currentSeason} · SPLIT ${s}`;
+    const logo=$('tsp-team-logo');
+    const src=teamLogos[def.key];
+    logo.hidden=!src;
+    if(src){logo.src=src;logo.alt=`Logo ${def.label}`;}else logo.removeAttribute('src');
+    const car=$('tsp-team-car');
+    const carSrc=CAR_ASSETS[def.key];
+    car.hidden=!carSrc;
+    $('tsp-car-empty').hidden=!!carSrc;
+    if(carSrc){car.src=carSrc;car.alt=`Bolid ${def.label}`;}else car.removeAttribute('src');
+    const drivers=$('tsp-current-drivers');
+    drivers.replaceChildren();
+    for(let i=0;i<2;i++){
+      const nick=info.current[i]||null;
+      const button=document.createElement(nick?'button':'div');
+      if(nick)button.type='button';
+      button.className='tsp-driver';
+      const position=info.compare.find(c=>nick&&nickKey(c.nick)===nickKey(nick));
+      const points=position?`${position.points} pkt w tym zespole`:'Brak wyników w archiwum';
+      button.innerHTML=`<span class="tsp-driver-slot">0${i+1}</span><span class="tsp-driver-detail"><strong class="tsp-driver-name">${html(nick||'Nieobsadzone miejsce')}</strong><span class="tsp-driver-meta">${html(nick?points:'Brak przypisanego kierowcy')}</span></span>${nick?'<span class="tsp-driver-arrow" aria-hidden="true">↗</span>':''}`;
+      if(nick){button.title=`Otwórz profil kierowcy ${nick}`;button.addEventListener('click',()=>{
+        close();if(typeof ui?.openDriverProfile==='function')void ui.openDriverProfile(nick);
+      });}
+      drivers.appendChild(button);
+    }
+  }
+  function roundFinishStyle(value){
+    const text=String(value||'').toUpperCase();
+    if(text==='DNF'||text==='RET'||text==='NC')return 'tsp-race-dnf';
+    if(text==='DSQ'||text==='DQ')return 'tsp-race-dsq';
+    if(text==='DNS')return 'tsp-race-dns';
+    const p=Number(text.replace(/^P/,''));
+    if(!Number.isFinite(p)||p<=0)return 'tsp-race-none';
+    if(p===1)return 'tsp-race-p1';
+    if(p===2)return 'tsp-race-p2';
+    if(p===3)return 'tsp-race-p3';
+    if(p<=6)return 'tsp-race-p46';
+    if(p<=10)return 'tsp-race-p710';
+    return 'tsp-race-pother';
+  }
+  function roundResultComparison(info){
+    const rounds=info.raceProgress||[];
+    const names=info.current||[];
+    if(!rounds.length||!names.length)return '<div class="tsp-empty">Wyniki rund pojawią się po uzupełnieniu archiwum.</div>';
+    const roundHeads=rounds.map((r,i)=>`<th scope="col" title="${html(r.name)}">R${i+1}</th>`).join('');
+    const lines=names.slice(0,2).map((name,k)=>{
+      const cells=rounds.map((r,i)=>{
+        const val=r.placements?.[k]||null;
+        const score=r.gained?.[k]||0;
+        const other=r.placements?.[1-k]||null;
+        const ownPos=Number(String(val||'').replace(/^P/,''));
+        const otherPos=Number(String(other||'').replace(/^P/,''));
+        const better=val&&other&&Number.isFinite(ownPos)&&Number.isFinite(otherPos)&&ownPos<otherPos;
+        return `<td><span class="tsp-race-cell ${roundFinishStyle(val)}${better?' tsp-race-better':''}" title="${html(r.name)} · ${html(name)} · ${html(val||'Brak startu')} · ${num(score)} pkt"><b>${html(val||'—')}</b>${val?`<small>+${num(score)} pkt</small>`:''}</span></td>`;
+      }).join('');
+      return `<tr><th scope="row" title="${html(name)}"><span class="tsp-round-driver-name">${html(name)}</span></th>${cells}</tr>`;
+    }).join('');
+    return `<div class="tsp-round-scroll" role="region" aria-label="Wyniki obu kierowców w każdej rundzie" tabindex="0"><table class="tsp-round-table"><thead><tr><th scope="col">KIEROWCA</th>${roundHeads}</tr></thead><tbody>${lines}</tbody></table></div>`;
+  }
+  function renderProgressChart(info){
+    const rounds=info.raceProgress||[], nicknames=info.current||[];
+    if(nicknames.length<2||!rounds.length)return '<div class="tsp-empty">Wykres będzie dostępny po dodaniu wyników obu kierowców do archiwum.</div>';
+    const W=990,H=288,L=53,R=22,T=20,B=38,PW=W-L-R,PH=H-T-B;
+    const points=[{name:'Start',totals:[0,0],gained:[0,0]},...rounds];
+    const names=nicknames.slice(0,2);
+    const series=names.map((nick,k)=>({nick,values:points.map(p=>num(p.totals?.[k]))}));
+    const maxPoints=Math.max(10,...series.flatMap(line=>line.values));
+    const step=maxPoints<=40?10:maxPoints<=120?20:maxPoints<=300?50:maxPoints<=600?100:Math.ceil(maxPoints/250)*50;
+    const limit=Math.ceil(maxPoints/step)*step;
+    const x=i=>L+(i/(points.length-1))*PW;
+    const y=v=>T+PH-v/limit*PH;
+    const safe=n=>Number(n).toFixed(1);
+    const colors=['var(--tsp-accent)','var(--tsp-chart-alt)'];
+    const grid=Array.from({length:Math.floor(limit/step)+1},(_,i)=>{
+      const v=i*step,yy=y(v);
+      return `<line x1="${L}" y1="${safe(yy)}" x2="${W-R}" y2="${safe(yy)}" stroke="#fff" stroke-opacity=".095"/><text x="${L-13}" y="${safe(yy+4)}" text-anchor="end" class="tsp-axis">${v}</text>`;
+    }).join('');
+    const every=rounds.length>18?Math.ceil(rounds.length/10):rounds.length>12?2:1;
+    const ticks=points.map((p,i)=>(i===0||i===points.length-1||i%every===0)?`<text x="${safe(x(i))}" y="${H-9}" class="tsp-axis" text-anchor="middle">${i?'R'+i:'0'}</text>`:'').join('');
+    const drawn=series.map((line,k)=>{
+      const path=line.values.map((v,i)=>`${i?'L':'M'} ${safe(x(i))} ${safe(y(v))}`).join(' ');
+      const circles=line.values.map((v,i)=>{
+        const rival=series[1-k].values[i],gap=Math.abs(v-rival);
+        const diff=v>rival?`+${gap}`:v<rival?`-${gap}`:'0';
+        return `<g><circle cx="${safe(x(i))}" cy="${safe(y(v))}" r="${i===points.length-1?5.4:3.5}" fill="${colors[k]}" stroke="#111720" stroke-width="2"/><circle class="tsp-hit-point" tabindex="0" role="button" cx="${safe(x(i))}" cy="${safe(y(v))}" r="12" data-nick="${html(line.nick)}" data-round="${i}" data-points="${v}" data-diff="${diff}" data-opponent="${html(series[1-k].nick)}" data-race="${html(i?rounds[i-1]?.name||'':'Start')}" aria-label="${html(line.nick)}, runda ${i}, ${v} punktów, różnica ${diff}" fill="transparent" stroke="none"/></g>`;
+      }).join('');
+      return `<path d="${path}" fill="none" stroke="${colors[k]}" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><g>${circles}</g>`;
+    }).join('');
+    const final=rounds[rounds.length-1].totals;
+    const gap=Math.abs(num(final[0])-num(final[1]));
+    const lead=final[0]===final[1]?'REMIS':`+${gap} PKT`;
+    return `<div class="tsp-chart-card">
+      <div class="tsp-chart-intro"><h4>WALKA KIEROWCÓW</h4><span class="tsp-chart-gap">${lead}</span></div>
+      <div class="tsp-chart-legend">${series.map((line,k)=>`<span><i style="background:${colors[k]}"></i><strong>${html(line.nick)}</strong><b>${num(final[k])} pkt</b></span>`).join('')}</div>
+      <div class="tsp-chart-scroll"><svg class="tsp-progress-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Porównanie punktów dwóch kierowców od rundy 1 do ${rounds.length}">${grid}${ticks}${drawn}</svg></div>
+      <div class="tsp-point-tooltip" role="status" aria-live="polite" hidden></div>
+    </div>`;
+  }
+  const statsContent=$('tsp-content');
+  // Jeden dymek na cały dokument. Przypinamy go do współrzędnych punktu SVG,
+  // dzięki czemu wewnętrzny scroll wykresu nie przesuwa go do rogu karty.
+  function chartTooltip(){
+    let tip=document.getElementById('tsp-global-tooltip');
+    if(!tip){
+      tip=document.createElement('div');tip.id='tsp-global-tooltip';
+      tip.setAttribute('role','status');tip.setAttribute('aria-live','polite');tip.hidden=true;
+      document.body.appendChild(tip);
+    }
+    return tip;
+  }
+  function hideChartTooltip(){const t=document.getElementById('tsp-global-tooltip');if(t)t.hidden=true;}
+  function chartTip(e){
+    const point=e.target.closest?.('.tsp-hit-point');
+    if(!point||!$('team-profile-overlay')?.classList.contains('open'))return;
+    const d=point.dataset,tip=chartTooltip();
+    tip.innerHTML=`<span class="tsp-tip-race">${d.round==='0'?'START':'RUNDA '+html(d.round)}${d.race&&d.race!=='Start'?' · '+html(d.race):''}</span><strong>${html(d.nick)}</strong><div class="tsp-tip-values"><span>${html(d.points)} <small>PKT</small></span><span>${html(d.diff)} <small>VS ${html(d.opponent)}</small></span></div>`;
+    tip.hidden=false;
+    const p=point.getBoundingClientRect();
+    const tw=tip.offsetWidth,th=tip.offsetHeight,margin=12;
+    // Wycentruj na punkcie, lecz nie pozwalaj wyjść poza krawędź ekranu.
+    const cx=(p.left+p.right)/2;
+    const left=Math.max(margin,Math.min(innerWidth-tw-margin,cx-tw/2));
+    let top=p.top-th-14;
+    if(top<margin)top=p.bottom+14;
+    if(top+th>innerHeight-margin)top=Math.max(margin,innerHeight-th-margin);
+    tip.style.left=Math.round(left)+'px';tip.style.top=Math.round(top)+'px';
+  }
+  statsContent?.addEventListener('pointerover',e=>{if(e.target.closest?.('.tsp-hit-point'))chartTip(e)});
+  statsContent?.addEventListener('pointermove',e=>{if(e.target.closest?.('.tsp-hit-point'))chartTip(e)});
+  statsContent?.addEventListener('pointerout',e=>{if(e.target.closest?.('.tsp-hit-point'))hideChartTooltip()});
+  statsContent?.addEventListener('focusin',e=>{if(e.target.closest?.('.tsp-hit-point'))chartTip(e)});
+  statsContent?.addEventListener('focusout',e=>{if(e.target.closest?.('.tsp-hit-point'))hideChartTooltip()});
+  statsContent?.addEventListener('click',e=>{if(e.target.closest?.('.tsp-hit-point'))chartTip(e)});
+  $('team-profile-overlay')?.addEventListener('scroll',hideChartTooltip,true);
+  window.addEventListener('resize',hideChartTooltip,{passive:true});
+  function renderStats(info){
+    const teamStats=[
+      metric('Zwycięstwa',info.wins),
+      metric('Podia',info.podiums),
+      metric('Pole position',info.pp),
+      metric('Najszybsze okrążenia',info.fastLaps),
+      metric('Śr. pozycja w kwalifikacjach',info.avgQuali===null?'—':info.avgQuali.toFixed(2)),
+      metric('Śr. pozycja w wyścigu',info.avgRace===null?'—':info.avgRace.toFixed(2)),
+      metric('Śr. pkt na Grand Prix',info.teamRaces ? (info.archivePoints/info.teamRaces).toFixed(1) : '—'),
+      metric('Wyścigi w punktach',info.pointsRaceRate===null?'—':`${info.pointsRaceRate.toFixed(0)}%`,'',true)
+    ].join('');
+    const both=info.compare.length>=2?info.compare:[info.compare[0]||{nick:'—',points:0,positions:[],wins:0,podiums:0},info.compare[1]||{nick:'—',points:0,positions:[],wins:0,podiums:0}];
+    const comparison=`<div class="tsp-comparison"><div class="tsp-compare-header"><span class="tsp-compare-name">${html(both[0].nick)}</span><span class="tsp-compare-vs">VS</span><span class="tsp-compare-name">${html(both[1].nick)}</span></div>${compareRow('Punkty',both[0],both[1],'points')}${compareRow('Śr. pozycja',both[0],both[1],'positions',true)}${compareRow('Zwycięstwa',both[0],both[1],'wins')}${compareRow('Podia',both[0],both[1],'podiums')}</div>`;
+    function raceCard(label,record){
+      if(!record)return `<div class="tsp-race-extreme"><span class="tsp-extreme-label">${html(label)}</span><p class="tsp-muted">Brak wyścigów z wynikami tego zespołu.</p></div>`;
+      const priority=info.current.map(n=>nickKey(n));
+      const drivers=arr(record.race?.results).filter(r=>teamMatch(r?.team,state.teamKey)&&!isReserveResult(r))
+        .sort((a,b)=>{
+          const ai=priority.indexOf(nickKey(a.nick)),bi=priority.indexOf(nickKey(b.nick));
+          return (ai<0?999:ai)-(bi<0?999:bi);
+        }).slice(0,2);
+      const rows=drivers.map(row=>{
+        const p=finishPosition(row);
+        const pos=p?'P'+p:String(row.status||row.pos||'—').trim()||'—';
+        return `<div class="tsp-extreme-driver"><span class="tsp-extreme-pos">${html(pos)}</span><strong>${html(row.nick||'—')}</strong><span class="tsp-extreme-points">${num(row.pts)} <small>PKT</small></span></div>`;
+      }).join('');
+      return `<div class="tsp-race-extreme"><span class="tsp-extreme-label">${html(label)}</span><div class="tsp-extreme-head"><h4>${html(record.name)}</h4><b>${num(record.points)} <small>PKT</small></b></div><div class="tsp-extreme-drivers">${rows}</div></div>`;
+    }
+    $('tsp-content').innerHTML=`<section class="tsp-section"><h3 class="tsp-section-heading">Osiągnięcia zespołu</h3><div class="tsp-metrics">${teamStats}</div></section>
+    <section class="tsp-section"><h3 class="tsp-section-heading">Porównanie kierowców</h3>${comparison}</section>
+    <section class="tsp-section"><h3 class="tsp-section-heading">Wyniki runda po rundzie</h3>${roundResultComparison(info)}</section>
+    <section class="tsp-section"><h3 class="tsp-section-heading">Przebieg sezonu</h3>${renderProgressChart(info)}</section>
+    <section class="tsp-section"><h3 class="tsp-section-heading">Najlepszy i najgorszy wyścig</h3><div class="tsp-extremes">${raceCard('NAJLEPSZY WYŚCIG',info.bestPointsRace)}${raceCard('NAJGORSZY WYŚCIG',info.worstPointsRace)}</div></section>`;
+  }
+  async function open(input){
+    hideChartTooltip();
+    const def=teamDef(input);
+    if(!def)return;
+    const overlay=$('team-profile-overlay');
+    if(!overlay)return;
+    const isOpen=overlay.classList.contains('open');
+    if($('driver-profile-overlay')?.classList.contains('open'))ui.closeDriverProfile(null,true);
+    if(!isOpen){state.returnFocus=document.activeElement;state.oldOverflow=document.body.style.overflow;}
+    overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';overlay.scrollTop=0;
+    $('tsp-modal').focus({preventScroll:true});
+    const token=++state.token;
+    state.teamKey=def.key;state.split=currentSplit;
+    const split=state.split;
+    const info={current:[...(splitDataCache[split]?.teamsInfo?.[def.key]?[splitDataCache[split].teamsInfo[def.key].driver1,splitDataCache[split].teamsInfo[def.key].driver2]:[])].filter(Boolean),compare:[]};
+    drawHeader(def,split,info);
+    $('tsp-content').innerHTML='<div class="tsp-load"><strong>Ładowanie statystyk…</strong>Odczytywanie danych z archiwum.</div>';
+    try{
+      const store=splitDataCache[split]||{};
+      const archiveSnap=await get(ref(db,seasonArchivePath(split)));
+      if(token!==state.token)return;
+      const archive=archiveSnap.val()||{};
+      store.archive=archive;
+      const standingsSnap=store.standings?.teams?.length?null:await get(ref(db,seasonStandingsPath(split)));
+      if(token!==state.token)return;
+      const standings=standingsSnap?standingsSnap.val():store.standings;
+      const data=summary(def.key,standings||{},archive,store.teamsInfo||teamsInfoData);
+      drawHeader(def,split,data);
+      renderStats(data);
+      state.lastSnapshot=data;
+    }catch(error){
+      console.error('Profil zespołu:',error);
+      if(token!==state.token)return;
+      $('tsp-content').innerHTML=`<div class="tsp-empty">Nie udało się odczytać archiwum wyścigów. Sprawdź połączenie z Firebase i spróbuj ponownie.<p class="tsp-muted">${html(error?.message||'Nieznany błąd')}</p></div>`;
+    }
+  }
+  function close(){
+    hideChartTooltip();
+    const overlay=$('team-profile-overlay');
+    if(!overlay?.classList.contains('open'))return;
+    state.token++;overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow=state.oldOverflow;
+    if(state.returnFocus?.isConnected)state.returnFocus.focus({preventScroll:true});
+  }
+  // Delegowanie zdarzeń obejmuje wpisy tworzone dynamicznie, również na podstronach.
+  function handleTeamClick(e){
+    const target=e.target;
+    if(!(target instanceof Element))return;
+    if(target.closest('#team-profile-overlay'))return;
+    const card=target.closest('.team-page-card[data-team-profile]');
+    if(card){
+      if(target.closest('input,textarea,select,.tpc-editable,.tpc-driver-clickable,.tpc-edit-hint'))return;
+      e.preventDefault();void open(card.dataset.teamProfile);return;
+    }
+    const text=target.closest('.team-profile-link,[class*="txt-"],.dp-team-badge,.constructor-name-cell,.ps-team');
+    if(!text)return;
+    if(target.closest('input,textarea,select,.arc-cell-editable,.editable-cell'))return;
+    const key=text.dataset.teamProfile||teamKey(text.textContent);
+    if(key){e.preventDefault();e.stopPropagation();void open(key);}
+  }
+  document.addEventListener('click',handleTeamClick);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&$('team-profile-overlay')?.classList.contains('open')){e.preventDefault();close();return;}
+    if((e.key==='Enter'||e.key===' ')&&e.target?.matches?.('.team-page-card[data-team-profile]')){
+      e.preventDefault();void open(e.target.dataset.teamProfile);
+    }
+  });
+  $('team-profile-overlay')?.addEventListener('click',e=>{if(e.target===$('team-profile-overlay'))close();});
+  $('team-profile-overlay')?.querySelector('.tsp-close')?.addEventListener('click',close);
+  return {open,close,summary,teamKey};
+})();
+window.wlfTeamProfile=wlfTeamProfile;
+if(window.ui){window.ui.openTeamProfile=wlfTeamProfile.open;window.ui.closeTeamProfile=wlfTeamProfile.close;}
+
 } catch(err) {
     console.error('Firebase/App error:', err);
 }
@@ -10649,6 +11502,8 @@ window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
 });
+
+
 </script>
 </body>
 </html>
