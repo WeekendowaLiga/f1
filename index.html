@@ -4860,6 +4860,266 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
   }
 }
 
+
+/* WLF1 · Archiwum w formie bocznej szuflady (mobile/tablet). */
+#paddock-modal .pd-drawer-scrim,
+#paddock-modal .pd-drawer-handle { display:none; }
+@media (max-width:820px) {
+  #paddock-modal .pd-dialog-grid {
+    --pd-drawer-width: min(84vw, 340px);
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+  }
+  #paddock-modal .pd-sidebar {
+    position:absolute;
+    z-index:8;
+    top:0;left:0;right:auto;bottom:0;
+    inset:0 auto 0 0;
+    width:var(--pd-drawer-width);
+    max-width:calc(100% - 42px);
+    height:100%;
+    background:#11151c;
+    border-right:1px solid rgba(255,255,255,.09);
+    box-shadow:12px 0 40px rgba(0,0,0,.17);
+    transform:translate3d(-102%,0,0);
+    transition:transform .48s cubic-bezier(.18,.9,.2,1), box-shadow .35s ease;
+    will-change:transform;
+  }
+  #paddock-modal .pd-dialog-grid.pd-show-list .pd-sidebar {
+    transform:translate3d(0,0,0);
+    box-shadow:16px 0 48px rgba(0,0,0,.38);
+  }
+  #paddock-modal .pd-drawer-scrim {
+    display:block;
+    position:absolute;z-index:6;inset:0;
+    padding:0;border:0;outline:none;
+    background:rgba(0,0,0,.43);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .35s ease,visibility .35s;
+  }
+  #paddock-modal .pd-dialog-grid.pd-show-list .pd-drawer-scrim {
+    opacity:1;visibility:visible;pointer-events:auto;
+  }
+  #paddock-modal #pd-history-toggle {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    position:absolute;
+    z-index:9;
+    left:0;
+    top:clamp(72px,27%,190px);
+    width:36px;
+    height:132px;
+    padding:10px 5px;
+    border:1px solid rgba(255,255,255,.16);
+    border-left:0;
+    border-radius:0 9px 9px 0;
+    background:rgba(14,18,25,.88);
+    color:#f0f1f5;
+    box-shadow:4px 5px 19px rgba(0,0,0,.21);
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+    cursor:pointer;
+    touch-action:manipulation;
+    transform:translate3d(0,0,0);
+    transition:transform .48s cubic-bezier(.18,.9,.2,1),background .25s,border-color .25s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #paddock-modal #pd-history-toggle:hover,
+  #paddock-modal #pd-history-toggle:active {
+    background:rgba(29,34,43,.97);
+    border-color:rgba(255,255,255,.23);
+    transform:translate3d(0,0,0);
+  }
+  #paddock-modal .pd-dialog-grid.pd-show-list #pd-history-toggle {
+    transform:translate3d(var(--pd-drawer-width),0,0);
+    background:#181d27;
+    border-color:rgba(255,255,255,.17);
+    box-shadow:3px 3px 16px rgba(0,0,0,.12);
+  }
+  #paddock-modal .pd-dialog-grid.pd-show-list #pd-history-toggle:hover,
+  #paddock-modal .pd-dialog-grid.pd-show-list #pd-history-toggle:active {
+    transform:translate3d(var(--pd-drawer-width),0,0);
+  }
+  #paddock-modal .pd-handle-mark {
+    width:18px;height:2px;
+    border-radius:2px;
+    background:#e10600;
+    flex:none;
+  }
+  #paddock-modal .pd-handle-word {
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font:750 9px/1 var(--font-data,Arial,sans-serif);
+    letter-spacing:1.65px;
+    white-space:nowrap;
+  }
+  #paddock-modal .pd-handle-chevron {
+    font:400 25px/16px Arial,sans-serif;
+    display:block;
+    height:16px;
+    transition:transform .35s ease;
+    animation:pdDrawerNudge 2.7s ease-in-out infinite;
+  }
+  #paddock-modal .pd-dialog-grid.pd-show-list .pd-handle-chevron {
+    transform:rotate(180deg);
+    animation:none;
+  }
+  @keyframes pdDrawerNudge {
+    0%,82%,100%{transform:translateX(0)}
+    90%{transform:translateX(3px)}
+  }
+  #paddock-modal .pd-sidebar .pd-side-heading {
+    border-bottom:1px solid rgba(255,255,255,.07);
+    padding:18px 16px;
+  }
+  #paddock-modal .pd-history-list {padding:8px 10px 24px;}
+  #paddock-modal .pd-history-item {border-radius:6px;padding:10px 8px;}
+  #paddock-modal .pd-history-item.is-active {background:rgba(225,6,0,.08);}
+}
+@media(max-width:375px) {
+  #paddock-modal #pd-history-toggle {width:33px;height:122px;gap:7px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  #paddock-modal .pd-sidebar,#paddock-modal .pd-drawer-scrim,#paddock-modal #pd-history-toggle {
+    transition:none!important;
+  }
+  #paddock-modal .pd-handle-chevron {animation:none!important}
+}
+
+</style>
+<style id="wlf-paddock-mobile-scroll-fix">
+/* WLF1 - mobile: scrollable splash + rumor panel below original split. */
+@media screen and (orientation:portrait) and (max-width:1100px) {
+  #splash-screen {
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain!important;
+    touch-action:pan-y!important;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    height:100dvh!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+  }
+  #splash-screen::-webkit-scrollbar {display:none;}
+  #splash-screen .splash-media-panel {
+    flex-shrink:0!important;
+  }
+  #splash-screen .splash-detail-panel {
+    flex:0 0 auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  #splash-screen #paddock-rumors {
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    width:min(530px,calc(100% - 24px))!important;
+    max-width:calc(100% - 24px)!important;
+    min-width:0!important;
+    flex:0 0 auto!important;
+    align-self:center!important;
+    order:5!important;
+    margin:12px auto max(28px,env(safe-area-inset-bottom))!important;
+    box-sizing:border-box!important;
+    transform:none!important;
+  }
+  #splash-screen #paddock-rumors .pd-shell {
+    width:100%!important;
+    box-sizing:border-box!important;
+  }
+  #splash-screen #paddock-rumors .pd-stage {
+    grid-template-columns:minmax(0,1fr)!important;
+    height:clamp(215px,30svh,295px)!important;
+    padding:9px!important;
+    overflow:hidden!important;
+  }
+  #splash-screen #paddock-rumors .pd-card--side {display:none!important;}
+  #splash-screen #paddock-rumors .pd-card--main {
+    height:100%!important;
+    min-width:0!important;
+  }
+  #splash-screen #paddock-rumors .pd-card-copy strong {
+    font-size:clamp(15px,4vw,20px)!important;
+  }
+  #splash-screen #paddock-rumors .pd-excerpt {
+    font-size:clamp(11px,2.75vw,13px)!important;
+  }
+  #splash-screen #paddock-rumors .pd-bottom {
+    min-height:37px;
+  }
+  #splash-screen #paddock-rumors .pd-more {
+    margin-bottom:9px!important;
+  }
+  #splash-screen .splash-diagonal {pointer-events:none;}
+}
+/* On short landscape phone screens keep the existing diagonal layout and make
+   the rumor panel reachable as an anchored panel below a scrollable splash. */
+@media screen and (max-width:1100px) and (orientation:landscape) and (max-height:650px) {
+  #splash-screen {
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    touch-action:pan-y!important;
+    overscroll-behavior-y:contain!important;
+    min-height:100dvh!important;
+    max-height:100dvh!important;
+    height:100dvh!important;
+    flex-wrap:wrap!important;
+    align-content:flex-start!important;
+  }
+  #splash-screen .splash-detail-panel {flex:0 0 48%!important;}
+  #splash-screen #paddock-rumors {
+    position:relative!important;
+    left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+    width:min(660px,calc(100vw - 32px))!important;
+    max-width:calc(100vw - 32px)!important;
+    margin:14px auto 22px!important;
+    flex:0 0 auto!important;
+    order:5!important;
+    align-self:center!important;
+  }
+  #splash-screen #paddock-rumors .pd-stage {height:clamp(160px,37svh,225px)!important;}
+}
+</style>
+<style id="wlf-championship-styles">
+/* WLF1 / administrator — szanse na tytuł */
+#sec-championship .champ-intro{font:14px/1.6 var(--font-body,Arial,sans-serif);color:#6A6E78;margin:0 0 18px}
+#sec-championship .champ-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:14px}
+#sec-championship .champ-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+#sec-championship .champ-field label{font:700 11px var(--font-data,Arial,sans-serif);letter-spacing:1px;color:#5D616C;text-transform:uppercase}
+#sec-championship .champ-field select,#sec-championship .champ-field input{width:100%;height:43px;box-sizing:border-box;border:1px solid #CBCDD4;background:#FFF;color:#171820;border-radius:4px;padding:0 10px;font:600 15px var(--font-body,Arial,sans-serif)}
+#sec-championship .champ-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+#sec-championship .champ-ctrl button{border:0;border-radius:4px;padding:12px 16px;cursor:pointer;font:700 12px var(--font-data,Arial,sans-serif);letter-spacing:.7px;transition:transform .2s,opacity .2s}
+#sec-championship .champ-ctrl button:hover{transform:translateY(-1px);opacity:.9}
+#sec-championship .champ-primary{background:#E10600;color:#FFF}
+#sec-championship .champ-secondary{background:#E9EAEC;color:#292B32}
+#sec-championship .champ-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:18px 0}
+#sec-championship .champ-stat{display:flex;flex-direction:column;gap:7px;background:#12151C;color:#F8F9FA;padding:13px 15px;border-radius:5px;border-left:3px solid #E10600;min-width:0}
+#sec-championship .champ-stat span{font:700 10px var(--font-data,Arial,sans-serif);color:#AAB1BC;letter-spacing:1px;text-transform:uppercase}
+#sec-championship .champ-stat strong{font:800 29px/1.1 var(--font-display,Arial,sans-serif)}
+#sec-championship .champ-results-header{font:800 16px var(--font-display,Arial,sans-serif);letter-spacing:.7px;margin:15px 0 11px;text-transform:uppercase;color:#171820}
+#sec-championship .champ-list{max-height:430px;overflow-y:auto;border:1px solid #E0E1E5;border-radius:5px;background:#FFF}
+#sec-championship .champ-driver{display:grid;grid-template-columns:25px minmax(85px,1fr) 64px 95px;gap:8px;align-items:center;padding:10px 9px;border-bottom:1px solid #ECECF0;min-height:52px}
+#sec-championship .champ-driver:last-child{border-bottom:0}
+#sec-championship .champ-rank{font:700 13px var(--font-data,Arial,sans-serif);color:#8B8F99}
+#sec-championship .champ-name{min-width:0}
+#sec-championship .champ-name strong{font:750 14px var(--font-body,Arial,sans-serif);display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#171820}
+#sec-championship .champ-name small{font:11px var(--font-body,Arial,sans-serif);color:#9BA0AA;display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#sec-championship .champ-pts{font:750 13px var(--font-data,Arial,sans-serif);color:#343843;text-align:right;white-space:nowrap}#sec-championship .champ-pts strong{display:block;font:inherit}#sec-championship .champ-pts small{display:block;color:#858A96;font:10px var(--font-data,Arial,sans-serif}
+#sec-championship .champ-state{font:800 9px var(--font-data,Arial,sans-serif);letter-spacing:.25px;text-transform:uppercase;text-align:center;padding:8px 5px;border-radius:3px;color:#FFF;background:#D21A17}
+#sec-championship .champ-out .champ-state{background:#D9DCE3;color:#5F6672}
+#sec-championship .champ-driver .champ-target{display:none}
+#sec-championship .champ-explanation{font:12px/1.6 var(--font-body,Arial,sans-serif);color:#6F7580;margin-top:12px}
+#sec-championship .champ-status{font:12px/1.6 var(--font-body,Arial,sans-serif);color:#777F8A;margin:9px 0}
+@media(max-width:650px){#sec-championship .champ-fields{grid-template-columns:1fr}#sec-championship .champ-driver{grid-template-columns:23px minmax(75px,1fr) 56px 80px;gap:5px;padding:10px 7px}#sec-championship .champ-state{font-size:8px}}
+
 </style>
 </head>
 <body class="splash-locked" style="background:#eef0f4">
@@ -5147,12 +5407,18 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 </div>
 <div id="paddock-modal" hidden role="dialog" aria-modal="true" aria-labelledby="pd-modal-title" onclick="event.stopPropagation()">
   <div class="pd-dialog">
-    <div class="pd-dialog-top"><span>OSTATNIE WIADOMOŚCI</span><div class="pd-actions"><button type="button" id="pd-history-toggle" aria-controls="pd-sidebar" aria-expanded="false">WSZYSTKIE WIADOMOŚCI</button><button type="button" id="pd-close" aria-label="Zamknij okno">×</button></div></div>
+    <div class="pd-dialog-top"><span>OSTATNIE WIADOMOŚCI</span><div class="pd-actions"><button type="button" id="pd-close" aria-label="Zamknij okno">×</button></div></div>
     <div class="pd-dialog-grid">
       <aside class="pd-sidebar" id="pd-sidebar" aria-label="Lista wszystkich plotek">
         <div class="pd-side-heading"><span>WSZYSTKIE WIADOMOŚCI</span><span id="pd-total"></span></div>
         <div id="pd-history-list" class="pd-history-list"></div>
       </aside>
+      <button type="button" id="pd-drawer-scrim" class="pd-drawer-scrim" aria-label="Zamknij archiwum wiadomości" tabindex="-1"></button>
+      <button type="button" id="pd-history-toggle" class="pd-drawer-handle" aria-controls="pd-sidebar" aria-expanded="false" aria-label="Wysuń archiwum wiadomości">
+        <span class="pd-handle-mark" aria-hidden="true"></span>
+        <span class="pd-handle-word" aria-hidden="true">ARCHIWUM</span>
+        <span class="pd-handle-chevron" aria-hidden="true">›</span>
+      </button>
       <article class="pd-article" id="pd-article" tabindex="-1">
         <div id="pd-hero" class="pd-hero"><img id="pd-modal-image" alt="Zdjęcie do plotki" loading="lazy"><div id="pd-modal-fallback">WEEKENDOWA LIGA F1</div></div>
         <div class="pd-article-copy">
@@ -5435,6 +5701,7 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
         <a class="split-only-toc" href="#sec-race" onclick="ui.openAdminSection('sec-race')">🏁 Wyścig</a>
         <a class="split-only-toc" href="#sec-archive" onclick="ui.openAdminSection('sec-archive')">📁 Archiwum</a>
         <a class="split-only-toc" href="#sec-standings" onclick="ui.openAdminSection('sec-standings')">🏆 Klasyfikacje</a>
+        <a href="#sec-championship" onclick="ui.openAdminSection('sec-championship');window.wlfChamp.open();return false;">🏁 Kto może być mistrzem</a>
         <span style="width:2px;background:rgba(255,255,255,0.15);margin:4px 6px;"></span>
         <a href="#sec-splash" onclick="ui.openAdminSection('sec-splash')">🖼 Splash</a>
         <a href="#sec-social" onclick="ui.openAdminSection('sec-social')">🔗 Social</a>
@@ -5607,6 +5874,31 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 <button class="btn-action btn-danger" onclick="dbCore.deleteNode((adminSplit===1?'split1':'split2')+'/lastRace')">🗑 WYCZYŚĆ OSTATNI WYŚCIG</button>
         </div>
     </div>
+    <div class="admin-section" id="sec-championship">
+    <div class="admin-section-header" onclick="ui.toggleAdminSection(this);window.wlfChamp.open()">
+        <span class="admin-section-icon">🏆</span>
+        <span class="admin-section-title">Kto jeszcze może zostać mistrzem?</span>
+        <span class="admin-section-arrow">▼</span>
+    </div>
+    <div class="admin-section-body">
+        <p class="champ-intro">Matematyczne szanse kierowców na tytuł, liczone z aktualnej klasyfikacji. Ustaw liczbę rund w sezonie i maksymalną zdobycz punktową za jeden wyścig.</p>
+        <div class="champ-fields">
+            <div class="champ-field"><label for="champ-split">Split</label><select id="champ-split" onchange="window.wlfChamp.open()"><option value="1">Split 1</option><option value="2">Split 2</option></select></div>
+            <div class="champ-field"><label for="champ-rounds">Wszystkie rundy sezonu</label><input id="champ-rounds" type="number" min="0" max="100" step="1" value="12" oninput="window.wlfChamp.render()"></div>
+            <div class="champ-field"><label for="champ-points">Maks. pkt na GP</label><input id="champ-points" type="number" min="0" max="100" step="1" value="26" oninput="window.wlfChamp.render()"></div>
+        </div>
+        <div class="champ-ctrl">
+            <button type="button" class="champ-primary" onclick="window.wlfChamp.save()">ZAPISZ USTAWIENIA</button>
+            <button type="button" class="champ-secondary" onclick="window.wlfChamp.open()">ODŚWIEŻ DANE</button>
+        </div>
+        <div id="champ-status" class="champ-status" aria-live="polite">Otwórz sekcję, aby pobrać aktualną klasyfikację.</div>
+        <div id="champ-summary" class="champ-summary"></div>
+        <div class="champ-results-header">Matematyczne szanse kierowców</div>
+        <div id="champ-driver-list" class="champ-list"></div>
+        <p id="champ-explanation" class="champ-explanation">Przy remisie punktów o tytule decydują dodatkowe kryteria ligi.</p>
+    </div>
+</div>
+
     <div class="admin-section" id="sec-standings">
         <div class="admin-section-header" onclick="ui.toggleAdminSection(this)"><span class="admin-section-icon">🏆</span><span class="admin-section-title">Klasyfikacje Generalne</span><span class="admin-section-arrow">▼</span></div>
         <div class="admin-section-body">
@@ -6166,7 +6458,19 @@ const db = getDatabase(app);
       else el('pd-modal-fallback').hidden=false;
     });
   }
-  function hideSideOnMobile(){el('pd-sidebar').parentElement.classList.remove('pd-show-list');el('pd-history-toggle').setAttribute('aria-expanded','false');}
+  function setHistoryDrawer(open){
+    const grid=el('pd-sidebar').parentElement;
+    const mobile=window.matchMedia('(max-width:820px)').matches;
+    grid.classList.toggle('pd-show-list',mobile && !!open);
+    const opened=grid.classList.contains('pd-show-list');
+    const button=el('pd-history-toggle');
+    button.setAttribute('aria-expanded',String(opened));
+    button.setAttribute('aria-label',opened?'Zwiń archiwum wiadomości':'Wysuń archiwum wiadomości');
+    const side=el('pd-sidebar');
+    side.inert=mobile&&!opened;
+    side.setAttribute('aria-hidden',String(mobile&&!opened));
+  }
+  function hideSideOnMobile(){setHistoryDrawer(false);} 
   function closeReader(){
     if(!state.open)return;state.open=false;state.modalEpoch++;
     el('pd-confirm').hidden=true;hideSideOnMobile();
@@ -6204,8 +6508,27 @@ const db = getDatabase(app);
   el('pd-prev').addEventListener('click',()=>advance(-1));el('pd-next').addEventListener('click',()=>advance(1));
   el('pd-close').addEventListener('click',closeReader);
   el('pd-history-toggle').addEventListener('click',()=>{
-    const grid=el('pd-sidebar').parentElement,open=grid.classList.toggle('pd-show-list');el('pd-history-toggle').setAttribute('aria-expanded',String(open));
+    const grid=el('pd-sidebar').parentElement;
+    setHistoryDrawer(!grid.classList.contains('pd-show-list'));
   });
+  el('pd-drawer-scrim').addEventListener('click',()=>setHistoryDrawer(false));
+  window.matchMedia('(max-width:820px)').addEventListener('change',()=>setHistoryDrawer(false));
+  // Otwórz gestem od lewej krawędzi, zamknij przesunięciem w lewo.
+  const drawerGrid=el('pd-sidebar').parentElement;
+  let drawerSwipe=null;
+  drawerGrid.addEventListener('touchstart',e=>{
+    const t=e.changedTouches[0];
+    if(t)drawerSwipe={x:t.clientX,y:t.clientY,fromEdge:t.clientX<=47,wasOpen:drawerGrid.classList.contains('pd-show-list')};
+  },{passive:true});
+  drawerGrid.addEventListener('touchend',e=>{
+    if(!drawerSwipe)return;
+    const t=e.changedTouches[0],s=drawerSwipe;drawerSwipe=null;
+    if(!t || !window.matchMedia('(max-width:820px)').matches)return;
+    const dx=t.clientX-s.x,dy=t.clientY-s.y;
+    if(Math.abs(dy)>Math.abs(dx)*.65)return;
+    if(s.wasOpen && dx< -65)setHistoryDrawer(false);
+    else if(!s.wasOpen && s.fromEdge && dx>65)setHistoryDrawer(true);
+  },{passive:true});
   el('pd-delete').addEventListener('click',openDelete);
   el('pd-cancel-delete').addEventListener('click',closeConfirm);
   el('pd-confirm-delete').addEventListener('click',submitDelete);
@@ -6214,12 +6537,17 @@ const db = getDatabase(app);
   shell.addEventListener('click',e=>e.stopPropagation());
   shell.addEventListener('mouseenter',stopAuto);shell.addEventListener('mouseleave',auto);
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){if(!el('pd-confirm').hidden)closeConfirm();else if(state.open)closeReader();}
+    if(e.key==='Escape'){
+      if(!el('pd-confirm').hidden)closeConfirm();
+      else if(state.open && el('pd-sidebar').parentElement.classList.contains('pd-show-list'))setHistoryDrawer(false);
+      else if(state.open)closeReader();
+    }
     if(!state.open && (e.key==='ArrowRight'||e.key==='ArrowLeft') && document.activeElement?.closest('#paddock-rumors')) advance(e.key==='ArrowRight'?1:-1);
   });
   el('pd-stage').addEventListener('touchstart',e=>{state.touchX=e.changedTouches[0]?.screenX;},{passive:true});
   el('pd-stage').addEventListener('touchend',e=>{const x=e.changedTouches[0]?.screenX;if(state.touchX!=null && x!=null && Math.abs(state.touchX-x)>45)advance(state.touchX>x?1:-1);state.touchX=null;},{passive:true});
   document.addEventListener('visibilitychange',()=>document.hidden?stopAuto():auto());
+  setHistoryDrawer(false);
   // Nie pokazujemy prawa do usuwania tylko na podstawie samego faktu zalogowania.
   onAuthStateChanged(auth,user=>{
     state.uid=user?.uid||null;state.admin=false;
@@ -6782,6 +7110,112 @@ const renderQualiTable = (results, raceId = null) => {
         </tr>`;
     }).join('')}</tbody></table>`;
 };
+
+// ─── PANEL ADMINISTRATORA: KTO MOŻE ZOSTAĆ MISTRZEM ──────────────────────────
+window.wlfChamp = (() => {
+  const state = { split:1, season:null, standings:null, archive:null, calendar:null, ready:false, request:0 };
+  const el = id => document.getElementById(id);
+  const toNum = (v,fallback=0) => Number.isFinite(Number(v)) ? Number(v) : fallback;
+  const array = value => Array.isArray(value) ? value.filter(Boolean) : Object.values(value || {}).filter(Boolean);
+  const validRace = r => r && !r.isQualifying && !r.isNoStats && array(r.results).length > 0;
+  const countCompleted = archive => array(archive).filter(validRace).length;
+  const inferredTotal = () => Math.max(countCompleted(state.archive),...Object.keys(state.calendar || {}).filter(k=>/^\d+$/.test(k)).map(Number), 0);
+  function status(text){if(el('champ-status'))el('champ-status').textContent=text;}
+  function summaryValue(title,value){
+    const box=document.createElement('div');box.className='champ-stat';
+    const label=document.createElement('span');label.textContent=title;
+    const num=document.createElement('strong');num.textContent=String(value);
+    box.append(label,num);return box;
+  }
+  function render(){
+    const out=el('champ-driver-list'),summary=el('champ-summary');
+    if(!out||!summary||!state.ready)return;
+    out.replaceChildren();summary.replaceChildren();
+    const drivers=array(state.standings?.drivers).filter(d=>d && d.nick && !d.isBot).map(d=>({nick:String(d.nick),pts:Math.max(0,toNum(d.pts)),team:String(d.team||'')}));
+    if(!drivers.length){status('Brak kierowców w klasyfikacji tego splitu.');return;}
+    drivers.sort((a,b)=>b.pts-a.pts || a.nick.localeCompare(b.nick,'pl'));
+    const completed=countCompleted(state.archive);
+    const maxRounds=Math.max(0,Math.floor(toNum(el('champ-rounds')?.value)));
+    const pointsPerRace=Math.max(0,Math.floor(toNum(el('champ-points')?.value)));
+    const remaining=Math.max(0,maxRounds-completed);
+    const leader=drivers[0].pts;
+    const maxExtra=remaining*pointsPerRace;
+    const contenders=drivers.filter(d=>d.pts+maxExtra>=leader);
+    const strict=drivers.filter(d=>d.pts+maxExtra>leader);
+    summary.append(
+      summaryValue('Ukończono rund',completed),
+      summaryValue('Pozostało',remaining),
+      summaryValue('Lider — pkt',leader),
+      summaryValue('Z szansą na tytuł',contenders.length)
+    );
+    for(const [index,d] of drivers.entries()){
+      const max=d.pts+maxExtra;
+      const alive=max>=leader;
+      const drawOnly=max===leader && index>0;
+      const row=document.createElement('div');row.className='champ-driver '+(alive?'champ-alive':'champ-out');
+      const pos=document.createElement('span');pos.className='champ-rank';pos.textContent=String(index+1).padStart(2,'0');
+      const name=document.createElement('div');name.className='champ-name';
+      const nick=document.createElement('strong');nick.textContent=d.nick;
+      const team=document.createElement('small');team.textContent=d.team || 'Kierowca';name.append(nick,team);
+      const pts=document.createElement('div');pts.className='champ-pts';
+      const score=document.createElement('strong');score.textContent=`${d.pts} pkt`;
+      const maxScore=document.createElement('small');maxScore.textContent=`maks. ${max}`;
+      pts.append(score,maxScore);
+      const badge=document.createElement('span');badge.className='champ-state';
+      badge.textContent=index===0?(remaining===0?'LIDER':'PROWADZI'):(drawOnly?'TYLKO REMIS':alive?'W GRZE':'ODPADŁ');
+      const target=document.createElement('small');target.className='champ-target';target.textContent=alive&&remaining ? `Maks. ${max} pkt` : `Strata: ${leader-d.pts} pkt`;
+      row.append(pos,name,pts,badge,target);out.append(row);
+    }
+    let note=`Obliczenia zakładają, że każdy kierowca może zdobyć maksymalnie ${pointsPerRace} pkt w każdym z ${remaining} pozostałych GP, a lider może już nie punktować.`;
+    note+=' To górny pułap matematyczny, nie prognoza i nie gwarancja tytułu; remisy rozstrzyga regulamin.';
+    if(maxRounds<completed)note='Liczba wszystkich rund jest mniejsza niż liczba rozegranych wyścigów — popraw ustawienie. '+note;
+    if(!remaining&&strict.length>1)note='Sezon został oznaczony jako zakończony. '+note;
+    el('champ-explanation').textContent=note;
+    status(`Dane: sezon ${state.season}, Split ${state.split}. Wliczono ${drivers.length} kierowców. Aktualizacja: ${new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}.`);
+  }
+  async function open(){
+    // Przy pierwszym wejściu dopasuj podgląd do aktywnego splitu w panelu administratora.
+    if(state.season===null || state.season!==currentSeason){
+      if(el('champ-split'))el('champ-split').value=String(adminSplit===2?2:1);
+    }
+    const split=Number(el('champ-split')?.value)===2?2:1;
+    state.split=split;state.season=currentSeason;state.ready=false;
+    const request=++state.request;
+    status('Pobieram klasyfikację i archiwum z Firebase…');
+    try{
+      const splitName=split===1?'split1':'split2';
+      const prefix=currentSeason===2?'season2/':'';
+      const configPath=`config/championshipOptions/season${currentSeason}/${splitName}`;
+      const [standingsSnap,archiveSnap,calendarSnap,configSnap]=await Promise.all([
+        get(ref(db,`${prefix}${splitName}/standings`)),
+        get(ref(db,`${prefix}${splitName}/archive`)),
+        get(ref(db,'calendar')),
+        get(ref(db,configPath)).catch(()=>({val:()=>null}))
+      ]);
+      if(request!==state.request)return;
+      state.standings=standingsSnap.val()||{};state.archive=archiveSnap.val()||{};state.calendar=calendarSnap.val()||{};
+      const cfg=configSnap.val()||{};
+      el('champ-rounds').value=cfg.totalRounds??inferredTotal();
+      el('champ-points').value=cfg.maxPointsPerRace??26;
+      state.ready=true;render();
+    }catch(error){if(request===state.request)status('Błąd pobierania z Firebase: '+error.message);}
+  }
+  async function save(){
+    if(!isLoggedIn){status('Zaloguj się jako administrator.');return;}
+    if(!state.ready){status('Najpierw wczytaj dane.');return;}
+    const totalRounds=Math.floor(Number(el('champ-rounds')?.value));
+    const maxPointsPerRace=Math.floor(Number(el('champ-points')?.value));
+    if(!Number.isInteger(totalRounds)||totalRounds<0||totalRounds>100||!Number.isInteger(maxPointsPerRace)||maxPointsPerRace<0||maxPointsPerRace>100){
+      status('Wpisz prawidłowe wartości: rundy 0–100, punkty 0–100.');return;
+    }
+    try{
+      await set(ref(db,`config/championshipOptions/season${state.season}/${state.split===1?'split1':'split2'}`),{totalRounds,maxPointsPerRace,updatedAt:Date.now()});
+      render();status('Zapisano ustawienia kalkulacji w Firebase.');
+    }catch(error){render();status('Wyniki przeliczone lokalnie, ale zapis w Firebase odrzucony: '+error.message);}
+  }
+  return {open,render,save};
+})();
+
 
 window.ui = {
         switchPage(pageId, navEl) {
