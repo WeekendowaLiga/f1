@@ -5460,8 +5460,91 @@ body.splash-locked {height:100dvh;max-height:100dvh;}
 #tsp-modal .tsp-extreme-driver strong{font:750 15px var(--font-data,Arial,sans-serif);overflow-wrap:anywhere;min-width:0;flex:1}
 #tsp-modal .tsp-extreme-points{font:900 18px var(--font-data,Arial,sans-serif);white-space:nowrap}
 #tsp-modal .tsp-extreme-points small{font-size:10px;color:#bcc7d5}
+/* Oznaczenie kierowcy rezerwowego w najlepszym i najgorszym GP. */
+#tsp-modal .tsp-extreme-reserve{display:inline-flex;align-items:center;justify-content:center;
+  margin-left:8px;vertical-align:middle;min-width:18px;height:18px;padding:0 4px;
+  background:#f4ac20;border-radius:3px;color:#101318;font:900 11px var(--font-data,Arial,sans-serif)}
+
 @media(max-width:740px){#tsp-modal .tsp-extremes{grid-template-columns:1fr}#tsp-modal .tsp-metric-label{font-size:13px!important}#tsp-modal .tsp-metric{min-height:113px!important}#tsp-modal .tsp-round-table thead th:first-child,#tsp-modal .tsp-round-table tbody th{min-width:140px;max-width:160px}}
 @media(max-width:500px){#tsp-modal .tsp-score-pill{min-width:0}#tsp-modal .tsp-compare-row{grid-template-columns:minmax(0,1fr) 105px minmax(0,1fr)}#tsp-modal .tsp-compare-label{font-size:12px!important}#tsp-modal .tsp-extreme-head{align-items:flex-start;flex-direction:column}#tsp-modal .tsp-metric-value{font-size:30px!important}}
+
+/* TOP 10: procent sklasyfikowanych, ukończonych wyścigów zakończonych na P1-P10. */
+#tsp-modal .tsp-top10-values{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 12px}
+#tsp-modal .tsp-top10-values .tsp-metric-value{margin-top:0!important}
+#tsp-modal .tsp-top10-ratio{font:800 clamp(14px,1.5vw,18px)/1.2 var(--font-data,Arial,sans-serif);color:#d3dce9;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:500px){#tsp-modal .tsp-top10-values{gap:4px 9px}#tsp-modal .tsp-top10-ratio{font-size:14px}}
+
+/* WLF1 — równe kafelki odliczania na telefonie (splash i strona główna). */
+@media screen and (max-width: 767px) {
+  #splash-screen .splash-countdown {
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:clamp(4px,1.2vw,7px)!important;
+    align-items:stretch!important;
+    width:100%!important;
+  }
+  #splash-screen .splash-countdown > .splash-timer-unit {
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:clamp(64px,18vw,83px)!important;
+    height:clamp(64px,18vw,83px)!important;
+    padding:7px 2px!important;
+    margin:0!important;
+  }
+  #splash-screen .splash-timer-unit .splash-timer-val {
+    font-size:clamp(21px,6.4vw,31px)!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  #splash-screen .splash-timer-unit .splash-timer-label {
+    display:block!important;
+    margin-top:6px!important;
+    font-size:clamp(7px,2vw,9px)!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+    letter-spacing:.2px!important;
+  }
+  #main-app .f1-timer-grid {
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    align-items:stretch!important;
+    gap:6px!important;
+    width:min(100%,520px)!important;
+  }
+  #main-app .f1-timer-grid > .timer-sep {display:none!important;}
+  #main-app .f1-timer-grid > .timer-unit {
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+    min-width:0!important;
+    min-height:clamp(70px,19vw,100px)!important;
+    height:clamp(70px,19vw,100px)!important;
+    width:100%!important;
+    margin:0!important;
+    padding:8px 2px!important;
+  }
+  #main-app .f1-timer-grid .timer-val {
+    font-size:clamp(20px,6.3vw,33px)!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  #main-app .f1-timer-grid .timer-label {
+    margin-top:6px!important;
+    font-size:clamp(8px,2.1vw,10px)!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+    letter-spacing:0!important;
+  }
+}
 </style>
 
 </head>
@@ -10528,7 +10611,7 @@ if (raceId) {
 
 
 // ─── WEEKENDOWA LIGA F1: STATYSTYKI KONSTRUKTORÓW ───────────────────────────
-// Odczyt wyłącznie: istniejące klasyfikacje, składy oraz archiwum aktualnego splitu/sezonu.
+// Odczyt wyłącznie: istniejące klasyfikacje, składy oraz archiwum aktualnego splitu/sezonu. Rezerwowi z przypisanym zespołem liczą się do GP.
 const wlfTeamProfile = (() => {
   const $ = id => document.getElementById(id);
   const html = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10587,8 +10670,10 @@ const wlfTeamProfile = (() => {
     return Number.isInteger(i)&&i>=0&&i<list.length?i:-1;
   }
   function startedRace(r){
-    if(/^DNS$/i.test(String(r?.pos||r?.status||'')))return false;
-    return true;
+    // DNS nie jest startem, nawet jeśli status zapisano w osobnym polu.
+    const status=[r?.pos,r?.status,r?.time]
+      .filter(v=>typeof v==='string').join(' ').toUpperCase();
+    return !/\b(?:DNS|DID NOT START|NIE WYSTARTOWAŁ|NIE WYSTARTOWAL)\b/.test(status);
   }
   function summary(key,standing,archive,teamInfo){
     const races=archivedRaces(archive);
@@ -10607,7 +10692,7 @@ const wlfTeamProfile = (() => {
     const records=[];let wins=0,podiums=0,pp=0,fastLaps=0,finishes=0,starts=0,archivePoints=0;
     const qualifyingPositions=[];
     const finishPositions=[];
-    let racesWithPoints=0;
+    let top10Finishes=0, top10EligibleFinishes=0;
     const pointTotals=new Map(current.map(n=>[nickKey(n),0]));
     const raceProgress=[];
     let bestPointsRace=null,bestDouble=null;
@@ -10623,7 +10708,7 @@ const wlfTeamProfile = (() => {
       if(flIdx>=0&&teamMatch(resultData[flIdx].team,key))fastLaps++;
       const localPts=people.reduce((sum,r)=>sum+num(r.pts),0);
       archivePoints+=localPts;
-      if(localPts>0)racesWithPoints++;
+      // Każdy start osobno, a nie jedna runda na zespół. Rezerwowi nadal liczą się do pozostałych statystyk.
       const positionRows=[];
       const qualiCandidates=arr(race.qualiResults||race.qualifyingResults||race.qualificationResults);
       const byQualiNick=new Map(qualiCandidates.map(q=>[nickKey(q.nick),q]));
@@ -10633,8 +10718,19 @@ const wlfTeamProfile = (() => {
         const gridRank=q?startingPosition(q.pos??q.position??q.place??q.grid):startingPosition(r.start??r.grid??r.startPos);
         if(gridRank!==null&&gridRank>0&&!isReserveResult(r))qualifyingPositions.push(gridRank);
         const p=finishPosition(r);
-        if(startedRace(r))starts++;
-        if(p!==null){finishes++;finishPositions.push(p);positionRows.push({nick:r.nick,pos:p});if(p===1)wins++;if(p<=3)podiums++;}
+        const didStart=startedRace(r);
+        if(didStart)starts++;
+        // TOP 10: liczymy tylko sklasyfikowane wyścigi kierowców ETATOWYCH.
+        // Rezerwowi, DNS, DNF, DSQ, RET i nieobecności nie są liczeni ani w liczniku, ani w mianowniku.
+        // `finishes` pozostaje niezmieniony dla pozostałych statystyk zespołu.
+        if(p!==null){
+          finishes++;
+          if(!isReserveResult(r)){
+            top10EligibleFinishes++;
+            if(p>=1&&p<=10)top10Finishes++;
+          }
+          finishPositions.push(p);positionRows.push({nick:r.nick,pos:p});if(p===1)wins++;if(p<=3)podiums++;
+        }
         if(/^(1|P1)$/i.test(String(r.start||'').replace(/^(?:start|grid)\s*:\s*/i,'').trim()))pp++;
         const ind=individual.get(nickKey(r.nick));
         if(ind){
@@ -10709,11 +10805,22 @@ const wlfTeamProfile = (() => {
       starts,finishes,finishRate:starts>0?Math.round(100*finishes/starts):null,teamRaces:records.length,
       avgQuali:qualifyingPositions.length?qualifyingPositions.reduce((a,b)=>a+b,0)/qualifyingPositions.length:null,
       avgRace:finishPositions.length?finishPositions.reduce((a,b)=>a+b,0)/finishPositions.length:null,
-      pointsRaceRate:records.length?100*racesWithPoints/records.length:null,
+      top10Finishes,top10Starts:top10EligibleFinishes,
+      top10FinishRate:top10EligibleFinishes>0?100*top10Finishes/top10EligibleFinishes:null,
       current,compare,bestPointsRace,worstPointsRace,bestDouble,events,raceProgress};
   }
   function metric(label,value,note,accent=false){
     return `<div class="tsp-metric"><span class="tsp-metric-label">${html(label)}</span><strong class="tsp-metric-value${accent?' tsp-emphasis':''}">${html(value)}</strong></div>`;
+  }
+  function top10Metric(info){
+    const total=info.top10Starts||0;
+    if(!total)return metric('Wyścigi ukończone w TOP 10','—','',true);
+    const count=info.top10Finishes||0;
+    const percent=(100*count/total).toFixed(0);
+    return `<div class="tsp-metric tsp-top10-metric" title="${count} ukończonych wyścigów P1–P10 spośród ${total} sklasyfikowanych wyścigów etatowych kierowców zespołu. Rezerwowi, DNF, DSQ, DNS i nieobecności są pomijani.">
+      <span class="tsp-metric-label">Wyścigi ukończone w TOP 10</span>
+      <div class="tsp-top10-values"><strong class="tsp-metric-value tsp-emphasis">${percent}%</strong><span class="tsp-top10-ratio">${count} / ${total}</span></div>
+    </div>`;
   }
   function bestCard(label,name,value,meta){
     if(!name)return `<div class="tsp-best-card"><div class="tsp-best-top">${html(label)}</div><p class="tsp-muted">Brak dwóch wyników z archiwum potrzebnych do porównania.</p></div>`;
@@ -10907,22 +11014,23 @@ const wlfTeamProfile = (() => {
       metric('Śr. pozycja w kwalifikacjach',info.avgQuali===null?'—':info.avgQuali.toFixed(2)),
       metric('Śr. pozycja w wyścigu',info.avgRace===null?'—':info.avgRace.toFixed(2)),
       metric('Śr. pkt na Grand Prix',info.teamRaces ? (info.archivePoints/info.teamRaces).toFixed(1) : '—'),
-      metric('Wyścigi w punktach',info.pointsRaceRate===null?'—':`${info.pointsRaceRate.toFixed(0)}%`,'',true)
+      top10Metric(info)
     ].join('');
     const both=info.compare.length>=2?info.compare:[info.compare[0]||{nick:'—',points:0,positions:[],wins:0,podiums:0},info.compare[1]||{nick:'—',points:0,positions:[],wins:0,podiums:0}];
     const comparison=`<div class="tsp-comparison"><div class="tsp-compare-header"><span class="tsp-compare-name">${html(both[0].nick)}</span><span class="tsp-compare-vs">VS</span><span class="tsp-compare-name">${html(both[1].nick)}</span></div>${compareRow('Punkty',both[0],both[1],'points')}${compareRow('Śr. pozycja',both[0],both[1],'positions',true)}${compareRow('Zwycięstwa',both[0],both[1],'wins')}${compareRow('Podia',both[0],both[1],'podiums')}</div>`;
     function raceCard(label,record){
       if(!record)return `<div class="tsp-race-extreme"><span class="tsp-extreme-label">${html(label)}</span><p class="tsp-muted">Brak wyścigów z wynikami tego zespołu.</p></div>`;
       const priority=info.current.map(n=>nickKey(n));
-      const drivers=arr(record.race?.results).filter(r=>teamMatch(r?.team,state.teamKey)&&!isReserveResult(r))
+      // Uwzględniamy wszystkie osoby reprezentujące zespół w tym GP, również rezerwowych.
+      const drivers=arr(record.race?.results).filter(r=>teamMatch(r?.team,state.teamKey))
         .sort((a,b)=>{
           const ai=priority.indexOf(nickKey(a.nick)),bi=priority.indexOf(nickKey(b.nick));
           return (ai<0?999:ai)-(bi<0?999:bi);
-        }).slice(0,2);
+        });
       const rows=drivers.map(row=>{
         const p=finishPosition(row);
         const pos=p?'P'+p:String(row.status||row.pos||'—').trim()||'—';
-        return `<div class="tsp-extreme-driver"><span class="tsp-extreme-pos">${html(pos)}</span><strong>${html(row.nick||'—')}</strong><span class="tsp-extreme-points">${num(row.pts)} <small>PKT</small></span></div>`;
+        return `<div class="tsp-extreme-driver"><span class="tsp-extreme-pos">${html(pos)}</span><strong>${html(row.nick||'—')}${isReserveResult(row)?'<span class="tsp-extreme-reserve" title="Kierowca rezerwowy">R</span>':''}</strong><span class="tsp-extreme-points">${num(row.pts)} <small>PKT</small></span></div>`;
       }).join('');
       return `<div class="tsp-race-extreme"><span class="tsp-extreme-label">${html(label)}</span><div class="tsp-extreme-head"><h4>${html(record.name)}</h4><b>${num(record.points)} <small>PKT</small></b></div><div class="tsp-extreme-drivers">${rows}</div></div>`;
     }
